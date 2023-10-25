@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  rs-app:
+    container_name: ${DOCKER_APP_CONTAINER_NAME}
+    command: npm run dev
+    restart: unless-stopped
+    build:
+      context: ./app/docker
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/usr/src/app/
+    env_file:
+      - ".env"
+    ports:
+      - 5000:5000
+    labels:
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+
+      # HTTPS Secure Router Configuration
+      - "traefik.http.routers.rs.entrypoints=https"
+      - "traefik.http.routers.rs.rule=Host(`rs.${DOCKER_DOMAIN}`)"
+      - "traefik.http.routers.rs.tls=true"
+      - "traefik.http.routers.rs.service=rs-service"
+      - "traefik.http.services.rs-service.loadbalancer.server.port=${DOCKER_APP_INTERNAL_PORT}"
+
+      # Docker Network Configuration
+      - "traefik.docker.network=proxy"
