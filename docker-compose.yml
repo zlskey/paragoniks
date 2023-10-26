@@ -27,3 +27,30 @@ services:
 
       # Docker Network Configuration
       - "traefik.docker.network=proxy"
+
+  rs-api:
+    container_name: ${DOCKER_API_CONTAINER_NAME}
+    command: npm run dev
+    restart: unless-stopped
+    build:
+      context: ./api/docker
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/usr/src/app/
+    env_file:
+      - ".env"
+    ports:
+      - 3000:3000
+    labels:
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+
+      # HTTPS Secure Router Configuration
+      - "traefik.http.routers.rs-api.entrypoints=https"
+      - "traefik.http.routers.rs-api.rule=Host(`rs-api.${DOCKER_DOMAIN}`)"
+      - "traefik.http.routers.rs-api.tls=true"
+      - "traefik.http.routers.rs-api.service=rs-service"
+      - "traefik.http.services.rs-api-service.loadbalancer.server.port=${DOCKER_API_INTERNAL_PORT}"
+
+      # Docker Network Configuration
+      - "traefik.docker.network=proxy"
