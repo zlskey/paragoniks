@@ -16,6 +16,7 @@ import {
 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Wrapper from 'src/components/wrapper'
+import { useNavigate } from 'react-router-dom'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -34,6 +35,12 @@ const Home = () => {
 
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
 
+  const navigate = useNavigate()
+
+  const navigateToReceipt = (id: string) => () => {
+    navigate(`/receipt/${id}`)
+  }
+
   return (
     <Wrapper>
       <Grid
@@ -50,7 +57,7 @@ const Home = () => {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton onClick={navigateToReceipt('')}>
                     <ListItemText>Some receipt</ListItemText>
                   </ListItemButton>
                 </ListItem>
