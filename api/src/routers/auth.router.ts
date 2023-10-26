@@ -7,7 +7,7 @@ const router = Router()
 
 router.post('/signup', wrapAsync(authController.signup))
 router.post('/login', wrapAsync(authController.login))
-router.delete('/logout', authMiddleware, wrapAsync(authController.logout))
+router.get('/logout', authMiddleware, wrapAsync(authController.logout))
 
 router.get('/whoami', wrapAsync(authController.whoami))
 

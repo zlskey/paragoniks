@@ -20,6 +20,7 @@ const getCookieOptions = remember => ({
 
 export const signup: RequestHandler = async (req, res, next) => {
   const { username, password, repeatPassword, remember } = req.body
+
   if (password !== repeatPassword) {
     throw new ErrorObject(constants.invalid_repeat_password, 401)
   }
@@ -60,9 +61,9 @@ export const whoami: RequestHandler = async (req, res, next) => {
 
   const user = await userService.getById(token._id)
 
-  res.json(user)
+  res.json(_.omit(user, 'password'))
 }
 
 export const logout: RequestHandler = async (req, res, next) => {
-  res.clearCookie('jwt').status(200).end()
+  res.clearCookie('jwt').status(200).json({})
 }

@@ -12,19 +12,21 @@ import {
   Typography,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
-import React from 'react'
-import { logout } from 'src/helpers/reducers/user/user.reducer'
-import { useAppDispatch } from 'src/redux-hooks'
+import { logoutUser } from 'src/helpers/reducers/user/user.thunk'
+import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 
 const Header = () => {
-  const dispatch = useAppDispatch()
-
   const navigate = useNavigate()
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  )
+  const dispatch = useAppDispatch()
+
+  const user = useAppSelector(selectUser)
+
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
@@ -34,7 +36,7 @@ const Header = () => {
   }
 
   const handleLogout = () => {
-    dispatch(logout())
+    dispatch(logoutUser())
   }
 
   const navigateTo = (path: string) => () => {
@@ -61,7 +63,7 @@ const Header = () => {
 
           <Tooltip title='Open settings'>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+              <Avatar alt={user?.username} src='#' />
             </IconButton>
           </Tooltip>
 

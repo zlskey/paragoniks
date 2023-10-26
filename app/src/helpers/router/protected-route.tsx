@@ -1,7 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom'
+import { selectUser, setManualy } from '../reducers/user/user.reducer'
 
-// import { store as reduxStore } from 'src/redux-store'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { User } from 'src/types/generic.types'
+import { store as reduxStore } from 'src/redux-store'
+import { rsApi } from '../services/rs.service'
 import { useAppSelector } from 'src/redux-hooks'
 
 const ProtectedRoute = () => {
@@ -15,15 +17,17 @@ const ProtectedRoute = () => {
 }
 
 export const loader = async () => {
-  const token = false
+  const state = reduxStore.getState()
 
-  if (!token) {
-    return true
+  if (state.user.data) {
+    return null
   }
 
-  // reduxStore.dispatch(login(user))
+  const { data: user } = await rsApi.get<User | null>('/auth/whoami')
 
-  return true
+  reduxStore.dispatch(setManualy(user))
+
+  return null
 }
 
 export default ProtectedRoute

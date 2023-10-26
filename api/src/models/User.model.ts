@@ -43,6 +43,7 @@ userSchema.pre('save', async function (next) {
 
 class UserClass {
   async validatePassword(this: IUser, password: string): Promise<void> {
+    console.log(password, this.password)
     const isValid = await bcrypt.compare(password, this.password)
 
     if (isValid) return
