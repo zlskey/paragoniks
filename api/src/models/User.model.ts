@@ -11,6 +11,8 @@ export interface IUser {
   username: string
   password: string
 
+  friends: string[]
+
   removePassword(): Omit<IUser, 'password'>
   validatePassword(this: IUser, password: string): Promise<void>
   changePassword(this: IUser, password: string): Promise<void>
@@ -32,6 +34,7 @@ const userSchema = new mongoose.Schema<IUser>({
   password: {
     type: String,
   },
+  friends: [],
 })
 
 userSchema.pre('save', async function (next) {

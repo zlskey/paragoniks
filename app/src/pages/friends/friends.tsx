@@ -9,16 +9,38 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import FriendItem, { FriendItemSkeleton } from 'src/components/friend-item'
+import {
+  getFriends,
+  removeFriend,
+} from 'src/helpers/reducers/friends/friends.thunk'
+import {
+  selectFriends,
+  selectFriendsLoading,
+} from 'src/helpers/reducers/friends/friends.reducer'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import AddFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
-import FriendItem from 'src/components/friend-item'
+import { Friend } from 'src/types/generic.types'
 import FriendRequestItem from 'src/components/friend-request-item'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
+import { useEffect } from 'react'
 
 const Friends = () => {
+  const dispatch = useAppDispatch()
+
+  const friends = useAppSelector(selectFriends)
+
+  const status = useAppSelector(selectFriendsLoading)
+
+  const isLoading = status === 'pending'
+
   const requests = []
-  const friends = []
+
+  useEffect(() => {
+    dispatch(getFriends())
+  }, [])
 
   return (
     <Wrapper>
@@ -31,8 +53,12 @@ const Friends = () => {
                   <Typography variant='h5'>Friends</Typography>
                 </ListItem>
 
-                {friends.length ? (
-                  generateElements(<FriendItem />, 2)
+                {isLoading ? (
+                  generateElements(<FriendItemSkeleton />, 3)
+                ) : friends.length ? (
+                  friends.map(friend => (
+                    <FriendItem key={friend.username} friend={friend} />
+                  ))
                 ) : (
                   <ListItem>
                     <Typography variant='h6'>No friends yet</Typography>

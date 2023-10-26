@@ -58,3 +58,16 @@ export const update = async (
 ): Promise<IUser> => {
   return await User.findByIdAndUpdate(userId, payload, { new: true })
 }
+
+export const getFriendsProfiles = async (usernames: IUser['username'][]) => {
+  const friends = await Promise.all(
+    usernames.map(async username => {
+      const profile = await getByUsername(username)
+
+      // add images
+      return { username: profile.username }
+    })
+  )
+
+  return friends
+}

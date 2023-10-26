@@ -5,4 +5,9 @@ export interface RsApiError {
 
 export interface User {
   username: string
+  friends: string[]
+}
+
+export interface Friend {
+  username: string
 }
