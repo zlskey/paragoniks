@@ -11,7 +11,7 @@ import {
 
 import { Friend } from 'src/types/generic.types'
 import RemoveFriendIcon from '@mui/icons-material/PersonRemoveAlt1Outlined'
-import { removeFriend } from 'src/helpers/reducers/friends/friends.thunk'
+import { removeFriend } from 'src/helpers/reducers/user/user.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 import useRandomizedValues from 'src/helpers/hooks/use-randomized-values'
 

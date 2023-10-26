@@ -5,13 +5,19 @@ import constants from 'src/constants'
 import mongoose from 'mongoose'
 import { userService } from 'src/services'
 
+export interface IFriend {
+  username: string
+  status: 'accepted' | 'pending'
+  image?: string
+}
+
 export interface IUser {
   _id: mongoose.Types.ObjectId
 
   username: string
   password: string
 
-  friends: string[]
+  friends: IFriend[]
 
   removePassword(): Omit<IUser, 'password'>
   validatePassword(this: IUser, password: string): Promise<void>

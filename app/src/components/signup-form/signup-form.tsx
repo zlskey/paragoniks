@@ -1,6 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { Stack, TextField, Typography } from '@mui/material'
-import { loginUser, signupUser } from 'src/helpers/reducers/user/user.thunk'
 import {
   selectUserError,
   selectUserLoading,
@@ -8,6 +7,7 @@ import {
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { LoadingButton } from '@mui/lab'
+import { signupUser } from 'src/helpers/reducers/user/user.thunk'
 
 interface FormData {
   username: string

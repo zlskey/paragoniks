@@ -5,9 +5,11 @@ export interface RsApiError {
 
 export interface User {
   username: string
-  friends: string[]
+  friends: Friend[]
 }
 
 export interface Friend {
   username: string
+  status: 'accepted' | 'pending'
+  image?: string
 }

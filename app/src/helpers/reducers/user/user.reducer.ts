@@ -1,5 +1,13 @@
 import { RsApiError, User } from 'src/types/generic.types'
-import { loginUser, logoutUser, signupUser, whoamiUser } from './user.thunk'
+import {
+  loginUser,
+  logoutUser,
+  removeFriend,
+  respondToFriendRequest,
+  sendFriendRequest,
+  signupUser,
+  whoamiUser,
+} from './user.thunk'
 
 import { RootState } from 'src/redux-store'
 import { createSlice } from '@reduxjs/toolkit'
@@ -22,6 +30,9 @@ const userSlice = createSlice({
   reducers: {
     setManualy(state, action) {
       state.data = action.payload
+    },
+    clearError(state) {
+      state.error = null
     },
   },
   extraReducers: builder => {
@@ -76,8 +87,51 @@ const userSlice = createSlice({
         state.loading = 'succeeded'
         state.data = action.payload
       })
-      .addCase(whoamiUser.rejected, state => {
+      .addCase(whoamiUser.rejected, (state, action) => {
         state.loading = 'failed'
+        state.error = action.payload as string
+      })
+
+    builder
+      .addCase(sendFriendRequest.pending, state => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(sendFriendRequest.fulfilled, (state, action) => {
+        state.loading = 'succeeded'
+        state.data = action.payload
+      })
+      .addCase(sendFriendRequest.rejected, (state, action) => {
+        state.loading = 'failed'
+        state.error = action.payload as string
+      })
+
+    builder
+      .addCase(respondToFriendRequest.pending, state => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(respondToFriendRequest.fulfilled, (state, action) => {
+        state.loading = 'succeeded'
+        state.data = action.payload
+      })
+      .addCase(respondToFriendRequest.rejected, (state, action) => {
+        state.loading = 'failed'
+        state.error = action.payload as string
+      })
+
+    builder
+      .addCase(removeFriend.pending, state => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(removeFriend.fulfilled, (state, action) => {
+        state.loading = 'succeeded'
+        state.data = action.payload
+      })
+      .addCase(removeFriend.rejected, (state, action) => {
+        state.loading = 'failed'
+        state.error = action.payload as string
       })
   },
 })
@@ -88,6 +142,6 @@ export const selectUserLoading = (state: RootState) => state.user.loading
 
 export const selectUserError = (state: RootState) => state.user.error
 
-export const { setManualy } = userSlice.actions
+export const { setManualy, clearError } = userSlice.actions
 
 export default userSlice.reducer

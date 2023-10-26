@@ -59,15 +59,19 @@ export const update = async (
   return await User.findByIdAndUpdate(userId, payload, { new: true })
 }
 
-export const getFriendsProfiles = async (usernames: IUser['username'][]) => {
-  const friends = await Promise.all(
-    usernames.map(async username => {
-      const profile = await getByUsername(username)
+export const handleMakeFriendship = async (
+  firstUsername: IUser['username'],
+  secondUsername: IUser['username']
+) => {
+  const firstUser = await getByUsername(firstUsername)
+  const secondUser = await getByUsername(secondUsername)
 
-      // add images
-      return { username: profile.username }
-    })
-  )
+  await User.findByIdAndUpdate(firstUser._id, {
+    friends: [...firstUser.friends, secondUsername],
+  })
+  await User.findByIdAndUpdate(secondUser._id, {
+    friends: [...secondUser.friends, firstUsername],
+  })
 
-  return friends
+  return true
 }

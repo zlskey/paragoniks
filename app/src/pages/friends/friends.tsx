@@ -1,46 +1,41 @@
 import {
   Box,
-  Button,
   Grid,
   List,
   ListItem,
   Paper,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material'
 import FriendItem, { FriendItemSkeleton } from 'src/components/friend-item'
-import {
-  getFriends,
-  removeFriend,
-} from 'src/helpers/reducers/friends/friends.thunk'
-import {
-  selectFriends,
-  selectFriendsLoading,
-} from 'src/helpers/reducers/friends/friends.reducer'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
+import { useEffect, useState } from 'react'
 
-import AddFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
+import AddNewFriendSection from 'src/components/add-new-friend-section/add-new-friend-section'
 import { Friend } from 'src/types/generic.types'
 import FriendRequestItem from 'src/components/friend-request-item'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
-import { useEffect } from 'react'
+import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { useAppSelector } from 'src/redux-hooks'
 
 const Friends = () => {
-  const dispatch = useAppDispatch()
+  const isLoading = false
 
-  const friends = useAppSelector(selectFriends)
+  const user = useAppSelector(selectUser)
 
-  const status = useAppSelector(selectFriendsLoading)
-
-  const isLoading = status === 'pending'
-
-  const requests = []
+  const [accepted, setAccepted] = useState<Friend[]>([])
+  const [pending, setPending] = useState<Friend[]>([])
 
   useEffect(() => {
-    dispatch(getFriends())
-  }, [])
+    if (!user) {
+      return
+    }
+
+    const { friends } = user
+
+    setAccepted(friends.filter(friend => friend.status === 'accepted'))
+    setPending(friends.filter(friend => friend.status === 'pending'))
+  }, [user])
 
   return (
     <Wrapper>
@@ -55,8 +50,8 @@ const Friends = () => {
 
                 {isLoading ? (
                   generateElements(<FriendItemSkeleton />, 3)
-                ) : friends.length ? (
-                  friends.map(friend => (
+                ) : accepted.length ? (
+                  accepted.map(friend => (
                     <FriendItem key={friend.username} friend={friend} />
                   ))
                 ) : (
@@ -71,25 +66,7 @@ const Friends = () => {
 
         <Grid item xs={12} md={6}>
           <Stack spacing={2}>
-            <Paper>
-              <Stack p={3} spacing={1}>
-                <Typography variant='h5'>Add a new friend</Typography>
-
-                <Stack direction='row' spacing={1}>
-                  <TextField
-                    spellCheck='false'
-                    label='Username'
-                    variant='filled'
-                    size='small'
-                    sx={{ flexGrow: 1 }}
-                  />
-
-                  <Button endIcon={<AddFriendIcon />} variant='contained'>
-                    Add
-                  </Button>
-                </Stack>
-              </Stack>
-            </Paper>
+            <AddNewFriendSection />
 
             <Paper>
               <Stack p={1}>
@@ -98,8 +75,13 @@ const Friends = () => {
                     <Typography variant='h5'>Inbox</Typography>
                   </ListItem>
 
-                  {requests.length ? (
-                    generateElements(<FriendRequestItem />, 2)
+                  {pending.length ? (
+                    pending.map(friend => (
+                      <FriendRequestItem
+                        key={friend.username}
+                        friend={friend}
+                      />
+                    ))
                   ) : (
                     <ListItem>
                       <Typography variant='h6'>No requests yet</Typography>

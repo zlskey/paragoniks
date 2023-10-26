@@ -32,14 +32,57 @@ export const signupUser = createAsyncThunk(
     })
 )
 
-export const logoutUser = createAsyncThunk('user/logout', async () => {
-  await rsApi.get('/auth/logout')
+export const logoutUser = createAsyncThunk(
+  'user/logout',
+  async (_, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      await rsApi.get('/auth/logout')
 
-  return
-})
+      return
+    })
+)
 
-export const whoamiUser = createAsyncThunk('user/whoami', async () => {
-  const response = await rsApi.get<User | null>('/auth/whoami')
+export const whoamiUser = createAsyncThunk(
+  'user/whoami',
+  async (_, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.get<User | null>('/auth/whoami')
 
-  return response.data
-})
+      return response.data
+    })
+)
+
+export const sendFriendRequest = createAsyncThunk(
+  'user/sendFriendRequest',
+  async (username: string, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/friend', { username })
+
+      return response.data
+    })
+)
+
+interface RespondToFriendRequestBody {
+  username: string
+  accept: boolean
+}
+
+export const respondToFriendRequest = createAsyncThunk(
+  'user/respondToFriendRequest',
+  async (body: RespondToFriendRequestBody, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/friend/respond', body)
+
+      return response.data
+    })
+)
+
+export const removeFriend = createAsyncThunk(
+  'user/removeFriend',
+  async (username: string, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.delete<User>(`user/friend/${username}`)
+
+      return response.data
+    })
+)
