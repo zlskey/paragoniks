@@ -24,7 +24,7 @@ const paths = [
         element: <Friends />,
       },
       {
-        path: 'receipt',
+        path: 'receipt/:id',
         element: <Receipt />,
       },
     ],

@@ -13,3 +13,24 @@ export interface Friend {
   status: 'accepted' | 'pending'
   image?: string
 }
+
+export interface Item {
+  comprising: string[]
+  name: string
+  value: number
+  count: number
+  _id: string
+}
+
+export interface SimpleReceipt {
+  sum: number
+  title: string
+  items: Item[]
+}
+
+export interface Receipt extends SimpleReceipt {
+  _id: string
+  owner: string
+  others: string[]
+  imagePath: string
+}

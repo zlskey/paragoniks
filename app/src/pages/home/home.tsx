@@ -1,45 +1,43 @@
 import {
   Box,
-  Button,
   Grid,
   List,
   ListItem,
-  ListItemButton,
-  ListItemText,
   Paper,
-  Stack,
   Typography,
-  styled,
   useMediaQuery,
   useTheme,
 } from '@mui/material'
+import {
+  selectAllReceipts,
+  selectReceiptLoading,
+} from 'src/helpers/reducers/receipt/receipt.reducer'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import ReceiptItem from 'src/components/receipt-item/receipt-item'
+import { ReceiptItemSkeleton } from 'src/components/receipt-item'
+import UploadReceipt from 'src/components/upload-receipt'
 import Wrapper from 'src/components/wrapper'
-import { useNavigate } from 'react-router-dom'
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-})
+import generateElements from 'src/helpers/utils/generate-elements'
+import { getUserReceipts } from 'src/helpers/reducers/receipt/receipt.thunk'
+import { useEffect } from 'react'
 
 const Home = () => {
   const theme = useTheme()
 
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
 
-  const navigate = useNavigate()
+  const receipts = useAppSelector(selectAllReceipts)
 
-  const navigateToReceipt = (id: string) => () => {
-    navigate(`/receipt/${id}`)
-  }
+  const status = useAppSelector(selectReceiptLoading)
+
+  const dispatch = useAppDispatch()
+
+  const isLoading = status === 'pending'
+
+  useEffect(() => {
+    dispatch(getUserReceipts())
+  }, [])
 
   return (
     <Wrapper>
@@ -56,31 +54,24 @@ const Home = () => {
                   <Typography variant='h5'>Your receipts</Typography>
                 </ListItem>
 
-                <ListItem>
-                  <ListItemButton onClick={navigateToReceipt('')}>
-                    <ListItemText>Some receipt</ListItemText>
-                  </ListItemButton>
-                </ListItem>
+                {isLoading ? (
+                  generateElements(<ReceiptItemSkeleton />, 3)
+                ) : receipts.length ? (
+                  receipts.map(receipt => (
+                    <ReceiptItem receipt={receipt} key={receipt._id} />
+                  ))
+                ) : (
+                  <ListItem>
+                    <Typography variant='h6'>No receipt added yet</Typography>
+                  </ListItem>
+                )}
               </List>
             </Box>
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Paper>
-            <Stack p={2} gap={1}>
-              <Typography variant='h5'>Add new receipt</Typography>
-
-              <Button
-                component='label'
-                variant='contained'
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload
-                <VisuallyHiddenInput type='file' />
-              </Button>
-            </Stack>
-          </Paper>
+          <UploadReceipt />
         </Grid>
       </Grid>
     </Wrapper>

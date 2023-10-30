@@ -8,6 +8,7 @@ declare global {
   namespace Express {
     interface Request {
       userId?: mongoose.Types.ObjectId
+      username?: string
     }
   }
 }
@@ -21,7 +22,10 @@ const authorizeCookie: RequestHandler = (req, res, next) => {
     return next(new ErrorObject(constants.invalid_auth, 401))
   }
 
-  if (typeof token !== 'string') req.userId = token._id
+  if (typeof token !== 'string') {
+    req.userId = token._id
+    req.username = token.username
+  }
 
   next()
 }

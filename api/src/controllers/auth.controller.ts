@@ -27,7 +27,7 @@ export const signup: RequestHandler = async (req, res, next) => {
 
   const maxAge = getMaxAge(remember) / 1000
   const user = await userService.create(username, password)
-  const token = jwtUtils.createToken(user._id, maxAge)
+  const token = jwtUtils.createToken(user._id, user.username, maxAge)
 
   res
     .cookie('jwt', token, getCookieOptions(remember))
@@ -42,7 +42,7 @@ export const login: RequestHandler = async (req, res, next) => {
   await user.validatePassword(password)
 
   const maxAge = getMaxAge(remember) / 1000
-  const token = jwtUtils.createToken(user._id, maxAge)
+  const token = jwtUtils.createToken(user._id, user.username, maxAge)
 
   res
     .cookie('jwt', token, getCookieOptions(remember))
