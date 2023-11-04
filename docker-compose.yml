@@ -49,8 +49,21 @@ services:
       - "traefik.http.routers.rs-api.entrypoints=https"
       - "traefik.http.routers.rs-api.rule=Host(`rs-api.${DOCKER_DOMAIN}`)"
       - "traefik.http.routers.rs-api.tls=true"
-      - "traefik.http.routers.rs-api.service=rs-service"
+      - "traefik.http.routers.rs-api.service=rs-api-service"
       - "traefik.http.services.rs-api-service.loadbalancer.server.port=${DOCKER_API_INTERNAL_PORT}"
 
       # Docker Network Configuration
       - "traefik.docker.network=proxy"
+    networks:
+      - rs-local-network
+
+  rs-db:
+    container_name: ${DOCKER_DB_CONTAINER_NAME}
+    image: mongo
+    restart: unless-stopped
+    networks:
+      - rs-local-network
+
+networks:
+  rs-local-network:
+    driver: bridge
