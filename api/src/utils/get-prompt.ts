@@ -7,7 +7,7 @@ export const getPrompt = (receipt: string) => `
         items: [
             {
                 name: string,
-                value: number,
+                value: number, // remember to get price for single item, not the sum
                 count: number
             }
         ]
