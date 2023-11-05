@@ -45,4 +45,9 @@ receiptRouter.delete(
   wrapAsync(receiptController.handleRemoveContributor)
 )
 
+receiptRouter.patch(
+  '/:receiptId/item/:itemId',
+  wrapAsync(receiptController.handleUpdateItem)
+)
+
 export default receiptRouter

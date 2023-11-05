@@ -132,3 +132,16 @@ export const handleRemoveContributor: RequestHandler = async (
 
   res.status(201).json(updatedReceipt)
 }
+
+export const handleUpdateItem: RequestHandler = async (req, res, next) => {
+  const { receiptId, itemId } = req.params
+  const { item } = req.body
+
+  const updatedReceipt = await receiptService.updateItem(
+    receiptId,
+    itemId,
+    item
+  )
+
+  res.status(201).json(updatedReceipt)
+}

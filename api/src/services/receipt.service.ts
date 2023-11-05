@@ -147,3 +147,28 @@ export const removeContributor = async (
     { new: true }
   )
 }
+
+export const updateItem = async (
+  receiptId: string,
+  itemId: string,
+  item: Record<string, string | number>
+) => {
+  const receipt = await getReceipt(receiptId)
+
+  const updatedItems = receipt.items.map(receiptItem => {
+    if (receiptItem._id === itemId) {
+      return {
+        ...receiptItem,
+        ...item,
+      }
+    }
+
+    return receiptItem
+  })
+
+  return await Receipt.findByIdAndUpdate(
+    receipt._id,
+    { items: updatedItems },
+    { new: true }
+  )
+}

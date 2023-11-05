@@ -122,3 +122,29 @@ export const removeReceiptContributor = createAsyncThunk(
       return response.data
     })
 )
+
+interface UpdateReceiptItemBody {
+  receiptId: string
+  itemId: string
+  item: {
+    name: string
+    value: number
+    count: number
+  }
+}
+
+export const updateReceiptItem = createAsyncThunk(
+  'receipt/updateReceiptItem',
+  async (
+    { receiptId, itemId, item }: UpdateReceiptItemBody,
+    { rejectWithValue }
+  ) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<Receipt>(
+        `/receipt/${receiptId}/item/${itemId}`,
+        { item }
+      )
+
+      return response.data
+    })
+)

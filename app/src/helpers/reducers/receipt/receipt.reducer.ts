@@ -8,6 +8,7 @@ import {
   receiptToggleItemComprising,
   removeReceipt,
   removeReceiptContributor,
+  updateReceiptItem,
 } from './receipt.thunk'
 
 import { RootState } from 'src/redux-store'
@@ -142,6 +143,20 @@ const receiptSlice = createSlice({
         state.items = addOrChangeReceipt(state.items, action.payload)
       })
       .addCase(removeReceiptContributor.rejected, (state, action) => {
+        state.loading = 'failed'
+        state.error = action.payload as string
+      })
+
+    builder
+      .addCase(updateReceiptItem.pending, state => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(updateReceiptItem.fulfilled, (state, action) => {
+        state.loading = 'succeeded'
+        state.items = addOrChangeReceipt(state.items, action.payload)
+      })
+      .addCase(updateReceiptItem.rejected, (state, action) => {
         state.loading = 'failed'
         state.error = action.payload as string
       })

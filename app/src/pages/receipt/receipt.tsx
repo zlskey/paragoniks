@@ -7,8 +7,11 @@ import {
   selectSingleReceipt,
 } from 'src/helpers/reducers/receipt/receipt.reducer'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
+import { useEffect, useState } from 'react'
 
 import AddContributorItem from 'src/components/add-contributor-item/add-contributor-item'
+import { Item } from 'src/types/generic.types'
+import ItemEditDialog from 'src/components/item-edit-dialog/item-edit-dialog'
 import ReceiptListItem from 'src/components/receipt-list-item'
 import ReceiptStatusButton from 'src/components/receipt-status-button'
 import ReceiptTitleInput from 'src/components/receipt-title-input/receipt-title-input'
@@ -17,7 +20,6 @@ import generateElements from 'src/helpers/utils/generate-elements'
 import { getPrice } from 'src/helpers/utils/get-price'
 import { getSingleReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
 
@@ -38,6 +40,8 @@ const Receipt = () => {
 
   const userCut = useUserCutCalc(user, receipt)
 
+  const [editedItem, setEditedItem] = useState<null | Item>(null)
+
   useEffect(() => {
     if (!receipt) {
       dispatch(getSingleReceipt(id))
@@ -48,16 +52,35 @@ const Receipt = () => {
     return null
   }
 
+  const handleSetEditedItem = (item: Item) => {
+    setEditedItem(item)
+  }
+
+  const handleClearEditedItem = () => {
+    setEditedItem(null)
+  }
+
   const allContributors = [receipt.owner, ...receipt.others]
 
   return (
     <Wrapper>
+      <ItemEditDialog
+        receiptId={receipt._id}
+        item={editedItem}
+        onClose={handleClearEditedItem}
+      />
+
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Paper>
             <List>
               {receipt.items.map(item => (
-                <ReceiptListItem key={item._id} item={item} />
+                <ReceiptListItem
+                  onEdit={handleSetEditedItem}
+                  isOwner={user.username === receipt.owner}
+                  key={item._id}
+                  item={item}
+                />
               ))}
             </List>
           </Paper>

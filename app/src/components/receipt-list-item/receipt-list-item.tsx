@@ -1,5 +1,6 @@
 import {
   Avatar,
+  IconButton,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -10,6 +11,7 @@ import {
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
+import EditIcon from '@mui/icons-material/EditOutlined'
 import { Item } from 'src/types/generic.types'
 import { getPrice } from 'src/helpers/utils/get-price'
 import { receiptToggleItemComprising } from 'src/helpers/reducers/receipt/receipt.thunk'
@@ -20,9 +22,11 @@ import useRandomizedValues from 'src/helpers/hooks/use-randomized-values'
 
 interface ReceiptListItemProps {
   item: Item
+  isOwner: boolean
+  onEdit: (item: Item) => void
 }
 
-const ReceiptListItem = ({ item }: ReceiptListItemProps) => {
+const ReceiptListItem = ({ item, isOwner, onEdit }: ReceiptListItemProps) => {
   const user = useAppSelector(selectUser)
 
   const { id } = useParams()
@@ -50,20 +54,27 @@ const ReceiptListItem = ({ item }: ReceiptListItemProps) => {
   }
 
   return (
-    <ListItem>
+    <ListItem
+      secondaryAction={
+        isOwner && (
+          <IconButton onClick={() => onEdit(item)}>
+            <EditIcon />
+          </IconButton>
+        )
+      }
+    >
       <ListItemButton onClick={toggleComprising}>
-        <ListItemText>
-          <Stack direction='row' spacing={1} alignItems='flex-end'>
-            <Typography>{item.name}</Typography>
-            <Typography color='grey' variant='body2'>
-              x {item.count}
-            </Typography>
-          </Stack>
-        </ListItemText>
+        <ListItemText
+          primary={item.name}
+          secondary={`x ${item.count}`}
+          primaryTypographyProps={{ display: 'inline', mr: 1 }}
+          secondaryTypographyProps={{ display: 'inline' }}
+        />
 
         <ListItemIcon>
           <Stack direction='row' alignItems='center' spacing={1}>
             <Avatar sx={{ visibility: 'hidden' }} />
+
             {item.comprising.map(friend => (
               <Avatar alt={friend} key={friend} src='#' />
             ))}
