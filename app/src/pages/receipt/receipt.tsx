@@ -1,25 +1,12 @@
-import {
-  Grid,
-  InputBase,
-  List,
-  ListItem,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Grid, List, Paper, Stack, Typography } from '@mui/material'
 import ReceiptFriendStatusItem, {
   ReceiptFriendStatusItemSkeleton,
 } from 'src/components/receipt-friend-status-item'
-import {
-  changeReceiptTitle,
-  getSingleReceipt,
-} from 'src/helpers/reducers/receipt/receipt.thunk'
 import {
   selectReceiptLoading,
   selectSingleReceipt,
 } from 'src/helpers/reducers/receipt/receipt.reducer'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
-import { useEffect, useState } from 'react'
 
 import AddContributorItem from 'src/components/add-contributor-item/add-contributor-item'
 import ReceiptListItem from 'src/components/receipt-list-item'
@@ -28,9 +15,11 @@ import ReceiptTitleInput from 'src/components/receipt-title-input/receipt-title-
 import Wrapper from 'src/components/wrapper/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
 import { getPrice } from 'src/helpers/utils/get-price'
-import { getUserCutReducer } from 'src/helpers/utils/get-user-cut-reducer'
+import { getSingleReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
 
 const Receipt = () => {
   const { id } = useParams()
@@ -47,18 +36,17 @@ const Receipt = () => {
 
   const user = useAppSelector(selectUser)
 
+  const userCut = useUserCutCalc(user, receipt)
+
   useEffect(() => {
     if (!receipt) {
       dispatch(getSingleReceipt(id))
-      return
     }
   }, [])
 
   if (!receipt || !user) {
     return null
   }
-
-  const userCut = receipt.items.reduce(getUserCutReducer(user.username), 0)
 
   const allContributors = [receipt.owner, ...receipt.others]
 
@@ -92,7 +80,7 @@ const Receipt = () => {
                 </Grid>
 
                 <Grid item>
-                  <Typography variant='h5'>{getPrice(userCut)}</Typography>
+                  <Typography variant='h5'>{userCut}</Typography>
                   <Typography color='GrayText' variant='h6'>
                     {getPrice(receipt.sum)}
                   </Typography>

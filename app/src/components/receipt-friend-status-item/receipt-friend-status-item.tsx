@@ -12,10 +12,10 @@ import { Receipt, User } from 'src/types/generic.types'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import RemoveIcon from '@mui/icons-material/PersonRemoveOutlined'
-import { getUserCutReducer } from 'src/helpers/utils/get-user-cut-reducer'
 import { removeReceiptContributor } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useState } from 'react'
+import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
 
 interface ReceiptFriendStatusItemProps {
   username: User['username']
@@ -30,12 +30,12 @@ const ReceiptFriendStatusItem = ({
 
   if (!user) return
 
-  const percentage =
-    (receipt.items.reduce(getUserCutReducer(username), 0) / receipt.sum) * 100
   const isReady = false
   const isLocked = true
 
   const dispatch = useAppDispatch()
+
+  const userCut = useUserCutCalc(user, receipt)
 
   const [hover, setHover] = useState(false)
 
@@ -65,7 +65,7 @@ const ReceiptFriendStatusItem = ({
       <ListItemIcon>
         <Tooltip title={isLocked ? 'Locked' : isReady ? 'Ready' : 'Not Ready'}>
           <Typography color={isLocked ? 'grey' : isReady ? 'green' : 'orange'}>
-            {percentage.toFixed(2)}%
+            {userCut}
           </Typography>
         </Tooltip>
       </ListItemIcon>
