@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form'
-import { Stack, TextField, Typography } from '@mui/material'
+import { Grid, TextField, Typography } from '@mui/material'
 import {
   clearError,
   selectUserError,
@@ -47,41 +47,52 @@ const SignupForm = () => {
   return (
     <FormProvider {...formControl}>
       <form onSubmit={formControl.handleSubmit(handleSignup)}>
-        <TextField
-          {...formControl.register('username')}
-          spellCheck='false'
-          label='Username'
-          variant='filled'
-          error={Boolean(getErrorMessage('username')) || isFailed}
-          helperText={getErrorMessage('username')}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              {...formControl.register('username')}
+              fullWidth
+              spellCheck='false'
+              label='Username'
+              variant='filled'
+              error={Boolean(getErrorMessage('username')) || isFailed}
+              helperText={getErrorMessage('username')}
+            />
+          </Grid>
 
-        <PasswordTextField
-          label='Password'
-          name='password'
-          errorMessage={getErrorMessage('password')}
-          isFailed={isFailed}
-        />
+          <Grid item xs={12} md={6}>
+            <PasswordTextField
+              label='Password'
+              name='password'
+              errorMessage={getErrorMessage('password')}
+              isFailed={isFailed}
+            />
+          </Grid>
 
-        <PasswordTextField
-          label='Repeat Password'
-          name='repeatPassword'
-          errorMessage={getErrorMessage('repeatPassword')}
-          isFailed={isFailed}
-        />
+          <Grid item xs={12} md={6}>
+            <PasswordTextField
+              label='Repeat Password'
+              name='repeatPassword'
+              errorMessage={getErrorMessage('repeatPassword')}
+              isFailed={isFailed}
+            />
+          </Grid>
 
-        <Typography color='error'>{error}</Typography>
+          <Grid item xs={12}>
+            <Typography color='error'>{error}</Typography>
+          </Grid>
 
-        <Stack direction='row' alignItems='center' justifyContent='center'>
-          <LoadingButton
-            disabled={isLoading}
-            loading={isLoading}
-            variant='contained'
-            type='submit'
-          >
-            SignUp
-          </LoadingButton>
-        </Stack>
+          <Grid item xs={12} justifyContent='center' display='flex'>
+            <LoadingButton
+              disabled={isLoading}
+              loading={isLoading}
+              variant='contained'
+              type='submit'
+            >
+              SignUp
+            </LoadingButton>
+          </Grid>
+        </Grid>
       </form>
     </FormProvider>
   )

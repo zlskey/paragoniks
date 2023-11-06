@@ -28,7 +28,7 @@ const PasswordTextField = ({
   const handleClickShowPassword = () => setShowPassword(!showPassword)
 
   return (
-    <FormControl variant='filled'>
+    <FormControl fullWidth variant='filled'>
       <InputLabel htmlFor={name}>{label}</InputLabel>
       <FilledInput
         fullWidth

@@ -31,31 +31,33 @@ const LoginForm = () => {
   return (
     <FormProvider {...formControl}>
       <form onSubmit={formControl.handleSubmit(handleLogin)}>
-        <TextField
-          {...formControl.register('username')}
-          spellCheck='false'
-          label='Username'
-          variant='filled'
-          error={Boolean(error)}
-        />
+        <Stack spacing={2}>
+          <TextField
+            {...formControl.register('username')}
+            spellCheck='false'
+            label='Username'
+            variant='filled'
+            error={Boolean(error)}
+          />
 
-        <PasswordTextField
-          label='Password'
-          name='password'
-          isFailed={Boolean(error)}
-        />
+          <PasswordTextField
+            label='Password'
+            name='password'
+            isFailed={Boolean(error)}
+          />
 
-        <Typography color='error'>{error}</Typography>
+          <Typography color='error'>{error}</Typography>
 
-        <Stack direction='row' alignItems='center' justifyContent='center'>
-          <LoadingButton
-            disabled={isLoading}
-            loading={isLoading}
-            variant='contained'
-            type='submit'
-          >
-            Login
-          </LoadingButton>
+          <Stack direction='row' alignItems='center' justifyContent='center'>
+            <LoadingButton
+              disabled={isLoading}
+              loading={isLoading}
+              variant='contained'
+              type='submit'
+            >
+              Login
+            </LoadingButton>
+          </Stack>
         </Stack>
       </form>
     </FormProvider>
