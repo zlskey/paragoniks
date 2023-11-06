@@ -1,9 +1,8 @@
-import { ErrorObject } from 'src/middlewares/error.middleware'
 import { RequestHandler } from 'express'
 import _ from 'lodash'
-import constants from 'src/constants'
 import { jwtUtils } from 'src/utils'
 import { userService } from 'src/services'
+import { validateAndThrow } from 'src/utils/user-validation-schema'
 
 const getMaxAge = remember => {
   const oneDay = 1000 * 60 * 60 * 24
@@ -19,15 +18,13 @@ const getCookieOptions = remember => ({
 })
 
 export const signup: RequestHandler = async (req, res, next) => {
-  const { username, password, repeatPassword, remember } = req.body
+  const { username, password, remember } = req.body
 
-  if (password !== repeatPassword) {
-    throw new ErrorObject(constants.invalid_repeat_password, 401)
-  }
+  await validateAndThrow(username, password)
 
   const maxAge = getMaxAge(remember) / 1000
   const user = await userService.create(username, password)
-  const token = jwtUtils.createToken(user._id, user.username, maxAge)
+  const token = jwtUtils.createToken(user._id, maxAge)
 
   res
     .cookie('jwt', token, getCookieOptions(remember))
@@ -42,7 +39,7 @@ export const login: RequestHandler = async (req, res, next) => {
   await user.validatePassword(password)
 
   const maxAge = getMaxAge(remember) / 1000
-  const token = jwtUtils.createToken(user._id, user.username, maxAge)
+  const token = jwtUtils.createToken(user._id, maxAge)
 
   res
     .cookie('jwt', token, getCookieOptions(remember))
@@ -53,7 +50,7 @@ export const whoami: RequestHandler = async (req, res, next) => {
   const jwt = req.cookies.jwt
 
   const token = jwtUtils.validateToken(jwt)
-
+  console.log(token)
   if (!token) {
     res.json(null)
     return

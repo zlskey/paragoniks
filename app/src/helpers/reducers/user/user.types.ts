@@ -3,9 +3,7 @@ export interface UserLoginBody {
   password: string
 }
 
-export interface UserSignupBody extends UserLoginBody {
-  repeatPassword: string
-}
+export interface UserSignupBody extends UserLoginBody {}
 
 export interface RespondToFriendRequestBody {
   username: string

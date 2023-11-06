@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import multer from 'multer'
 import { receiptController } from '../controllers'
+import { receiptMiddleware } from 'src/middlewares'
+import singleReceiptRouter from './single-receipt.router'
 import { wrapAsync } from '../utils'
 
 const receiptRouter = Router()
@@ -15,39 +17,10 @@ receiptRouter.post(
   wrapAsync(receiptController.handleCreateReceipt)
 )
 
-receiptRouter.get(
+receiptRouter.use(
   '/:receiptId',
-  wrapAsync(receiptController.handleGetSingleReceipt)
-)
-
-receiptRouter.delete(
-  '/:receiptId',
-  wrapAsync(receiptController.handleRemoveReceipt)
-)
-
-receiptRouter.patch(
-  '/:receiptId/comprising/:productId',
-  wrapAsync(receiptController.handleToggleComprising)
-)
-
-receiptRouter.patch(
-  '/:receiptId/title',
-  wrapAsync(receiptController.handleChangeReceiptTitle)
-)
-
-receiptRouter.patch(
-  '/:receiptId/friend/:username',
-  wrapAsync(receiptController.handleAddContributor)
-)
-
-receiptRouter.delete(
-  '/:receiptId/friend/:username',
-  wrapAsync(receiptController.handleRemoveContributor)
-)
-
-receiptRouter.patch(
-  '/:receiptId/product/:productId',
-  wrapAsync(receiptController.handleUpdateProduct)
+  receiptMiddleware.findAndValidateReceipt,
+  singleReceiptRouter
 )
 
 export default receiptRouter

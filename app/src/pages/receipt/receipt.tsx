@@ -60,7 +60,7 @@ const Receipt = () => {
     setEditedProduct(null)
   }
 
-  const allContributors = [receipt.owner, ...receipt.others]
+  const allContributors = [receipt.owner, ...receipt.contributors]
 
   return (
     <Wrapper>

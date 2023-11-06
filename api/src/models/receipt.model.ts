@@ -18,7 +18,7 @@ export interface ISimpleReceipt {
 export interface IReceipt extends ISimpleReceipt {
   _id: string
   owner: string
-  others: string[]
+  contributors: string[]
 }
 
 const receiptSchema = new mongoose.Schema<IReceipt>({
@@ -38,7 +38,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>({
     type: String,
     required: true,
   },
-  others: [],
+  contributors: [],
   products: [],
 })
 

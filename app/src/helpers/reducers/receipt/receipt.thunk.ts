@@ -56,7 +56,7 @@ export const receiptToggleProductComprising = createAsyncThunk(
   ) =>
     wrapThunk(rejectWithValue, async () => {
       const response = await rsApi.patch<Receipt>(
-        `/receipt/${receiptId}/comprising/${productId}`
+        `/receipt/${receiptId}/product/${productId}/comprising`
       )
 
       return response.data

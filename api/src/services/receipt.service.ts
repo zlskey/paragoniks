@@ -7,7 +7,7 @@ import { IUser } from 'src/models/User.model'
 
 export const getAllReceipts = async (username: string) => {
   const receipts = await Receipt.find({
-    $or: [{ owner: username }, { others: username }],
+    $or: [{ owner: username }, { contributors: username }],
   })
 
   return receipts
@@ -27,46 +27,28 @@ export const createReceipt = async (receipt: ISimpleReceipt, user: IUser) => {
   const receiptObj = {
     ...receipt,
     owner: user.username,
-    others: [],
+    contributors: [],
   }
 
   return await Receipt.create(receiptObj)
 }
 
-export const removeReceiptForUser = async (
-  receiptId: IReceipt['_id'],
-  user: IUser
-) => {
-  const receipt = await getReceipt(receiptId)
-
-  const isOwner = user.username === receipt.owner
-
-  const isContributor = receipt.others.includes(user.username)
-
-  if (isOwner) {
-    await Receipt.findByIdAndRemove(receiptId)
-    fs.rmSync(receipt.imagePath)
-    return
-  }
+export const removeReceiptForUser = async (receipt: IReceipt, user: IUser) => {
+  const isContributor = receipt.contributors.includes(user.username)
 
   if (isContributor) {
-    await removeContributor(receiptId, user.username)
-    return
+    await removeContributor(receipt, user.username)
   }
 
-  throw new ErrorObject(
-    'You are not a contributor nor an owner of this receipt',
-    403
-  )
+  await Receipt.findByIdAndRemove(receipt._id)
+  fs.rmSync(receipt.imagePath)
 }
 
 export const toggleComprising = async (
-  receiptId: string,
+  receipt: IReceipt,
   productId: string,
   username: string
 ) => {
-  const receipt = await getReceipt(receiptId)
-
   const updatedProducts = receipt.products.map(product => {
     if (product._id === productId) {
       const comprising = product.comprising.includes(username)
@@ -87,7 +69,7 @@ export const toggleComprising = async (
   })
 
   const updatedReceipt = await Receipt.findByIdAndUpdate(
-    receiptId,
+    receipt._id,
     { products: updatedProducts },
     { new: true }
   )
@@ -96,11 +78,9 @@ export const toggleComprising = async (
 }
 
 export const changeReceiptTitle = async (
-  receiptId: string,
+  receipt: IReceipt,
   newTitle: string
 ) => {
-  const receipt = await getReceipt(receiptId)
-
   return await Receipt.findByIdAndUpdate(
     receipt._id,
     { title: newTitle },
@@ -108,31 +88,27 @@ export const changeReceiptTitle = async (
   )
 }
 
-export const addContributor = async (receiptId: string, username: string) => {
-  const receipt = await getReceipt(receiptId)
+export const addContributor = async (receipt: IReceipt, username: string) => {
+  const { contributors } = receipt
 
-  const { others } = receipt
-
-  if (others.includes(username)) {
+  if (contributors.includes(username)) {
     return receipt
   }
 
-  const updatedOthers = [...others, username]
+  const updatedContributors = [...contributors, username]
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { others: updatedOthers },
+    { contributors: updatedContributors },
     { new: true }
   )
 }
 
 export const removeContributor = async (
-  receiptId: string,
+  receipt: IReceipt,
   username: string
 ) => {
-  const receipt = await getReceipt(receiptId)
-
-  const updatedOthers = receipt.others.filter(
+  const updatedContributors = receipt.contributors.filter(
     contributor => contributor !== username
   )
 
@@ -143,18 +119,16 @@ export const removeContributor = async (
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { others: updatedOthers, products: updatedProducts },
+    { contributors: updatedContributors, products: updatedProducts },
     { new: true }
   )
 }
 
 export const updateProduct = async (
-  receiptId: string,
+  receipt: IReceipt,
   productId: string,
   product: Record<string, string | number>
 ) => {
-  const receipt = await getReceipt(receiptId)
-
   const updatedProducts = receipt.products.map(receiptProduct => {
     if (receiptProduct._id === productId) {
       return {

@@ -5,7 +5,7 @@ import { RequestHandler } from 'express'
 export const handleRemoveFriend: RequestHandler = async (req, res, next) => {
   const { username } = req.params
 
-  const user = await userService.getById(req.userId)
+  const user = req.user
 
   const updatedUser = await friendService.removeFriend(user, username)
 
@@ -23,7 +23,7 @@ export const handleCreateFriendRequest: RequestHandler = async (
 ) => {
   const { username } = req.body
 
-  const user = await userService.getById(req.userId)
+  const user = req.user
 
   const recipient = await userService.getByUsername(username)
 
@@ -39,7 +39,7 @@ export const handleRespondToFriendRequest: RequestHandler = async (
 ) => {
   const { username, accept } = req.body
 
-  const user = await userService.getById(req.userId)
+  const user = req.user
 
   const friend = await userService.getByUsername(username)
 

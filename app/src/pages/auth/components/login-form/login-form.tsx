@@ -7,14 +7,13 @@ import {
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { LoadingButton } from '@mui/lab'
+import PasswordTextField from 'src/components/password-text-field/password-text-field'
 import { loginUser } from 'src/helpers/reducers/user/user.thunk'
 
 const defaultValues = {
   username: '',
   password: '',
 }
-
-type FormValues = typeof defaultValues
 
 const LoginForm = () => {
   const formControl = useForm({ defaultValues })
@@ -25,40 +24,40 @@ const LoginForm = () => {
 
   const isLoading = useAppSelector(selectUserLoading) === 'pending'
 
-  const handleLogin = (data: FormValues) => {
+  const handleLogin = (data: typeof defaultValues) => {
     dispatch(loginUser(data))
   }
 
   return (
     <FormProvider {...formControl}>
-      <TextField
-        {...formControl.register('username')}
-        spellCheck='false'
-        label='Username'
-        variant='filled'
-        error={Boolean(error)}
-      />
-      <TextField
-        {...formControl.register('password')}
-        spellCheck='false'
-        label='Password'
-        variant='filled'
-        type='password'
-        error={Boolean(error)}
-      />
+      <form onSubmit={formControl.handleSubmit(handleLogin)}>
+        <TextField
+          {...formControl.register('username')}
+          spellCheck='false'
+          label='Username'
+          variant='filled'
+          error={Boolean(error)}
+        />
 
-      <Typography color='error'>{error}</Typography>
+        <PasswordTextField
+          label='Password'
+          name='password'
+          isFailed={Boolean(error)}
+        />
 
-      <Stack direction='row' alignItems='center' justifyContent='center'>
-        <LoadingButton
-          disabled={isLoading}
-          onClick={formControl.handleSubmit(handleLogin)}
-          loading={isLoading}
-          variant='contained'
-        >
-          Login
-        </LoadingButton>
-      </Stack>
+        <Typography color='error'>{error}</Typography>
+
+        <Stack direction='row' alignItems='center' justifyContent='center'>
+          <LoadingButton
+            disabled={isLoading}
+            loading={isLoading}
+            variant='contained'
+            type='submit'
+          >
+            Login
+          </LoadingButton>
+        </Stack>
+      </form>
     </FormProvider>
   )
 }

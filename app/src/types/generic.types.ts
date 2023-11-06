@@ -31,6 +31,6 @@ export interface SimpleReceipt {
 export interface Receipt extends SimpleReceipt {
   _id: string
   owner: string
-  others: string[]
+  contributors: string[]
   imagePath: string
 }

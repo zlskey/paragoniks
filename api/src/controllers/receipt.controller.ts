@@ -1,12 +1,10 @@
-import { receiptService, userService } from 'src/services'
-
-import { ErrorObject } from 'src/middlewares/error.middleware'
 import { RequestHandler } from 'express'
 import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
 import { getTextFromImage } from 'src/utils/get-text-from-image'
+import { receiptService } from 'src/services'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
-  const user = await userService.getById(req.userId)
+  const user = req.user
 
   const receipts = await receiptService.getAllReceipts(user.username)
 
@@ -15,8 +13,7 @@ export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
 
 export const handleCreateReceipt: RequestHandler = async (req, res, next) => {
   const receiptImage = req.file
-
-  const user = await userService.getById(req.userId)
+  const user = req.user
 
   const text = await getTextFromImage(receiptImage.path)
   const receipt = await extractReceiptDataFromText(text)
@@ -36,28 +33,14 @@ export const handleGetSingleReceipt: RequestHandler = async (
   res,
   next
 ) => {
-  const { receiptId } = req.params
-
-  const user = await userService.getById(req.userId)
-
-  const receipt = await receiptService.getReceipt(receiptId)
-
-  if (
-    receipt.owner !== user.username &&
-    !receipt.others.includes(user.username)
-  ) {
-    throw new ErrorObject('You are not authorized to view this receipt', 403)
-  }
-
-  res.status(200).json(receipt)
+  res.status(200).json(req.receipt)
 }
 
 export const handleRemoveReceipt: RequestHandler = async (req, res, next) => {
-  const { receiptId } = req.params
+  const receipt = req.receipt
+  const user = req.user
 
-  const user = await userService.getById(req.userId)
-
-  await receiptService.removeReceiptForUser(receiptId, user)
+  await receiptService.removeReceiptForUser(receipt, user)
 
   const receipts = await receiptService.getAllReceipts(user.username)
 
@@ -69,18 +52,15 @@ export const handleToggleComprising: RequestHandler = async (
   res,
   next
 ) => {
-  const { receiptId, productId } = req.params
+  const receipt = req.receipt
+  const { productId } = req.params
 
-  // @todo
-  // const receipt = await receiptService.getReceipt(receiptId)
-  // if (receipt.locked) {
-  //   throw new ErrorObject('Receipt is locked', 403)
-  // }
+  const user = req.user
 
   const updatedReceipt = await receiptService.toggleComprising(
-    receiptId,
+    receipt,
     productId,
-    req.username
+    user.username
   )
 
   res.status(200).json(updatedReceipt)
@@ -91,16 +71,11 @@ export const handleChangeReceiptTitle: RequestHandler = async (
   res,
   next
 ) => {
-  const { receiptId } = req.params
+  const receipt = req.receipt
   const { newTitle } = req.body
 
-  console.log({
-    receiptId,
-    newTitle,
-  })
-
   const updatedReceipt = await receiptService.changeReceiptTitle(
-    receiptId,
+    receipt,
     newTitle
   )
 
@@ -108,12 +83,10 @@ export const handleChangeReceiptTitle: RequestHandler = async (
 }
 
 export const handleAddContributor: RequestHandler = async (req, res, next) => {
-  const { receiptId, username } = req.params
+  const receipt = req.receipt
+  const { username } = req.params
 
-  const updatedReceipt = await receiptService.addContributor(
-    receiptId,
-    username
-  )
+  const updatedReceipt = await receiptService.addContributor(receipt, username)
 
   res.status(201).json(updatedReceipt)
 }
@@ -123,10 +96,11 @@ export const handleRemoveContributor: RequestHandler = async (
   res,
   next
 ) => {
-  const { receiptId, username } = req.params
+  const receipt = req.receipt
+  const { username } = req.params
 
   const updatedReceipt = await receiptService.removeContributor(
-    receiptId,
+    receipt,
     username
   )
 
@@ -134,11 +108,12 @@ export const handleRemoveContributor: RequestHandler = async (
 }
 
 export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
-  const { receiptId, productId } = req.params
+  const receipt = req.receipt
+  const { productId } = req.params
   const { product } = req.body
 
   const updatedReceipt = await receiptService.updateProduct(
-    receiptId,
+    receipt,
     productId,
     product
   )

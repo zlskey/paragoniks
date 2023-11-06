@@ -1,19 +1,19 @@
 import { ErrorObject } from './error.middleware'
+import { IUser } from 'src/models/User.model'
 import { RequestHandler } from 'express'
 import constants from 'src/constants'
 import { jwtUtils } from 'src/utils'
-import mongoose from 'mongoose'
+import { userService } from 'src/services'
 
 declare global {
   namespace Express {
     interface Request {
-      userId?: mongoose.Types.ObjectId
-      username?: string
+      user?: IUser
     }
   }
 }
 
-const authorizeCookie: RequestHandler = (req, res, next) => {
+const authorizeCookie: RequestHandler = async (req, res, next) => {
   const jwt = req.cookies.jwt
 
   const token = jwtUtils.validateToken(jwt)
@@ -23,8 +23,13 @@ const authorizeCookie: RequestHandler = (req, res, next) => {
   }
 
   if (typeof token !== 'string') {
-    req.userId = token._id
-    req.username = token.username
+    const user = await userService.getById(token._id)
+
+    if (!user) {
+      return next(new ErrorObject(constants.invalid_auth, 401))
+    }
+
+    req.user = user
   }
 
   next()
