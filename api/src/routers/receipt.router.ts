@@ -26,7 +26,7 @@ receiptRouter.delete(
 )
 
 receiptRouter.patch(
-  '/:receiptId/comprising/:itemId',
+  '/:receiptId/comprising/:productId',
   wrapAsync(receiptController.handleToggleComprising)
 )
 
@@ -46,8 +46,8 @@ receiptRouter.delete(
 )
 
 receiptRouter.patch(
-  '/:receiptId/item/:itemId',
-  wrapAsync(receiptController.handleUpdateItem)
+  '/:receiptId/product/:productId',
+  wrapAsync(receiptController.handleUpdateProduct)
 )
 
 export default receiptRouter

@@ -1,20 +1,17 @@
+import {
+  RespondToFriendRequestBody,
+  UserLoginBody,
+  UserSignupBody,
+} from './user.types'
+
 import { User } from 'src/types/generic.types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { rsApi } from 'src/helpers/services/rs.service'
 import { wrapThunk } from 'src/helpers/utils/wrap-thunk'
 
-interface UserLoginData {
-  username: string
-  password: string
-}
-
-interface UserSignupData extends UserLoginData {
-  repeatPassword: string
-}
-
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (data: UserLoginData, { rejectWithValue }) =>
+  async (data: UserLoginBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
       const response = await rsApi.post<User>('/auth/login', data)
 
@@ -24,7 +21,7 @@ export const loginUser = createAsyncThunk(
 
 export const signupUser = createAsyncThunk(
   'user/signup',
-  async (data: UserSignupData, { rejectWithValue }) =>
+  async (data: UserSignupBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
       const response = await rsApi.post<User>('/auth/signup', data)
 
@@ -61,11 +58,6 @@ export const sendFriendRequest = createAsyncThunk(
       return response.data
     })
 )
-
-interface RespondToFriendRequestBody {
-  username: string
-  accept: boolean
-}
 
 export const respondToFriendRequest = createAsyncThunk(
   'user/respondToFriendRequest',

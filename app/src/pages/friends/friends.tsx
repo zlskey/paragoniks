@@ -7,19 +7,24 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import FriendItem, { FriendItemSkeleton } from 'src/components/friend-item'
+import FriendItem, {
+  FriendItemSkeleton,
+} from 'src/pages/friends/components/friend-item'
+import {
+  selectUser,
+  selectUserLoading,
+} from 'src/helpers/reducers/user/user.reducer'
 import { useEffect, useState } from 'react'
 
-import AddNewFriendSection from 'src/components/add-new-friend-section/add-new-friend-section'
+import AddNewFriendSection from 'src/pages/friends/components/add-new-friend-section'
 import { Friend } from 'src/types/generic.types'
-import FriendRequestItem from 'src/components/friend-request-item'
+import FriendRequestItem from 'src/pages/friends/components/friend-request-item'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useAppSelector } from 'src/redux-hooks'
 
 const Friends = () => {
-  const isLoading = false
+  const isLoading = useAppSelector(selectUserLoading) === 'pending'
 
   const user = useAppSelector(selectUser)
 

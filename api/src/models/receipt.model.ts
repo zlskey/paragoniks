@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
-export interface IItem {
+export interface IProduct {
   comprising: string[]
   name: string
-  value: number
+  price: number
   count: number
   _id: string
 }
@@ -11,7 +11,7 @@ export interface IItem {
 export interface ISimpleReceipt {
   sum: number
   title: string
-  items: IItem[]
+  products: IProduct[]
   imagePath: string
 }
 
@@ -39,12 +39,12 @@ const receiptSchema = new mongoose.Schema<IReceipt>({
     required: true,
   },
   others: [],
-  items: [],
+  products: [],
 })
 
 receiptSchema.pre('save', async function (next) {
-  this.items = this.items.map(item => ({
-    ...item,
+  this.products = this.products.map(product => ({
+    ...product,
     _id: new mongoose.Types.ObjectId().toString(),
     comprising: [],
   }))

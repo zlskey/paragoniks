@@ -1,7 +1,7 @@
 import { Grid, List, Paper, Stack, Typography } from '@mui/material'
 import ReceiptFriendStatusItem, {
   ReceiptFriendStatusItemSkeleton,
-} from 'src/components/receipt-friend-status-item'
+} from 'src/pages/receipt/components/receipt-friend-status-item'
 import {
   selectReceiptLoading,
   selectSingleReceipt,
@@ -9,13 +9,13 @@ import {
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { useEffect, useState } from 'react'
 
-import AddContributorItem from 'src/components/add-contributor-item/add-contributor-item'
-import { Item } from 'src/types/generic.types'
-import ItemEditDialog from 'src/components/item-edit-dialog/item-edit-dialog'
-import ReceiptListItem from 'src/components/receipt-list-item'
-import ReceiptStatusButton from 'src/components/receipt-status-button'
-import ReceiptTitleInput from 'src/components/receipt-title-input/receipt-title-input'
-import Wrapper from 'src/components/wrapper/wrapper'
+import AddContributorItem from 'src/pages/receipt/components/add-contributor-item'
+import { Product } from 'src/types/generic.types'
+import ProductEditDialog from 'src/pages/receipt/components/product-edit-dialog'
+import ProductItem from 'src/pages/receipt/components/product-item'
+import ReceiptStatusButton from 'src/pages/receipt/components/receipt-status-button'
+import TitleInput from 'src/pages/receipt/components/title-input'
+import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
 import { getPrice } from 'src/helpers/utils/get-price'
 import { getSingleReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
@@ -40,7 +40,7 @@ const Receipt = () => {
 
   const userCut = useUserCutCalc(user, receipt)
 
-  const [editedItem, setEditedItem] = useState<null | Item>(null)
+  const [editedProduct, setEditedProduct] = useState<null | Product>(null)
 
   useEffect(() => {
     if (!receipt) {
@@ -52,34 +52,34 @@ const Receipt = () => {
     return null
   }
 
-  const handleSetEditedItem = (item: Item) => {
-    setEditedItem(item)
+  const handleSetEditedProduct = (product: Product) => {
+    setEditedProduct(product)
   }
 
-  const handleClearEditedItem = () => {
-    setEditedItem(null)
+  const handleClearEditedProduct = () => {
+    setEditedProduct(null)
   }
 
   const allContributors = [receipt.owner, ...receipt.others]
 
   return (
     <Wrapper>
-      <ItemEditDialog
+      <ProductEditDialog
         receiptId={receipt._id}
-        item={editedItem}
-        onClose={handleClearEditedItem}
+        product={editedProduct}
+        onClose={handleClearEditedProduct}
       />
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Paper>
             <List>
-              {receipt.items.map(item => (
-                <ReceiptListItem
-                  onEdit={handleSetEditedItem}
+              {receipt.products.map(product => (
+                <ProductItem
+                  onEdit={handleSetEditedProduct}
                   isOwner={user.username === receipt.owner}
-                  key={item._id}
-                  item={item}
+                  key={product._id}
+                  product={product}
                 />
               ))}
             </List>
@@ -88,7 +88,7 @@ const Receipt = () => {
 
         <Grid item xs={12} md={4}>
           <Stack spacing={2}>
-            <ReceiptTitleInput user={user} receipt={receipt} />
+            <TitleInput user={user} receipt={receipt} />
 
             <Paper>
               <Grid container p={2} spacing={1}>

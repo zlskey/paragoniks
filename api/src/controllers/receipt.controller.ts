@@ -69,7 +69,7 @@ export const handleToggleComprising: RequestHandler = async (
   res,
   next
 ) => {
-  const { receiptId, itemId } = req.params
+  const { receiptId, productId } = req.params
 
   // @todo
   // const receipt = await receiptService.getReceipt(receiptId)
@@ -79,7 +79,7 @@ export const handleToggleComprising: RequestHandler = async (
 
   const updatedReceipt = await receiptService.toggleComprising(
     receiptId,
-    itemId,
+    productId,
     req.username
   )
 
@@ -133,14 +133,14 @@ export const handleRemoveContributor: RequestHandler = async (
   res.status(201).json(updatedReceipt)
 }
 
-export const handleUpdateItem: RequestHandler = async (req, res, next) => {
-  const { receiptId, itemId } = req.params
-  const { item } = req.body
+export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
+  const { receiptId, productId } = req.params
+  const { product } = req.body
 
-  const updatedReceipt = await receiptService.updateItem(
+  const updatedReceipt = await receiptService.updateProduct(
     receiptId,
-    itemId,
-    item
+    productId,
+    product
   )
 
   res.status(201).json(updatedReceipt)

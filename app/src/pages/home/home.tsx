@@ -14,9 +14,9 @@ import {
 } from 'src/helpers/reducers/receipt/receipt.reducer'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
-import ReceiptItem from 'src/components/receipt-item/receipt-item'
-import { ReceiptItemSkeleton } from 'src/components/receipt-item'
-import UploadReceipt from 'src/components/upload-receipt'
+import ReceiptItem from 'src/pages/home/components/receipt-item'
+import { ReceiptItemSkeleton } from 'src/pages/home/components/receipt-item'
+import UploadReceipt from 'src/pages/home/components/upload-receipt'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
 import { getUserReceipts } from 'src/helpers/reducers/receipt/receipt.thunk'

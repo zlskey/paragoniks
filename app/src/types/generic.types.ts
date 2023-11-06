@@ -14,10 +14,10 @@ export interface Friend {
   image?: string
 }
 
-export interface Item {
+export interface Product {
   comprising: string[]
   name: string
-  value: number
+  price: number
   count: number
   _id: string
 }
@@ -25,7 +25,7 @@ export interface Item {
 export interface SimpleReceipt {
   sum: number
   title: string
-  items: Item[]
+  products: Product[]
 }
 
 export interface Receipt extends SimpleReceipt {

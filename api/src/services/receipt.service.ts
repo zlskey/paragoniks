@@ -62,33 +62,33 @@ export const removeReceiptForUser = async (
 
 export const toggleComprising = async (
   receiptId: string,
-  itemId: string,
+  productId: string,
   username: string
 ) => {
   const receipt = await getReceipt(receiptId)
 
-  const updatedItems = receipt.items.map(item => {
-    if (item._id === itemId) {
-      const comprising = item.comprising.includes(username)
+  const updatedProducts = receipt.products.map(product => {
+    if (product._id === productId) {
+      const comprising = product.comprising.includes(username)
 
       if (comprising) {
-        item.comprising = item.comprising.filter(
+        product.comprising = product.comprising.filter(
           comprisingUsername => comprisingUsername !== username
         )
-        return item
+        return product
       }
 
-      item.comprising.push(username)
+      product.comprising.push(username)
 
-      return item
+      return product
     }
 
-    return item
+    return product
   })
 
   const updatedReceipt = await Receipt.findByIdAndUpdate(
     receiptId,
-    { items: updatedItems },
+    { products: updatedProducts },
     { new: true }
   )
 
@@ -136,39 +136,39 @@ export const removeContributor = async (
     contributor => contributor !== username
   )
 
-  const updatedItems = receipt.items.map(item => ({
-    ...item,
-    comprising: item.comprising.filter(friend => friend !== username),
+  const updatedProducts = receipt.products.map(product => ({
+    ...product,
+    comprising: product.comprising.filter(friend => friend !== username),
   }))
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { others: updatedOthers, items: updatedItems },
+    { others: updatedOthers, products: updatedProducts },
     { new: true }
   )
 }
 
-export const updateItem = async (
+export const updateProduct = async (
   receiptId: string,
-  itemId: string,
-  item: Record<string, string | number>
+  productId: string,
+  product: Record<string, string | number>
 ) => {
   const receipt = await getReceipt(receiptId)
 
-  const updatedItems = receipt.items.map(receiptItem => {
-    if (receiptItem._id === itemId) {
+  const updatedProducts = receipt.products.map(receiptProduct => {
+    if (receiptProduct._id === productId) {
       return {
-        ...receiptItem,
-        ...item,
+        ...receiptProduct,
+        ...product,
       }
     }
 
-    return receiptItem
+    return receiptProduct
   })
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { items: updatedItems },
+    { products: updatedProducts },
     { new: true }
   )
 }

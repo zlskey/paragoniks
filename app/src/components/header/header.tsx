@@ -3,26 +3,21 @@ import {
   Avatar,
   Container,
   IconButton,
-  Menu,
-  MenuItem,
   Link as MuiLink,
   Stack,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
-import { logoutUser } from 'src/helpers/reducers/user/user.thunk'
+import { Link } from 'react-router-dom'
+import MenuItem from './components/menu-item'
+import PopupMenu from './components/popup-menu/popup-menu'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { useAppSelector } from 'src/redux-hooks'
 
 const Header = () => {
-  const navigate = useNavigate()
-
-  const dispatch = useAppDispatch()
-
   const user = useAppSelector(selectUser)
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
@@ -35,14 +30,6 @@ const Header = () => {
     setAnchorElUser(null)
   }
 
-  const handleLogout = () => {
-    dispatch(logoutUser())
-  }
-
-  const navigateTo = (path: string) => () => {
-    navigate(path)
-  }
-
   return (
     <AppBar component='nav'>
       <Container>
@@ -52,13 +39,9 @@ const Header = () => {
               <Typography mr={3}>Roommate Shopper</Typography>
             </MuiLink>
 
-            <MenuItem onClick={navigateTo('/')}>
-              <Typography textAlign='center'>Home</Typography>
-            </MenuItem>
+            <MenuItem label='Home' path='/' />
 
-            <MenuItem onClick={navigateTo('/friends')}>
-              <Typography textAlign='center'>Friends</Typography>
-            </MenuItem>
+            <MenuItem label='Friends' path='/friends' />
           </Stack>
 
           <Tooltip title='Open settings'>
@@ -67,26 +50,7 @@ const Header = () => {
             </IconButton>
           </Tooltip>
 
-          <Menu
-            sx={{ mt: '45px' }}
-            id='menu-appbar'
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            <MenuItem onClick={handleLogout}>
-              <Typography textAlign='center'>Logout</Typography>
-            </MenuItem>
-          </Menu>
+          <PopupMenu onClose={handleCloseUserMenu} anchorEl={anchorElUser} />
         </Toolbar>
       </Container>
     </AppBar>
