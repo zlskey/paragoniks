@@ -10,11 +10,13 @@ const getMaxAge = remember => {
   return remember ? oneDay * 365 : oneDay
 }
 
+const domain = process.env.MAIN_DOMAIN || 'localhost'
+
 const getCookieOptions = remember => ({
+  maxAge: getMaxAge(remember),
   httpOnly: true,
   secure: true,
-  domain: 'localhost',
-  maxAge: getMaxAge(remember),
+  domain,
 })
 
 export const signup: RequestHandler = async (req, res, next) => {
@@ -50,17 +52,18 @@ export const whoami: RequestHandler = async (req, res, next) => {
   const jwt = req.cookies.jwt
 
   const token = jwtUtils.validateToken(jwt)
-  console.log(token)
+
   if (!token) {
     res.json(null)
     return
   }
 
-  const user = await userService.getById(token._id)
-
-  res.json(_.omit(user, 'password'))
+  userService
+    .getById(token._id)
+    .then(user => res.json(_.omit(user, 'password')))
+    .catch(() => res.clearCookie('jwt', getCookieOptions(false)).json(null))
 }
 
 export const logout: RequestHandler = async (req, res, next) => {
-  res.clearCookie('jwt').status(200).json({})
+  res.clearCookie('jwt',getCookieOptions(false)).status(200).json({})
 }

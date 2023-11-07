@@ -3,17 +3,18 @@ version: "3.9"
 services:
   rs-app:
     container_name: ${DOCKER_APP_CONTAINER_NAME}
-    command: npm run dev
     restart: unless-stopped
     build:
-      context: ./app/docker
-      dockerfile: Dockerfile
-    volumes:
-      - ./app:/usr/src/app/
+      context: ./app
+      dockerfile: docker/Dockerfile
+      target: production
+      args:
+        - VITE_NODE_ENV=${DOCKER_APP_NODE_ENV}
+        - VITE_PORT=${DOCKER_APP_INTERNAL_PORT}
+        - VITE_RS_API_URL=${DOCKER_EXTERNAL_PROTOCOL}://rs-api.${DOCKER_DOMAIN}
     env_file:
       - ".env"
-    ports:
-      - 5000:5000
+      - "./app/.env"
     labels:
       # Enable Traefik for this container
       - "traefik.enable=true"
@@ -23,24 +24,23 @@ services:
       - "traefik.http.routers.rs.rule=Host(`rs.${DOCKER_DOMAIN}`)"
       - "traefik.http.routers.rs.tls=true"
       - "traefik.http.routers.rs.service=rs-service"
-      - "traefik.http.services.rs-service.loadbalancer.server.port=${DOCKER_APP_INTERNAL_PORT}"
+      - "traefik.http.services.rs-service.loadbalancer.server.port=80"
 
       # Docker Network Configuration
       - "traefik.docker.network=proxy"
+    networks:
+      - proxy
 
   rs-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
-    command: npm run dev
     restart: unless-stopped
     build:
-      context: ./api/docker
-      dockerfile: Dockerfile
-    volumes:
-      - ./api:/usr/src/app/
+      context: ./api
+      dockerfile: docker/Dockerfile
+      target: production
     env_file:
       - ".env"
-    ports:
-      - 3000:3000
+      - "./api/.env"
     labels:
       # Enable Traefik for this container
       - "traefik.enable=true"
@@ -56,6 +56,7 @@ services:
       - "traefik.docker.network=proxy"
     networks:
       - rs-local-network
+      - proxy
 
   rs-db:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
@@ -63,7 +64,11 @@ services:
     restart: unless-stopped
     networks:
       - rs-local-network
+    volumes: 
+      - ./db:/data/db
 
 networks:
   rs-local-network:
     driver: bridge
+  proxy:
+    external: true

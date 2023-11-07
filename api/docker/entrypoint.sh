@@ -2,7 +2,7 @@
 
 # Install node modules as non-root user
 gosu "$USER_NAME" echo "Running command: \`npm install\` as $USER_NAME"
-gosu "$USER_NAME" npm install
+gosu "$USER_NAME" npm ci
 
 # Run docker compose command as non-root user
 gosu "$USER_NAME" echo "Running command: $* as $USER_NAME"

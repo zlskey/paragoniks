@@ -1,4 +1,4 @@
-FROM node:18.14.2-bullseye-slim
+FROM node:18.14.2-bullseye-slim AS prepare
 
 # Install gosu and node-sass dependencies
 # OpenSSH server has to be started by root user
@@ -32,11 +32,54 @@ WORKDIR "${APP_DIR}"
 # Set ownership and permissions on app directory
 RUN chown -R "${USER_NAME}":"${USER_NAME}" "${APP_DIR}" && chmod 755 "${APP_DIR}"
 
-# Set node environment
-ENV NODE_ENV=development
+
+# ------------   Development   ------------
+
+FROM prepare AS development
 
 # Define shell script that will run on every container startup
 # By default every command inside ENTRYPOINT will be invoked by root
 # Use gosu to step down to non-root user before running any command that do not
 # need elevated privileges and especially before running final command
 ENTRYPOINT ["/usr/src/app/docker/entrypoint.sh"]
+
+
+# ------------   Production   ------------
+
+
+# Create builder that will be used for running build command and copying build
+FROM prepare AS builder
+
+# Copy package.json and package-lock.json
+COPY package*.json .
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Set build arguments
+ARG VITE_NODE_ENV=$VITE_NODE_ENV
+ARG VITE_PORT=$VITE_PORT
+ARG VITE_RS_API_URL=$VITE_RS_API_URL
+
+# Build application
+RUN npm run build
+
+
+
+# ------------ 
+
+
+# Create production image with nginx
+FROM nginx:1.21.3-alpine AS production
+
+# Copy nginx configuration
+COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy static files
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+
+# Run nginx as non-root user
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,6 +1,6 @@
-# playlistify
+# Roommate-shopper
 
-Web app for creating the best playlists
+Web app for easy shopping list sharing and splitting between roommates.
 
 ## Getting Started
 
@@ -9,20 +9,20 @@ Web app for creating the best playlists
 - [Node.js](https://nodejs.org/en/)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
-- [Spotify Developer Account](https://developer.spotify.com/dashboard/login)
+- [OpenAI API key](https://platform.openai.com)
 
 ### Installing and Running
 
 1. Clone the repo
 
    ```sh
-   git clone https://github.com/zlskey/playlistify.git
+   git clone https://github.com/zlskey/roommate-shopper.git
    ```
 
 1. Move into the project directory
 
    ```sh
-   cd playlistify
+   cd roommate-shopper
    ```
 
 1. Copy the `.env.example` file to `.env` and change the values to your own
@@ -30,14 +30,23 @@ Web app for creating the best playlists
    ```sh
    cp .env.example .env
    cp ./app/.env.example ./app/.env
+   cp ./api/.env.example ./api/.env
    ```
 
-1. Run docker-compose
+1. Run app
+
+   For production development, you will require [Traefik](https://traefik.io/)
 
    ```sh
-   docker-compose up --build -d
+   make start-production
    ```
 
-App is initialy configured for traefik reverse proxy. If you don't want to use traefik, you can remove the `traefik` labels from the `app` service.
+   App will be available at [rs.your-domain.com](#)
 
-Your app should now be running on [playlistify.local](https://playlistify.local)
+   For local development, you can run the app with
+
+   ```sh
+   make start-development
+   ```
+
+   App will be available at [localhost:5000](http://localhost:5000)
