@@ -38,6 +38,8 @@ Web app for easy shopping list sharing and splitting between roommates.
    For production development, you will require [Traefik](https://traefik.io/)
 
    ```sh
+   # Add BUILD=true to build the app
+   # Add FOLLOW=true to follow the logs
    make start-production
    ```
 
@@ -46,6 +48,8 @@ Web app for easy shopping list sharing and splitting between roommates.
    For local development, you can run the app with
 
    ```sh
+   # Add BUILD=true to build the app
+   # Add FOLLOW=true to follow the logs
    make start-development
    ```
 

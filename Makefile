@@ -1,11 +1,20 @@
+BUILD := false
+FOLLOW := false
+
 start-production:
-	docker compose -f docker-compose.prod.yml up --force-recreate --build
+	docker compose -f docker-compose.prod.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate 
 
 start-development:
-	docker compose -f docker-compose.dev.yml up --force-recreate
+	docker compose -f docker-compose.dev.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate
 
 stop-production:
-	docker compose -f docker-compose.prod.yml down
+	docker compose -f docker-compose.prod.yml stop
 
 stop-development:
-	docker compose -f docker-compose.dev.yml down
+	docker compose -f docker-compose.dev.yml stop
+
+remove-production:
+	docker compose -f docker-compose.prod.yml down --rmi all
+
+remove-development:
+	docker compose -f docker-compose.dev.yml down --rmi all
