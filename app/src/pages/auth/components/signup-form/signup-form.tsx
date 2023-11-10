@@ -1,7 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { Grid, TextField, Typography } from '@mui/material'
 import {
-  clearError,
   selectUserError,
   selectUserLoading,
 } from 'src/helpers/reducers/user/user.reducer'
@@ -36,7 +35,6 @@ const SignupForm = () => {
   const isFailed = status === 'failed'
 
   const handleSignup = ({ username, password }: typeof defaultValues) => {
-    dispatch(clearError())
     dispatch(signupUser({ username, password }))
   }
 

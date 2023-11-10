@@ -32,6 +32,7 @@ const receiptSlice = createSlice({
   reducers: {
     clearError(state) {
       state.error = null
+      state.loading = 'idle'
     },
   },
   extraReducers: builder => {
@@ -184,6 +185,6 @@ export const selectReceiptLoading = (state: RootState) => state.receipt.loading
 
 export const selectReceiptError = (state: RootState) => state.receipt.error
 
-export const { clearError } = receiptSlice.actions
+export const { clearError: clearReceiptError } = receiptSlice.actions
 
 export default receiptSlice.reducer

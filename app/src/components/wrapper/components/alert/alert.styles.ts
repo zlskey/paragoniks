@@ -5,4 +5,5 @@ export const StyledAlert = styled(Alert)({
   position: 'absolute',
   bottom: 10,
   right: 10,
+  zIndex: 1301
 })

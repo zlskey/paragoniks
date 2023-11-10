@@ -1,10 +1,11 @@
+import { AvatarColor, User } from 'src/types/generic.types'
 import {
+  ChangePasswordBody,
   RespondToFriendRequestBody,
   UserLoginBody,
   UserSignupBody,
 } from './user.types'
 
-import { User } from 'src/types/generic.types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { rsApi } from 'src/helpers/services/rs.service'
 import { wrapThunk } from 'src/helpers/utils/wrap-thunk'
@@ -74,6 +75,56 @@ export const removeFriend = createAsyncThunk(
   async (username: string, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
       const response = await rsApi.delete<User>(`user/friend/${username}`)
+
+      return response.data
+    })
+)
+
+export const changeUsername = createAsyncThunk(
+  'user/changeUsername',
+  async (username: string, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/username', { username })
+
+      return response.data
+    })
+)
+
+export const changePassword = createAsyncThunk(
+  'user/changePassword',
+  async (body: ChangePasswordBody, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/password', body)
+
+      return response.data
+    })
+)
+
+export const toggleTheme = createAsyncThunk(
+  'user/toggleTheme',
+  async (_, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/theme')
+
+      return response.data
+    })
+)
+
+export const changeAvatarColor = createAsyncThunk(
+  'user/changeAvatarColor',
+  async (color: AvatarColor, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/avatar/color', { color })
+
+      return response.data
+    })
+)
+
+export const changeAvatarImage = createAsyncThunk(
+  'user/changeAvatarImage',
+  async (image: File, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      const response = await rsApi.patch<User>('user/avatar/image', { image })
 
       return response.data
     })

@@ -1,3 +1,5 @@
+import { Friend } from "src/types/generic.types";
+
 export interface FriendProposalProps {
-  username: string
+  friend: Friend
 }

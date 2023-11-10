@@ -1,8 +1,9 @@
+import { userValidationSchema, validateAndThrow } from 'src/utils/user-validation-schema'
+
 import { RequestHandler } from 'express'
 import _ from 'lodash'
 import { jwtUtils } from 'src/utils'
 import { userService } from 'src/services'
-import { validateAndThrow } from 'src/utils/user-validation-schema'
 
 const getMaxAge = remember => {
   const oneDay = 1000 * 60 * 60 * 24
@@ -22,7 +23,7 @@ const getCookieOptions = remember => ({
 export const signup: RequestHandler = async (req, res, next) => {
   const { username, password, remember } = req.body
 
-  await validateAndThrow(username, password)
+  await validateAndThrow(userValidationSchema, username, password)
 
   const maxAge = getMaxAge(remember) / 1000
   const user = await userService.create(username, password)
@@ -65,5 +66,5 @@ export const whoami: RequestHandler = async (req, res, next) => {
 }
 
 export const logout: RequestHandler = async (req, res, next) => {
-  res.clearCookie('jwt',getCookieOptions(false)).status(200).json({})
+  res.clearCookie('jwt', getCookieOptions(false)).status(200).json({})
 }

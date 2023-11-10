@@ -11,6 +11,7 @@ import {
 import AcceptFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import DeclineFriendRequestIcon from '@mui/icons-material/PersonOffOutlined'
 import { FriendRequestItemProps } from './friend-request-item.types'
+import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { respondToFriendRequest } from 'src/helpers/reducers/user/user.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 
@@ -29,7 +30,7 @@ const FriendRequestItem = ({ friend }: FriendRequestItemProps) => {
   return (
     <ListItem>
       <ListItemAvatar>
-        <Avatar alt={friend.username} src={friend.image} />
+        <UserAvatar profile={friend} />
       </ListItemAvatar>
 
       <ListItemText>{friend.username}</ListItemText>

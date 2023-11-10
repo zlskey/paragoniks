@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Avatar,
   Container,
   IconButton,
   Link as MuiLink,
@@ -14,6 +13,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import MenuItem from './components/menu-item'
 import PopupMenu from './components/popup-menu/popup-menu'
+import UserAvatar from '../user-avatar/user-avatar'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useAppSelector } from 'src/redux-hooks'
 
@@ -42,11 +42,13 @@ const Header = () => {
             <MenuItem label='Home' path='/' />
 
             <MenuItem label='Friends' path='/friends' />
+
+            <MenuItem label='Settings' path='/settings' />
           </Stack>
 
           <Tooltip title='Open settings'>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt={user?.username} src='#' />
+              <UserAvatar />
             </IconButton>
           </Tooltip>
 

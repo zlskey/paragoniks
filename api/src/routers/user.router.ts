@@ -5,8 +5,11 @@ import { wrapAsync } from '../utils'
 
 const userRouter = Router()
 
-userRouter.patch('/password', wrapAsync(userController.changePassword))
-userRouter.patch('/username', wrapAsync(userController.changeUsername))
+userRouter.patch('/username', wrapAsync(userController.handleChangeUsername))
+userRouter.patch('/password', wrapAsync(userController.handleChangePassword))
+userRouter.patch('/theme', wrapAsync(userController.handleToggleTheme))
+userRouter.patch('/avatar/color', wrapAsync(userController.handleChangeAvatarColor))
+userRouter.patch('/avatar/image', wrapAsync(userController.handleChangeAvatarImage))
 userRouter.use('/friend', friendRouter)
 
 export default userRouter

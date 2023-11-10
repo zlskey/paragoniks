@@ -1,6 +1,7 @@
 import { Container, Stack, Toolbar } from '@mui/material'
 
-import Header from '../header/header'
+import Alert from './components/alert'
+import Header from '../header'
 import { WrapperProps } from './wrapper.types'
 
 const Wrapper = ({ children }: WrapperProps) => {
@@ -12,6 +13,8 @@ const Wrapper = ({ children }: WrapperProps) => {
       <Container sx={{ mt: 2 }} component='main'>
         {children}
       </Container>
+
+      <Alert />
     </Stack>
   )
 }

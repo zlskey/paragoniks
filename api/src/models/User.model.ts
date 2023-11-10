@@ -5,6 +5,8 @@ import constants from 'src/constants'
 import mongoose from 'mongoose'
 import { userService } from 'src/services'
 
+export type AvatarColor = 'red' | 'blue' | 'green' | 'yellow' | 'pink' | 'purple' | 'orange' | 'default'
+
 export interface IFriend {
   username: string
   status: 'accepted' | 'pending'
@@ -16,6 +18,11 @@ export interface IUser {
 
   username: string
   password: string
+
+  theme: 'light' | 'dark'
+
+  avatarImage: string
+  avatarColor: AvatarColor
 
   friends: IFriend[]
 
@@ -29,6 +36,9 @@ export interface IUser {
     newPassphrase: string
   ): Promise<void>
   changeUsername(this: IUser, username: string): Promise<IUser>
+  toggleTheme(this: IUser): Promise<IUser>
+  changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser>
+  changeAvatarImage(this: IUser, image: string): Promise<IUser>
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -41,6 +51,18 @@ const userSchema = new mongoose.Schema<IUser>({
     type: String,
   },
   friends: [],
+  theme: {
+    type: String,
+    default: 'dark',
+  },
+  avatarImage: {
+    type: String,
+    default: '',
+  },
+  avatarColor: {
+    type: String,
+    default: 'default',
+  },
 })
 
 userSchema.pre('save', async function (next) {
@@ -85,6 +107,20 @@ class UserClass {
 
   removePassword(this: IUser): Omit<IUser, 'password'> {
     return _.omit(this, 'password')
+  }
+
+  toggleTheme(this: IUser): Promise<IUser> {
+    const newTheme = this.theme === 'light' ? 'dark' : 'light'
+
+    return userService.update(this._id, { theme: newTheme })
+  }
+
+  changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser> {
+    return userService.update(this._id, { avatarColor: color })
+  }
+
+  changeAvatarImage(this: IUser, image: string): Promise<IUser> {
+    return userService.update(this._id, { avatarImage: image })
   }
 }
 

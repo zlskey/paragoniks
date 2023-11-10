@@ -47,10 +47,7 @@ const AddContributorItem = ({ user }: AddContributorItemProps) => {
         <Paper elevation={5}>
           <List disablePadding>
             {filterProposals(user.friends, username).map(friend => (
-              <FriendProposal
-                key={friend.username}
-                username={friend.username}
-              />
+              <FriendProposal key={friend.username} friend={friend} />
             ))}
           </List>
         </Paper>

@@ -1,11 +1,14 @@
 import * as yup from 'yup'
 
-export const userSchema = yup.object().shape({
+export const usernameSchema = yup.object().shape({
   username: yup
     .string()
     .required('Username is required')
     .min(3, 'Username must be at least 3 characters')
     .max(32, 'Username must be at most 32 characters'),
+})
+
+export const passwordSchema = yup.object().shape({
   password: yup
     .string()
     .required('Password is required')
@@ -20,3 +23,5 @@ export const userSchema = yup.object().shape({
     .required('Repeat password is required')
     .oneOf([yup.ref('password'), ''], 'Passwords do not match'),
 })
+
+export const userSchema = usernameSchema.concat(passwordSchema)

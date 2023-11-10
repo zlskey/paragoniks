@@ -1,9 +1,4 @@
 import { Button, Paper, Stack, Typography, styled } from '@mui/material'
-import {
-  clearError,
-  selectReceiptError,
-  selectReceiptLoading,
-} from 'src/helpers/reducers/receipt/receipt.reducer'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { useForm, useWatch } from 'react-hook-form'
 
@@ -12,6 +7,7 @@ import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { createNewReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
+import { selectReceiptLoading } from 'src/helpers/reducers/receipt/receipt.reducer'
 
 const defaultValues = {
   file: null,
@@ -24,19 +20,14 @@ const UploadReceipt = () => {
 
   const status = useAppSelector(selectReceiptLoading)
 
-  const error = useAppSelector(selectReceiptError)
-
   const fileList = useWatch({ name: 'file', control: formState.control })
 
   const isLoading = status === 'pending'
-
-  const isFailed = status === 'failed'
 
   const resetForm = () => formState.reset()
 
   const handleCreateReceipt = () => {
     if (fileList) {
-      dispatch(clearError())
       dispatch(createNewReceipt(fileList[0]))
       resetForm()
     }
@@ -90,8 +81,6 @@ const UploadReceipt = () => {
             </Button>
           </Stack>
         )}
-
-        {isFailed && <Typography color='red'>{error}</Typography>}
       </Stack>
     </Paper>
   )

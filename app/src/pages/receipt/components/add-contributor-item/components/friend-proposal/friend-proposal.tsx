@@ -7,18 +7,21 @@ import {
 } from '@mui/material'
 
 import { FriendProposalProps } from './friend-proposal.types'
+import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { addReceiptContributor } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 import { useParams } from 'react-router-dom'
 
-const FriendProposal = ({ username }: FriendProposalProps) => {
+const FriendProposal = ({ friend }: FriendProposalProps) => {
   const dispatch = useAppDispatch()
 
   const { id } = useParams()
 
   const handleAddFriend = () => {
     if (id) {
-      dispatch(addReceiptContributor({ username, receiptId: id }))
+      dispatch(
+        addReceiptContributor({ username: friend.username, receiptId: id })
+      )
     }
   }
 
@@ -26,10 +29,10 @@ const FriendProposal = ({ username }: FriendProposalProps) => {
     <ListItem disablePadding>
       <ListItemButton onClick={handleAddFriend}>
         <ListItemAvatar>
-          <Avatar alt={username} src='#' />
+          <UserAvatar profile={friend} />
         </ListItemAvatar>
 
-        <ListItemText primary={username} sx={{ mr: 2 }} />
+        <ListItemText primary={friend.username} sx={{ mr: 2 }} />
       </ListItemButton>
     </ListItem>
   )
