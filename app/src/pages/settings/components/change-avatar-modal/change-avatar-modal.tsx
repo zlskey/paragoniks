@@ -56,7 +56,7 @@ const ChangeAvatarModal = () => {
                 {Object.values(AvatarColor).map(color => (
                   <IconButton key={color} onClick={selectColor(color)}>
                     <Avatar
-                      alt={user.username}
+                      alt={user.username.charAt(0).toUpperCase()}
                       src='#'
                       sx={{ bgcolor: color, width: 40, height: 40 }}
                     />
