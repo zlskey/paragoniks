@@ -1,4 +1,8 @@
-import { ActionReducerMapBuilder, AsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  ActionReducerMapBuilder,
+  AsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit'
 import { RsApiError, User } from 'src/types/generic.types'
 import {
   changeAvatarColor,
@@ -6,9 +10,6 @@ import {
   changeUsername,
   loginUser,
   logoutUser,
-  removeFriend,
-  respondToFriendRequest,
-  sendFriendRequest,
   signupUser,
   toggleTheme,
   whoamiUser,
@@ -43,9 +44,6 @@ const userSlice = createSlice({
   extraReducers: builder => {
     addBuilderCase(builder, loginUser)
     addBuilderCase(builder, logoutUser)
-    addBuilderCase(builder, removeFriend)
-    addBuilderCase(builder, respondToFriendRequest)
-    addBuilderCase(builder, sendFriendRequest)
     addBuilderCase(builder, signupUser)
     addBuilderCase(builder, whoamiUser)
     addBuilderCase(builder, toggleTheme)
@@ -55,7 +53,10 @@ const userSlice = createSlice({
   },
 })
 
-const addBuilderCase = (builder: ActionReducerMapBuilder<UserState>, asyncThunk: AsyncThunk<any, any, any>) => {
+const addBuilderCase = (
+  builder: ActionReducerMapBuilder<UserState>,
+  asyncThunk: AsyncThunk<any, any, any>
+) => {
   return builder
     .addCase(asyncThunk.pending, state => {
       state.loading = 'pending'

@@ -1,5 +1,4 @@
 import {
-  Avatar,
   IconButton,
   ListItem,
   ListItemAvatar,
@@ -10,21 +9,23 @@ import {
 
 import { FriendItemProps } from './friend-item.types'
 import RemoveFriendIcon from '@mui/icons-material/PersonRemoveAlt1Outlined'
-import { removeFriend } from 'src/helpers/reducers/user/user.thunk'
+import UserAvatar from 'src/components/user-avatar/user-avatar'
+import { removeFriend } from 'src/helpers/reducers/friends/friends.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 
 const FriendItem = ({ friend }: FriendItemProps) => {
   const dispatch = useAppDispatch()
 
   const handleRemoveFriend = () => {
-    dispatch(removeFriend(friend.username))
+    dispatch(removeFriend({ friendId: friend._id }))
   }
 
   return (
     <ListItem>
       <ListItemAvatar>
-        <Avatar alt={friend.username} src='#' />
+        <UserAvatar userId={friend._id} />
       </ListItemAvatar>
+
       <ListItemText>{friend.username}</ListItemText>
 
       <ListItemIcon>

@@ -1,0 +1,4 @@
+export { rsApi } from './rs.service'
+export * as receiptService from './endpoints/receipt/receipt.service'
+export * as userService from './endpoints/user/user.service'
+export * as friendsService from './endpoints/friends/friends.service'

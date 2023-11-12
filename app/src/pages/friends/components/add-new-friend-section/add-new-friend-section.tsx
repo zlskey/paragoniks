@@ -2,7 +2,7 @@ import { Paper, Stack, TextField, Typography } from '@mui/material'
 
 import AddFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import { LoadingButton } from '@mui/lab'
-import { sendFriendRequest } from 'src/helpers/reducers/user/user.thunk'
+import { sendFriendRequest } from 'src/helpers/reducers/friends/friends.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 import { useForm } from 'react-hook-form'
 
@@ -19,9 +19,9 @@ const AddNewFriendSection = () => {
 
   const dispatch = useAppDispatch()
 
-  const handleSendFriendshipRequest = (data: typeof defaultValues) => {
+  const handleSendFriendshipRequest = ({ username }: typeof defaultValues) => {
+    dispatch(sendFriendRequest({ username }))
     formState.reset()
-    dispatch(sendFriendRequest(data.username))
   }
 
   return (

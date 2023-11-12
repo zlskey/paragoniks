@@ -1,3 +1,5 @@
+import { ProductId, UserId } from 'src/types/generic.types'
+
 import { RequestHandler } from 'express'
 import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
 import { getTextFromImage } from 'src/utils/get-text-from-image'
@@ -6,7 +8,7 @@ import { receiptService } from 'src/services'
 export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
   const user = req.user
 
-  const receipts = await receiptService.getAllReceipts(user.username)
+  const receipts = await receiptService.getAllReceipts(user._id)
 
   res.status(200).json(receipts)
 }
@@ -18,14 +20,12 @@ export const handleCreateReceipt: RequestHandler = async (req, res, next) => {
   const text = await getTextFromImage(receiptImage.path)
   const receipt = await extractReceiptDataFromText(text)
 
-  await receiptService.createReceipt(
+  const receiptObj = await receiptService.createReceipt(
     { ...receipt, imagePath: receiptImage.path },
-    user
+    user._id
   )
 
-  const receipts = await receiptService.getAllReceipts(user.username)
-
-  res.status(201).json(receipts)
+  res.status(201).json(receiptObj)
 }
 
 export const handleGetSingleReceipt: RequestHandler = async (
@@ -40,9 +40,9 @@ export const handleRemoveReceipt: RequestHandler = async (req, res, next) => {
   const receipt = req.receipt
   const user = req.user
 
-  await receiptService.removeReceiptForUser(receipt, user)
+  await receiptService.removeReceiptForUser(receipt, user._id)
 
-  const receipts = await receiptService.getAllReceipts(user.username)
+  const receipts = await receiptService.getAllReceipts(user._id)
 
   res.status(200).json(receipts)
 }
@@ -59,8 +59,8 @@ export const handleToggleComprising: RequestHandler = async (
 
   const updatedReceipt = await receiptService.toggleComprising(
     receipt,
-    productId,
-    user.username
+    productId as unknown as ProductId,
+    user._id
   )
 
   res.status(200).json(updatedReceipt)
@@ -84,9 +84,14 @@ export const handleChangeReceiptTitle: RequestHandler = async (
 
 export const handleAddContributor: RequestHandler = async (req, res, next) => {
   const receipt = req.receipt
-  const { username } = req.params
+  const user = req.user
+  const { contributorId } = req.params
 
-  const updatedReceipt = await receiptService.addContributor(receipt, username)
+  const updatedReceipt = await receiptService.addContributor(
+    receipt,
+    user._id,
+    contributorId as unknown as UserId
+  )
 
   res.status(201).json(updatedReceipt)
 }
@@ -97,11 +102,11 @@ export const handleRemoveContributor: RequestHandler = async (
   next
 ) => {
   const receipt = req.receipt
-  const { username } = req.params
+  const { contributorId } = req.params
 
   const updatedReceipt = await receiptService.removeContributor(
     receipt,
-    username
+    contributorId as unknown as UserId
   )
 
   res.status(201).json(updatedReceipt)
@@ -114,7 +119,7 @@ export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
 
   const updatedReceipt = await receiptService.updateProduct(
     receipt,
-    productId,
+    productId as unknown as ProductId,
     product
   )
 

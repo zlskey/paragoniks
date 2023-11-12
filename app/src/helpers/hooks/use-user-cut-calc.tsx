@@ -1,16 +1,16 @@
-import { Product, Receipt, User } from 'src/types/generic.types'
+import { Product, Receipt, UserId } from 'src/types/generic.types'
 
 import { getPrice } from '../utils/get-price'
 import { useMemo } from 'react'
 
-const useUserCutCalc = (user: User | null, receipt?: Receipt) => {
+const useUserCutCalc = (userId?: UserId, receipt?: Receipt) => {
   const userCut = useMemo(() => {
-    if (!user || !receipt) {
+    if (!userId || !receipt) {
       return ''
     }
 
     const sum = receipt.products.reduce((acc: number, product: Product) => {
-      if (product.comprising.includes(user.username)) {
+      if (product.comprising.find(comprisingId => comprisingId === userId)) {
         return acc + (product.price * product.count) / product.comprising.length
       }
 
@@ -18,7 +18,7 @@ const useUserCutCalc = (user: User | null, receipt?: Receipt) => {
     }, 0)
 
     return getPrice(sum)
-  }, [receipt, user])
+  }, [receipt, userId])
 
   return userCut
 }

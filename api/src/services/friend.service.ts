@@ -1,77 +1,103 @@
-import User, { IUser } from 'src/models/User.model'
+import { FriendId, UserId } from 'src/types/generic.types'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
+import Friendship from 'src/models/friend.model'
 import _ from 'lodash'
+import { compareIds } from 'src/utils/ids-util'
+import { userService } from '.'
 
-export const createFriendRequest = async (
-  recipient: IUser,
-  username: string
+export const findFriendship = async (firstId: FriendId, secondId: FriendId) => {
+  const friendship = await Friendship.findOne({
+    $or: [
+      { friendId: firstId, secondFriendId: secondId },
+      { friendId: secondId, secondFriendId: firstId },
+    ],
+  })
+
+  if (!friendship) {
+    throw new ErrorObject('Friend not found')
+  }
+
+  return friendship
+}
+
+export const findUserFriendships = async (userId: UserId) => {
+  const friendships = await Friendship.find({
+    $or: [{ friendId: userId, status: 'accepted' }, { secondFriendId: userId }],
+  })
+
+  const simplifiedFriendships = friendships.map(friendship => {
+    const stringFriendId = friendship.friendId.toString()
+    const stringSecondFriendId = friendship.secondFriendId.toString()
+
+    const friendId =
+      stringFriendId === userId.toString()
+        ? stringSecondFriendId
+        : stringFriendId
+
+    return {
+      ..._.pick(friendship, ['_id', 'status']),
+      friendId,
+    }
+  })
+
+  return simplifiedFriendships
+}
+
+export const sendFriendshipRequest = async (
+  friendId: FriendId,
+  friendUsername: string
 ) => {
-  if (recipient.username === username) {
+  const user = await userService.getByUsername(friendUsername)
+
+  const secondFriendId = user._id
+
+  if (compareIds(friendId, secondFriendId)) {
     throw new ErrorObject("You can't send request to yourself")
   }
 
-  const obj = {
-    username,
-    status: 'pending',
-    image: undefined, // @todo
+  const alreadyExistingFriendship = await Friendship.findOne({
+    $or: [
+      { friendId: friendId, secondFriendId: secondFriendId },
+      { friendId: secondFriendId, secondFriendId: friendId },
+    ],
+  })
+
+  if (!alreadyExistingFriendship) {
+    await Friendship.create({
+      friendId,
+      secondFriendId,
+    })
+
+    return
   }
 
-  const isAlreadyOnList = recipient.friends.find(el => el.username === username)
-
-  if (isAlreadyOnList) {
-    throw new ErrorObject(
-      isAlreadyOnList.status === 'accepted'
-        ? "You're already friends"
-        : "You've already sent a request"
-    )
+  // Friendship request already accepted
+  if (alreadyExistingFriendship.status === 'accepted') {
+    throw new ErrorObject("You're already friends")
   }
 
-  const updatedUser = await User.findByIdAndUpdate(
-    recipient._id,
-    { friends: [...recipient.friends, obj] },
-    { new: true }
-  )
+  // Friendship request already sent from current user
+  if (alreadyExistingFriendship.secondFriendId.equals(secondFriendId)) {
+    throw new ErrorObject("You've already sent a request")
+  }
 
-  return updatedUser
+  // Friendship request already sent from other user, accept it
+  await acceptFriendship(friendId, secondFriendId)
 }
 
-export const removeFriend = async (user: IUser, username: string) => {
-  const updatedFriends = user.friends.filter(
-    friend => friend.username !== username
-  )
+export const removeFriendship = async (firstId: UserId, secondId: UserId) => {
+  const friend = await findFriendship(firstId, secondId)
 
-  const updatedUser = await User.findByIdAndUpdate(
-    user._id,
-    { friends: updatedFriends },
-    { new: true }
-  )
-
-  return updatedUser
+  await friend.remove()
 }
 
-export const insertAcceptedFriend = async (user: IUser, friend: IUser) => {
-  const friendObj = {
-    username: friend.username,
+export const acceptFriendship = async (firstId: UserId, secondId: UserId) => {
+  const friendship = await findFriendship(firstId, secondId)
+
+  console.log(friendship)
+
+  await Friendship.findByIdAndUpdate(friendship._id, {
     status: 'accepted',
-    image: undefined, // @todo
-  }
-
-  const updatedFriends = isFriendAlreadyInvited(user, friend.username)
-    ? user.friends.map(el => (el.username !== friend.username ? el : friendObj))
-    : [...user.friends, friendObj]
-
-  const updatedUser = await User.findByIdAndUpdate(
-    user._id,
-    { friends: updatedFriends },
-    { new: true }
-  )
-
-  return updatedUser
-}
-
-const isFriendAlreadyInvited = (user: IUser, friendUsername: string) => {
-  return Boolean(
-    user.friends.find(friend => friend.username === friendUsername)
-  )
+  })
 }

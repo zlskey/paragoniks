@@ -31,7 +31,7 @@ export const signup: RequestHandler = async (req, res, next) => {
 
   res
     .cookie('jwt', token, getCookieOptions(remember))
-    .json(_.omit(user, 'password'))
+    .json(user.removePassword())
 }
 
 export const login: RequestHandler = async (req, res, next) => {
@@ -46,7 +46,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
   res
     .cookie('jwt', token, getCookieOptions(remember))
-    .json(_.omit(user, 'password'))
+    .json(user.removePassword())
 }
 
 export const whoami: RequestHandler = async (req, res, next) => {
@@ -61,7 +61,7 @@ export const whoami: RequestHandler = async (req, res, next) => {
 
   userService
     .getById(token._id)
-    .then(user => res.json(_.omit(user, 'password')))
+    .then(user => res.json(user.removePassword()))
     .catch(() => res.clearCookie('jwt', getCookieOptions(false)).json(null))
 }
 

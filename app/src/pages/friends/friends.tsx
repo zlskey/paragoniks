@@ -11,9 +11,10 @@ import FriendItem, {
   FriendItemSkeleton,
 } from 'src/pages/friends/components/friend-item'
 import {
-  selectUser,
-  selectUserLoading,
-} from 'src/helpers/reducers/user/user.reducer'
+  selectAllFriends,
+  selectFriendsLoading,
+} from 'src/helpers/reducers/friends/friends.reducer'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { useEffect, useState } from 'react'
 
 import AddNewFriendSection from 'src/pages/friends/components/add-new-friend-section'
@@ -21,26 +22,26 @@ import { Friend } from 'src/types/generic.types'
 import FriendRequestItem from 'src/pages/friends/components/friend-request-item'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
-import { useAppSelector } from 'src/redux-hooks'
+import { getAllFriendships } from 'src/helpers/reducers/friends/friends.thunk'
 
 const Friends = () => {
-  const isLoading = useAppSelector(selectUserLoading) === 'pending'
+  const isLoading = useAppSelector(selectFriendsLoading) === 'pending'
 
-  const user = useAppSelector(selectUser)
+  const friends = useAppSelector(selectAllFriends)
+
+  const dispatch = useAppDispatch()
 
   const [accepted, setAccepted] = useState<Friend[]>([])
   const [pending, setPending] = useState<Friend[]>([])
 
   useEffect(() => {
-    if (!user) {
-      return
-    }
-
-    const { friends } = user
-
     setAccepted(friends.filter(friend => friend.status === 'accepted'))
     setPending(friends.filter(friend => friend.status === 'pending'))
-  }, [user])
+  }, [friends])
+
+  useEffect(() => {
+    dispatch(getAllFriendships({}))
+  }, [])
 
   return (
     <Wrapper>

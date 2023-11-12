@@ -12,7 +12,7 @@ const ThemeSwitch = () => {
   const theme = user?.theme || 'dark'
 
   const handleThemeChange = () => {
-    dispatch(toggleTheme())
+    dispatch(toggleTheme({}))
   }
 
   return (

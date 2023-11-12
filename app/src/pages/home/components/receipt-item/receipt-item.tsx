@@ -16,25 +16,27 @@ const ReceiptItem = ({ receipt }: ReceiptItemProps) => {
 
   const dispatch = useAppDispatch()
 
-  const navigateToReceipt = (id: string) => () => {
-    navigate(`/receipt/${id}`)
+  const { _id: receiptId, title } = receipt
+
+  const navigateToReceipt = () => {
+    navigate(`/receipt/${receiptId}`)
   }
 
-  const handleRemoveReceipt = (receiptId: string) => () => {
-    dispatch(removeReceipt(receiptId))
+  const handleRemoveReceipt = () => {
+    dispatch(removeReceipt({ receiptId }))
   }
 
   return (
     <ListItem
       secondaryAction={
-        <IconButton onClick={handleRemoveReceipt(receipt._id)}>
+        <IconButton onClick={handleRemoveReceipt}>
           <DeleteIcon />
         </IconButton>
       }
-      key={receipt._id}
+      key={receiptId}
     >
-      <ListItemButton onClick={navigateToReceipt(receipt._id)}>
-        <ListItemText>{receipt.title}</ListItemText>
+      <ListItemButton onClick={navigateToReceipt}>
+        <ListItemText>{title}</ListItemText>
       </ListItemButton>
     </ListItem>
   )

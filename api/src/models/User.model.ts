@@ -1,20 +1,23 @@
 import { ErrorObject } from 'src/middlewares/error.middleware'
+import { UserId } from 'src/types/generic.types'
 import _ from 'lodash'
 import bcrypt from 'bcrypt'
 import constants from 'src/constants'
 import mongoose from 'mongoose'
 import { userService } from 'src/services'
 
-export type AvatarColor = 'red' | 'blue' | 'green' | 'yellow' | 'pink' | 'purple' | 'orange' | 'default'
-
-export interface IFriend {
-  username: string
-  status: 'accepted' | 'pending'
-  image?: string
-}
+export type AvatarColor =
+  | 'red'
+  | 'blue'
+  | 'green'
+  | 'yellow'
+  | 'pink'
+  | 'purple'
+  | 'orange'
+  | 'default'
 
 export interface IUser {
-  _id: mongoose.Types.ObjectId
+  _id: UserId
 
   username: string
   password: string
@@ -24,21 +27,16 @@ export interface IUser {
   avatarImage: string
   avatarColor: AvatarColor
 
-  friends: IFriend[]
-
   removePassword(): Omit<IUser, 'password'>
   validatePassword(this: IUser, password: string): Promise<void>
   changePassword(this: IUser, password: string): Promise<void>
-  startEncryption(this: IUser, passphrase: string): Promise<void>
-  changePassphrase(
-    this: IUser,
-    current: string,
-    newPassphrase: string
-  ): Promise<void>
   changeUsername(this: IUser, username: string): Promise<IUser>
   toggleTheme(this: IUser): Promise<IUser>
   changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser>
   changeAvatarImage(this: IUser, image: string): Promise<IUser>
+  pickProfile(
+    this: IUser
+  ): Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'>
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -50,7 +48,6 @@ const userSchema = new mongoose.Schema<IUser>({
   password: {
     type: String,
   },
-  friends: [],
   theme: {
     type: String,
     default: 'dark',
@@ -121,6 +118,12 @@ class UserClass {
 
   changeAvatarImage(this: IUser, image: string): Promise<IUser> {
     return userService.update(this._id, { avatarImage: image })
+  }
+
+  pickProfile(
+    this: IUser
+  ): Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'> {
+    return _.pick(this, ['_id', 'username', 'avatarImage', 'avatarColor'])
   }
 }
 

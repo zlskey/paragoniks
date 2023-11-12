@@ -39,6 +39,8 @@ services:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
     image: mongo
     restart: unless-stopped
+    ports:
+      - 27017:27017
     networks:
       - rs-local-network
 

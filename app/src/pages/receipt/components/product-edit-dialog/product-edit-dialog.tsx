@@ -15,7 +15,7 @@ import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
-import { updateReceiptProduct } from 'src/helpers/reducers/receipt/receipt.thunk'
+import { updateProduct } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -71,7 +71,7 @@ const ProductEditDialog = ({
     if (!product) return
 
     dispatch(
-      updateReceiptProduct({ receiptId, productId: product._id, product: data })
+      updateProduct({ receiptId, productId: product._id, product: data })
     )
     onClose()
   }

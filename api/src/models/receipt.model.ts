@@ -1,11 +1,13 @@
+import { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
+
 import mongoose from 'mongoose'
 
 export interface IProduct {
-  comprising: string[]
+  comprising: UserId[]
   name: string
   price: number
   count: number
-  _id: string
+  _id: ProductId
 }
 
 export interface ISimpleReceipt {
@@ -16,9 +18,9 @@ export interface ISimpleReceipt {
 }
 
 export interface IReceipt extends ISimpleReceipt {
-  _id: string
-  owner: string
-  contributors: string[]
+  _id: ReceiptId
+  owner: UserId
+  contributors: UserId[]
 }
 
 const receiptSchema = new mongoose.Schema<IReceipt>({
@@ -31,7 +33,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>({
     required: true,
   },
   owner: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   imagePath: {
@@ -45,7 +47,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>({
 receiptSchema.pre('save', async function (next) {
   this.products = this.products.map(product => ({
     ...product,
-    _id: new mongoose.Types.ObjectId().toString(),
+    _id: new mongoose.Types.ObjectId(),
     comprising: [],
   }))
 

@@ -63,7 +63,7 @@ const TitleInput = ({ receipt, user }: TIleInputProps) => {
       <Stack p={1}>
         <InputBase
           sx={{ fontSize: theme => theme.typography.h5 }}
-          disabled={user.username !== receipt.owner}
+          disabled={user._id !== receipt.owner}
           spellCheck={false}
           {...formState.register('title', {
             onBlur: handleChangeTitle,

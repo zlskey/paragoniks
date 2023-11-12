@@ -1,9 +1,7 @@
-
 export interface RsApiError {
   message: string
   code: number
 }
-
 
 export enum AvatarColor {
   Red = '#ff9800',
@@ -16,27 +14,42 @@ export enum AvatarColor {
   Default = 'default',
 }
 
+export type UserId = string
+export type FriendId = UserId
+export type ContributorId = UserId
+export type ProductId = string
+export type ReceiptId = string
+export type FriendshipId = string
+
 export interface User {
+  _id: UserId
   username: string
-  friends: Friend[]
   theme: 'light' | 'dark'
   avatarColor: AvatarColor
   avatarImage: string
 }
 
-export interface Friend {
+export interface Profile {
+  _id: UserId
   username: string
-  status: 'accepted' | 'pending'
   avatarColor: AvatarColor
   avatarImage: string
 }
 
+export interface Friend {
+  _id: FriendshipId
+  username: string
+  avatarColor: AvatarColor
+  avatarImage: string
+  status: 'accepted' | 'pending'
+}
+
 export interface Product {
-  comprising: string[]
+  _id: ProductId
+  comprising: UserId[]
   name: string
   price: number
   count: number
-  _id: string
 }
 
 export interface SimpleReceipt {
@@ -46,8 +59,8 @@ export interface SimpleReceipt {
 }
 
 export interface Receipt extends SimpleReceipt {
-  _id: string
-  owner: string
-  contributors: string[]
+  _id: ReceiptId
+  owner: UserId
+  contributors: UserId[]
   imagePath: string
 }

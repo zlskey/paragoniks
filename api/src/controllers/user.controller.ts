@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import _ from 'lodash'
+import { userService } from 'src/services'
 
 export const handleChangeUsername: RequestHandler = async (req, res, next) => {
   const { username } = req.body
@@ -29,7 +30,11 @@ export const handleToggleTheme: RequestHandler = async (req, res, next) => {
   res.status(201).json(updatedUser)
 }
 
-export const handleChangeAvatarColor: RequestHandler = async (req, res, next) => {
+export const handleChangeAvatarColor: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   const user = req.user
   const { color } = req.body
 
@@ -38,11 +43,25 @@ export const handleChangeAvatarColor: RequestHandler = async (req, res, next) =>
   res.status(201).json(updatedUser)
 }
 
-export const handleChangeAvatarImage: RequestHandler = async (req, res, next) => {
+export const handleChangeAvatarImage: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   const user = req.user
   const image = req.file.path
 
   const updatedUser = await user.changeAvatarImage(image)
 
   res.status(201).json(updatedUser)
+}
+
+export const handleGetProfile: RequestHandler = async (req, res, next) => {
+  const { userId } = req.params
+
+  const user = await userService.getById(userId)
+
+  const profile = user.pickProfile()
+
+  res.status(201).json(profile)
 }

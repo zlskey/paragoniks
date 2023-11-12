@@ -4,14 +4,24 @@ import { wrapAsync } from 'src/utils'
 
 const friendRouter = Router()
 
-friendRouter.patch('/', wrapAsync(friendController.handleCreateFriendRequest))
-friendRouter.delete(
-  '/:username',
-  wrapAsync(friendController.handleRemoveFriend)
+friendRouter.get('/', wrapAsync(friendController.defaultFriendController))
+
+friendRouter.post(
+  '/',
+  wrapAsync(friendController.handleCreateFriendshipRequest),
+  wrapAsync(friendController.defaultFriendController)
 )
+
+friendRouter.delete(
+  '/:friendId',
+  wrapAsync(friendController.handleRemoveFriend),
+  wrapAsync(friendController.defaultFriendController)
+)
+
 friendRouter.patch(
   '/respond',
-  wrapAsync(friendController.handleRespondToFriendRequest)
+  wrapAsync(friendController.handleRespondToFriendRequest),
+  wrapAsync(friendController.defaultFriendController)
 )
 
 export default friendRouter

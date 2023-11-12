@@ -4,7 +4,7 @@ import LockIcon from '@mui/icons-material/LockOutlined'
 import ReadyIcon from '@mui/icons-material/DoneOutlined'
 import UnlockIcon from '@mui/icons-material/LockOpenOutlined'
 
-const ReceiptStatusButton = () => {
+const ContributorStatusButton = () => {
   return (
     <ListItem>
       <Button
@@ -18,4 +18,4 @@ const ReceiptStatusButton = () => {
   )
 }
 
-export default ReceiptStatusButton
+export default ContributorStatusButton

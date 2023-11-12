@@ -6,7 +6,7 @@ import AttachIcon from '@mui/icons-material/AttachFileOutlined'
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
-import { createNewReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
+import { createReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { selectReceiptLoading } from 'src/helpers/reducers/receipt/receipt.reducer'
 
 const defaultValues = {
@@ -28,7 +28,7 @@ const UploadReceipt = () => {
 
   const handleCreateReceipt = () => {
     if (fileList) {
-      dispatch(createNewReceipt(fileList[0]))
+      dispatch(createReceipt({ image: fileList[0] }))
       resetForm()
     }
   }

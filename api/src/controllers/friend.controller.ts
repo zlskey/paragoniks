@@ -1,22 +1,10 @@
 import { friendService, userService } from 'src/services'
 
 import { RequestHandler } from 'express'
+import { UserId } from 'src/types/generic.types'
+import _ from 'lodash'
 
-export const handleRemoveFriend: RequestHandler = async (req, res, next) => {
-  const { username } = req.params
-
-  const user = req.user
-
-  const updatedUser = await friendService.removeFriend(user, username)
-
-  const removedFriend = await userService.getByUsername(username)
-
-  await friendService.removeFriend(removedFriend, user.username)
-
-  res.status(201).json(updatedUser)
-}
-
-export const handleCreateFriendRequest: RequestHandler = async (
+export const handleCreateFriendshipRequest: RequestHandler = async (
   req,
   res,
   next
@@ -25,11 +13,19 @@ export const handleCreateFriendRequest: RequestHandler = async (
 
   const user = req.user
 
-  const recipient = await userService.getByUsername(username)
+  await friendService.sendFriendshipRequest(user._id, username)
 
-  await friendService.createFriendRequest(recipient, user.username)
+  next()
+}
 
-  res.status(201).json(user)
+export const handleRemoveFriend: RequestHandler = async (req, res, next) => {
+  const { friendId } = req.params
+
+  const user = req.user
+
+  await friendService.removeFriendship(user._id, friendId as unknown as UserId)
+
+  next()
 }
 
 export const handleRespondToFriendRequest: RequestHandler = async (
@@ -37,19 +33,43 @@ export const handleRespondToFriendRequest: RequestHandler = async (
   res,
   next
 ) => {
-  const { username, accept } = req.body
+  const { friendId, accept } = req.body
 
   const user = req.user
 
-  const friend = await userService.getByUsername(username)
-
-  const updatedUser = accept
-    ? await friendService.insertAcceptedFriend(user, friend)
-    : await friendService.removeFriend(user, friend.username)
-
   if (accept) {
-    await friendService.insertAcceptedFriend(friend, user)
+    await friendService.acceptFriendship(user._id, friendId)
+  } else {
+    await friendService.removeFriendship(user._id, friendId)
   }
 
-  res.status(201).json(updatedUser)
+  next()
+}
+
+export const defaultFriendController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const user = req.user
+
+  const friendships = await friendService.findUserFriendships(user._id)
+
+  const friends = await Promise.all(
+    await friendships.map(async friendship => {
+      const friend = await userService.getById(friendship.friendId)
+
+      const { _id, username, avatarImage, avatarColor } = friend
+
+      return {
+        _id,
+        username,
+        avatarImage,
+        avatarColor,
+        status: friendship.status,
+      }
+    })
+  )
+
+  res.status(201).json(friends)
 }

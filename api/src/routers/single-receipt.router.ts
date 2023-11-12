@@ -29,12 +29,12 @@ singleReceiptRouter.patch(
   wrapAsync(receiptController.handleToggleComprising)
 )
 singleReceiptRouter.patch(
-  '/friend/:username',
+  '/friend/:contributorId',
   wrapAsync(receiptController.handleAddContributor)
 )
 
 singleReceiptRouter.delete(
-  '/friend/:username',
+  '/friend/:contributorId',
   wrapAsync(receiptController.handleRemoveContributor)
 )
 

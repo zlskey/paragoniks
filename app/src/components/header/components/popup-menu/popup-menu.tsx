@@ -8,7 +8,7 @@ const PopupMenu = ({ anchorEl, onClose }: PopupMenuProps) => {
   const dispatch = useAppDispatch()
 
   const handleLogout = () => {
-    dispatch(logoutUser())
+    dispatch(logoutUser({}))
   }
 
   return (

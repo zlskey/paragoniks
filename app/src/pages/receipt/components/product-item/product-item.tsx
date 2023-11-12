@@ -12,42 +12,33 @@ import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import EditIcon from '@mui/icons-material/EditOutlined'
 import { ProductItemProps } from './product-item.types'
-import ProductItemSkeleton from './product-item.skeleton'
+import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { getPrice } from 'src/helpers/utils/get-price'
-import { receiptToggleProductComprising } from 'src/helpers/reducers/receipt/receipt.thunk'
-import { selectReceiptLoading } from 'src/helpers/reducers/receipt/receipt.reducer'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { toggleProductComprising } from 'src/helpers/reducers/receipt/receipt.thunk'
+import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 const ProductItem = ({ product, isOwner, onEdit }: ProductItemProps) => {
   const user = useAppSelector(selectUser)
 
-  const { id } = useParams()
+  const { receiptId } = useParams()
 
-  const isComprising = product.comprising.includes(user?.username || '')
+  const userCut = useMemo(() => {
+    const isComprising = product.comprising.includes(user?._id || '')
+    const cut = (product.price * product.count) / product.comprising.length
 
-  const userCut = getPrice(
-    isComprising
-      ? (product.price * product.count) / product.comprising.length
-      : 0
-  )
+    return getPrice(isComprising ? cut : 0)
+  }, [product.comprising])
 
   const dispatch = useAppDispatch()
 
   const toggleComprising = () => {
-    if (!id || !product._id) {
+    if (!receiptId || !product._id) {
       return
     }
 
-    dispatch(
-      receiptToggleProductComprising({ receiptId: id, productId: product._id })
-    )
-  }
-
-  const isLoading = useAppSelector(selectReceiptLoading) === 'pending'
-
-  if (isLoading) {
-    return <ProductItemSkeleton />
+    dispatch(toggleProductComprising({ receiptId, productId: product._id }))
   }
 
   return (
@@ -73,7 +64,7 @@ const ProductItem = ({ product, isOwner, onEdit }: ProductItemProps) => {
             <Avatar sx={{ visibility: 'hidden' }} />
 
             {product.comprising.map(friend => (
-              <Avatar alt={friend} key={friend} src='#' />
+              <UserAvatar key={friend} userId={friend} />
             ))}
 
             <Typography>{userCut}</Typography>

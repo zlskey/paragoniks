@@ -24,14 +24,14 @@ const ChangeAvatarModal = () => {
   const formState = useForm({ defaultValues })
 
   const onSubmit = ({ files }: typeof defaultValues) => {
-    files && dispatch(changeAvatarImage(files[0]))
+    files && dispatch(changeAvatarImage({ image: files[0] }))
 
     formState.reset()
     navigate('#')
   }
 
   const selectColor = (color: AvatarColor) => () => {
-    dispatch(changeAvatarColor(color))
+    dispatch(changeAvatarColor({ color }))
   }
 
   if (!user) return null

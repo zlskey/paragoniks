@@ -30,7 +30,7 @@ const paths: RouteObject[] = [
         element: <Settings />,
       },
       {
-        path: 'receipt/:id',
+        path: 'receipt/:receiptId',
         element: <Receipt />,
       },
     ],

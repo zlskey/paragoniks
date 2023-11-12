@@ -1,6 +1,7 @@
 import User, { IUser } from 'src/models/User.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
+import { UserId } from 'src/types/generic.types'
 import _ from 'lodash'
 import constants from 'src/constants'
 
@@ -37,8 +38,8 @@ export const getByUsername = async (
   return user
 }
 
-export const getById = async (id: IUser['_id'] | string): Promise<IUser> => {
-  const user = await User.findById(id)
+export const getById = async (userId: UserId | string): Promise<IUser> => {
+  const user = await User.findById(userId)
 
   if (!user) {
     throw new ErrorObject(constants.invalid_username, 401)
@@ -47,31 +48,11 @@ export const getById = async (id: IUser['_id'] | string): Promise<IUser> => {
   return user
 }
 
-export const remove = async (userId: IUser['_id']): Promise<void> => {
+export const remove = async (userId: UserId): Promise<void> => {
   await getById(userId) // to validate if user exist
   await User.findByIdAndRemove(userId)
 }
 
-export const update = async (
-  userId: IUser['_id'],
-  payload: any
-): Promise<IUser> => {
+export const update = async (userId: UserId, payload: any): Promise<IUser> => {
   return await User.findByIdAndUpdate(userId, payload, { new: true })
-}
-
-export const handleMakeFriendship = async (
-  firstUsername: IUser['username'],
-  secondUsername: IUser['username']
-) => {
-  const firstUser = await getByUsername(firstUsername)
-  const secondUser = await getByUsername(secondUsername)
-
-  await User.findByIdAndUpdate(firstUser._id, {
-    friends: [...firstUser.friends, secondUsername],
-  })
-  await User.findByIdAndUpdate(secondUser._id, {
-    friends: [...secondUser.friends, firstUsername],
-  })
-
-  return true
 }

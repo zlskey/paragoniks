@@ -1,5 +1,4 @@
 import {
-  Avatar,
   IconButton,
   ListItem,
   ListItemAvatar,
@@ -12,7 +11,7 @@ import AcceptFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import DeclineFriendRequestIcon from '@mui/icons-material/PersonOffOutlined'
 import { FriendRequestItemProps } from './friend-request-item.types'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
-import { respondToFriendRequest } from 'src/helpers/reducers/user/user.thunk'
+import { respondToFriendRequest } from 'src/helpers/reducers/friends/friends.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 
 const FriendRequestItem = ({ friend }: FriendRequestItemProps) => {
@@ -21,7 +20,7 @@ const FriendRequestItem = ({ friend }: FriendRequestItemProps) => {
   const handleRespondToFriendshipRequest = (accept: boolean) => () => {
     dispatch(
       respondToFriendRequest({
-        username: friend.username,
+        friendId: friend._id,
         accept,
       })
     )
@@ -30,7 +29,7 @@ const FriendRequestItem = ({ friend }: FriendRequestItemProps) => {
   return (
     <ListItem>
       <ListItemAvatar>
-        <UserAvatar profile={friend} />
+        <UserAvatar userId={friend._id} />
       </ListItemAvatar>
 
       <ListItemText>{friend.username}</ListItemText>

@@ -1,136 +1,86 @@
 import {
-  AddReceiptContributorBody,
+  AddContributorBody,
   ChangeReceiptTitleBody,
-  ReceiptToggleProductComprisingBody,
-  RemoveReceiptContributorBody,
-  UpdateReceiptProductBody,
-} from './receipt.types'
+  CreateReceiptBody,
+  GetReceiptBody,
+  RemoveContributorBody,
+  RemoveReceiptBody,
+  ToggleProductComprisingBody,
+  UpdateProductBody,
+} from 'src/helpers/services/endpoints/receipt/receipt.service.types'
 
-import { Receipt } from 'src/types/generic.types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { rsApi } from 'src/helpers/services/rs.service'
+import { receiptService } from 'src/helpers/services'
 import { wrapThunk } from 'src/helpers/utils/wrap-thunk'
 
 export const getUserReceipts = createAsyncThunk(
   'receipt/getUserReceipts',
   async (_, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.get<Receipt[]>('/receipt')
-
-      return response.data
+      return receiptService.getUserReceipts({})
     })
 )
 
-export const createNewReceipt = createAsyncThunk(
-  'receipt/createNewReceipt',
-  async (image: File, { rejectWithValue }) =>
+export const createReceipt = createAsyncThunk(
+  'receipt/createReceipt',
+  async (body: CreateReceiptBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.post<Receipt[]>(
-        '/receipt',
-        { image },
-        {
-          timeout: 30000,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      )
-
-      return response.data
+      return receiptService.createReceipt(body)
     })
 )
 
-export const getSingleReceipt = createAsyncThunk(
-  'receipt/getSingleReceipt',
-  async (receiptId: string, { rejectWithValue }) =>
+export const getReceipt = createAsyncThunk(
+  'receipt/getReceipt',
+  async (body: GetReceiptBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.get<Receipt>(`/receipt/${receiptId}`)
-
-      return response.data
+      return receiptService.getReceipt(body)
     })
 )
 
-export const receiptToggleProductComprising = createAsyncThunk(
-  'receipt/toggleComprising',
-  async (
-    { receiptId, productId }: ReceiptToggleProductComprisingBody,
-    { rejectWithValue }
-  ) =>
+export const toggleProductComprising = createAsyncThunk(
+  'receipt/toggleProductComprising',
+  async (body: ToggleProductComprisingBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<Receipt>(
-        `/receipt/${receiptId}/product/${productId}/comprising`
-      )
-
-      return response.data
+      return receiptService.toggleProductComprising(body)
     })
 )
 
 export const removeReceipt = createAsyncThunk(
   'receipt/removeReceipt',
-  async (receiptId: string, { rejectWithValue }) =>
+  async (body: RemoveReceiptBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.delete<Receipt[]>(`/receipt/${receiptId}`)
-
-      return response.data
+      return receiptService.removeReceipt(body)
     })
 )
 
 export const changeReceiptTitle = createAsyncThunk(
   'receipt/changeReceiptTitle',
-  async (
-    { receiptId, newTitle }: ChangeReceiptTitleBody,
-    { rejectWithValue }
-  ) =>
+  async (body: ChangeReceiptTitleBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<Receipt>(
-        `/receipt/${receiptId}/title`,
-        { newTitle }
-      )
-
-      return response.data
+      return receiptService.changeReceiptTitle(body)
     })
 )
 
-export const addReceiptContributor = createAsyncThunk(
-  'receipt/handleAddFriend',
-  async (
-    { receiptId, username }: AddReceiptContributorBody,
-    { rejectWithValue }
-  ) =>
+export const addContributor = createAsyncThunk(
+  'receipt/addContributor',
+  async (body: AddContributorBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<Receipt>(
-        `/receipt/${receiptId}/friend/${username}`
-      )
-
-      return response.data
+      return receiptService.addContributor(body)
     })
 )
 
-export const removeReceiptContributor = createAsyncThunk(
-  'receipt/removeReceiptContributor',
-  async (
-    { receiptId, username }: RemoveReceiptContributorBody,
-    { rejectWithValue }
-  ) =>
+export const removeContributor = createAsyncThunk(
+  'receipt/removeContributor',
+  async (body: RemoveContributorBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.delete<Receipt>(
-        `/receipt/${receiptId}/friend/${username}`
-      )
-
-      return response.data
+      return receiptService.removeContributor(body)
     })
 )
 
-export const updateReceiptProduct = createAsyncThunk(
-  'receipt/updateReceiptProduct',
-  async (
-    { receiptId, productId, product }: UpdateReceiptProductBody,
-    { rejectWithValue }
-  ) =>
+export const updateProduct = createAsyncThunk(
+  'receipt/updateProduct',
+  async (body: UpdateProductBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<Receipt>(
-        `/receipt/${receiptId}/product/${productId}`,
-        { product }
-      )
-
-      return response.data
+      return receiptService.updateProduct(body)
     })
 )

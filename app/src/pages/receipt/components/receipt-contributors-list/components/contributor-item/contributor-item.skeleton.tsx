@@ -8,7 +8,7 @@ import {
 
 import useRandomizedValues from 'src/helpers/hooks/use-randomized-values'
 
-const ReceiptFriendStatusItemSkeleton = () => {
+const ContributorItemSkeleton = () => {
   const usernameWidth = useRandomizedValues(50, 100)
   const percentageWidth = useRandomizedValues(10, 20)
 
@@ -31,4 +31,4 @@ const ReceiptFriendStatusItemSkeleton = () => {
   )
 }
 
-export default ReceiptFriendStatusItemSkeleton
+export default ContributorItemSkeleton

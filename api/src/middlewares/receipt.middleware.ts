@@ -1,5 +1,6 @@
 import { ErrorObject } from './error.middleware'
 import { IReceipt } from 'src/models/receipt.model'
+import { ReceiptId } from 'src/types/generic.types'
 import { RequestHandler } from 'express'
 import { receiptService } from 'src/services'
 
@@ -18,13 +19,15 @@ export const findAndValidateReceipt: RequestHandler = async (
 ) => {
   const { receiptId } = req.params
 
-  const { username } = req.user
+  const { _id } = req.user
 
-  const receipt = await receiptService.getReceipt(receiptId)
+  const receipt = await receiptService.getReceipt(
+    receiptId as unknown as ReceiptId
+  )
 
   const { owner, contributors } = receipt
 
-  if (owner === username || contributors.includes(username)) {
+  if (owner.equals(_id) || contributors.find(id => _id.equals(id))) {
     req.receipt = receipt
 
     return next()

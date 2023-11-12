@@ -1,19 +1,20 @@
 import * as fs from 'fs'
 
+import { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
 import Receipt, { IReceipt, ISimpleReceipt } from 'src/models/receipt.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import { IUser } from 'src/models/User.model'
+import { compareIds } from 'src/utils/ids-util'
 
-export const getAllReceipts = async (username: string) => {
+export const getAllReceipts = async (userId: UserId) => {
   const receipts = await Receipt.find({
-    $or: [{ owner: username }, { contributors: username }],
+    $or: [{ owner: userId }, { contributors: userId.toString() }],
   })
 
   return receipts
 }
 
-export const getReceipt = async (receiptId: string) => {
+export const getReceipt = async (receiptId: ReceiptId) => {
   const receipt = await Receipt.findById(receiptId)
 
   if (!receipt) {
@@ -23,44 +24,53 @@ export const getReceipt = async (receiptId: string) => {
   return receipt
 }
 
-export const createReceipt = async (receipt: ISimpleReceipt, user: IUser) => {
+export const createReceipt = async (
+  receipt: ISimpleReceipt,
+  userId: UserId
+) => {
   const receiptObj = {
     ...receipt,
-    owner: user.username,
+    owner: userId,
     contributors: [],
   }
 
   return await Receipt.create(receiptObj)
 }
 
-export const removeReceiptForUser = async (receipt: IReceipt, user: IUser) => {
-  const isContributor = receipt.contributors.includes(user.username)
+export const removeReceiptForUser = async (
+  receipt: IReceipt,
+  userId: UserId
+) => {
+  const isContributor = receipt.contributors.includes(userId)
 
   if (isContributor) {
-    await removeContributor(receipt, user.username)
+    await removeContributor(receipt, userId)
   }
 
   await Receipt.findByIdAndRemove(receipt._id)
+
   fs.rmSync(receipt.imagePath)
 }
 
 export const toggleComprising = async (
   receipt: IReceipt,
-  productId: string,
-  username: string
+  productId: ProductId,
+  userId: UserId
 ) => {
   const updatedProducts = receipt.products.map(product => {
-    if (product._id === productId) {
-      const comprising = product.comprising.includes(username)
+    if (compareIds(product._id, productId)) {
+      const comprising = product.comprising.find(comprising =>
+        compareIds(comprising, userId)
+      )
 
       if (comprising) {
         product.comprising = product.comprising.filter(
-          comprisingUsername => comprisingUsername !== username
+          comprisingId => !compareIds(comprisingId, userId)
         )
         return product
       }
 
-      product.comprising.push(username)
+      product.comprising.push(userId)
 
       return product
     }
@@ -88,14 +98,24 @@ export const changeReceiptTitle = async (
   )
 }
 
-export const addContributor = async (receipt: IReceipt, username: string) => {
+export const addContributor = async (
+  receipt: IReceipt,
+  userId: UserId,
+  contributorId: UserId
+) => {
   const { contributors } = receipt
 
-  if (contributors.includes(username)) {
+  if (!compareIds(receipt.owner, userId)) {
+    throw new ErrorObject('Only owner can add contributors', 400)
+  }
+
+  if (
+    contributors.find(contributor => compareIds(contributor, contributorId))
+  ) {
     return receipt
   }
 
-  const updatedContributors = [...contributors, username]
+  const updatedContributors = [...contributors, contributorId]
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
@@ -106,15 +126,21 @@ export const addContributor = async (receipt: IReceipt, username: string) => {
 
 export const removeContributor = async (
   receipt: IReceipt,
-  username: string
+  contributorId: UserId
 ) => {
+  if (compareIds(receipt.owner, contributorId)) {
+    throw new ErrorObject('Cannot remove owner', 400)
+  }
+
   const updatedContributors = receipt.contributors.filter(
-    contributor => contributor !== username
+    contributor => !compareIds(contributor, contributorId)
   )
 
   const updatedProducts = receipt.products.map(product => ({
     ...product,
-    comprising: product.comprising.filter(friend => friend !== username),
+    comprising: product.comprising.filter(
+      friend => !compareIds(friend, contributorId)
+    ),
   }))
 
   return await Receipt.findByIdAndUpdate(
@@ -126,11 +152,11 @@ export const removeContributor = async (
 
 export const updateProduct = async (
   receipt: IReceipt,
-  productId: string,
+  productId: ProductId,
   product: Record<string, string | number>
 ) => {
   const updatedProducts = receipt.products.map(receiptProduct => {
-    if (receiptProduct._id === productId) {
+    if (compareIds(receiptProduct._id, productId)) {
       return {
         ...receiptProduct,
         ...product,

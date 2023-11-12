@@ -1,92 +1,56 @@
-import { AvatarColor, User } from 'src/types/generic.types'
 import {
+  ChangeAvatarColorBody,
+  ChangeAvatarImageBody,
   ChangePasswordBody,
-  RespondToFriendRequestBody,
-  UserLoginBody,
-  UserSignupBody,
-} from './user.types'
+  ChangeUsernameBody,
+  LoginUserBody,
+  LogoutUserBody,
+  SignupUserBody,
+  ToggleThemeBody,
+  WhoamiUserBody,
+} from 'src/helpers/services/endpoints/user/user.service.types'
 
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { rsApi } from 'src/helpers/services/rs.service'
+import { userService } from 'src/helpers/services'
 import { wrapThunk } from 'src/helpers/utils/wrap-thunk'
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (data: UserLoginBody, { rejectWithValue }) =>
+  async (body: LoginUserBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.post<User>('/auth/login', data)
-
-      return response.data
+      return userService.loginUser(body)
     })
 )
 
 export const signupUser = createAsyncThunk(
   'user/signup',
-  async (data: UserSignupBody, { rejectWithValue }) =>
+  async (body: SignupUserBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.post<User>('/auth/signup', data)
-
-      return response.data
+      return userService.signupUser(body)
     })
 )
 
 export const logoutUser = createAsyncThunk(
   'user/logout',
-  async (_, { rejectWithValue }) =>
+  async (body: LogoutUserBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      await rsApi.get('/auth/logout')
-
-      return
+      return userService.logoutUser(body)
     })
 )
 
 export const whoamiUser = createAsyncThunk(
   'user/whoami',
-  async (_, { rejectWithValue }) =>
+  async (body: WhoamiUserBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.get<User | null>('/auth/whoami')
-
-      return response.data
-    })
-)
-
-export const sendFriendRequest = createAsyncThunk(
-  'user/sendFriendRequest',
-  async (username: string, { rejectWithValue }) =>
-    wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/friend', { username })
-
-      return response.data
-    })
-)
-
-export const respondToFriendRequest = createAsyncThunk(
-  'user/respondToFriendRequest',
-  async (body: RespondToFriendRequestBody, { rejectWithValue }) =>
-    wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/friend/respond', body)
-
-      return response.data
-    })
-)
-
-export const removeFriend = createAsyncThunk(
-  'user/removeFriend',
-  async (username: string, { rejectWithValue }) =>
-    wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.delete<User>(`user/friend/${username}`)
-
-      return response.data
+      return userService.whoamiUser(body)
     })
 )
 
 export const changeUsername = createAsyncThunk(
   'user/changeUsername',
-  async (username: string, { rejectWithValue }) =>
+  async (body: ChangeUsernameBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/username', { username })
-
-      return response.data
+      return userService.changeUsername(body)
     })
 )
 
@@ -94,38 +58,30 @@ export const changePassword = createAsyncThunk(
   'user/changePassword',
   async (body: ChangePasswordBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/password', body)
-
-      return response.data
+      return userService.changePassword(body)
     })
 )
 
 export const toggleTheme = createAsyncThunk(
   'user/toggleTheme',
-  async (_, { rejectWithValue }) =>
+  async (body: ToggleThemeBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/theme')
-
-      return response.data
+      return userService.toggleTheme(body)
     })
 )
 
 export const changeAvatarColor = createAsyncThunk(
   'user/changeAvatarColor',
-  async (color: AvatarColor, { rejectWithValue }) =>
+  async (body: ChangeAvatarColorBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/avatar/color', { color })
-
-      return response.data
+      return userService.changeAvatarColor(body)
     })
 )
 
 export const changeAvatarImage = createAsyncThunk(
   'user/changeAvatarImage',
-  async (image: File, { rejectWithValue }) =>
+  async (body: ChangeAvatarImageBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
-      const response = await rsApi.patch<User>('user/avatar/image', { image })
-
-      return response.data
+      return userService.changeAvatarImage(body)
     })
 )

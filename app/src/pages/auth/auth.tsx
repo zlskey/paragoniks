@@ -18,7 +18,7 @@ const Auth = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(whoamiUser())
+    dispatch(whoamiUser({}))
   }, [])
 
   useEffect(() => {

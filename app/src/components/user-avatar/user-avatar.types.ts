@@ -1,6 +1,6 @@
-import { Friend, User } from "src/types/generic.types";
+import { UserId } from 'src/types/generic.types'
 
 export interface UserAvatarProps {
-    profile?: User | Friend
-    size?: 'md' | 'lg'
+  size?: 'md' | 'lg'
+  userId?: UserId
 }

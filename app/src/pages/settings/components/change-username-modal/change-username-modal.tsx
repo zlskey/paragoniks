@@ -31,8 +31,8 @@ const ChangeUsernameModal = () => {
     resolver: yupResolver(usernameSchema),
   })
 
-  const onSubmit = (data: typeof defaultValues) => {
-    dispatch(changeUsername(data.username))
+  const onSubmit = ({ username }: typeof defaultValues) => {
+    dispatch(changeUsername({ username }))
     formState.reset()
     navigate('#')
   }

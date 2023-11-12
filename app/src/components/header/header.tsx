@@ -14,12 +14,8 @@ import { Link } from 'react-router-dom'
 import MenuItem from './components/menu-item'
 import PopupMenu from './components/popup-menu/popup-menu'
 import UserAvatar from '../user-avatar/user-avatar'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
-import { useAppSelector } from 'src/redux-hooks'
 
 const Header = () => {
-  const user = useAppSelector(selectUser)
-
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
