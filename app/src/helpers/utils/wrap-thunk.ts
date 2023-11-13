@@ -13,6 +13,10 @@ const wrapThunk = async (rejectWithValue: Function, fun: Function) => {
       return rejectWithValue(err.response.data.error.message)
     }
 
+    if (isAxiosError(err) && err.response?.status === 429) {
+      return rejectWithValue('Too many requests')
+    }
+
     return rejectWithValue('Unexpected error occured')
   }
 }
