@@ -11,9 +11,9 @@ import {
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 
 import { AddContributorItemProps } from './add-contributor-item.types'
-import { Friend } from 'src/types/generic.types'
 import FriendProposal from './components/friend-proposal/friend-proposal'
-import { selectAllFriends } from 'src/helpers/reducers/friends/friends.reducer'
+import { selectAllFriendships } from 'src/helpers/reducers/friends/friends.reducer'
+import { selectAllProfiles } from 'src/helpers/reducers/profiles/profiles.reducer'
 import { useAppSelector } from 'src/redux-hooks'
 import { useState } from 'react'
 
@@ -22,11 +22,13 @@ const defaultValues = {
 }
 
 const AddContributorItem = ({ contributorsList }: AddContributorItemProps) => {
-  const friends = useAppSelector(selectAllFriends)
+  const friendships = useAppSelector(selectAllFriendships)
 
   const formState = useForm({ defaultValues })
 
   const username = useWatch({ name: 'username', control: formState.control })
+
+  const profiles = useAppSelector(selectAllProfiles)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -52,26 +54,21 @@ const AddContributorItem = ({ contributorsList }: AddContributorItemProps) => {
         <Popper id='simple-popper' anchorEl={anchorEl} open={Boolean(username)}>
           <Paper elevation={5}>
             <List disablePadding>
-              {filterProposals(
-                friends.filter(({ _id }) => !contributorsList.includes(_id)),
-                username
-              ).map(friend => (
-                <FriendProposal key={friend.username} friend={friend} />
-              ))}
+              {friendships
+                .filter(({ status }) => status === 'accepted')
+                .filter(({ friendId }) => !contributorsList.includes(friendId))
+                .flatMap(
+                  ({ friendId }) =>
+                    profiles.find(({ _id }) => _id === friendId) || []
+                )
+                .map(({ _id }) => (
+                  <FriendProposal key={_id} friendId={_id} />
+                ))}
             </List>
           </Paper>
         </Popper>
       </FormProvider>
     </ListItem>
-  )
-}
-
-const filterProposals = (friends: Friend[], query: string) => {
-  const lowerCaseQuery = query.toLowerCase()
-
-  return friends.filter(
-    ({ username, status }) =>
-      username.toLowerCase().includes(lowerCaseQuery) && status === 'accepted'
   )
 }
 

@@ -6,33 +6,39 @@ import {
   ListItemText,
   Tooltip,
 } from '@mui/material'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import AcceptFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import DeclineFriendRequestIcon from '@mui/icons-material/PersonOffOutlined'
 import { FriendRequestItemProps } from './friend-request-item.types'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { respondToFriendRequest } from 'src/helpers/reducers/friends/friends.thunk'
-import { useAppDispatch } from 'src/redux-hooks'
+import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
 
-const FriendRequestItem = ({ friend }: FriendRequestItemProps) => {
+const FriendRequestItem = ({ friendship }: FriendRequestItemProps) => {
   const dispatch = useAppDispatch()
+  const profile = useAppSelector(selectSingleProfile(friendship.friendId))
 
   const handleRespondToFriendshipRequest = (accept: boolean) => () => {
     dispatch(
       respondToFriendRequest({
-        friendId: friend._id,
+        friendId: friendship._id,
         accept,
       })
     )
   }
 
+  if (!profile) {
+    return null
+  }
+
   return (
     <ListItem>
       <ListItemAvatar>
-        <UserAvatar userId={friend._id} />
+        <UserAvatar userId={friendship._id} />
       </ListItemAvatar>
 
-      <ListItemText>{friend.username}</ListItemText>
+      <ListItemText>{profile.username}</ListItemText>
 
       <ListItemIcon>
         <Tooltip title='Decline'>

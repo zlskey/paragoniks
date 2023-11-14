@@ -1,5 +1,6 @@
 import {
   Avatar,
+  AvatarGroup,
   IconButton,
   ListItem,
   ListItemButton,
@@ -61,11 +62,13 @@ const ProductItem = ({ product, isOwner, onEdit }: ProductItemProps) => {
 
         <ListItemIcon>
           <Stack direction='row' alignItems='center' spacing={1}>
-            <Avatar sx={{ visibility: 'hidden' }} />
+            <AvatarGroup>
+              <Avatar sx={{ visibility: 'hidden' }} />
 
-            {product.comprising.map(friend => (
-              <UserAvatar key={friend} userId={friend} />
-            ))}
+              {product.comprising.map(friend => (
+                <UserAvatar key={friend} userId={friend} />
+              ))}
+            </AvatarGroup>
 
             <Typography>{userCut}</Typography>
           </Stack>

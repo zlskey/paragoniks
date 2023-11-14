@@ -7,37 +7,42 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import FriendItem, {
-  FriendItemSkeleton,
-} from 'src/pages/friends/components/friend-item'
-import {
-  selectAllFriends,
-  selectFriendsLoading,
-} from 'src/helpers/reducers/friends/friends.reducer'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { useEffect, useState } from 'react'
 
 import AddNewFriendSection from 'src/pages/friends/components/add-new-friend-section'
-import { Friend } from 'src/types/generic.types'
+import FriendItem from 'src/pages/friends/components/friend-item'
 import FriendRequestItem from 'src/pages/friends/components/friend-request-item'
+import { Friendship } from 'src/types/generic.types'
 import Wrapper from 'src/components/wrapper'
-import generateElements from 'src/helpers/utils/generate-elements'
 import { getAllFriendships } from 'src/helpers/reducers/friends/friends.thunk'
+import { getProfiles } from 'src/helpers/reducers/profiles/profiles.thunk'
+import { selectAllFriendships } from 'src/helpers/reducers/friends/friends.reducer'
 
 const Friends = () => {
-  const isLoading = useAppSelector(selectFriendsLoading) === 'pending'
-
-  const friends = useAppSelector(selectAllFriends)
+  const friendships = useAppSelector(selectAllFriendships)
 
   const dispatch = useAppDispatch()
 
-  const [accepted, setAccepted] = useState<Friend[]>([])
-  const [pending, setPending] = useState<Friend[]>([])
+  const [accepted, setAccepted] = useState<Friendship[]>([])
+  const [pending, setPending] = useState<Friendship[]>([])
 
   useEffect(() => {
-    setAccepted(friends.filter(friend => friend.status === 'accepted'))
-    setPending(friends.filter(friend => friend.status === 'pending'))
-  }, [friends])
+    setAccepted(
+      friendships.filter(friendship => friendship.status === 'accepted')
+    )
+    setPending(
+      friendships.filter(friendship => friendship.status === 'pending')
+    )
+  }, [friendships])
+
+  useEffect(() => {
+    dispatch(
+      getProfiles({
+        userIds: friendships.map(friendship => friendship.friendId),
+      })
+    )
+  }, [friendships])
 
   useEffect(() => {
     dispatch(getAllFriendships({}))
@@ -54,11 +59,9 @@ const Friends = () => {
                   <Typography variant='h5'>Friends</Typography>
                 </ListItem>
 
-                {isLoading ? (
-                  generateElements(<FriendItemSkeleton />, 3)
-                ) : accepted.length ? (
-                  accepted.map(friend => (
-                    <FriendItem key={friend.username} friend={friend} />
+                {accepted.length ? (
+                  accepted.map(friendship => (
+                    <FriendItem key={friendship._id} friendship={friendship} />
                   ))
                 ) : (
                   <ListItem>
@@ -82,10 +85,10 @@ const Friends = () => {
                   </ListItem>
 
                   {pending.length ? (
-                    pending.map(friend => (
+                    pending.map(friendship => (
                       <FriendRequestItem
-                        key={friend.username}
-                        friend={friend}
+                        key={friendship._id}
+                        friendship={friendship}
                       />
                     ))
                   ) : (

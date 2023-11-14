@@ -16,6 +16,8 @@ export type AvatarColor =
   | 'orange'
   | 'default'
 
+export type IProfile = Pick<IUser, '_id' | 'username' | 'avatarImage'>
+
 export interface IUser {
   _id: UserId
 
@@ -34,9 +36,7 @@ export interface IUser {
   toggleTheme(this: IUser): Promise<IUser>
   changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser>
   changeAvatarImage(this: IUser, image: string): Promise<IUser>
-  pickProfile(
-    this: IUser
-  ): Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'>
+  pickProfile(this: IUser): IProfile
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -120,9 +120,7 @@ class UserClass {
     return userService.update(this._id, { avatarImage: image })
   }
 
-  pickProfile(
-    this: IUser
-  ): Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'> {
+  pickProfile(this: IUser): IProfile {
     return _.pick(this, ['_id', 'username', 'avatarImage', 'avatarColor'])
   }
 }

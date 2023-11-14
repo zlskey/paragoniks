@@ -6,27 +6,34 @@ import {
   ListItemText,
   Tooltip,
 } from '@mui/material'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { FriendItemProps } from './friend-item.types'
+import { FriendItemSkeleton } from '.'
 import RemoveFriendIcon from '@mui/icons-material/PersonRemoveAlt1Outlined'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { removeFriend } from 'src/helpers/reducers/friends/friends.thunk'
-import { useAppDispatch } from 'src/redux-hooks'
+import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
 
-const FriendItem = ({ friend }: FriendItemProps) => {
+const FriendItem = ({ friendship }: FriendItemProps) => {
   const dispatch = useAppDispatch()
+  const profile = useAppSelector(selectSingleProfile(friendship.friendId))
 
   const handleRemoveFriend = () => {
-    dispatch(removeFriend({ friendId: friend._id }))
+    dispatch(removeFriend({ friendId: friendship.friendId }))
+  }
+
+  if (!profile) {
+    return <FriendItemSkeleton />
   }
 
   return (
     <ListItem>
       <ListItemAvatar>
-        <UserAvatar userId={friend._id} />
+        <UserAvatar userId={profile._id} />
       </ListItemAvatar>
 
-      <ListItemText>{friend.username}</ListItemText>
+      <ListItemText>{profile.username}</ListItemText>
 
       <ListItemIcon>
         <Tooltip title='Remove friend'>

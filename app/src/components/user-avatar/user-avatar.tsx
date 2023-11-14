@@ -1,34 +1,32 @@
+import { Profile, User } from 'src/types/generic.types'
+import { useEffect, useState } from 'react'
+
 import { Avatar } from '@mui/material'
-import { AvatarColor } from 'src/types/generic.types'
 import { UserAvatarProps } from './user-avatar.types'
-import { selectSingleFriend } from 'src/helpers/reducers/friends/friends.reducer'
+import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useAppSelector } from 'src/redux-hooks'
-
-const defaultAvatarData = {
-  username: '',
-  avatarImage: '',
-  avatarColor: AvatarColor.Default,
-}
 
 const UserAvatar = ({ size = 'md', userId }: UserAvatarProps) => {
   const user = useAppSelector(selectUser)
 
-  const profile = useAppSelector(selectSingleFriend(userId))
+  const profileData = useAppSelector(selectSingleProfile(userId))
 
   if (!user) return null
 
-  const { username, avatarImage, avatarColor } = profile
-    ? profile
-    : user
-    ? user
-    : defaultAvatarData
+  const [profile, setProfile] = useState<Profile | User>(user)
 
-  const firstUpper = username.charAt(0).toUpperCase()
+  useEffect(() => {
+    if (profileData) {
+      setProfile(profileData)
+    }
+  }, [profileData])
+
+  const { username, avatarImage, avatarColor } = profile
 
   return (
     <Avatar
-      alt={firstUpper}
+      alt={username ? username.charAt(0).toUpperCase() : '?'}
       src={avatarImage || '#'}
       sx={{
         bgcolor: avatarColor,

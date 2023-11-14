@@ -9,6 +9,7 @@ import ReceiptContributorsList from './components/receipt-contributors-list/rece
 import TitleInput from 'src/pages/receipt/components/title-input'
 import Wrapper from 'src/components/wrapper'
 import { getPrice } from 'src/helpers/utils/get-price'
+import { getProfiles } from 'src/helpers/reducers/profiles/profiles.thunk'
 import { getReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { selectSingleReceipt } from 'src/helpers/reducers/receipt/receipt.reducer'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
@@ -35,8 +36,21 @@ const Receipt = () => {
   useEffect(() => {
     if (!receipt) {
       dispatch(getReceipt({ receiptId }))
+      return
     }
   }, [])
+
+  useEffect(() => {
+    if (receipt) {
+      dispatch(
+        getProfiles({
+          userIds: receipt?.contributors
+            .map(contributor => contributor)
+            .concat([receipt?.owner]),
+        })
+      )
+    }
+  }, [receipt?.contributors, receipt?.owner])
 
   if (!receipt || !user) {
     return null

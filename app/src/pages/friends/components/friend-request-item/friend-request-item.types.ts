@@ -1,5 +1,5 @@
-import { Friend } from 'src/types/generic.types'
+import { Friendship } from 'src/types/generic.types'
 
 export interface FriendRequestItemProps {
-  friend: Friend
+  friendship: Friendship
 }

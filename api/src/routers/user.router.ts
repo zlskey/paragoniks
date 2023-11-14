@@ -20,6 +20,6 @@ userRouter.patch(
   wrapAsync(userController.handleChangeAvatarImage)
 )
 
-userRouter.get('/profile/:userId', wrapAsync(userController.handleGetProfile))
+userRouter.get('/profile', wrapAsync(userController.handleGetProfiles))
 
 export default userRouter

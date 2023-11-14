@@ -1,5 +1,5 @@
-import { Friend } from "src/types/generic.types";
+import { UserId } from 'src/types/generic.types'
 
 export interface FriendProposalProps {
-  friend: Friend
+  friendId: UserId
 }

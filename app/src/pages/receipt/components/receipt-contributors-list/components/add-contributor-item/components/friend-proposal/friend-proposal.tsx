@@ -4,16 +4,19 @@ import {
   ListItemButton,
   ListItemText,
 } from '@mui/material'
+import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { FriendProposalProps } from './friend-proposal.types'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { addContributor } from 'src/helpers/reducers/receipt/receipt.thunk'
-import { useAppDispatch } from 'src/redux-hooks'
+import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-const FriendProposal = ({ friend }: FriendProposalProps) => {
+const FriendProposal = ({ friendId }: FriendProposalProps) => {
   const dispatch = useAppDispatch()
+
+  const profile = useAppSelector(selectSingleProfile(friendId))
 
   const { reset } = useFormContext()
 
@@ -21,19 +24,23 @@ const FriendProposal = ({ friend }: FriendProposalProps) => {
 
   const handleAddFriend = () => {
     if (receiptId) {
-      dispatch(addContributor({ contributorId: friend._id, receiptId }))
+      dispatch(addContributor({ contributorId: friendId, receiptId }))
       reset()
     }
+  }
+
+  if (!profile) {
+    return null
   }
 
   return (
     <ListItem disablePadding>
       <ListItemButton onClick={handleAddFriend}>
         <ListItemAvatar>
-          <UserAvatar userId={friend._id} />
+          <UserAvatar userId={profile._id} />
         </ListItemAvatar>
 
-        <ListItemText primary={friend.username} sx={{ mr: 2 }} />
+        <ListItemText primary={profile.username} sx={{ mr: 2 }} />
       </ListItemButton>
     </ListItem>
   )

@@ -35,8 +35,11 @@ export const findUserFriendships = async (userId: UserId) => {
         ? stringSecondFriendId
         : stringFriendId
 
+    const { _id, status } = friendship
+
     return {
-      ..._.pick(friendship, ['_id', 'status']),
+      _id,
+      status,
       friendId,
     }
   })

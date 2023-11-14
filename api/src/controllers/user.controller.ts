@@ -1,5 +1,7 @@
 import { RequestHandler } from 'express'
+import { Types } from 'mongoose'
 import _ from 'lodash'
+import constants from 'src/constants'
 import { userService } from 'src/services'
 
 export const handleChangeUsername: RequestHandler = async (req, res, next) => {
@@ -56,12 +58,18 @@ export const handleChangeAvatarImage: RequestHandler = async (
   res.status(201).json(updatedUser)
 }
 
-export const handleGetProfile: RequestHandler = async (req, res, next) => {
-  const { userId } = req.params
+export const handleGetProfiles: RequestHandler = async (req, res, next) => {
+  const { userIds } = req.query
 
-  const user = await userService.getById(userId)
+  if (!userIds) {
+    throw new Error(constants.missing_args)
+  }
 
-  const profile = user.pickProfile()
+  const userIdsArr = (userIds as string).split(
+    ','
+  ) as unknown as Types.ObjectId[]
 
-  res.status(201).json(profile)
+  const profiles = await userService.getProfiles(userIdsArr)
+
+  res.status(201).json(profiles)
 }

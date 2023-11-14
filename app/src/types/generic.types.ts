@@ -36,11 +36,9 @@ export interface Profile {
   avatarImage: string
 }
 
-export interface Friend {
+export interface Friendship {
   _id: FriendshipId
-  username: string
-  avatarColor: AvatarColor
-  avatarImage: string
+  friendId: UserId
   status: 'accepted' | 'pending'
 }
 

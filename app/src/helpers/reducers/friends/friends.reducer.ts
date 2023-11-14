@@ -3,7 +3,7 @@ import {
   AsyncThunk,
   createSlice,
 } from '@reduxjs/toolkit'
-import { Friend, RsApiError } from 'src/types/generic.types'
+import { Friendship, RsApiError } from 'src/types/generic.types'
 import {
   getAllFriendships,
   removeFriend,
@@ -14,7 +14,7 @@ import {
 import { RootState } from 'src/redux-store'
 
 interface FriendsState {
-  items: Friend[]
+  items: Friendship[]
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
   error: RsApiError['message'] | null
 }
@@ -61,16 +61,17 @@ const addBuilderCase = (
     })
 }
 
-export const selectAllFriends = (state: RootState): Friend[] =>
+export const selectAllFriendships = (state: RootState): Friendship[] =>
   state.friends.items
 
-export const selectSingleFriend = (friendId?: string) => (state: RootState) =>
-  state.friends.items.find(friend => friend._id === friendId)
+export const selectFriendship = (friendshipId?: string) => (state: RootState) =>
+  state.friends.items.find(friendships => friendships._id === friendshipId)
 
-export const selectFriendsLoading = (state: RootState) => state.friends.loading
+export const selectFriendshipsLoading = (state: RootState) =>
+  state.friends.loading
 
-export const selectFriendsError = (state: RootState) => state.friends.error
+export const selectFriendshipsError = (state: RootState) => state.friends.error
 
-export const { clearError: clearFriendsError } = friendsSlice.actions
+export const { clearError: clearFriendshipsError } = friendsSlice.actions
 
 export default friendsSlice.reducer

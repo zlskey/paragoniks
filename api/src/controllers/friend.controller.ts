@@ -1,8 +1,7 @@
-import { friendService, userService } from 'src/services'
-
 import { RequestHandler } from 'express'
 import { UserId } from 'src/types/generic.types'
 import _ from 'lodash'
+import { friendService } from 'src/services'
 
 export const handleCreateFriendshipRequest: RequestHandler = async (
   req,
@@ -55,21 +54,5 @@ export const defaultFriendController: RequestHandler = async (
 
   const friendships = await friendService.findUserFriendships(user._id)
 
-  const friends = await Promise.all(
-    await friendships.map(async friendship => {
-      const friend = await userService.getById(friendship.friendId)
-
-      const { _id, username, avatarImage, avatarColor } = friend
-
-      return {
-        _id,
-        username,
-        avatarImage,
-        avatarColor,
-        status: friendship.status,
-      }
-    })
-  )
-
-  res.status(201).json(friends)
+  res.status(201).json(friendships)
 }

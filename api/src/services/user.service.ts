@@ -1,4 +1,4 @@
-import User, { IUser } from 'src/models/User.model'
+import User, { IProfile, IUser } from 'src/models/User.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { UserId } from 'src/types/generic.types'
@@ -55,4 +55,10 @@ export const remove = async (userId: UserId): Promise<void> => {
 
 export const update = async (userId: UserId, payload: any): Promise<IUser> => {
   return await User.findByIdAndUpdate(userId, payload, { new: true })
+}
+
+export const getProfiles = async (userIds: UserId[]): Promise<IProfile[]> => {
+  const users = await User.find({ _id: { $in: userIds } })
+
+  return users.map(user => user.pickProfile())
 }

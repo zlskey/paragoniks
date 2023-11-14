@@ -8,20 +8,20 @@ import {
   Typography,
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
-import { useEffect, useState } from 'react'
 
 import { ContributorItemProps } from './contributor-item.types'
 import ContributorItemSkeleton from './contributor-item.skeleton'
-import { Profile } from 'src/types/generic.types'
 import RemoveIcon from '@mui/icons-material/PersonRemoveOutlined'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { removeContributor } from 'src/helpers/reducers/receipt/receipt.thunk'
-import { rsApi } from 'src/helpers/services/rs.service'
+import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { useState } from 'react'
 import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
 
 const ContributorItem = ({ contributorId, receipt }: ContributorItemProps) => {
   const user = useAppSelector(selectUser)
+  const profile = useAppSelector(selectSingleProfile(contributorId))
 
   if (!user) return
 
@@ -30,18 +30,6 @@ const ContributorItem = ({ contributorId, receipt }: ContributorItemProps) => {
   const userCut = useUserCutCalc(contributorId, receipt)
 
   const [hover, setHover] = useState(false)
-
-  const [contributor, setContributor] = useState<Profile | null>(null)
-
-  useEffect(() => {
-    ;(async () => {
-      const res = await rsApi.get<Profile>(`/user/profile/${contributorId}`)
-
-      const profile = res.data
-
-      setContributor(profile)
-    })()
-  }, [])
 
   const handleRemoveContributor = () => {
     dispatch(
@@ -55,7 +43,7 @@ const ContributorItem = ({ contributorId, receipt }: ContributorItemProps) => {
   const handleMouseOver = () => setHover(true)
   const handleMouseOut = () => setHover(false)
 
-  if (!contributor) {
+  if (!profile) {
     return <ContributorItemSkeleton />
   }
 
@@ -69,13 +57,11 @@ const ContributorItem = ({ contributorId, receipt }: ContributorItemProps) => {
             </IconButton>
           </Avatar>
         ) : (
-          <UserAvatar
-            userId={contributor._id !== user._id ? contributor._id : undefined}
-          />
+          <UserAvatar userId={profile._id} />
         )}
       </ListItemAvatar>
 
-      <ListItemText>{contributor.username}</ListItemText>
+      <ListItemText>{profile.username}</ListItemText>
 
       <ListItemIcon>
         <Typography>{userCut}</Typography>
