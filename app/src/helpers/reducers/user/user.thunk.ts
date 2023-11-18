@@ -2,6 +2,7 @@ import {
   ChangeAvatarColorBody,
   ChangeAvatarImageBody,
   ChangePasswordBody,
+  ChangeUserLangBody,
   ChangeUsernameBody,
   LoginUserBody,
   LogoutUserBody,
@@ -83,5 +84,13 @@ export const changeAvatarImage = createAsyncThunk(
   async (body: ChangeAvatarImageBody, { rejectWithValue }) =>
     wrapThunk(rejectWithValue, async () => {
       return userService.changeAvatarImage(body)
+    })
+)
+
+export const changeUserLang = createAsyncThunk(
+  'user/changeAvatarImage',
+  async (body: ChangeUserLangBody, { rejectWithValue }) =>
+    wrapThunk(rejectWithValue, async () => {
+      return userService.changeUserLang(body)
     })
 )

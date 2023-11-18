@@ -1,5 +1,7 @@
+import { ReactNode } from 'react'
+
 export interface PasswordTextFieldProps {
-  label: string
+  label: ReactNode
   name: string
   errorMessage?: string
   isFailed: boolean

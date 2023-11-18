@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { LoadingButton } from '@mui/lab'
 import SettingsModal from '../settings-modal'
+import { Trans } from '@lingui/macro'
 import { changeUsername } from 'src/helpers/reducers/user/user.thunk'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -38,11 +39,11 @@ const ChangeUsernameModal = () => {
   }
 
   return (
-    <SettingsModal id='username' title='Change username'>
+    <SettingsModal id='username' title={<Trans>Change username</Trans>}>
       <form onSubmit={formState.handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <TextField
-            label='New username'
+            label={<Trans>New username</Trans>}
             error={!!formState.formState.errors.username || !!error}
             {...formState.register('username')}
           />
@@ -54,7 +55,7 @@ const ChangeUsernameModal = () => {
               variant='contained'
               type='submit'
             >
-              Confirm
+              <Trans>Confirm</Trans>
             </LoadingButton>
           </Stack>
         </Stack>

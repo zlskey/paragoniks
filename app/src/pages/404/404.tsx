@@ -1,5 +1,7 @@
-import { useNavigate } from 'react-router-dom'
 import { Button, Grid, Typography } from '@mui/material'
+
+import { Trans } from '@lingui/macro'
+import { useNavigate } from 'react-router-dom'
 
 const Page404 = () => {
   const navigate = useNavigate()
@@ -15,9 +17,11 @@ const Page404 = () => {
       alignItems='center'
     >
       <Grid item>
-        <Typography variant='h2'>Page not found 🔎</Typography>
+        <Typography variant='h2'>
+          <Trans>Page not found 🔎</Trans>
+        </Typography>
         <Button onClick={handleGoBack} size='medium'>
-          Go back
+          <Trans>Go back</Trans>
         </Button>
       </Grid>
     </Grid>

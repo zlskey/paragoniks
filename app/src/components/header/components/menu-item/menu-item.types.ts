@@ -1,4 +1,6 @@
+import { ReactNode } from 'react'
+
 export interface MenuItemProps {
-  label: string
+  label: ReactNode
   path: string
 }

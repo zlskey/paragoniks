@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { FriendItemProps } from './friend-item.types'
 import { FriendItemSkeleton } from '.'
 import RemoveFriendIcon from '@mui/icons-material/PersonRemoveAlt1Outlined'
+import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { removeFriend } from 'src/helpers/reducers/friends/friends.thunk'
 import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
@@ -36,7 +37,7 @@ const FriendItem = ({ friendship }: FriendItemProps) => {
       <ListItemText>{profile.username}</ListItemText>
 
       <ListItemIcon>
-        <Tooltip title='Remove friend'>
+        <Tooltip title={<Trans>Remove friend</Trans>}>
           <IconButton onClick={handleRemoveFriend}>
             <RemoveFriendIcon />
           </IconButton>

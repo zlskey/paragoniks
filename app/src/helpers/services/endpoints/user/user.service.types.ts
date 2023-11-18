@@ -32,3 +32,7 @@ export interface ChangeAvatarColorBody {
 export interface ChangeAvatarImageBody {
   image: File
 }
+
+export interface ChangeUserLangBody {
+  lang: 'pl' | 'en'
+}

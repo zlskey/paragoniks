@@ -29,6 +29,8 @@ export interface IUser {
   avatarImage: string
   avatarColor: AvatarColor
 
+  lang: 'en' | 'pl'
+
   removePassword(): Omit<IUser, 'password'>
   validatePassword(this: IUser, password: string): Promise<void>
   changePassword(this: IUser, password: string): Promise<void>
@@ -37,6 +39,7 @@ export interface IUser {
   changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser>
   changeAvatarImage(this: IUser, image: string): Promise<IUser>
   pickProfile(this: IUser): IProfile
+  setLang(this: IUser, lang: string): Promise<IUser>
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -59,6 +62,10 @@ const userSchema = new mongoose.Schema<IUser>({
   avatarColor: {
     type: String,
     default: 'default',
+  },
+  lang: {
+    type: String,
+    default: 'en',
   },
 })
 
@@ -122,6 +129,14 @@ class UserClass {
 
   pickProfile(this: IUser): IProfile {
     return _.pick(this, ['_id', 'username', 'avatarImage', 'avatarColor'])
+  }
+
+  setLang(this: IUser, lang: string): Promise<IUser> {
+    if (lang !== 'en' && lang !== 'pl') {
+      throw new ErrorObject('Unsupported language')
+    }
+
+    return userService.update(this._id, { lang })
   }
 }
 

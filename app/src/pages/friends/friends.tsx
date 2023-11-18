@@ -14,6 +14,7 @@ import AddNewFriendSection from 'src/pages/friends/components/add-new-friend-sec
 import FriendItem from 'src/pages/friends/components/friend-item'
 import FriendRequestItem from 'src/pages/friends/components/friend-request-item'
 import { Friendship } from 'src/types/generic.types'
+import { Trans } from '@lingui/macro'
 import Wrapper from 'src/components/wrapper'
 import { getAllFriendships } from 'src/helpers/reducers/friends/friends.thunk'
 import { getProfiles } from 'src/helpers/reducers/profiles/profiles.thunk'
@@ -56,7 +57,9 @@ const Friends = () => {
             <Box p={1}>
               <List>
                 <ListItem>
-                  <Typography variant='h5'>Friends</Typography>
+                  <Typography variant='h5'>
+                    <Trans>Friends</Trans>
+                  </Typography>
                 </ListItem>
 
                 {accepted.length ? (
@@ -65,7 +68,9 @@ const Friends = () => {
                   ))
                 ) : (
                   <ListItem>
-                    <Typography variant='h6'>No friends yet</Typography>
+                    <Typography variant='h6'>
+                      <Trans>No friends yet</Trans>
+                    </Typography>
                   </ListItem>
                 )}
               </List>
@@ -81,7 +86,9 @@ const Friends = () => {
               <Stack p={1}>
                 <List>
                   <ListItem>
-                    <Typography variant='h5'>Inbox</Typography>
+                    <Typography variant='h5'>
+                      <Trans>Inbox</Trans>
+                    </Typography>
                   </ListItem>
 
                   {pending.length ? (
@@ -93,7 +100,9 @@ const Friends = () => {
                     ))
                   ) : (
                     <ListItem>
-                      <Typography variant='h6'>No requests yet</Typography>
+                      <Typography variant='h6'>
+                        <Trans>No requests yet</Trans>
+                      </Typography>
                     </ListItem>
                   )}
                 </List>

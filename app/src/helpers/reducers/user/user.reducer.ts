@@ -7,6 +7,7 @@ import { RsApiError, User } from 'src/types/generic.types'
 import {
   changeAvatarColor,
   changePassword,
+  changeUserLang,
   changeUsername,
   loginUser,
   logoutUser,
@@ -50,6 +51,7 @@ const userSlice = createSlice({
     addBuilderCase(builder, changePassword)
     addBuilderCase(builder, changeUsername)
     addBuilderCase(builder, changeAvatarColor)
+    addBuilderCase(builder, changeUserLang)
   },
 })
 

@@ -13,6 +13,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import MenuItem from './components/menu-item'
 import PopupMenu from './components/popup-menu/popup-menu'
+import { Trans } from '@lingui/macro'
 import UserAvatar from '../user-avatar/user-avatar'
 
 const Header = () => {
@@ -32,17 +33,19 @@ const Header = () => {
         <Toolbar disableGutters>
           <Stack sx={{ flexGrow: 1 }} direction='row' alignItems='center'>
             <MuiLink component={Link} to='/' underline='none' color='white'>
-              <Typography mr={3}>Roommate Shopper</Typography>
+              <Typography mr={3}>
+                <Trans>Receipter</Trans>
+              </Typography>
             </MuiLink>
 
-            <MenuItem label='Home' path='/' />
+            <MenuItem label={<Trans>Home</Trans>} path='/' />
 
-            <MenuItem label='Friends' path='/friends' />
+            <MenuItem label={<Trans>Friends</Trans>} path='/friends' />
 
-            <MenuItem label='Settings' path='/settings' />
+            <MenuItem label={<Trans>Settings</Trans>} path='/settings' />
           </Stack>
 
-          <Tooltip title='Open settings'>
+          <Tooltip title={<Trans>Menu</Trans>}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <UserAvatar />
             </IconButton>

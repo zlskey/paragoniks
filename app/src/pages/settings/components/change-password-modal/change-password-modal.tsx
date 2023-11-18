@@ -11,6 +11,7 @@ import { LoadingButton } from '@mui/lab'
 import PasswordTextField from 'src/components/password-text-field/password-text-field'
 import SettingsModal from '../settings-modal'
 import { Stack } from '@mui/material'
+import { Trans } from '@lingui/macro'
 import { changePassword } from 'src/helpers/reducers/user/user.thunk'
 import { passwordSchema } from 'src/helpers/utils/user-validation-schema'
 import { useNavigate } from 'react-router-dom'
@@ -54,12 +55,12 @@ const ChangePasswordModal = () => {
   }
 
   return (
-    <SettingsModal id='password' title='Change password'>
+    <SettingsModal id='password' title={<Trans>Change password</Trans>}>
       <form onSubmit={formState.handleSubmit(onSubmit)}>
         <FormProvider {...formState}>
           <Stack spacing={2}>
             <PasswordTextField
-              label='Current password'
+              label={<Trans>Current password</Trans>}
               name='currentPassword'
               isFailed={
                 Boolean(getFieldErrorMessage('currentPassword')) || !!error
@@ -68,14 +69,14 @@ const ChangePasswordModal = () => {
             />
 
             <PasswordTextField
-              label='New password'
+              label={<Trans>New password</Trans>}
               name='password'
               isFailed={Boolean(getFieldErrorMessage('password')) || !!error}
               errorMessage={getFieldErrorMessage('password')}
             />
 
             <PasswordTextField
-              label='Repeat new password'
+              label={<Trans>Repeat new password</Trans>}
               name='repeatPassword'
               isFailed={
                 Boolean(getFieldErrorMessage('repeatPassword')) || !!error
@@ -90,7 +91,7 @@ const ChangePasswordModal = () => {
                 variant='contained'
                 type='submit'
               >
-                Confirm
+                <Trans>Confirm</Trans>
               </LoadingButton>
             </Stack>
           </Stack>

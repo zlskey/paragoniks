@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { LoadingButton } from '@mui/lab'
 import PasswordTextField from 'src/components/password-text-field/password-text-field'
+import { Trans } from '@lingui/macro'
 import { loginUser } from 'src/helpers/reducers/user/user.thunk'
 
 const defaultValues = {
@@ -35,13 +36,13 @@ const LoginForm = () => {
           <TextField
             {...formControl.register('username')}
             spellCheck='false'
-            label='Username'
+            label={<Trans>Username</Trans>}
             variant='filled'
             error={Boolean(error)}
           />
 
           <PasswordTextField
-            label='Password'
+            label={<Trans>Password</Trans>}
             name='password'
             isFailed={Boolean(error)}
           />
@@ -55,7 +56,7 @@ const LoginForm = () => {
               variant='contained'
               type='submit'
             >
-              Login
+              <Trans>Login</Trans>
             </LoadingButton>
           </Stack>
         </Stack>

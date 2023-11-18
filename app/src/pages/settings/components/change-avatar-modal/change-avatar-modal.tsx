@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { AvatarColor } from 'src/types/generic.types'
 import SettingsModal from '../settings-modal'
+import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useNavigate } from 'react-router-dom'
@@ -37,26 +38,30 @@ const ChangeAvatarModal = () => {
   if (!user) return null
 
   return (
-    <SettingsModal id='avatar' title='Customize your avatar!'>
+    <SettingsModal id='avatar' title={<Trans>Customize your avatar!</Trans>}>
       <form onSubmit={formState.handleSubmit(onSubmit)}>
         <FormProvider {...formState}>
           <Stack spacing={2}>
             <Divider />
 
             <Stack alignItems='center' spacing={1}>
-              <Typography variant='h6'>Your current avatar:</Typography>
+              <Typography variant='h6'>
+                <Trans>Your current avatar:</Trans>
+              </Typography>
 
               <UserAvatar />
             </Stack>
 
             <Stack>
-              <Typography>Choose a color</Typography>
+              <Typography>
+                <Trans>Choose a color</Trans>
+              </Typography>
 
               <Stack direction='row' justifyContent='space-evenly'>
                 {Object.values(AvatarColor).map(color => (
                   <IconButton key={color} onClick={selectColor(color)}>
                     <Avatar
-                      alt={user.username.charAt(0).toUpperCase()}
+                      alt={user.username?.charAt(0).toUpperCase()}
                       src='#'
                       sx={{ bgcolor: color, width: 40, height: 40 }}
                     />

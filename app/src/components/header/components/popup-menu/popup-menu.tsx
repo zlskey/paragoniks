@@ -1,6 +1,7 @@
 import { Menu, MenuItem, Typography } from '@mui/material'
 
 import { PopupMenuProps } from './popup-menu.types'
+import { Trans } from '@lingui/macro'
 import { logoutUser } from 'src/helpers/reducers/user/user.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 
@@ -29,7 +30,9 @@ const PopupMenu = ({ anchorEl, onClose }: PopupMenuProps) => {
       sx={{ mt: '45px' }}
     >
       <MenuItem onClick={handleLogout}>
-        <Typography textAlign='center'>Logout</Typography>
+        <Typography textAlign='center'>
+          <Trans>Logout</Trans>
+        </Typography>
       </MenuItem>
     </Menu>
   )

@@ -13,6 +13,7 @@ import {
 } from './password-text-field.types'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 
+import { Trans } from '@lingui/macro'
 import { useFormContext } from 'react-hook-form'
 import { useState } from 'react'
 
@@ -55,7 +56,13 @@ const PasswordTextFieldEndAdornment = ({
     <InputAdornment position='end'>
       <Tooltip
         aria-label='toggle password visibility'
-        title={showPassword ? 'Hide password' : 'Show password'}
+        title={
+          showPassword ? (
+            <Trans>Hide password</Trans>
+          ) : (
+            <Trans>Show password</Trans>
+          )
+        }
       >
         <IconButton onClick={onToggle} edge='end'>
           {showPassword ? <VisibilityOff /> : <Visibility />}

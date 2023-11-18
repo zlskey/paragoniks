@@ -1,0 +1,351 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-11-16 18:08+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: pl\n"
+
+#: src/pages/friends/components/friend-request-item/friend-request-item.tsx:45
+msgid "Accept"
+msgstr "Akceptuj"
+
+#: src/pages/settings/settings.tsx:44
+msgid "Account"
+msgstr "Konto"
+
+#: src/pages/friends/components/add-new-friend-section/add-new-friend-section.tsx:52
+msgid "Add"
+msgstr "Dodaj"
+
+#: src/pages/friends/components/add-new-friend-section/add-new-friend-section.tsx:31
+msgid "Add a new friend"
+msgstr "Dodaj przyjaciela"
+
+#: src/pages/home/components/upload-receipt/upload-receipt.tsx:40
+msgid "Add new receipt"
+msgstr "Dodaj nowy paragon"
+
+#: src/pages/settings/settings.tsx:72
+msgid "Adjust your style settings"
+msgstr "Wybierz swój styl"
+
+#: src/pages/auth/auth.tsx:51
+msgid "Already have an account?"
+msgstr "Masz już konto?"
+
+#: src/pages/settings/settings.tsx:83
+msgid "Avatar"
+msgstr "Awatar"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:150
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: src/pages/settings/settings.tsx:64
+msgid "Change language"
+msgstr "Zmień język"
+
+#: src/pages/settings/components/change-password-modal/change-password-modal.tsx:58
+msgid "Change password"
+msgstr "Zmień hasło"
+
+#: src/pages/settings/components/change-username-modal/change-username-modal.tsx:42
+msgid "Change username"
+msgstr "Zmień nazwę użytkownika"
+
+#: src/pages/settings/settings.tsx:57
+msgid "Change your password"
+msgstr "Zmień swoje hasło"
+
+#: src/pages/settings/settings.tsx:50
+msgid "Change your username"
+msgstr "Zmień swoją nazwę użytkownika"
+
+#: src/pages/settings/components/change-avatar-modal/change-avatar-modal.tsx:54
+msgid "Choose a color"
+msgstr "Wybierz kolor"
+
+#: src/pages/home/components/upload-receipt/upload-receipt.tsx:70
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:140
+#: src/pages/settings/components/change-password-modal/change-password-modal.tsx:94
+#: src/pages/settings/components/change-username-modal/change-username-modal.tsx:58
+msgid "Confirm"
+msgstr "Potwierdź"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:117
+msgid "Count"
+msgstr "Ilość"
+
+#: src/pages/settings/components/change-password-modal/change-password-modal.tsx:63
+msgid "Current password"
+msgstr "Aktualne hasło"
+
+#: src/pages/settings/components/change-avatar-modal/change-avatar-modal.tsx:41
+msgid "Customize your avatar!"
+msgstr "Spersonalizuj swój avatar!"
+
+#: src/pages/settings/settings.tsx:76
+msgid "Dark Theme"
+msgstr "Ciemny motyw"
+
+#: src/pages/friends/components/friend-request-item/friend-request-item.tsx:39
+msgid "Decline"
+msgstr "Odrzuć"
+
+#: src/pages/settings/settings.tsx:77
+msgid "Disable or enable dark theme"
+msgstr "Wyłącz lub włącz ciemny motyw"
+
+#: src/pages/auth/auth.tsx:44
+msgid "Don't have account yet?"
+msgstr "Nie masz jeszcze konta?"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:87
+msgid "Edit"
+msgstr "Edytuj"
+
+#: src/components/header/header.tsx:41
+#: src/pages/friends/friends.tsx:55
+msgid "Friends"
+msgstr "Przyjaciele"
+
+#: src/pages/404/404.tsx:22
+msgid "Go back"
+msgstr "Wróć"
+
+#: src/components/password-text-field/password-text-field.tsx:59
+msgid "Hide password"
+msgstr "Ukryj hasło"
+
+#: src/components/header/header.tsx:39
+msgid "Home"
+msgstr "Dom"
+
+#: src/pages/friends/friends.tsx:82
+msgid "Inbox"
+msgstr "Prośby"
+
+#: src/pages/settings/settings.tsx:63
+msgid "Language"
+msgstr "Język"
+
+#: src/pages/auth/auth.tsx:37
+#: src/pages/auth/components/login-form/login-form.tsx:59
+msgid "Login"
+msgstr "Logowanie"
+
+#: src/pages/auth/auth.tsx:53
+msgid "Login Here"
+msgstr "Zaloguj się tutaj"
+
+#: src/components/header/components/popup-menu/popup-menu.tsx:33
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: src/pages/settings/settings.tsx:45
+msgid "Manage your account details"
+msgstr "Zarządzaj szczegółami swojego konta"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:93
+msgid "Name"
+msgstr "Nazwa"
+
+#: src/pages/settings/components/change-password-modal/change-password-modal.tsx:72
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: src/pages/settings/components/change-username-modal/change-username-modal.tsx:46
+msgid "New username"
+msgstr "Nowa nazwa użytkownika"
+
+#: src/pages/friends/friends.tsx:66
+msgid "No friends yet"
+msgstr "Jeszcze brak przyjaciół"
+
+#: src/pages/home/home.tsx:66
+msgid "No receipt added yet"
+msgstr "Jeszcze brak dodanych paragonów"
+
+#: src/pages/friends/friends.tsx:94
+msgid "No requests yet"
+msgstr "Brak zaproszeń do wyświetlenia"
+
+#: src/pages/settings/components/change-password-modal/change-password-modal.tsx:27
+msgid "Old password is required"
+msgstr "Stare hasło jest wymagane"
+
+#: src/components/header/header.tsx:46
+msgid "Open settings"
+msgstr "Otwórz ustawienia"
+
+#: src/pages/404/404.tsx:20
+msgid "Page not found 🔎"
+msgstr "Strona nie znaleziona 🔎"
+
+#: src/pages/auth/components/login-form/login-form.tsx:45
+#: src/pages/auth/components/signup-form/signup-form.tsx:64
+#: src/pages/settings/settings.tsx:56
+msgid "Password"
+msgstr "Hasło"
+
+#: src/helpers/utils/user-validation-schema.ts:17
+msgid "Password is required"
+msgstr "Hasło jest wymagane"
+
+#: src/helpers/utils/user-validation-schema.ts:18
+msgid "Password must be at least 8 characters"
+msgstr "Hasło musi mieć co najmniej 8 znaków"
+
+#: src/helpers/utils/user-validation-schema.ts:19
+msgid "Password must be at most 32 characters"
+msgstr "Hasło może mieć maksymalnie 32 znaki"
+
+#: src/helpers/utils/user-validation-schema.ts:22
+msgid "Password must contain at least one uppercase letter, one lowercase letter and one number"
+msgstr "Hasło musi zawierać co najmniej jedną wielką literę, jedną małą literę i jedną cyfrę"
+
+#: src/helpers/utils/user-validation-schema.ts:27
+msgid "Passwords do not match"
+msgstr "Hasła się nie zgadzają"
+
+#: src/pages/settings/settings.tsx:84
+msgid "Pick your avatar color"
+msgstr "Wybierz kolor swojego avatara"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:104
+msgid "Price"
+msgstr "Cena"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:46
+msgid "Product count is required"
+msgstr "Wymagana ilość produktu"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:47
+msgid "Product count must be at most 100000"
+msgstr "Ilość produktu może wynosić maksymalnie 100000"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:34
+msgid "Product name is required"
+msgstr "Nazwa produktu jest wymagana"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:35
+msgid "Product name must be at least 3 characters"
+msgstr "Nazwa produktu musi mieć co najmniej 3 znaki"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:36
+msgid "Product name must be at most 30 characters"
+msgstr "Nazwa produktu może zawierać maksymalnie 30 znaków"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:40
+msgid "Product price is required"
+msgstr "Cena produktu jest wymagana"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:41
+msgid "Product price must be at least 0.01"
+msgstr "Cena produktu musi wynosić co najmniej 0.01"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:42
+msgid "Product price must be at most 100000"
+msgstr "Cena produktu może wynosić maksymalnie 100000"
+
+#: src/pages/receipt/receipt.tsx:90
+msgid "Receipt total:"
+msgstr "Suma paragonu:"
+
+#: src/pages/home/components/upload-receipt/upload-receipt.tsx:81
+msgid "Remove"
+msgstr "Usuń"
+
+#: src/pages/friends/components/friend-item/friend-item.tsx:33
+msgid "Remove friend"
+msgstr "Usuń przyjaciela"
+
+#: src/pages/settings/components/change-password-modal/change-password-modal.tsx:79
+msgid "Repeat new password"
+msgstr "Powtórz nowe hasło"
+
+#: src/pages/auth/components/signup-form/signup-form.tsx:73
+msgid "Repeat Password"
+msgstr "Powtórz hasło"
+
+#: src/helpers/utils/user-validation-schema.ts:26
+msgid "Repeat password is required"
+msgstr "Powtórzenie hasła jest wymagane"
+
+#: src/components/header/header.tsx:36
+msgid "Receipter"
+msgstr "Paragoniks"
+
+#: src/pages/home/components/upload-receipt/upload-receipt.tsx:50
+msgid "Select image"
+msgstr "Wybierz obraz"
+
+#: src/components/header/header.tsx:43
+#: src/pages/settings/settings.tsx:38
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: src/components/password-text-field/password-text-field.tsx:59
+msgid "Show password"
+msgstr "Pokaż hasło"
+
+#: src/pages/auth/auth.tsx:37
+msgid "Signup"
+msgstr "Rejestracja"
+
+#: src/pages/auth/components/signup-form/signup-form.tsx:91
+msgid "SignUp"
+msgstr "Zarejestruj się"
+
+#: src/pages/auth/auth.tsx:46
+msgid "Signup Here"
+msgstr "Zarejestruj się tutaj"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:94
+msgid "Some name"
+msgstr "Jakieś imię"
+
+#: src/pages/settings/settings.tsx:71
+msgid "Style"
+msgstr "Styl"
+
+#: src/components/password-text-field/password-text-field.tsx:58
+msgid "toggle password visibility"
+msgstr "przełącz widoczność hasła"
+
+#: src/pages/auth/components/login-form/login-form.tsx:39
+#: src/pages/auth/components/signup-form/signup-form.tsx:55
+#: src/pages/friends/components/add-new-friend-section/add-new-friend-section.tsx:37
+#: src/pages/settings/settings.tsx:49
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: src/helpers/utils/user-validation-schema.ts:9
+msgid "Username is required"
+msgstr "Nazwa użytkownika jest wymagana"
+
+#: src/helpers/utils/user-validation-schema.ts:10
+msgid "Username must be at least 3 characters"
+msgstr "Nazwa użytkownika musi mieć co najmniej 3 znaki"
+
+#: src/helpers/utils/user-validation-schema.ts:11
+msgid "Username must be at most 32 characters"
+msgstr "Nazwa użytkownika może mieć maksymalnie 32 znaki"
+
+#: src/pages/receipt/components/receipt-contributors-list/components/add-contributor-item/add-contributor-item.tsx:44
+msgid "Username..."
+msgstr "Nazwa użytkownika..."
+
+#: src/pages/settings/components/change-avatar-modal/change-avatar-modal.tsx:48
+msgid "Your current avatar:"
+msgstr "Twój obecny awatar:"
+
+#: src/pages/receipt/receipt.tsx:86
+msgid "Your cut:"
+msgstr "Twój udział:"
+
+#: src/pages/home/home.tsx:55
+msgid "Your Receipts"
+msgstr "Twoje Paragony"

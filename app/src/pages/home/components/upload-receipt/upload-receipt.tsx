@@ -6,6 +6,7 @@ import AttachIcon from '@mui/icons-material/AttachFileOutlined'
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
+import { Trans } from '@lingui/macro'
 import { createReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { selectReceiptLoading } from 'src/helpers/reducers/receipt/receipt.reducer'
 
@@ -36,7 +37,9 @@ const UploadReceipt = () => {
   return (
     <Paper>
       <Stack p={2} gap={1}>
-        <Typography variant='h5'>Add new receipt</Typography>
+        <Typography variant='h5'>
+          <Trans>Add new receipt</Trans>
+        </Typography>
 
         {!fileList && (
           <LoadingButton
@@ -46,7 +49,7 @@ const UploadReceipt = () => {
             loading={isLoading}
             disabled={isLoading}
           >
-            Select image
+            <Trans>Select image</Trans>
             <VisuallyHiddenInput
               {...formState.register('file')}
               accept='image/png,image/jpg'
@@ -66,7 +69,7 @@ const UploadReceipt = () => {
               sx={{ flexGrow: 1 }}
               color='success'
             >
-              Confirm
+              <Trans>Confirm</Trans>
             </Button>
 
             <Button
@@ -77,7 +80,7 @@ const UploadReceipt = () => {
               sx={{ flexGrow: 1 }}
               color='error'
             >
-              Remove
+              <Trans>Remove</Trans>
             </Button>
           </Stack>
         )}

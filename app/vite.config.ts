@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 
+import { lingui } from '@lingui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 
 export default defineConfig(({ command, mode }) => {
@@ -12,7 +13,12 @@ export default defineConfig(({ command, mode }) => {
       port: parseInt(VITE_PORT, 10) || 3000,
       host: '0.0.0.0',
     },
-    plugins: [react()],
+    plugins: [
+      react({
+        plugins: [['@lingui/swc-plugin', {}]],
+      }),
+      lingui(),
+    ],
     resolve: {
       alias: {
         src: '/src',

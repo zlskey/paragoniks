@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { LoadingButton } from '@mui/lab'
 import PasswordTextField from 'src/components/password-text-field'
+import { Trans } from '@lingui/macro'
 import { signupUser } from 'src/helpers/reducers/user/user.thunk'
 import { userSchema } from 'src/helpers/utils/user-validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -51,7 +52,7 @@ const SignupForm = () => {
               {...formControl.register('username')}
               fullWidth
               spellCheck='false'
-              label='Username'
+              label={<Trans>Username</Trans>}
               variant='filled'
               error={Boolean(getErrorMessage('username')) || isFailed}
               helperText={getErrorMessage('username')}
@@ -60,7 +61,7 @@ const SignupForm = () => {
 
           <Grid item xs={12} md={6}>
             <PasswordTextField
-              label='Password'
+              label={<Trans>Password</Trans>}
               name='password'
               errorMessage={getErrorMessage('password')}
               isFailed={isFailed}
@@ -69,7 +70,7 @@ const SignupForm = () => {
 
           <Grid item xs={12} md={6}>
             <PasswordTextField
-              label='Repeat Password'
+              label={<Trans>Repeat Password</Trans>}
               name='repeatPassword'
               errorMessage={getErrorMessage('repeatPassword')}
               isFailed={isFailed}
@@ -87,7 +88,7 @@ const SignupForm = () => {
               variant='contained'
               type='submit'
             >
-              SignUp
+              <Trans>SignUp</Trans>
             </LoadingButton>
           </Grid>
         </Grid>

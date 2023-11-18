@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import LoginForm from 'src/pages/auth/components/login-form'
 import SignupForm from 'src/pages/auth/components/signup-form'
+import { Trans } from '@lingui/macro'
 import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useNavigate } from 'react-router-dom'
 import { whoamiUser } from 'src/helpers/reducers/user/user.thunk'
@@ -33,23 +34,23 @@ const Auth = () => {
         <Card>
           <Stack spacing={2} p={2}>
             <Typography textAlign='center' variant='h4'>
-              Authentication
+              {isLogining ? <Trans>Login</Trans> : <Trans>Signup</Trans>}
             </Typography>
 
             {isLogining ? <LoginForm /> : <SignupForm />}
 
             {isLogining ? (
               <Typography textAlign='right'>
-                Don't have account yet?
+                <Trans>Don't have account yet?</Trans>
                 <Button onClick={() => setIsLogining(false)} variant='text'>
-                  Signup Here
+                  <Trans>Signup Here</Trans>
                 </Button>
               </Typography>
             ) : (
               <Typography textAlign='right'>
-                Already have an account?
+                <Trans>Already have an account?</Trans>
                 <Button onClick={() => setIsLogining(true)} variant='text'>
-                  Login Here
+                  <Trans>Login Here</Trans>
                 </Button>
               </Typography>
             )}

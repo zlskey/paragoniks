@@ -73,3 +73,13 @@ export const handleGetProfiles: RequestHandler = async (req, res, next) => {
 
   res.status(201).json(profiles)
 }
+
+export const handleSetLang: RequestHandler = async (req, res, next) => {
+  const { lang } = req.params
+
+  const user = req.user
+
+  const profile = await user.setLang(lang)
+
+  res.status(201).json(profile)
+}

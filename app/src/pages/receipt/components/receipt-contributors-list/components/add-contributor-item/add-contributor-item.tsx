@@ -42,7 +42,7 @@ const AddContributorItem = ({ contributorsList }: AddContributorItemProps) => {
         <ListItemText>
           <div ref={elm => setAnchorEl(elm)}>
             <InputBase
-              placeholder='Username...'
+              placeholder='Aa..'
               fullWidth
               spellCheck={false}
               autoComplete='off'

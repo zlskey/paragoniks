@@ -2,6 +2,7 @@ import {
   ChangeAvatarColorBody,
   ChangeAvatarImageBody,
   ChangePasswordBody,
+  ChangeUserLangBody,
   ChangeUsernameBody,
   LoginUserBody,
   LogoutUserBody,
@@ -63,6 +64,12 @@ export const changeAvatarColor = async (body: ChangeAvatarColorBody) => {
 
 export const changeAvatarImage = async (body: ChangeAvatarImageBody) => {
   const response = await rsApi.patch<User>('user/avatar/image', body)
+
+  return response.data
+}
+
+export const changeUserLang = async ({ lang }: ChangeUserLangBody) => {
+  const response = await rsApi.patch<User>(`user/lang/${lang}`)
 
   return response.data
 }

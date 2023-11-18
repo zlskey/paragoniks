@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { CssBaseline } from '@mui/material'
+import LocaleProvider from './helpers/i18n/i18n'
 import { Provider as ReduxProvider } from 'react-redux'
 import { StrictMode } from 'react'
 import ThemeProvider from 'src/helpers/styles/theme'
@@ -13,10 +14,12 @@ const App = () => {
   return (
     <StrictMode>
       <ReduxProvider store={store}>
-        <ThemeProvider>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </ThemeProvider>
+        <LocaleProvider>
+          <ThemeProvider>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </ThemeProvider>
+        </LocaleProvider>
       </ReduxProvider>
     </StrictMode>
   )

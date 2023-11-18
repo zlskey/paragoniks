@@ -15,6 +15,7 @@ import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
+import { Trans } from '@lingui/macro'
 import { updateProduct } from 'src/helpers/reducers/receipt/receipt.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 import { useEffect } from 'react'
@@ -83,14 +84,16 @@ const ProductEditDialog = ({
   return (
     <Dialog onClose={onClose} open={Boolean(product)}>
       <form onSubmit={formState.handleSubmit(handleSubmit)}>
-        <DialogTitle>Edit</DialogTitle>
+        <DialogTitle>
+          <Trans>Edit</Trans>
+        </DialogTitle>
 
         <DialogContent>
           <Grid container p={1} spacing={1}>
             <Grid item xs={12}>
               <TextField
-                label='Name'
-                placeholder='Some name'
+                label={<Trans>Name</Trans>}
+                placeholder='Aa...'
                 fullWidth
                 error={Boolean(getErrorMessage('name'))}
                 helperText={getErrorMessage('name')}
@@ -100,7 +103,7 @@ const ProductEditDialog = ({
 
             <Grid item xs={6}>
               <TextField
-                label='Price'
+                label={<Trans>Price</Trans>}
                 type='number'
                 placeholder='10'
                 fullWidth
@@ -113,7 +116,7 @@ const ProductEditDialog = ({
 
             <Grid item xs={6}>
               <TextField
-                label='Count'
+                label={<Trans>Count</Trans>}
                 type='number'
                 placeholder='2'
                 fullWidth
@@ -136,7 +139,7 @@ const ProductEditDialog = ({
               color='success'
               type='submit'
             >
-              Confirm
+              <Trans>Confirm</Trans>
             </LoadingButton>
 
             <Button
@@ -146,7 +149,7 @@ const ProductEditDialog = ({
               color='error'
               onClick={onClose}
             >
-              Cancel
+              <Trans>Cancel</Trans>
             </Button>
           </Stack>
         </DialogActions>

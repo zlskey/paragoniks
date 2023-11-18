@@ -7,6 +7,7 @@ import ProductEditDialog from 'src/pages/receipt/components/product-edit-dialog'
 import ProductItem from 'src/pages/receipt/components/product-item'
 import ReceiptContributorsList from './components/receipt-contributors-list/receipt-contributors-list'
 import TitleInput from 'src/pages/receipt/components/title-input'
+import { Trans } from '@lingui/macro'
 import Wrapper from 'src/components/wrapper'
 import { getPrice } from 'src/helpers/utils/get-price'
 import { getProfiles } from 'src/helpers/reducers/profiles/profiles.thunk'
@@ -96,11 +97,11 @@ const Receipt = () => {
               <Grid container p={2} spacing={1}>
                 <Grid item>
                   <Typography textAlign='left' variant='h5'>
-                    Your cut:
+                    <Trans>Your cut:</Trans>
                   </Typography>
 
                   <Typography color='GrayText' textAlign='left' variant='h6'>
-                    Receipt total:
+                    <Trans>Receipt total:</Trans>
                   </Typography>
                 </Grid>
 

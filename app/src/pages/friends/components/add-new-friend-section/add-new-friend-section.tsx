@@ -2,6 +2,7 @@ import { Paper, Stack, TextField, Typography } from '@mui/material'
 
 import AddFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import { LoadingButton } from '@mui/lab'
+import { Trans } from '@lingui/macro'
 import { sendFriendRequest } from 'src/helpers/reducers/friends/friends.thunk'
 import { useAppDispatch } from 'src/redux-hooks'
 import { useForm } from 'react-hook-form'
@@ -27,13 +28,15 @@ const AddNewFriendSection = () => {
   return (
     <Paper>
       <Stack p={3} spacing={1}>
-        <Typography variant='h5'>Add a new friend</Typography>
+        <Typography variant='h5'>
+          <Trans>Add a new friend</Trans>
+        </Typography>
 
         <form onSubmit={formState.handleSubmit(handleSendFriendshipRequest)}>
           <Stack direction='row' spacing={1}>
             <TextField
               spellCheck='false'
-              label='Username'
+              label={<Trans>Username</Trans>}
               variant='filled'
               size='small'
               sx={{ flexGrow: 1 }}
@@ -48,11 +51,10 @@ const AddNewFriendSection = () => {
               variant='contained'
               type='submit'
             >
-              Add
+              <Trans>Add</Trans>
             </LoadingButton>
           </Stack>
         </form>
-        <Typography color='red'></Typography>
       </Stack>
     </Paper>
   )
