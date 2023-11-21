@@ -1,9 +1,9 @@
 import { ProductId, UserId } from 'src/types/generic.types'
+import { receiptService, userService } from 'src/services'
 
 import { RequestHandler } from 'express'
 import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
 import { getTextFromImage } from 'src/utils/get-text-from-image'
-import { receiptService } from 'src/services'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
   const user = req.user
@@ -124,4 +124,14 @@ export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
   )
 
   res.status(201).json(updatedReceipt)
+}
+
+export const handleGetContributors: RequestHandler = async (req, res, next) => {
+  const receipt = req.receipt
+
+  const contributors = receiptService.getContributors(receipt)
+
+  const profiles = await userService.getProfiles(contributors)
+
+  res.status(200).json(profiles)
 }

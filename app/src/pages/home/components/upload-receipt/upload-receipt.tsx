@@ -1,14 +1,14 @@
 import { Button, Paper, Stack, Typography, styled } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { useForm, useWatch } from 'react-hook-form'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import AttachIcon from '@mui/icons-material/AttachFileOutlined'
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
+import { Receipt } from 'src/types/generic.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Trans } from '@lingui/macro'
-import { createReceipt } from 'src/helpers/reducers/receipt/receipt.thunk'
-import { selectReceiptLoading } from 'src/helpers/reducers/receipt/receipt.reducer'
+import { createReceipt } from 'src/helpers/services/endpoints/receipt/receipt.service'
 
 const defaultValues = {
   file: null,
@@ -17,22 +17,40 @@ const defaultValues = {
 const UploadReceipt = () => {
   const formState = useForm({ defaultValues })
 
-  const dispatch = useAppDispatch()
-
-  const status = useAppSelector(selectReceiptLoading)
-
   const fileList = useWatch({ name: 'file', control: formState.control })
 
-  const isLoading = status === 'pending'
+  const queryClient = useQueryClient()
 
   const resetForm = () => formState.reset()
 
-  const handleCreateReceipt = () => {
-    if (fileList) {
-      dispatch(createReceipt({ image: fileList[0] }))
+  const { mutate: handleCreateReceipt, isPending } = useMutation({
+    mutationKey: ['receipt'],
+    mutationFn: async () => {
+      if (!fileList) return null
+
+      return createReceipt({
+        image: fileList[0],
+      })
+    },
+    onError: (err: any) => {
+      if (err?.response?.status === 429) {
+        formState.setError('file', {
+          type: 'manual',
+          message: 'Limit of 2 receipts per 6 hours reached',
+        })
+      }
+    },
+    onSuccess: data => {
       resetForm()
-    }
-  }
+      queryClient.setQueryData(['receipt'], (oldReceipts: Receipt[]) => [
+        ...oldReceipts,
+        data,
+      ])
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['receipt'] })
+    },
+  })
 
   return (
     <Paper>
@@ -42,12 +60,10 @@ const UploadReceipt = () => {
         </Typography>
 
         {!fileList && (
-          <LoadingButton
+          <Button
             component='label'
             variant='contained'
             startIcon={<AttachIcon />}
-            loading={isLoading}
-            disabled={isLoading}
           >
             <Trans>Select image</Trans>
             <VisuallyHiddenInput
@@ -56,34 +72,42 @@ const UploadReceipt = () => {
               multiple={false}
               type='file'
             />
-          </LoadingButton>
+          </Button>
         )}
 
         {fileList && (
           <Stack direction='row' spacing={1}>
-            <Button
+            <LoadingButton
               startIcon={<ConfirmIcon />}
               variant='contained'
               size='medium'
-              onClick={handleCreateReceipt}
+              onClick={() => handleCreateReceipt()}
               sx={{ flexGrow: 1 }}
               color='success'
+              loading={isPending}
+              disabled={isPending}
             >
               <Trans>Confirm</Trans>
-            </Button>
+            </LoadingButton>
 
-            <Button
+            <LoadingButton
               startIcon={<RemoveIcon />}
               variant='contained'
               size='medium'
               onClick={resetForm}
               sx={{ flexGrow: 1 }}
               color='error'
+              loading={isPending}
+              disabled={isPending}
             >
               <Trans>Remove</Trans>
-            </Button>
+            </LoadingButton>
           </Stack>
         )}
+
+        <Typography variant='body2' color='error'>
+          {formState.formState.errors.file?.message}
+        </Typography>
       </Stack>
     </Paper>
   )

@@ -43,7 +43,7 @@ Web app for easy shopping list sharing and splitting between roommates.
    make start-production
    ```
 
-   App will be available at [rs.your-domain.com](#)
+   App will be available at [your-domain.com](#)
 
    For local development, you can run the app with
 

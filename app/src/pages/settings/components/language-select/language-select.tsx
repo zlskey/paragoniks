@@ -1,28 +1,34 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { Langs } from 'src/types/generic.types'
-import { changeUserLang } from 'src/helpers/reducers/user/user.thunk'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { Locale } from 'src/helpers/i18n/i18n.types'
+import { changeUserLang } from 'src/helpers/services/endpoints/user/user.service'
+import { locales } from 'src/helpers/i18n/i18n.data'
+import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const LanguageSelect = () => {
-  const user = useAppSelector(selectUser)
+  const user = useUser()
 
-  if (!user) {
-    return null
-  }
+  const queryClient = useQueryClient()
 
-  const dispatch = useAppDispatch()
+  const { mutate: changeLanguage } = useMutation({
+    mutationKey: ['user', 'lang'],
+    mutationFn: changeUserLang,
+    onSuccess: user => {
+      queryClient.setQueryData(['user', 'whoami'], user)
+    },
+  })
 
-  const handleChange = (event: SelectChangeEvent<Langs>) => {
-    const lang = event.target.value as Langs
-    dispatch(changeUserLang({ lang }))
+  const handleChange = (event: SelectChangeEvent<Locale>) => {
+    const lang = event.target.value as Locale
+
+    changeLanguage({ lang })
   }
 
   return (
     <FormControl sx={{ m: 2, width: 130 }}>
       <Select onChange={handleChange} value={user.lang}>
-        {Object.values(Langs).map(lang => (
+        {locales.map(lang => (
           <MenuItem key={lang} value={lang}>
             {lang}
           </MenuItem>

@@ -1,3 +1,5 @@
+import { Locale } from 'src/helpers/i18n/i18n.types'
+
 export interface RsApiError {
   message: string
   code: number
@@ -14,11 +16,6 @@ export enum AvatarColor {
   Default = 'default',
 }
 
-export enum Langs {
-  PL = 'pl',
-  EN = 'en',
-}
-
 export type UserId = string
 export type FriendId = UserId
 export type ContributorId = UserId
@@ -32,7 +29,7 @@ export interface User {
   theme: 'light' | 'dark'
   avatarColor: AvatarColor
   avatarImage: string
-  lang: Langs
+  lang: Locale
 }
 
 export interface Profile {

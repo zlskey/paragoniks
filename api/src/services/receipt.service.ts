@@ -172,3 +172,9 @@ export const updateProduct = async (
     { new: true }
   )
 }
+
+export const getContributors = (receipt: IReceipt) => {
+  const contributors = receipt.contributors.concat(receipt.owner)
+
+  return contributors
+}

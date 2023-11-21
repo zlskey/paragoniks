@@ -1,32 +1,24 @@
 import { Button, Card, Container, Grid, Stack, Typography } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 import { useEffect, useState } from 'react'
 
 import LoginForm from 'src/pages/auth/components/login-form'
 import SignupForm from 'src/pages/auth/components/signup-form'
 import { Trans } from '@lingui/macro'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
+import { useIsLoggedIn } from 'src/helpers/contexts/current-user/current-user.context'
 import { useNavigate } from 'react-router-dom'
-import { whoamiUser } from 'src/helpers/reducers/user/user.thunk'
 
 const Auth = () => {
   const [isLogining, setIsLogining] = useState(true)
 
-  const user = useAppSelector(selectUser)
+  const isLoggedIn = useIsLoggedIn()
 
   const navigate = useNavigate()
 
-  const dispatch = useAppDispatch()
-
   useEffect(() => {
-    dispatch(whoamiUser({}))
-  }, [])
-
-  useEffect(() => {
-    if (user) {
-      navigate('/')
+    if (isLoggedIn) {
+      navigate('/', { replace: true })
     }
-  }, [user])
+  }, [isLoggedIn])
 
   return (
     <Grid height='100vh' container alignItems='center' justifyContent='center'>

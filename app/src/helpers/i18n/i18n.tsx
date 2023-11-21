@@ -1,17 +1,10 @@
 import { Locale, isLocale } from './i18n.types'
 import { MutableRefObject, ReactNode, useEffect, useRef } from 'react'
-import {
-  detect,
-  fromNavigator,
-  fromStorage,
-  fromUrl,
-} from '@lingui/detect-locale'
+import { defaultLocale, locales } from './i18n.data'
 
 import { I18nProvider } from '@lingui/react'
-import { defaultLocale } from './i18n.data'
 import { i18n } from '@lingui/core'
-import { selectUser } from '../reducers/user/user.reducer'
-import { useAppSelector } from 'src/redux-hooks'
+import { useUser } from '../contexts/current-user/current-user.context'
 
 const initializeI18n = () => {
   i18n.load(defaultLocale, {})
@@ -29,16 +22,21 @@ const activateLocale = async (locale: Locale) => {
 
 const LocaleProvider = ({ children }: { children?: ReactNode }) => {
   const isMounted = useIsMounted()
-  const user = useAppSelector(selectUser)
+  const user = useUser()
 
   if (!isMounted.current) {
     initializeI18n()
   }
 
   useEffect(() => {
-    const userDefaultLang = user?.lang || navigator.language?.split('-')[0]
+    const browserLang = navigator.language.split('-')[0]
 
-    activateLocale(isLocale(userDefaultLang) ? userDefaultLang : 'en')
+    if (user.lang === locales[2]) {
+      activateLocale(isLocale(browserLang) ? browserLang : defaultLocale)
+      return
+    }
+
+    activateLocale(user.lang)
   }, [user])
 
   return <I18nProvider i18n={i18n}>{children}</I18nProvider>

@@ -1,24 +1,28 @@
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Switch } from '@mui/material'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
-import { toggleTheme } from 'src/helpers/reducers/user/user.thunk'
+import { toggleTheme } from 'src/helpers/services/endpoints/user/user.service'
+import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const ThemeSwitch = () => {
-  const user = useAppSelector(selectUser)
+  const user = useUser()
 
-  const dispatch = useAppDispatch()
+  const theme = user.theme
 
-  const theme = user?.theme || 'dark'
+  const queryClient = useQueryClient()
 
-  const handleThemeChange = () => {
-    dispatch(toggleTheme({}))
-  }
+  const { mutate: handleThemeChange } = useMutation({
+    mutationKey: ['user', 'theme'],
+    mutationFn: toggleTheme,
+    onSuccess: user => {
+      queryClient.setQueryData(['user', 'whoami'], user)
+    },
+  })
 
   return (
     <Switch
       checked={theme === 'dark'}
-      onChange={handleThemeChange}
+      onChange={() => handleThemeChange({})}
       color='primary'
     />
   )

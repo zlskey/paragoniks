@@ -6,22 +6,27 @@ import {
   ListItemText,
   Tooltip,
 } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
 
 import { FriendItemProps } from './friend-item.types'
 import { FriendItemSkeleton } from '.'
 import RemoveFriendIcon from '@mui/icons-material/PersonRemoveAlt1Outlined'
 import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
-import { removeFriend } from 'src/helpers/reducers/friends/friends.thunk'
-import { selectSingleProfile } from 'src/helpers/reducers/profiles/profiles.reducer'
+import { getProfile } from 'src/helpers/services/endpoints/profiles/profiles.service'
+import { useQuery } from '@tanstack/react-query'
+import useRemoveFriend from './use-remove-friend'
 
-const FriendItem = ({ friendship }: FriendItemProps) => {
-  const dispatch = useAppDispatch()
-  const profile = useAppSelector(selectSingleProfile(friendship.friendId))
+const FriendItem = ({ friendship: { friendId } }: FriendItemProps) => {
+  const { data: profile } = useQuery({
+    queryKey: ['user', 'profile', { userId: friendId }],
+    queryFn: () => getProfile({ userId: friendId }),
+    initialData: null,
+  })
 
-  const handleRemoveFriend = () => {
-    dispatch(removeFriend({ friendId: friendship.friendId }))
+  const handleRemoveFriend = useRemoveFriend()
+
+  const onRemoveFriend = () => {
+    handleRemoveFriend({ friendId })
   }
 
   if (!profile) {
@@ -31,14 +36,14 @@ const FriendItem = ({ friendship }: FriendItemProps) => {
   return (
     <ListItem>
       <ListItemAvatar>
-        <UserAvatar userId={profile._id} />
+        <UserAvatar profile={profile} />
       </ListItemAvatar>
 
       <ListItemText>{profile.username}</ListItemText>
 
       <ListItemIcon>
         <Tooltip title={<Trans>Remove friend</Trans>}>
-          <IconButton onClick={handleRemoveFriend}>
+          <IconButton onClick={onRemoveFriend}>
             <RemoveFriendIcon />
           </IconButton>
         </Tooltip>

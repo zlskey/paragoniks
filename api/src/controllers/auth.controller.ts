@@ -1,4 +1,7 @@
-import { userValidationSchema, validateAndThrow } from 'src/utils/user-validation-schema'
+import {
+  userValidationSchema,
+  validateAndThrow,
+} from 'src/utils/user-validation-schema'
 
 import { RequestHandler } from 'express'
 import _ from 'lodash'
@@ -8,7 +11,7 @@ import { userService } from 'src/services'
 const getMaxAge = remember => {
   const oneDay = 1000 * 60 * 60 * 24
 
-  return remember ? oneDay * 365 : oneDay
+  return remember ? oneDay * 365 : oneDay * 3
 }
 
 const domain = process.env.MAIN_DOMAIN || 'localhost'

@@ -10,16 +10,17 @@ import {
   Stack,
   TextField,
 } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Trans } from '@lingui/macro'
-import { updateProduct } from 'src/helpers/reducers/receipt/receipt.thunk'
-import { useAppDispatch } from 'src/redux-hooks'
+import { updateProduct } from 'src/helpers/services/endpoints/receipt/receipt.service'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const defaultValues = {
@@ -47,14 +48,22 @@ const schema = yup.object().shape({
     .max(100000, 'Product count must be at most 100000'),
 })
 
-const ProductEditDialog = ({
-  product,
-  onClose,
-  receiptId,
-}: ProductEditDialogProps) => {
+const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
   const formState = useForm({ defaultValues, resolver: yupResolver(schema) })
 
-  const dispatch = useAppDispatch()
+  const { receipt } = useReceiptContext()
+
+  const queryClient = useQueryClient()
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['receipt'],
+    mutationFn: updateProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['receipt', { receiptId: receipt._id }],
+      })
+    },
+  })
 
   useEffect(() => {
     if (product) {
@@ -71,10 +80,11 @@ const ProductEditDialog = ({
   const handleSubmit = (data: typeof defaultValues) => {
     if (!product) return
 
-    dispatch(
-      updateProduct({ receiptId, productId: product._id, product: data })
-    )
-    onClose()
+    mutate({
+      receiptId: receipt._id,
+      productId: product._id,
+      product: data,
+    })
   }
 
   const getErrorMessage = (field: keyof typeof defaultValues) => {
@@ -97,6 +107,7 @@ const ProductEditDialog = ({
                 fullWidth
                 error={Boolean(getErrorMessage('name'))}
                 helperText={getErrorMessage('name')}
+                disabled={isPending}
                 {...formState.register('name')}
               />
             </Grid>
@@ -110,6 +121,7 @@ const ProductEditDialog = ({
                 inputProps={{ step: 0.01 }}
                 error={Boolean(getErrorMessage('price'))}
                 helperText={getErrorMessage('price')}
+                disabled={isPending}
                 {...formState.register('price')}
               />
             </Grid>
@@ -123,6 +135,7 @@ const ProductEditDialog = ({
                 inputProps={{ step: 0.01 }}
                 error={Boolean(getErrorMessage('count'))}
                 helperText={getErrorMessage('count')}
+                disabled={isPending}
                 {...formState.register('count')}
               />
             </Grid>
@@ -138,6 +151,7 @@ const ProductEditDialog = ({
               sx={{ flexGrow: 1 }}
               color='success'
               type='submit'
+              loading={isPending}
             >
               <Trans>Confirm</Trans>
             </LoadingButton>
@@ -148,6 +162,7 @@ const ProductEditDialog = ({
               sx={{ flexGrow: 1 }}
               color='error'
               onClick={onClose}
+              disabled={isPending}
             >
               <Trans>Cancel</Trans>
             </Button>

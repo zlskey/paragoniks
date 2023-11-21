@@ -18,6 +18,12 @@ export type AvatarColor =
 
 export type IProfile = Pick<IUser, '_id' | 'username' | 'avatarImage'>
 
+export enum Lang {
+  EN = 'en',
+  PL = 'pl',
+  AUTO = 'auto',
+}
+
 export interface IUser {
   _id: UserId
 
@@ -29,7 +35,7 @@ export interface IUser {
   avatarImage: string
   avatarColor: AvatarColor
 
-  lang: 'en' | 'pl'
+  lang: Lang
 
   removePassword(): Omit<IUser, 'password'>
   validatePassword(this: IUser, password: string): Promise<void>
@@ -65,7 +71,7 @@ const userSchema = new mongoose.Schema<IUser>({
   },
   lang: {
     type: String,
-    default: 'en',
+    default: Lang.AUTO,
   },
 })
 
@@ -131,8 +137,8 @@ class UserClass {
     return _.pick(this, ['_id', 'username', 'avatarImage', 'avatarColor'])
   }
 
-  setLang(this: IUser, lang: string): Promise<IUser> {
-    if (lang !== 'en' && lang !== 'pl') {
+  setLang(this: IUser, lang: Lang): Promise<IUser> {
+    if (lang in Lang) {
       throw new ErrorObject('Unsupported language')
     }
 

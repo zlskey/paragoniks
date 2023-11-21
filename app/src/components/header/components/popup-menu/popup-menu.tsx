@@ -1,16 +1,30 @@
 import { Menu, MenuItem, Typography } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { PopupMenuProps } from './popup-menu.types'
 import { Trans } from '@lingui/macro'
-import { logoutUser } from 'src/helpers/reducers/user/user.thunk'
-import { useAppDispatch } from 'src/redux-hooks'
+import { logoutUser } from 'src/helpers/services/endpoints/user/user.service'
+import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const PopupMenu = ({ anchorEl, onClose }: PopupMenuProps) => {
-  const dispatch = useAppDispatch()
+  const user = useUser()
 
-  const handleLogout = () => {
-    dispatch(logoutUser({}))
-  }
+  const queryClient = useQueryClient()
+
+  const { mutate } = useMutation({
+    mutationKey: ['user', 'logout'],
+    mutationFn: logoutUser,
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['user', 'whoami'] })
+
+      queryClient.setQueryData(['user', 'whoami'], null)
+
+      return { previousUser: user }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
+    },
+  })
 
   return (
     <Menu
@@ -29,7 +43,7 @@ const PopupMenu = ({ anchorEl, onClose }: PopupMenuProps) => {
       }}
       sx={{ mt: '45px' }}
     >
-      <MenuItem onClick={handleLogout}>
+      <MenuItem onClick={mutate}>
         <Typography textAlign='center'>
           <Trans>Logout</Trans>
         </Typography>

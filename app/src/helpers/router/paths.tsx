@@ -1,12 +1,10 @@
-import ProtectedRoute, {
-  loader as protectedRouteLoader,
-} from './protected-route'
-
 import AuthPage from 'src/pages/auth'
 import Friends from 'src/pages/friends'
 import Home from 'src/pages/home'
 import Page404 from 'src/pages/404'
+import ProtectedRoute from './protected-route'
 import Receipt from 'src/pages/receipt/receipt'
+import ReceiptContextProvider from '../contexts/receipt/receipt.context'
 import { RouteObject } from 'react-router-dom'
 import Settings from 'src/pages/settings/settings'
 
@@ -15,7 +13,6 @@ const paths: RouteObject[] = [
     path: '/',
     errorElement: <Page404 />,
     element: <ProtectedRoute />,
-    loader: protectedRouteLoader,
     children: [
       {
         path: '/',
@@ -31,7 +28,11 @@ const paths: RouteObject[] = [
       },
       {
         path: 'receipt/:receiptId',
-        element: <Receipt />,
+        element: (
+          <ReceiptContextProvider>
+            <Receipt />
+          </ReceiptContextProvider>
+        ),
       },
     ],
   },

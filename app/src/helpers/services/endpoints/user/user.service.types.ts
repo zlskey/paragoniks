@@ -1,4 +1,5 @@
 import { AvatarColor } from 'src/types/generic.types'
+import { Locale } from 'src/helpers/i18n/i18n.types'
 
 export interface LoginUserBody {
   username: string
@@ -34,5 +35,5 @@ export interface ChangeAvatarImageBody {
 }
 
 export interface ChangeUserLangBody {
-  lang: 'pl' | 'en'
+  lang: Locale
 }

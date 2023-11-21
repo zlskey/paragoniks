@@ -16,16 +16,10 @@ import ThemeSwitch from './components/theme-switch'
 import { Trans } from '@lingui/macro'
 import UsernameChangeIcon from '@mui/icons-material/PermContactCalendar'
 import Wrapper from 'src/components/wrapper'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
-import { useAppSelector } from 'src/redux-hooks'
 import { useNavigate } from 'react-router-dom'
 
 const Settings = () => {
-  const user = useAppSelector(selectUser)
-
   const navigate = useNavigate()
-
-  if (!user) return null
 
   const openModal = (id: string) => () => {
     navigate(`#${id}`)

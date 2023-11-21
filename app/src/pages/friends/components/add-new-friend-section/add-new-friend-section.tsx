@@ -1,10 +1,10 @@
 import { Paper, Stack, TextField, Typography } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import AddFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import { LoadingButton } from '@mui/lab'
 import { Trans } from '@lingui/macro'
-import { sendFriendRequest } from 'src/helpers/reducers/friends/friends.thunk'
-import { useAppDispatch } from 'src/redux-hooks'
+import { sendFriendRequest } from 'src/helpers/services/endpoints/friends/friends.service'
 import { useForm } from 'react-hook-form'
 
 const defaultValues = {
@@ -12,18 +12,30 @@ const defaultValues = {
 }
 
 const AddNewFriendSection = () => {
-  const isLoading = false
-
-  const isFailed = false
-
   const formState = useForm({ defaultValues })
 
-  const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
 
-  const handleSendFriendshipRequest = ({ username }: typeof defaultValues) => {
-    dispatch(sendFriendRequest({ username }))
-    formState.reset()
-  }
+  const {
+    mutate: handleAddFriend,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationKey: ['friend'],
+    mutationFn: sendFriendRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['friend'] })
+      formState.reset()
+    },
+    onError: (err: any) => {
+      const errorMessage = err?.response?.data.error.message
+
+      formState.setError('username', {
+        type: 'manual',
+        message: errorMessage || 'Something went wrong',
+      })
+    },
+  })
 
   return (
     <Paper>
@@ -32,7 +44,7 @@ const AddNewFriendSection = () => {
           <Trans>Add a new friend</Trans>
         </Typography>
 
-        <form onSubmit={formState.handleSubmit(handleSendFriendshipRequest)}>
+        <form onSubmit={formState.handleSubmit(body => handleAddFriend(body))}>
           <Stack direction='row' spacing={1}>
             <TextField
               spellCheck='false'
@@ -40,13 +52,14 @@ const AddNewFriendSection = () => {
               variant='filled'
               size='small'
               sx={{ flexGrow: 1 }}
-              error={isFailed}
+              error={isError}
+              disabled={isPending}
               {...formState.register('username')}
             />
 
             <LoadingButton
-              loading={isLoading}
-              disabled={isLoading}
+              loading={isPending}
+              disabled={isPending}
               endIcon={<AddFriendIcon />}
               variant='contained'
               type='submit'
@@ -55,6 +68,10 @@ const AddNewFriendSection = () => {
             </LoadingButton>
           </Stack>
         </form>
+
+        <Typography variant='body2' color='error'>
+          {formState.formState.errors.username?.message}
+        </Typography>
       </Stack>
     </Paper>
   )

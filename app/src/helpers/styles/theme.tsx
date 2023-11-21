@@ -1,8 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 
 import React from 'react'
-import { selectUser } from '../reducers/user/user.reducer'
-import { useAppSelector } from 'src/redux-hooks'
+import { useUser } from '../contexts/current-user/current-user.context'
 
 const darkTheme = createTheme({
   palette: {
@@ -17,9 +16,9 @@ const lightTheme = createTheme({
 })
 
 const Theme = ({ children }: React.PropsWithChildren) => {
-  const user = useAppSelector(selectUser)
+  const user = useUser()
 
-  const theme = user?.theme || 'dark'
+  const theme = user.theme
 
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>

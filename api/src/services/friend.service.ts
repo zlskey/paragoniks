@@ -98,8 +98,6 @@ export const removeFriendship = async (firstId: UserId, secondId: UserId) => {
 export const acceptFriendship = async (firstId: UserId, secondId: UserId) => {
   const friendship = await findFriendship(firstId, secondId)
 
-  console.log(friendship)
-
   await Friendship.findByIdAndUpdate(friendship._id, {
     status: 'accepted',
   })

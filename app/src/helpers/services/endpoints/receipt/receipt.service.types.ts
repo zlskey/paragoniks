@@ -43,3 +43,7 @@ export interface UpdateProductBody {
     count: number
   }
 }
+
+export interface GetContributorsBody {
+  receiptId: ReceiptId
+}

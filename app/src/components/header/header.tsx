@@ -15,9 +15,12 @@ import MenuItem from './components/menu-item'
 import PopupMenu from './components/popup-menu/popup-menu'
 import { Trans } from '@lingui/macro'
 import UserAvatar from '../user-avatar/user-avatar'
+import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const Header = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+
+  const user = useUser()
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -47,7 +50,7 @@ const Header = () => {
 
           <Tooltip title={<Trans>Menu</Trans>}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <UserAvatar />
+              <UserAvatar profile={user} />
             </IconButton>
           </Tooltip>
 

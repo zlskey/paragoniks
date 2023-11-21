@@ -1,6 +1,5 @@
-import { Receipt, UserId } from 'src/types/generic.types'
+import { Profile } from 'src/types/generic.types'
 
 export interface ContributorItemProps {
-  contributorId: UserId
-  receipt: Receipt
+  contributor: Profile
 }

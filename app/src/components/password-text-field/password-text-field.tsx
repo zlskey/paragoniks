@@ -41,6 +41,7 @@ const PasswordTextField = ({
           />
         }
         error={Boolean(errorMessage || isFailed)}
+        required
         {...register(name)}
       />
       <FormHelperText error>{errorMessage}</FormHelperText>

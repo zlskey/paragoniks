@@ -2,6 +2,7 @@ import {
   AddContributorBody,
   ChangeReceiptTitleBody,
   CreateReceiptBody,
+  GetContributorsBody,
   GetReceiptBody,
   GetUserReceiptsBody,
   RemoveContributorBody,
@@ -9,8 +10,8 @@ import {
   ToggleProductComprisingBody,
   UpdateProductBody,
 } from './receipt.service.types'
+import { Profile, Receipt } from 'src/types/generic.types'
 
-import { Receipt } from 'src/types/generic.types'
 import { rsApi } from '../../rs.service'
 
 export const getUserReceipts = async ({}: GetUserReceiptsBody) => {
@@ -96,6 +97,14 @@ export const updateProduct = async ({
   const response = await rsApi.patch<Receipt>(
     `/receipt/${receiptId}/product/${productId}`,
     { product }
+  )
+
+  return response.data
+}
+
+export const getContributors = async ({ receiptId }: GetContributorsBody) => {
+  const response = await rsApi.get<Profile[]>(
+    `/receipt/${receiptId}/contributors`
   )
 
   return response.data

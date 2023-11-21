@@ -1,15 +1,12 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { Grid, TextField, Typography } from '@mui/material'
-import {
-  selectUserError,
-  selectUserLoading,
-} from 'src/helpers/reducers/user/user.reducer'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { LoadingButton } from '@mui/lab'
 import PasswordTextField from 'src/components/password-text-field'
 import { Trans } from '@lingui/macro'
-import { signupUser } from 'src/helpers/reducers/user/user.thunk'
+import { signupUser } from 'src/helpers/services/endpoints/user/user.service'
+import { useState } from 'react'
 import { userSchema } from 'src/helpers/utils/user-validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -25,18 +22,25 @@ const SignupForm = () => {
     resolver: yupResolver(userSchema),
   })
 
-  const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
 
-  const status = useAppSelector(selectUserLoading)
+  const [error, setError] = useState('')
 
-  const error = useAppSelector(selectUserError)
-
-  const isLoading = status === 'pending'
-
-  const isFailed = status === 'failed'
+  const { mutate, isPending, isError } = useMutation({
+    mutationKey: ['user', 'signup'],
+    mutationFn: signupUser,
+    onSuccess: user => {
+      queryClient.setQueryData(['user', 'whoami'], user)
+    },
+    onError: (err: any) => {
+      if (err.response.data.error.message) {
+        setError(err.response.data.error.message)
+      }
+    },
+  })
 
   const handleSignup = ({ username, password }: typeof defaultValues) => {
-    dispatch(signupUser({ username, password }))
+    mutate({ username, password })
   }
 
   const getErrorMessage = (field: keyof typeof defaultValues) => {
@@ -54,7 +58,7 @@ const SignupForm = () => {
               spellCheck='false'
               label={<Trans>Username</Trans>}
               variant='filled'
-              error={Boolean(getErrorMessage('username')) || isFailed}
+              error={Boolean(getErrorMessage('username')) || isError}
               helperText={getErrorMessage('username')}
             />
           </Grid>
@@ -64,7 +68,7 @@ const SignupForm = () => {
               label={<Trans>Password</Trans>}
               name='password'
               errorMessage={getErrorMessage('password')}
-              isFailed={isFailed}
+              isFailed={isError}
             />
           </Grid>
 
@@ -73,7 +77,7 @@ const SignupForm = () => {
               label={<Trans>Repeat Password</Trans>}
               name='repeatPassword'
               errorMessage={getErrorMessage('repeatPassword')}
-              isFailed={isFailed}
+              isFailed={isError}
             />
           </Grid>
 
@@ -83,8 +87,8 @@ const SignupForm = () => {
 
           <Grid item xs={12} justifyContent='center' display='flex'>
             <LoadingButton
-              disabled={isLoading}
-              loading={isLoading}
+              disabled={isPending}
+              loading={isPending}
               variant='contained'
               type='submit'
             >

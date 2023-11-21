@@ -57,8 +57,14 @@ export const update = async (userId: UserId, payload: any): Promise<IUser> => {
   return await User.findByIdAndUpdate(userId, payload, { new: true })
 }
 
-export const getProfiles = async (userIds: UserId[]): Promise<IProfile[]> => {
-  const users = await User.find({ _id: { $in: userIds } })
+export const getProfile = async (userId: UserId): Promise<IProfile> => {
+  const user = await User.findOne({ _id: userId })
+
+  return user.pickProfile()
+}
+
+export const getProfiles = async (usersIds: UserId[]): Promise<IProfile[]> => {
+  const users = await User.find({ _id: { $in: usersIds } })
 
   return users.map(user => user.pickProfile())
 }

@@ -19,6 +19,11 @@ singleReceiptRouter.patch(
   wrapAsync(receiptController.handleChangeReceiptTitle)
 )
 
+singleReceiptRouter.get(
+  '/contributors',
+  wrapAsync(receiptController.handleGetContributors)
+)
+
 singleReceiptRouter.patch(
   '/product/:productId',
   wrapAsync(receiptController.handleUpdateProduct)
@@ -28,6 +33,7 @@ singleReceiptRouter.patch(
   '/product/:productId/comprising',
   wrapAsync(receiptController.handleToggleComprising)
 )
+
 singleReceiptRouter.patch(
   '/friend/:contributorId',
   wrapAsync(receiptController.handleAddContributor)

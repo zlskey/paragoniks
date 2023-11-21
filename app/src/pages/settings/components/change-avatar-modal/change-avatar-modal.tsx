@@ -3,39 +3,52 @@ import { FormProvider, useForm } from 'react-hook-form'
 import {
   changeAvatarColor,
   changeAvatarImage,
-} from 'src/helpers/reducers/user/user.thunk'
-import { useAppDispatch, useAppSelector } from 'src/redux-hooks'
+} from 'src/helpers/services/endpoints/user/user.service'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { AvatarColor } from 'src/types/generic.types'
 import SettingsModal from '../settings-modal'
 import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
-import { selectUser } from 'src/helpers/reducers/user/user.reducer'
 import { useNavigate } from 'react-router-dom'
+import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const defaultValues: { files: FileList | null } = { files: null }
 
 const ChangeAvatarModal = () => {
-  const dispatch = useAppDispatch()
-
-  const user = useAppSelector(selectUser)
+  const user = useUser()
 
   const navigate = useNavigate()
 
   const formState = useForm({ defaultValues })
 
-  const onSubmit = ({ files }: typeof defaultValues) => {
-    files && dispatch(changeAvatarImage({ image: files[0] }))
+  const queryClient = useQueryClient()
 
-    formState.reset()
-    navigate('#')
+  const { mutate: handleChangeAvatarImage } = useMutation({
+    mutationKey: ['user', 'avatar', 'image'],
+    mutationFn: changeAvatarImage,
+    onSuccess: user => {
+      queryClient.setQueryData(['user', 'whoami'], user)
+      formState.reset()
+      navigate('#')
+    },
+  })
+
+  const { mutate: handleChangeAvatarColor } = useMutation({
+    mutationKey: ['user', 'avatar', 'color'],
+    mutationFn: changeAvatarColor,
+    onSuccess: user => {
+      queryClient.setQueryData(['user', 'whoami'], user)
+    },
+  })
+
+  const onSubmit = ({ files }: typeof defaultValues) => {
+    files && handleChangeAvatarImage({ image: files[0] })
   }
 
   const selectColor = (color: AvatarColor) => () => {
-    dispatch(changeAvatarColor({ color }))
+    handleChangeAvatarColor({ color })
   }
-
-  if (!user) return null
 
   return (
     <SettingsModal id='avatar' title={<Trans>Customize your avatar!</Trans>}>
@@ -49,7 +62,7 @@ const ChangeAvatarModal = () => {
                 <Trans>Your current avatar:</Trans>
               </Typography>
 
-              <UserAvatar />
+              <UserAvatar profile={user} />
             </Stack>
 
             <Stack>

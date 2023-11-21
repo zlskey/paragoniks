@@ -1,4 +1,5 @@
-import { GetProfilesBody } from './profiles.service.types'
+import { GetProfileBody, GetProfilesBody } from './profiles.service.types'
+
 import { Profile } from 'src/types/generic.types'
 import { rsApi } from '../..'
 
@@ -8,6 +9,12 @@ export const getProfiles = async (body: GetProfilesBody) => {
   const response = await rsApi.get<Profile[]>(
     `/user/profile?userIds=${paramUserIds}`
   )
+
+  return response.data
+}
+
+export const getProfile = async (body: GetProfileBody) => {
+  const response = await rsApi.get<Profile>(`/user/profile/${body.userId}`)
 
   return response.data
 }

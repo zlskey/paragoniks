@@ -9,28 +9,44 @@ import {
   Popper,
 } from '@mui/material'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import { useMemo, useState } from 'react'
+import { useQueries, useQuery } from '@tanstack/react-query'
 
-import { AddContributorItemProps } from './add-contributor-item.types'
 import FriendProposal from './components/friend-proposal/friend-proposal'
-import { selectAllFriendships } from 'src/helpers/reducers/friends/friends.reducer'
-import { selectAllProfiles } from 'src/helpers/reducers/profiles/profiles.reducer'
-import { useAppSelector } from 'src/redux-hooks'
-import { useState } from 'react'
+import { getAllFriendships } from 'src/helpers/services/endpoints/friends/friends.service'
+import { getProfile } from 'src/helpers/services/endpoints/profiles/profiles.service'
+import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 
 const defaultValues = {
   username: '',
 }
 
-const AddContributorItem = ({ contributorsList }: AddContributorItemProps) => {
-  const friendships = useAppSelector(selectAllFriendships)
+const AddContributorItem = () => {
+  const { receipt } = useReceiptContext()
 
   const formState = useForm({ defaultValues })
 
   const username = useWatch({ name: 'username', control: formState.control })
 
-  const profiles = useAppSelector(selectAllProfiles)
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const { data: friendships } = useQuery({
+    queryKey: ['friend'],
+    queryFn: getAllFriendships,
+    initialData: [],
+  })
+
+  const results = useQueries({
+    queries: friendships.map(({ friendId }) => ({
+      queryKey: ['user', 'profile', { userId: friendId }],
+      queryFn: () => getProfile({ userId: friendId }),
+    })),
+  })
+
+  const profiles = useMemo(
+    () => results.flatMap(({ data }) => data || []),
+    [results]
+  )
 
   return (
     <ListItem>
@@ -46,6 +62,7 @@ const AddContributorItem = ({ contributorsList }: AddContributorItemProps) => {
               fullWidth
               spellCheck={false}
               autoComplete='off'
+              disabled={!profiles.length}
               {...formState.register('username')}
             />
           </div>
@@ -54,15 +71,24 @@ const AddContributorItem = ({ contributorsList }: AddContributorItemProps) => {
         <Popper id='simple-popper' anchorEl={anchorEl} open={Boolean(username)}>
           <Paper elevation={5}>
             <List disablePadding>
-              {friendships
-                .filter(({ status }) => status === 'accepted')
-                .filter(({ friendId }) => !contributorsList.includes(friendId))
-                .flatMap(
-                  ({ friendId }) =>
-                    profiles.find(({ _id }) => _id === friendId) || []
-                )
-                .map(({ _id }) => (
-                  <FriendProposal key={_id} friendId={_id} />
+              {profiles
+                .filter(profile => {
+                  const contributorsList = receipt.contributors.concat([
+                    receipt.owner,
+                  ])
+                  const friendship = friendships.find(
+                    ({ friendId }) => friendId === profile._id
+                  )
+
+                  if (!friendship) return false
+
+                  const isContributor = contributorsList.includes(profile._id)
+                  const isAcceptedFriend = friendship?.status === 'accepted'
+
+                  return !isContributor && isAcceptedFriend
+                })
+                .map(profile => (
+                  <FriendProposal key={profile._id} profile={profile} />
                 ))}
             </List>
           </Paper>
