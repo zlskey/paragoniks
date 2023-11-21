@@ -33,11 +33,13 @@ const ReceiptContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const receiptResult = useQuery({
     queryKey: ['receipt', { receiptId }],
     queryFn: () => getReceipt({ receiptId }),
+    refetchInterval: 2000,
   })
 
   const contributorsResult = useQuery({
     queryKey: ['receipt', { receiptId }, 'contributors'],
     queryFn: () => getContributors({ receiptId }),
+    refetchInterval: 10000,
   })
 
   const isLoading = receiptResult.isLoading || contributorsResult.isLoading
