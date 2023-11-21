@@ -1,4 +1,12 @@
-import { Grid, List, Paper, Stack, Typography } from '@mui/material'
+import {
+  Grid,
+  List,
+  Paper,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material'
 
 import { Product } from 'src/types/generic.types'
 import ProductEditDialog from 'src/pages/receipt/components/product-edit-dialog'
@@ -15,6 +23,10 @@ import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
 
 const Receipt = () => {
   const { receipt } = useReceiptContext()
+
+  const theme = useTheme()
+
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
 
   const user = useUser()
 
@@ -37,7 +49,11 @@ const Receipt = () => {
         onClose={handleClearEditedProduct}
       />
 
-      <Grid container spacing={2}>
+      <Grid
+        container
+        spacing={2}
+        direction={isLargeScreen ? 'row' : 'column-reverse'}
+      >
         <Grid item xs={12} md={8}>
           <Paper>
             <List>
