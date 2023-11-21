@@ -137,9 +137,7 @@ const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
       >
         <ListItemText
           primary={product.name}
-          secondary={`x ${product.count}`}
-          primaryTypographyProps={{ display: 'inline', mr: 1 }}
-          secondaryTypographyProps={{ display: 'inline' }}
+          secondary={`${product.count} * ${getPrice(product.price)}`}
         />
 
         <ListItemIcon>
@@ -147,17 +145,14 @@ const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
             <AvatarGroup>
               <Avatar sx={{ visibility: 'hidden' }} />
 
-              {product.comprising.map(friendId => {
-                const profile = contributors.find(
-                  contributor => contributor._id === friendId
+              {contributors
+                .filter(contributor =>
+                  product.comprising.includes(contributor._id)
                 )
-
-                if (!profile) {
-                  return null
-                }
-
-                return <UserAvatar key={friendId} profile={profile} />
-              })}
+                .sort((a, b) => a.username.localeCompare(b.username))
+                .map(profile => (
+                  <UserAvatar key={profile._id} profile={profile} />
+                ))}
             </AvatarGroup>
 
             <Typography>{userCut}</Typography>
