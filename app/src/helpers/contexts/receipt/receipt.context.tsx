@@ -44,7 +44,7 @@ const ReceiptContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const isLoading = receiptResult.isLoading || contributorsResult.isLoading
 
-  if (isLoading) {
+  if (isLoading || !receiptResult.data?._id) {
     return <ReceiptSkeleton />
   }
 
