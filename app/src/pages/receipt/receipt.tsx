@@ -52,22 +52,8 @@ const Receipt = () => {
       <Grid
         container
         spacing={2}
-        direction={isLargeScreen ? 'row' : 'column-reverse'}
+        direction={isLargeScreen ? 'row-reverse' : undefined}
       >
-        <Grid item xs={12} md={8}>
-          <Paper>
-            <List>
-              {receipt.products.map(product => (
-                <ProductItem
-                  onEdit={handleSetEditedProduct}
-                  productId={product._id}
-                  key={product._id}
-                />
-              ))}
-            </List>
-          </Paper>
-        </Grid>
-
         <Grid item xs={12} md={4}>
           <Stack spacing={2}>
             <TitleInput />
@@ -96,6 +82,18 @@ const Receipt = () => {
             <Paper>
               <ReceiptContributorsList />
             </Paper>
+          </Stack>
+        </Grid>
+
+        <Grid item xs={12} md={8}>
+          <Stack spacing={2}>
+            {receipt.products.map(product => (
+              <ProductItem
+                onEdit={handleSetEditedProduct}
+                productId={product._id}
+                key={product._id}
+              />
+            ))}
           </Stack>
         </Grid>
       </Grid>

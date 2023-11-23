@@ -3,7 +3,6 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   Paper,
@@ -11,6 +10,8 @@ import {
   SkeletonProps,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 
 import { Trans } from '@lingui/macro'
@@ -18,34 +19,40 @@ import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
 
 const ReceiptSkeleton = () => {
+  const theme = useTheme()
+
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
+
   return (
     <Wrapper>
-      <Grid container spacing={2}>
+      <Grid
+        container
+        spacing={2}
+        direction={isLargeScreen ? 'row' : 'column-reverse'}
+      >
         <Grid item xs={12} md={8}>
-          <Paper>
-            <List>
-              {generateElements(
-                <ListItem>
-                  <ListItemButton disableTouchRipple>
-                    <ListItemText>
-                      <Stack direction='row' spacing={1} alignItems='flex-end'>
-                        <Skeleton variant='text' width={150} />
-                        <Skeleton variant='text' width={50} />
-                      </Stack>
-                    </ListItemText>
+          <Stack spacing={2}>
+            {generateElements(
+              <Paper>
+                <Stack p={2} direction='row' justifyContent='space-between'>
+                  <Stack spacing={1}>
+                    <Typography>
+                      <AppSkeleton width={200} />
+                    </Typography>
 
-                    <ListItemIcon>
-                      <Stack direction='row' alignItems='center' spacing={1}>
-                        <Skeleton variant='circular' height={40} width={40} />
-                        <Skeleton variant='text' width={30} />
-                      </Stack>
-                    </ListItemIcon>
-                  </ListItemButton>
-                </ListItem>,
-                10
-              )}
-            </List>
-          </Paper>
+                    <Typography variant='body2'>
+                      <AppSkeleton width={130} />
+                    </Typography>
+                  </Stack>
+
+                  <Stack direction='row' alignItems='center' spacing={1}>
+                    <AppSkeleton width={30} />
+                  </Stack>
+                </Stack>
+              </Paper>,
+              10
+            )}
+          </Stack>
         </Grid>
 
         <Grid item xs={12} md={4}>

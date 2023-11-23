@@ -1,58 +1,17 @@
+import { CardActionArea, IconButton, Stack, Typography } from '@mui/material'
 import {
-  Avatar,
-  AvatarGroup,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+  ProductItemAvatarGroup,
+  ProductItemContainer,
+} from './product-item.styled'
 
 import EditIcon from '@mui/icons-material/EditOutlined'
 import { ProductItemProps } from './product-item.types'
-import { Receipt } from 'src/types/generic.types'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { getPrice } from 'src/helpers/utils/get-price'
-import { toggleProductComprising } from 'src/helpers/services/endpoints/receipt/receipt.service'
 import { useMemo } from 'react'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
+import useToggleComprising from './use-toggle-comprising'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
-
-const optimisticlyToggleComprising = (
-  receipt: Receipt,
-  productId: string,
-  userId: string
-) => {
-  return {
-    ...receipt,
-    products: receipt.products.map(product => {
-      if (product._id === productId) {
-        const comprising = product.comprising.find(
-          comprising => comprising === userId
-        )
-
-        if (comprising) {
-          return {
-            ...product,
-            comprising: product.comprising.filter(
-              comprisingId => comprisingId !== userId
-            ),
-          }
-        }
-
-        return {
-          ...product,
-          comprising: [...product.comprising, userId],
-        }
-      }
-
-      return product
-    }),
-  }
-}
 
 const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
   const user = useUser()
@@ -64,8 +23,11 @@ const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
     return null
   }
 
+  const handleToggleComprising = useToggleComprising({ productId })
+
+  const isComprising = product.comprising.includes(user._id)
+
   const userCut = useMemo(() => {
-    const isComprising = product.comprising.includes(user._id)
     const cut = (product.price * product.count) / product.comprising.length
 
     const userCutRaw = isComprising ? cut : 0
@@ -75,91 +37,41 @@ const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
 
   const isOwner = receipt.owner === user._id
 
-  const queryClient = useQueryClient()
-
-  const { mutate } = useMutation({
-    mutationKey: ['receipt', { receiptId: receipt._id }],
-    mutationFn: toggleProductComprising,
-    onMutate: async () => {
-      const previousValue = queryClient.getQueryData<Receipt>([
-        'receipt',
-        { receiptId: receipt._id },
-      ])
-
-      const updatedReceipt = optimisticlyToggleComprising(
-        receipt,
-        product._id,
-        user._id
-      )
-
-      queryClient.setQueryData(
-        ['receipt', { receiptId: receipt._id }],
-        updatedReceipt
-      )
-
-      return { previousValue }
-    },
-    onError: (err, newData, context) => {
-      if (!context) {
-        return
-      }
-
-      if (err || newData) {
-        // something
-      }
-
-      queryClient.setQueryData(
-        ['receipt', { receiptId: receipt._id }],
-        context.previousValue
-      )
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['receipt', { receiptId: receipt._id }],
-      })
-    },
-  })
-
   return (
-    <ListItem
-      secondaryAction={
-        isOwner && (
-          <IconButton onClick={() => onEdit(product)}>
-            <EditIcon />
-          </IconButton>
-        )
-      }
-    >
-      <ListItemButton
-        onClick={() =>
-          mutate({ receiptId: receipt._id, productId: product._id })
-        }
-      >
-        <ListItemText
-          primary={product.name}
-          secondary={`${product.count} * ${getPrice(product.price)}`}
-        />
+    <ProductItemContainer>
+      <CardActionArea onClick={() => handleToggleComprising()}>
+        <Stack p={2} direction='row' justifyContent='space-between'>
+          <Stack spacing={1}>
+            <Typography>{product.name}</Typography>
 
-        <ListItemIcon>
-          <Stack direction='row' alignItems='center' spacing={1}>
-            <AvatarGroup>
-              <Avatar sx={{ visibility: 'hidden' }} />
-
-              {contributors
-                .filter(contributor =>
-                  product.comprising.includes(contributor._id)
-                )
-                .sort((a, b) => a.username.localeCompare(b.username))
-                .map(profile => (
-                  <UserAvatar key={profile._id} profile={profile} />
-                ))}
-            </AvatarGroup>
-
-            <Typography>{userCut}</Typography>
+            <Typography variant='body2' color='lightgray'>
+              {getPrice(product.price)} * {product.count}
+            </Typography>
           </Stack>
-        </ListItemIcon>
-      </ListItemButton>
-    </ListItem>
+
+          <Stack direction='row' alignItems='center' spacing={1}>
+            <Typography color={isComprising ? 'primary' : undefined}>
+              {userCut}
+            </Typography>
+
+            {isOwner && (
+              <IconButton onClick={() => onEdit(product)}>
+                <EditIcon />
+              </IconButton>
+            )}
+          </Stack>
+        </Stack>
+      </CardActionArea>
+
+      <ProductItemAvatarGroup max={10}>
+        {contributors
+          .filter(contributor => product.comprising.includes(contributor._id))
+          .sort((a, b) => a.username.localeCompare(b.username))
+          .map(profile => (
+            <UserAvatar key={profile._id} profile={profile} />
+          ))}
+      </ProductItemAvatarGroup>
+    </ProductItemContainer>
   )
 }
 
