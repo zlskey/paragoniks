@@ -70,7 +70,11 @@ const ChangeAvatarModal = () => {
                 <Trans>Choose a color</Trans>
               </Typography>
 
-              <Stack direction='row' justifyContent='space-evenly'>
+              <Stack
+                direction='row'
+                justifyContent='space-evenly'
+                flexWrap='wrap'
+              >
                 {Object.values(AvatarColor).map(color => (
                   <IconButton key={color} onClick={selectColor(color)}>
                     <Avatar

@@ -7,6 +7,7 @@ import Receipt from 'src/pages/receipt/receipt'
 import ReceiptContextProvider from '../contexts/receipt/receipt.context'
 import { RouteObject } from 'react-router-dom'
 import Settings from 'src/pages/settings/settings'
+import WorkInProgress from 'src/pages/work-in-progress/work-in-progress'
 
 const paths: RouteObject[] = [
   {
@@ -33,6 +34,14 @@ const paths: RouteObject[] = [
             <Receipt />
           </ReceiptContextProvider>
         ),
+      },
+      {
+        path: 'stats',
+        element: <WorkInProgress />,
+      },
+      {
+        path: 'profile',
+        element: <WorkInProgress />,
       },
     ],
   },
