@@ -14,7 +14,7 @@ const upload = multer({ dest: 'uploads/' })
 
 const limiter = rateLimit({
   windowMs: 6 * 60 * 60 * 1000, // 6 hours
-  max: NODE_ENV === 'production' ? 2 : undefined, // limit each IP to 10 requests per windowMs
+  max: NODE_ENV === 'production' ? 2 : Infinity, // limit each IP to 10 requests per windowMs
 })
 
 receiptRouter.get('/', wrapAsync(receiptController.handleGetUserReceipts))
