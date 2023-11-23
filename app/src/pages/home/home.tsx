@@ -27,6 +27,7 @@ const Home = () => {
     queryKey: ['receipt'],
     queryFn: getUserReceipts,
     initialData: [],
+    refetchInterval: 1000,
   })
 
   return (
