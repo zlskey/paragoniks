@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
 import { Receipt } from 'src/types/generic.types'
 import { ReceiptItemProps } from './receipt-item.types'
-import { removeReceipt } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { removeReceipt } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useNavigate } from 'react-router-dom'
 
 const ReceiptItem = ({ receipt }: ReceiptItemProps) => {

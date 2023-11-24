@@ -1,4 +1,4 @@
-import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
+import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined'

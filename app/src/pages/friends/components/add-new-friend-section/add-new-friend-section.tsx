@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import AddFriendIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import { LoadingButton } from '@mui/lab'
 import { Trans } from '@lingui/macro'
-import { sendFriendRequest } from 'src/helpers/services/endpoints/friends/friends.service'
+import { sendFriendRequest } from 'src/helpers/api/endpoints/friends/friends.api'
 import { useForm } from 'react-hook-form'
 
 const defaultValues = {

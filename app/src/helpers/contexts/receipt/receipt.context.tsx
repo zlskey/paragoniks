@@ -3,7 +3,7 @@ import { Profile, Receipt } from 'src/types/generic.types'
 import {
   getContributors,
   getReceipt,
-} from 'src/helpers/services/endpoints/receipt/receipt.service'
+} from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import ReceiptSkeleton from 'src/pages/receipt/receipt.skeleton'

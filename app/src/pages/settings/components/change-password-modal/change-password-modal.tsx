@@ -7,7 +7,7 @@ import PasswordTextField from 'src/components/password-text-field/password-text-
 import SettingsModal from '../settings-modal'
 import { Stack } from '@mui/material'
 import { Trans } from '@lingui/macro'
-import { changePassword } from 'src/helpers/services/endpoints/user/user.service'
+import { changePassword } from 'src/helpers/api/endpoints/user/user.api'
 import { passwordSchema } from 'src/helpers/utils/user-validation-schema'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'

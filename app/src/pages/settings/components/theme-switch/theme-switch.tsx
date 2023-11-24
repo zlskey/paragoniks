@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Switch } from '@mui/material'
-import { toggleTheme } from 'src/helpers/services/endpoints/user/user.service'
+import { toggleTheme } from 'src/helpers/api/endpoints/user/user.api'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const ThemeSwitch = () => {

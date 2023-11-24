@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { InputBase, Paper, Stack, Typography } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { changeReceiptTitle } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { changeReceiptTitle } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'

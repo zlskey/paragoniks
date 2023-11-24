@@ -2,7 +2,7 @@ import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Locale } from 'src/helpers/i18n/i18n.types'
-import { changeUserLang } from 'src/helpers/services/endpoints/user/user.service'
+import { changeUserLang } from 'src/helpers/api/endpoints/user/user.api'
 import { locales } from 'src/helpers/i18n/i18n.data'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 

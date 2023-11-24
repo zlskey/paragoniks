@@ -8,7 +8,7 @@ import { LoadingButton } from '@mui/lab'
 import { Receipt } from 'src/types/generic.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Trans } from '@lingui/macro'
-import { createReceipt } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { createReceipt } from 'src/helpers/api/endpoints/receipt/receipt.api'
 
 const defaultValues = {
   file: null,

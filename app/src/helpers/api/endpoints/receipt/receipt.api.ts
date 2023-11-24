@@ -9,10 +9,10 @@ import {
   RemoveReceiptBody,
   ToggleProductComprisingBody,
   UpdateProductBody,
-} from './receipt.service.types'
+} from './receipt.api.types'
 import { Profile, Receipt } from 'src/types/generic.types'
 
-import { rsApi } from '../../rs.service'
+import { rsApi } from '../../rs.api'
 
 export const getUserReceipts = async ({}: GetUserReceiptsBody) => {
   const response = await rsApi.get<Receipt[]>('/receipt')

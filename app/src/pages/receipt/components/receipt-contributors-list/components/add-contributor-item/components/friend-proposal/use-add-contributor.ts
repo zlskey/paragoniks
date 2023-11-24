@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { UserId } from 'src/types/generic.types'
-import { addContributor } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { addContributor } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 
 const useAddContributor = () => {

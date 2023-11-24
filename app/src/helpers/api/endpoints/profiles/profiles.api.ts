@@ -1,4 +1,4 @@
-import { GetProfileBody, GetProfilesBody } from './profiles.service.types'
+import { GetProfileBody, GetProfilesBody } from './profiles.api.types'
 
 import { Profile } from 'src/types/generic.types'
 import { rsApi } from '../..'

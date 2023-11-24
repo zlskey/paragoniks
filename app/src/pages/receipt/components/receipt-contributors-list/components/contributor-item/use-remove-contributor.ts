@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { UserId } from 'src/types/generic.types'
-import { removeContributor } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { removeContributor } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 
 const useRemoveContributor = ({ contributorId }: { contributorId: UserId }) => {

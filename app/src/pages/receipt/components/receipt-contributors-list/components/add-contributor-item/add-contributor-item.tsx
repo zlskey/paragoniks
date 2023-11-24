@@ -13,8 +13,8 @@ import { useMemo, useState } from 'react'
 import { useQueries, useQuery } from '@tanstack/react-query'
 
 import FriendProposal from './components/friend-proposal/friend-proposal'
-import { getAllFriendships } from 'src/helpers/services/endpoints/friends/friends.service'
-import { getProfile } from 'src/helpers/services/endpoints/profiles/profiles.service'
+import { getAllFriendships } from 'src/helpers/api/endpoints/friends/friends.api'
+import { getProfile } from 'src/helpers/api/endpoints/profiles/profiles.api'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 
 const defaultValues = {

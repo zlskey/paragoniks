@@ -15,7 +15,7 @@ import { Trans } from '@lingui/macro'
 import UploadReceipt from 'src/pages/home/components/upload-receipt'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
-import { getUserReceipts } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { getUserReceipts } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useQuery } from '@tanstack/react-query'
 
 const Home = () => {

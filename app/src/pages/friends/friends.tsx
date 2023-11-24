@@ -18,7 +18,7 @@ import { Friendship } from 'src/types/generic.types'
 import { Trans } from '@lingui/macro'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
-import { getAllFriendships } from 'src/helpers/services/endpoints/friends/friends.service'
+import { getAllFriendships } from 'src/helpers/api/endpoints/friends/friends.api'
 import { useQuery } from '@tanstack/react-query'
 
 const Friends = () => {

@@ -10,7 +10,7 @@ import { User } from 'src/types/generic.types'
 import { dummyUser } from 'src/helpers/mocks'
 import useLocalStorage from '../../hooks/use-local-storage'
 import { useQuery } from '@tanstack/react-query'
-import { whoamiUser } from 'src/helpers/services/endpoints/user/user.service'
+import { whoamiUser } from 'src/helpers/api/endpoints/user/user.api'
 
 interface CurrentUserContextValue {
   profile: User

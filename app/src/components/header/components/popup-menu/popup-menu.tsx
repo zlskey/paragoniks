@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { PopupMenuProps } from './popup-menu.types'
 import { Trans } from '@lingui/macro'
-import { logoutUser } from 'src/helpers/services/endpoints/user/user.service'
+import { logoutUser } from 'src/helpers/api/endpoints/user/user.api'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
 const PopupMenu = ({ anchorEl, onClose }: PopupMenuProps) => {

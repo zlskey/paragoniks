@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { ProductId } from 'src/types/generic.types'
-import { toggleProductComprising } from 'src/helpers/services/endpoints/receipt/receipt.service'
+import { toggleProductComprising } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 

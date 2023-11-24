@@ -12,7 +12,7 @@ import { FriendItemSkeleton } from '.'
 import RemoveFriendIcon from '@mui/icons-material/PersonRemoveAlt1Outlined'
 import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
-import { getProfile } from 'src/helpers/services/endpoints/profiles/profiles.service'
+import { getProfile } from 'src/helpers/api/endpoints/profiles/profiles.api'
 import { useQuery } from '@tanstack/react-query'
 import useRemoveFriend from './use-remove-friend'
 

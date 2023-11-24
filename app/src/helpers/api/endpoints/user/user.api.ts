@@ -9,10 +9,10 @@ import {
   SignupUserBody,
   ToggleThemeBody,
   WhoamiUserBody,
-} from './user.service.types'
+} from './user.api.types'
 
 import { User } from 'src/types/generic.types'
-import { rsApi } from 'src/helpers/services'
+import { rsApi } from 'src/helpers/api'
 
 export const loginUser = async (body: LoginUserBody) => {
   const response = await rsApi.post<User>('/auth/login', body)

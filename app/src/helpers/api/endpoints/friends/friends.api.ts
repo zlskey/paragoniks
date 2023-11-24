@@ -3,7 +3,7 @@ import {
   RemoveFriendBody,
   RespondToFriendRequestBody,
   SendFriendRequestBody,
-} from './friends.service.types'
+} from './friends.api.types'
 
 import { Friendship } from 'src/types/generic.types'
 import { rsApi } from '../..'

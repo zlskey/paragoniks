@@ -3,10 +3,10 @@ import { Stack, TextField, Typography } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { LoadingButton } from '@mui/lab'
-import { LoginUserBody } from 'src/helpers/services/endpoints/user/user.service.types'
+import { LoginUserBody } from 'src/helpers/api/endpoints/user/user.api.types'
 import PasswordTextField from 'src/components/password-text-field/password-text-field'
 import { Trans } from '@lingui/macro'
-import { loginUser } from 'src/helpers/services/endpoints/user/user.service'
+import { loginUser } from 'src/helpers/api/endpoints/user/user.api'
 import { useState } from 'react'
 
 const defaultValues: LoginUserBody = {

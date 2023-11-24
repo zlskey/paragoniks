@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import {
   changeAvatarColor,
   changeAvatarImage,
-} from 'src/helpers/services/endpoints/user/user.service'
+} from 'src/helpers/api/endpoints/user/user.api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { AvatarColor } from 'src/types/generic.types'
