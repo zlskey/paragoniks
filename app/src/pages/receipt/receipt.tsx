@@ -1,6 +1,5 @@
 import {
   Grid,
-  List,
   Paper,
   Stack,
   Typography,
