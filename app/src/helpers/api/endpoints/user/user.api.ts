@@ -15,61 +15,71 @@ import { User } from 'src/types/generic.types'
 import { rsApi } from 'src/helpers/api'
 
 export const loginUser = async (body: LoginUserBody) => {
-  const response = await rsApi.post<User>('/auth/login', body)
+  const url = '/auth/login'
+  const response = await rsApi.post<User>(url, body)
 
   return response.data
 }
 
 export const signupUser = async (body: SignupUserBody) => {
-  const response = await rsApi.post<User>('/auth/signup', body)
+  const url = '/auth/signup'
+  const response = await rsApi.post<User>(url, body)
 
   return response.data
 }
 
 export const logoutUser = async (body: LogoutUserBody) => {
-  const response = await rsApi.get<{}>('/auth/logout', body)
+  const url = '/auth/logout'
+  const response = await rsApi.get<{}>(url, body)
 
   return response.data
 }
 
 export const whoamiUser = async (body: WhoamiUserBody) => {
-  const response = await rsApi.get<User | null>('/auth/whoami', body)
+  const url = '/auth/whoami'
+  const response = await rsApi.get<User | null>(url, body)
 
   return response.data
 }
 
 export const changeUsername = async (body: ChangeUsernameBody) => {
-  const response = await rsApi.patch<User>('user/username', body)
+  const url = 'user/username'
+  const response = await rsApi.patch<User>(url, body)
 
   return response.data
 }
 
 export const changePassword = async (body: ChangePasswordBody) => {
-  const response = await rsApi.patch<User>('user/password', body)
+  const url = 'user/password'
+  const response = await rsApi.patch<User>(url, body)
 
   return response.data
 }
 
 export const toggleTheme = async (body: ToggleThemeBody) => {
-  const response = await rsApi.patch<User>('user/theme', body)
+  const url = 'user/theme'
+  const response = await rsApi.patch<User>(url, body)
 
   return response.data
 }
 
 export const changeAvatarColor = async (body: ChangeAvatarColorBody) => {
-  const response = await rsApi.patch<User>('user/avatar/color', body)
+  const url = 'user/avatar/color'
+  const response = await rsApi.patch<User>(url, body)
 
   return response.data
 }
 
 export const changeAvatarImage = async (body: ChangeAvatarImageBody) => {
-  const response = await rsApi.patch<User>('user/avatar/image', body)
+  const url = 'user/avatar/image'
+  const response = await rsApi.patch<User>(url, body)
 
   return response.data
 }
 
 export const changeUserLang = async ({ lang }: ChangeUserLangBody) => {
-  const response = await rsApi.patch<User>(`user/lang/${lang}`)
+  const url = `user/lang/${lang}`
+  const response = await rsApi.patch<User>(url)
 
   return response.data
 }

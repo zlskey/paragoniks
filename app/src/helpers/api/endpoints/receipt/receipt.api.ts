@@ -15,14 +15,16 @@ import { Profile, Receipt } from 'src/types/generic.types'
 import { rsApi } from '../../rs.api'
 
 export const getUserReceipts = async ({}: GetUserReceiptsBody) => {
-  const response = await rsApi.get<Receipt[]>('/receipt')
+  const url = '/receipt'
+  const response = await rsApi.get<Receipt[]>(url)
 
   return response.data
 }
 
 export const createReceipt = async ({ image }: CreateReceiptBody) => {
+  const url = '/receipt'
   const response = await rsApi.post<Receipt>(
-    '/receipt',
+    url,
     { image },
     {
       timeout: 30000,
@@ -34,7 +36,8 @@ export const createReceipt = async ({ image }: CreateReceiptBody) => {
 }
 
 export const getReceipt = async ({ receiptId }: GetReceiptBody) => {
-  const response = await rsApi.get<Receipt>(`/receipt/${receiptId}`)
+  const url = `/receipt/${receiptId}`
+  const response = await rsApi.get<Receipt>(url)
 
   return response.data
 }
@@ -43,15 +46,15 @@ export const toggleProductComprising = async ({
   receiptId,
   productId,
 }: ToggleProductComprisingBody) => {
-  const response = await rsApi.patch<Receipt>(
-    `/receipt/${receiptId}/product/${productId}/comprising`
-  )
+  const url = `/receipt/${receiptId}/product/${productId}/comprising`
+  const response = await rsApi.patch<Receipt>(url)
 
   return response.data
 }
 
 export const removeReceipt = async ({ receiptId }: RemoveReceiptBody) => {
-  const response = await rsApi.delete<Receipt[]>(`/receipt/${receiptId}`)
+  const url = `/receipt/${receiptId}`
+  const response = await rsApi.delete<Receipt[]>(url)
 
   return response.data
 }
@@ -60,7 +63,8 @@ export const changeReceiptTitle = async ({
   receiptId,
   newTitle,
 }: ChangeReceiptTitleBody) => {
-  const response = await rsApi.patch<Receipt>(`/receipt/${receiptId}/title`, {
+  const url = `/receipt/${receiptId}/title`
+  const response = await rsApi.patch<Receipt>(url, {
     newTitle,
   })
 
@@ -71,9 +75,8 @@ export const addContributor = async ({
   receiptId,
   contributorId,
 }: AddContributorBody) => {
-  const response = await rsApi.patch<Receipt>(
-    `/receipt/${receiptId}/friend/${contributorId}`
-  )
+  const url = `/receipt/${receiptId}/friend/${contributorId}`
+  const response = await rsApi.patch<Receipt>(url)
 
   return response.data
 }
@@ -82,9 +85,8 @@ export const removeContributor = async ({
   receiptId,
   contributorId,
 }: RemoveContributorBody) => {
-  const response = await rsApi.delete<Receipt>(
-    `/receipt/${receiptId}/friend/${contributorId}`
-  )
+  const url = `/receipt/${receiptId}/friend/${contributorId}`
+  const response = await rsApi.delete<Receipt>(url)
 
   return response.data
 }
@@ -94,18 +96,15 @@ export const updateProduct = async ({
   productId,
   product,
 }: UpdateProductBody) => {
-  const response = await rsApi.patch<Receipt>(
-    `/receipt/${receiptId}/product/${productId}`,
-    { product }
-  )
+  const url = `/receipt/${receiptId}/product/${productId}`
+  const response = await rsApi.patch<Receipt>(url, { product })
 
   return response.data
 }
 
 export const getContributors = async ({ receiptId }: GetContributorsBody) => {
-  const response = await rsApi.get<Profile[]>(
-    `/receipt/${receiptId}/contributors`
-  )
+  const url = `/receipt/${receiptId}/contributors`
+  const response = await rsApi.get<Profile[]>(url)
 
   return response.data
 }

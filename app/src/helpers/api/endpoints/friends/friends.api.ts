@@ -9,13 +9,15 @@ import { Friendship } from 'src/types/generic.types'
 import { rsApi } from '../..'
 
 export const getAllFriendships = async (body: GetAllFriendshipsBody) => {
-  const response = await rsApi.get<Friendship[]>('friend', body)
+  const url = 'friend'
+  const response = await rsApi.get<Friendship[]>(url, body)
 
   return response.data
 }
 
 export const sendFriendRequest = async (body: SendFriendRequestBody) => {
-  const response = await rsApi.post<Friendship>('friend', body)
+  const url = 'friend'
+  const response = await rsApi.post<Friendship>(url, body)
 
   return response.data
 }
@@ -23,15 +25,15 @@ export const sendFriendRequest = async (body: SendFriendRequestBody) => {
 export const respondToFriendRequest = async (
   body: RespondToFriendRequestBody
 ) => {
-  const response = await rsApi.patch<Friendship>('friend/respond', body)
+  const url = 'friend/respond'
+  const response = await rsApi.patch<Friendship>(url, body)
 
   return response.data
 }
 
 export const removeFriend = async (body: RemoveFriendBody) => {
-  const { friendId } = body
-
-  const response = await rsApi.delete<Friendship>(`friend/${friendId}`)
+  const url = `friend/${body.friendId}`
+  const response = await rsApi.delete<Friendship>(url)
 
   return response.data
 }
