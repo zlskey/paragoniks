@@ -1,7 +1,6 @@
 import * as yup from 'yup'
 
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
