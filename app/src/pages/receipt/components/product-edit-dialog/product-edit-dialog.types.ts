@@ -1,6 +1,6 @@
 import { Product } from 'src/types/generic.types'
 
 export interface ProductEditDialogProps {
-  product: Product | null
+  productId: Product['_id'] | null
   onClose: () => void
 }

@@ -39,7 +39,9 @@ const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
 
   return (
     <ProductItemContainer>
-      <CardActionArea onClick={() => handleToggleComprising()}>
+      <CardActionArea
+        onClick={() => handleToggleComprising({ userId: user._id })}
+      >
         <Stack p={2} direction='row' justifyContent='space-between' spacing={2}>
           <Stack spacing={1}>
             <Typography>{product.name}</Typography>

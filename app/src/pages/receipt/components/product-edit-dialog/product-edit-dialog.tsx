@@ -1,6 +1,7 @@
 import * as yup from 'yup'
 
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -9,6 +10,7 @@ import {
   Grid,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -17,10 +19,12 @@ import { LoadingButton } from '@mui/lab'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Trans } from '@lingui/macro'
+import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { updateProduct } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
+import useToggleComprising from '../product-item/use-toggle-comprising'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const defaultValues = {
@@ -48,10 +52,16 @@ const schema = yup.object().shape({
     .max(100000, 'Product count must be at most 100000'),
 })
 
-const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
+const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
   const formState = useForm({ defaultValues, resolver: yupResolver(schema) })
 
-  const { receipt } = useReceiptContext()
+  const { receipt, contributors } = useReceiptContext()
+
+  const product = receipt.products.find(product => product._id === productId)
+
+  const handleToggleComprising = useToggleComprising({
+    productId: product?._id || '',
+  })
 
   const queryClient = useQueryClient()
 
@@ -99,7 +109,7 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container p={1} spacing={1}>
+          <Grid container p={1} spacing={1} rowSpacing={2}>
             <Grid item xs={12}>
               <TextField
                 label={<Trans>Name</Trans>}
@@ -138,6 +148,26 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
                 disabled={isPending}
                 {...formState.register('count')}
               />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <Typography variant='subtitle1'>
+                  <Trans>Friends that comprise</Trans>
+                </Typography>
+
+                <Stack direction='row' spacing={2}>
+                  {contributors.map(contributor => (
+                    <UserAvatar
+                      profile={contributor}
+                      selected={!!product?.comprising.includes(contributor._id)}
+                      onClick={() =>
+                        handleToggleComprising({ userId: contributor._id })
+                      }
+                    />
+                  ))}
+                </Stack>
+              </Stack>
             </Grid>
           </Grid>
         </DialogContent>

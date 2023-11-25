@@ -31,10 +31,12 @@ const Receipt = () => {
 
   const userCut = useUserCutCalc(user._id, receipt)
 
-  const [editedProduct, setEditedProduct] = useState<null | Product>(null)
+  const [editedProduct, setEditedProduct] = useState<null | Product['_id']>(
+    null
+  )
 
   const handleSetEditedProduct = (product: Product) => {
-    setEditedProduct(product)
+    setEditedProduct(product._id)
   }
 
   const handleClearEditedProduct = () => {
@@ -44,7 +46,7 @@ const Receipt = () => {
   return (
     <Wrapper>
       <ProductEditDialog
-        product={editedProduct}
+        productId={editedProduct}
         onClose={handleClearEditedProduct}
       />
 

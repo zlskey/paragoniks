@@ -54,13 +54,12 @@ export const handleToggleComprising: RequestHandler = async (
 ) => {
   const receipt = req.receipt
   const { productId } = req.params
-
-  const user = req.user
+  const { userId } = req.body
 
   const updatedReceipt = await receiptService.toggleComprising(
     receipt,
     productId as unknown as ProductId,
-    user._id
+    userId
   )
 
   res.status(200).json(updatedReceipt)
