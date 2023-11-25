@@ -68,7 +68,7 @@ const UploadReceipt = () => {
             <Trans>Select image</Trans>
             <VisuallyHiddenInput
               {...formState.register('file')}
-              accept='image/png,image/jpg'
+              accept='image/*'
               multiple={false}
               type='file'
             />
