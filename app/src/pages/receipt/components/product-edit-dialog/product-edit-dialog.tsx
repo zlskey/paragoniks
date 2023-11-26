@@ -15,22 +15,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
+import { Product } from 'src/types/generic.types'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { updateProduct } from 'src/helpers/api/endpoints/receipt/receipt.api'
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 import useToggleComprising from '../product-item/use-toggle-comprising'
 import { yupResolver } from '@hookform/resolvers/yup'
-
-const defaultValues = {
-  name: '',
-  price: 0,
-  count: 0,
-}
 
 const schema = yup.object().shape({
   name: yup
@@ -51,16 +45,21 @@ const schema = yup.object().shape({
     .max(100000, 'Product count must be at most 100000'),
 })
 
-const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
-  const formState = useForm({ defaultValues, resolver: yupResolver(schema) })
+type DefaultValues = Pick<Product, 'name' | 'price' | 'count'>
 
+const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
   const { receipt, contributors } = useReceiptContext()
 
   const product = receipt.products.find(product => product._id === productId)
 
-  const handleToggleComprising = useToggleComprising({
-    productId: product?._id || '',
+  if (!product) return null
+
+  const formState = useForm({
+    defaultValues: product,
+    resolver: yupResolver(schema),
   })
+
+  const handleToggleComprising = useToggleComprising({ productId: product._id })
 
   const queryClient = useQueryClient()
 
@@ -74,21 +73,7 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
     },
   })
 
-  useEffect(() => {
-    if (product) {
-      const { name, price, count } = product
-
-      formState.reset({
-        name,
-        price,
-        count,
-      })
-    }
-  }, [product])
-
-  const handleSubmit = (data: typeof defaultValues) => {
-    if (!product) return
-
+  const handleSubmit = (data: DefaultValues) => {
     mutate({
       receiptId: receipt._id,
       productId: product._id,
@@ -96,7 +81,11 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
     })
   }
 
-  const getErrorMessage = (field: keyof typeof defaultValues) => {
+  const onAvatarClick = (userId: string) => () => {
+    handleToggleComprising({ userId })
+  }
+
+  const getErrorMessage = (field: keyof DefaultValues) => {
     return formState.formState.errors[field]?.message || ''
   }
 
@@ -160,9 +149,7 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
                     <UserAvatar
                       profile={contributor}
                       selected={!!product?.comprising.includes(contributor._id)}
-                      onClick={() =>
-                        handleToggleComprising({ userId: contributor._id })
-                      }
+                      onClick={onAvatarClick(contributor._id)}
                     />
                   ))}
                 </Stack>

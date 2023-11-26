@@ -23,7 +23,7 @@ const UserAvatar = ({
         height: size === 'md' ? 40 : 50,
         boxShadow: selected ? theme.shadows[15] : '',
         transform: selected ? 'scale(1.15)' : '',
-        cursor: onClick ? 'pointer' : 'default',
+        cursor: !!onClick ? 'pointer' : 'default',
       }}
     />
   )
