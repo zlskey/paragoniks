@@ -23,11 +23,11 @@ import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
 const Receipt = () => {
   const { receipt } = useReceiptContext()
 
+  const user = useUser()
+
   const theme = useTheme()
 
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
-
-  const user = useUser()
 
   const userCut = useUserCutCalc(user._id, receipt)
 
@@ -91,7 +91,7 @@ const Receipt = () => {
             {receipt.products.map(product => (
               <ProductItem
                 onEdit={handleSetEditedProduct}
-                productId={product._id}
+                product={product}
                 key={product._id}
               />
             ))}

@@ -1,6 +1,6 @@
-import { Product, ProductId } from 'src/types/generic.types'
+import { Product } from 'src/types/generic.types'
 
 export interface ProductItemProps {
-  productId: ProductId
+  product: Product
   onEdit: (product: Product) => void
 }

@@ -13,19 +13,20 @@ import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 import useToggleComprising from './use-toggle-comprising'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 
-const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
-  const user = useUser()
+const ProductItem = ({ product, onEdit }: ProductItemProps) => {
   const { receipt, contributors } = useReceiptContext()
 
-  const product = receipt.products.find(product => product._id === productId)
+  const user = useUser()
 
-  if (!product) {
-    return null
-  }
-
-  const handleToggleComprising = useToggleComprising({ productId })
+  const handleToggleComprising = useToggleComprising({ productId: product._id })
 
   const isComprising = product.comprising.includes(user._id)
+
+  const isOwner = receipt.owner === user._id
+
+  const onToggleComprising = () => {
+    handleToggleComprising({ userId: user._id })
+  }
 
   const userCut = useMemo(() => {
     const cut = (product.price * product.count) / product.comprising.length
@@ -35,13 +36,9 @@ const ProductItem = ({ productId, onEdit }: ProductItemProps) => {
     return getPrice(userCutRaw)
   }, [product.comprising])
 
-  const isOwner = receipt.owner === user._id
-
   return (
     <ProductItemContainer>
-      <CardActionArea
-        onClick={() => handleToggleComprising({ userId: user._id })}
-      >
+      <CardActionArea onClick={onToggleComprising}>
         <Stack p={2} direction='row' justifyContent='space-between' spacing={2}>
           <Stack spacing={1}>
             <Typography>{product.name}</Typography>
