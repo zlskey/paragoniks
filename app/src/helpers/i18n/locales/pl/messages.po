@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/receipt/receipt.skeleton.tsx:76
+#: src/pages/receipt/receipt.skeleton.tsx:73
 msgid "<0/>"
 msgstr ""
 
@@ -49,7 +49,7 @@ msgstr "Masz już konto?"
 msgid "Avatar"
 msgstr "Awatar"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:167
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:199
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -78,13 +78,13 @@ msgid "Choose a color"
 msgstr "Wybierz kolor"
 
 #: src/pages/home/components/upload-receipt/upload-receipt.tsx:90
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:156
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:210
 #: src/pages/settings/components/change-password-modal/change-password-modal.tsx:103
 #: src/pages/settings/components/change-username-modal/change-username-modal.tsx:67
 msgid "Confirm"
 msgstr "Potwierdź"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:131
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:148
 msgid "Count"
 msgstr "Ilość"
 
@@ -112,7 +112,7 @@ msgstr "Wyłącz lub włącz ciemny motyw"
 msgid "Don't have account yet?"
 msgstr "Nie masz jeszcze konta?"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:98
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:115
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -121,6 +121,10 @@ msgstr "Edytuj"
 #: src/pages/friends/friends.tsx:54
 msgid "Friends"
 msgstr "Przyjaciele"
+
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:163
+msgid "Friends that comprise"
+msgstr "Przyjaciele, którzy się składają"
 
 #: src/pages/404/404.tsx:24
 msgid "Go back"
@@ -163,7 +167,7 @@ msgstr "Zarządzaj szczegółami swojego konta"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:105
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:122
 msgid "Name"
 msgstr "Nazwa"
 
@@ -179,7 +183,7 @@ msgstr "Nowa nazwa użytkownika"
 msgid "No friends yet"
 msgstr "Jeszcze brak przyjaciół"
 
-#: src/pages/home/home.tsx:59
+#: src/pages/home/home.tsx:49
 msgid "No receipt added yet"
 msgstr "Jeszcze brak dodanych paragonów"
 
@@ -229,7 +233,7 @@ msgstr "Hasło"
 msgid "Pick your avatar color"
 msgstr "Wybierz kolor swojego avatara"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:117
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:134
 msgid "Price"
 msgstr "Cena"
 
@@ -269,7 +273,7 @@ msgstr "Cena"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/pages/receipt/receipt.tsx:69
+#: src/pages/receipt/receipt.tsx:60
 msgid "Receipt total:"
 msgstr "Suma paragonu:"
 
@@ -374,10 +378,10 @@ msgstr "Strona w budowie"
 msgid "Your current avatar:"
 msgstr "Twój obecny awatar:"
 
-#: src/pages/receipt/receipt.tsx:65
+#: src/pages/receipt/receipt.tsx:56
 msgid "Your cut:"
 msgstr "Twój udział:"
 
-#: src/pages/home/home.tsx:46
+#: src/pages/home/home.tsx:36
 msgid "Your Receipts"
 msgstr "Twoje Paragony"
