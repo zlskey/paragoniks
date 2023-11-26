@@ -1,34 +1,27 @@
-import {
-  Container,
-  Stack,
-  Toolbar,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material'
+import { Container, Stack, Toolbar } from '@mui/material'
 
 import Header from '../header'
 import MobileNavigation from '../mobile-navigation/mobile-navigation'
 import { WrapperProps } from './wrapper.types'
+import useScreenSize from 'src/helpers/hooks/use-screen-size'
 
 const Wrapper = ({ children }: WrapperProps) => {
-  const theme = useTheme()
-
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
+  const { isDesktop } = useScreenSize()
 
   return (
     <Stack>
-      {isLargeScreen && (
+      {isDesktop && (
         <>
           <Header />
           <Toolbar />
         </>
       )}
 
-      <Container sx={{ mt: 2, mb: isLargeScreen ? 3 : 10 }} component='main'>
+      <Container sx={{ mt: 2, mb: isDesktop ? 3 : 10 }} component='main'>
         {children}
       </Container>
 
-      {!isLargeScreen && <MobileNavigation />}
+      {!isDesktop && <MobileNavigation />}
     </Stack>
   )
 }

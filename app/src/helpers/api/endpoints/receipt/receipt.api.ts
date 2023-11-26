@@ -45,10 +45,9 @@ export const getReceipt = async ({ receiptId }: GetReceiptBody) => {
 export const toggleProductComprising = async ({
   receiptId,
   productId,
-  userId,
 }: ToggleProductComprisingBody) => {
   const url = `/receipt/${receiptId}/product/${productId}/comprising`
-  const response = await rsApi.patch<Receipt>(url, { userId })
+  const response = await rsApi.patch<Receipt>(url)
 
   return response.data
 }

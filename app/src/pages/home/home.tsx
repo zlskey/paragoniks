@@ -1,13 +1,4 @@
-import {
-  Box,
-  Grid,
-  List,
-  ListItem,
-  Paper,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material'
+import { Box, Grid, List, ListItem, Paper, Typography } from '@mui/material'
 
 import ReceiptItem from 'src/pages/home/components/receipt-item'
 import { ReceiptItemSkeleton } from 'src/pages/home/components/receipt-item'
@@ -17,11 +8,10 @@ import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
 import { getUserReceipts } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useQuery } from '@tanstack/react-query'
+import useScreenSize from 'src/helpers/hooks/use-screen-size'
 
 const Home = () => {
-  const theme = useTheme()
-
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
+  const { isDesktop } = useScreenSize()
 
   const { data: receipts, isLoading } = useQuery({
     queryKey: ['receipt'],
@@ -35,7 +25,7 @@ const Home = () => {
       <Grid
         container
         spacing={2}
-        direction={isLargeScreen ? undefined : 'column-reverse'}
+        direction={isDesktop ? undefined : 'column-reverse'}
       >
         <Grid item xs={12} md={8}>
           <Paper>

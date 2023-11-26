@@ -1,11 +1,4 @@
-import {
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material'
+import { Grid, Paper, Stack, Typography } from '@mui/material'
 
 import { Product } from 'src/types/generic.types'
 import ProductEditDialog from 'src/pages/receipt/components/product-edit-dialog'
@@ -16,6 +9,7 @@ import { Trans } from '@lingui/macro'
 import Wrapper from 'src/components/wrapper'
 import { getPrice } from 'src/helpers/utils/get-price'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
+import useScreenSize from 'src/helpers/hooks/use-screen-size'
 import { useState } from 'react'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
 import useUserCutCalc from 'src/helpers/hooks/use-user-cut-calc'
@@ -25,9 +19,7 @@ const Receipt = () => {
 
   const user = useUser()
 
-  const theme = useTheme()
-
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
+  const { isDesktop } = useScreenSize()
 
   const userCut = useUserCutCalc(user._id, receipt)
 
@@ -35,7 +27,7 @@ const Receipt = () => {
     null
   )
 
-  const handleSetEditedProduct = (product: Product) => {
+  const handleSetEditedProduct = (product: Product) => () => {
     setEditedProduct(product._id)
   }
 
@@ -53,7 +45,7 @@ const Receipt = () => {
       <Grid
         container
         spacing={2}
-        direction={isLargeScreen ? 'row-reverse' : undefined}
+        direction={isDesktop ? 'row-reverse' : undefined}
       >
         <Grid item xs={12} md={4}>
           <Stack spacing={2}>
@@ -90,7 +82,7 @@ const Receipt = () => {
           <Stack spacing={2}>
             {receipt.products.map(product => (
               <ProductItem
-                onEdit={handleSetEditedProduct}
+                onEdit={handleSetEditedProduct(product)}
                 product={product}
                 key={product._id}
               />

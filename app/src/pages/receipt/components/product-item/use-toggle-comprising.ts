@@ -1,6 +1,6 @@
-import { ProductId, UserId } from 'src/types/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { ProductId } from 'src/types/generic.types'
 import { toggleProductComprising } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 import { useUser } from 'src/helpers/contexts/current-user/current-user.context'
@@ -17,33 +17,32 @@ const useToggleComprising = ({ productId }: UseToggleComprisingProps) => {
 
   const { mutate } = useMutation({
     mutationKey: ['receipt', { receiptId: receipt._id }],
-    mutationFn: ({ userId }: { userId: UserId }) =>
+    mutationFn: () =>
       toggleProductComprising({
         receiptId: receipt._id,
-        userId: userId || user._id,
         productId,
       }),
-    onMutate: async ({ userId }) => {
+    onMutate: async () => {
       const updatedReceipt = {
         ...receipt,
         products: receipt.products.map(product => {
           if (product._id === productId) {
             const comprising = product.comprising.find(
-              comprising => comprising === userId
+              comprising => comprising === user._id
             )
 
             if (comprising) {
               return {
                 ...product,
                 comprising: product.comprising.filter(
-                  comprisingId => comprisingId !== userId
+                  comprisingId => comprisingId !== user._id
                 ),
               }
             }
 
             return {
               ...product,
-              comprising: [...product.comprising, userId],
+              comprising: [...product.comprising, user._id],
             }
           }
 

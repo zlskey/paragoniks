@@ -25,7 +25,7 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
   const isOwner = receipt.owner === user._id
 
   const onToggleComprising = () => {
-    handleToggleComprising({ userId: user._id })
+    handleToggleComprising()
   }
 
   const userCut = useMemo(() => {
@@ -38,29 +38,37 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
 
   return (
     <ProductItemContainer>
-      <CardActionArea onClick={onToggleComprising}>
-        <Stack p={2} direction='row' justifyContent='space-between' spacing={2}>
-          <Stack spacing={1}>
-            <Typography>{product.name}</Typography>
+      <Stack direction='row' alignItems='center'>
+        <CardActionArea onClick={onToggleComprising}>
+          <Stack
+            p={2}
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            spacing={2}
+          >
+            <Stack spacing={1}>
+              <Typography>{product.name}</Typography>
 
-            <Typography variant='body2' color='lightgray'>
-              {getPrice(product.price)} * {product.count}
-            </Typography>
-          </Stack>
+              <Typography variant='body2' color='lightgray'>
+                {getPrice(product.price)} * {product.count}
+              </Typography>
+            </Stack>
 
-          <Stack direction='row' alignItems='center' spacing={1}>
             <Typography color={isComprising ? 'primary' : undefined}>
               {userCut}
             </Typography>
-
-            {isOwner && (
-              <IconButton onClick={() => onEdit(product)}>
-                <EditIcon />
-              </IconButton>
-            )}
           </Stack>
-        </Stack>
-      </CardActionArea>
+        </CardActionArea>
+
+        {isOwner && (
+          <Stack alignItems='center' p={1}>
+            <IconButton onClick={onEdit}>
+              <EditIcon />
+            </IconButton>
+          </Stack>
+        )}
+      </Stack>
 
       <ProductItemAvatarGroup max={10}>
         {contributors

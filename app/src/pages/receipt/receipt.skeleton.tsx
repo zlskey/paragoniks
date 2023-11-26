@@ -10,25 +10,22 @@ import {
   SkeletonProps,
   Stack,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material'
 
 import { Trans } from '@lingui/macro'
 import Wrapper from 'src/components/wrapper'
 import generateElements from 'src/helpers/utils/generate-elements'
+import useScreenSize from 'src/helpers/hooks/use-screen-size'
 
 const ReceiptSkeleton = () => {
-  const theme = useTheme()
-
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
+  const { isDesktop } = useScreenSize()
 
   return (
     <Wrapper>
       <Grid
         container
         spacing={2}
-        direction={isLargeScreen ? 'row' : 'column-reverse'}
+        direction={isDesktop ? 'row' : 'column-reverse'}
       >
         <Grid item xs={12} md={8}>
           <Stack spacing={2}>

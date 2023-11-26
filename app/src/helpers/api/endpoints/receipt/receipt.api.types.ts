@@ -1,9 +1,4 @@
-import {
-  ContributorId,
-  ProductId,
-  ReceiptId,
-  UserId,
-} from 'src/types/generic.types'
+import { ContributorId, ProductId, ReceiptId } from 'src/types/generic.types'
 
 export interface GetUserReceiptsBody {}
 
@@ -18,7 +13,6 @@ export interface GetReceiptBody {
 export interface ToggleProductComprisingBody {
   receiptId: ReceiptId
   productId: ProductId
-  userId: UserId
 }
 
 export interface RemoveReceiptBody {

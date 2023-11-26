@@ -23,7 +23,6 @@ import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { updateProduct } from 'src/helpers/api/endpoints/receipt/receipt.api'
 import { useForm } from 'react-hook-form'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
-import useToggleComprising from '../product-item/use-toggle-comprising'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const schema = yup.object().shape({
@@ -59,8 +58,6 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
     resolver: yupResolver(schema),
   })
 
-  const handleToggleComprising = useToggleComprising({ productId: product._id })
-
   const queryClient = useQueryClient()
 
   const { mutate, isPending } = useMutation({
@@ -81,8 +78,8 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
     })
   }
 
-  const onAvatarClick = (userId: string) => () => {
-    handleToggleComprising({ userId })
+  const onAvatarClick = (_userId: string) => () => {
+    // todo
   }
 
   const getErrorMessage = (field: keyof DefaultValues) => {
