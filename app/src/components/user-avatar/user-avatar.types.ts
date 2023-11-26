@@ -4,5 +4,6 @@ export interface UserAvatarProps {
   size?: 'md' | 'lg'
   profile: User | Profile
   selected?: boolean
+  clickable?: boolean
   onClick?: () => any
 }

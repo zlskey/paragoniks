@@ -11,16 +11,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { ContributorId, Product } from 'src/types/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
 import { LoadingButton } from '@mui/lab'
-import { Product } from 'src/types/generic.types'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Trans } from '@lingui/macro'
 import UserAvatar from 'src/components/user-avatar/user-avatar'
 import { updateProduct } from 'src/helpers/api/endpoints/receipt/receipt.api'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReceiptContext } from 'src/helpers/contexts/receipt/receipt.context'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -42,21 +43,39 @@ const schema = yup.object().shape({
     .number()
     .required('Product count is required')
     .max(100000, 'Product count must be at most 100000'),
+
+  comprising: yup.array(),
 })
 
-type DefaultValues = Pick<Product, 'name' | 'price' | 'count'>
+const defaultValues = {
+  name: '',
+  price: 0,
+  count: 0,
+  comprising: [] as ContributorId[],
+}
 
-const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
+const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
+  useEffect(() => {
+    if (!product) {
+      return
+    }
+
+    formState.reset({
+      name: product.name,
+      price: product.price,
+      count: product.count,
+      comprising: product.comprising,
+    })
+  }, [product])
+
   const { receipt, contributors } = useReceiptContext()
 
-  const product = receipt.products.find(product => product._id === productId)
-
-  if (!product) return null
-
   const formState = useForm({
-    defaultValues: product,
+    defaultValues,
     resolver: yupResolver(schema),
   })
+
+  const values = formState.watch()
 
   const queryClient = useQueryClient()
 
@@ -70,25 +89,28 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
     },
   })
 
-  const handleSubmit = (data: DefaultValues) => {
-    mutate({
-      receiptId: receipt._id,
-      productId: product._id,
-      product: data,
-    })
-  }
-
-  const onAvatarClick = (_userId: string) => () => {
-    // todo
-  }
-
-  const getErrorMessage = (field: keyof DefaultValues) => {
+  const getErrorMessage = (field: keyof typeof defaultValues) => {
     return formState.formState.errors[field]?.message || ''
   }
 
   return (
     <Dialog onClose={onClose} open={Boolean(product)}>
-      <form onSubmit={formState.handleSubmit(handleSubmit)}>
+      <form
+        onSubmit={formState.handleSubmit(data => {
+          if (!product) {
+            return
+          }
+
+          mutate({
+            receiptId: receipt._id,
+            productId: product._id,
+            product: {
+              ...data,
+              comprising: data.comprising as ContributorId[],
+            },
+          })
+        })}
+      >
         <DialogTitle>
           <Trans>Edit</Trans>
         </DialogTitle>
@@ -127,7 +149,7 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
                 type='number'
                 placeholder='2'
                 fullWidth
-                inputProps={{ step: 0.01 }}
+                inputProps={{ step: 0.001 }}
                 error={Boolean(getErrorMessage('count'))}
                 helperText={getErrorMessage('count')}
                 disabled={isPending}
@@ -143,11 +165,21 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
 
                 <Stack direction='row' spacing={2}>
                   {contributors.map(contributor => (
-                    <UserAvatar
-                      profile={contributor}
-                      selected={!!product?.comprising.includes(contributor._id)}
-                      onClick={onAvatarClick(contributor._id)}
-                    />
+                    <label key={contributor._id} htmlFor={contributor._id}>
+                      <UserAvatar
+                        clickable
+                        profile={contributor}
+                        selected={values.comprising?.includes(contributor._id)}
+                      />
+
+                      <input
+                        hidden
+                        type='checkbox'
+                        value={contributor._id}
+                        id={contributor._id}
+                        {...formState.register('comprising')}
+                      />
+                    </label>
                   ))}
                 </Stack>
               </Stack>
@@ -157,28 +189,26 @@ const ProductEditDialog = ({ productId, onClose }: ProductEditDialogProps) => {
 
         <DialogActions>
           <Stack direction='row' spacing={1}>
-            <LoadingButton
-              startIcon={<ConfirmIcon />}
-              variant='contained'
-              size='medium'
-              sx={{ flexGrow: 1 }}
-              color='success'
-              type='submit'
-              loading={isPending}
-            >
-              <Trans>Confirm</Trans>
-            </LoadingButton>
-
             <Button
               startIcon={<RemoveIcon />}
               size='medium'
-              sx={{ flexGrow: 1 }}
               color='error'
               onClick={onClose}
               disabled={isPending}
             >
               <Trans>Cancel</Trans>
             </Button>
+
+            <LoadingButton
+              startIcon={<ConfirmIcon />}
+              variant='contained'
+              size='medium'
+              color='success'
+              type='submit'
+              loading={isPending}
+            >
+              <Trans>Confirm</Trans>
+            </LoadingButton>
           </Stack>
         </DialogActions>
       </form>

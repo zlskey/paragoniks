@@ -1,7 +1,11 @@
 import * as fs from 'fs'
 
 import { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
-import Receipt, { IReceipt, ISimpleReceipt } from 'src/models/receipt.model'
+import Receipt, {
+  IProduct,
+  IReceipt,
+  ISimpleReceipt,
+} from 'src/models/receipt.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { compareIds } from 'src/utils/ids-util'
@@ -153,7 +157,7 @@ export const removeContributor = async (
 export const updateProduct = async (
   receipt: IReceipt,
   productId: ProductId,
-  product: Record<string, string | number>
+  product: Pick<IProduct, 'name' | 'count' | 'price' | 'comprising'>
 ) => {
   const updatedProducts = receipt.products.map(receiptProduct => {
     if (compareIds(receiptProduct._id, productId)) {

@@ -1,30 +1,15 @@
-import { Avatar, useTheme } from '@mui/material'
-
+import { StyledAvatar } from './user-avatar.styled'
 import { UserAvatarProps } from './user-avatar.types'
 
-const UserAvatar = ({
-  size = 'md',
-  profile,
-  selected,
-  onClick,
-}: UserAvatarProps) => {
+const UserAvatar = ({ profile, ...props }: UserAvatarProps) => {
   const { username, avatarImage, avatarColor } = profile
 
-  const theme = useTheme()
-
   return (
-    <Avatar
-      onClick={onClick}
+    <StyledAvatar
       alt={username ? username.charAt(0).toUpperCase() : '?'}
       src={avatarImage || '#'}
-      sx={{
-        bgcolor: avatarColor,
-        width: size === 'md' ? 40 : 50,
-        height: size === 'md' ? 40 : 50,
-        boxShadow: selected ? theme.shadows[15] : '',
-        transform: selected ? 'scale(1.15)' : '',
-        cursor: !!onClick ? 'pointer' : 'default',
-      }}
+      avatarColor={avatarColor}
+      {...props}
     />
   )
 }

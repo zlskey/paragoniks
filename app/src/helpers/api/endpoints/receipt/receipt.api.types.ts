@@ -1,4 +1,9 @@
-import { ContributorId, ProductId, ReceiptId } from 'src/types/generic.types'
+import {
+  ContributorId,
+  Product,
+  ProductId,
+  ReceiptId,
+} from 'src/types/generic.types'
 
 export interface GetUserReceiptsBody {}
 
@@ -37,11 +42,7 @@ export interface RemoveContributorBody {
 export interface UpdateProductBody {
   receiptId: ReceiptId
   productId: ProductId
-  product: {
-    name: string
-    price: number
-    count: number
-  }
+  product: Pick<Product, 'name' | 'price' | 'comprising' | 'count'>
 }
 
 export interface GetContributorsBody {
