@@ -8,4 +8,6 @@ export const dummyReceipt: Receipt = {
   sum: 0,
   title: '',
   products: [],
+  createdAt: '',
+  updatedAt: ''
 }

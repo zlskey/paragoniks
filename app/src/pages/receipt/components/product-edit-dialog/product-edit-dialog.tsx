@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { ContributorId, Product } from 'src/types/generic.types'
+import { ContributorId } from 'src/types/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
