@@ -64,4 +64,6 @@ export interface Receipt extends SimpleReceipt {
   owner: UserId
   contributors: UserId[]
   imagePath: string
+  createdAt: string
+  updatedAt: string
 }

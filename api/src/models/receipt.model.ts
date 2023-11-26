@@ -21,28 +21,35 @@ export interface IReceipt extends ISimpleReceipt {
   _id: ReceiptId
   owner: UserId
   contributors: UserId[]
+  createdAt: string
+  updatedAt: string
 }
 
-const receiptSchema = new mongoose.Schema<IReceipt>({
-  title: {
-    type: String,
-    required: true,
+const receiptSchema = new mongoose.Schema<IReceipt>(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    sum: {
+      type: Number,
+      required: true,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    imagePath: {
+      type: String,
+      required: true,
+    },
+    contributors: [],
+    products: [],
   },
-  sum: {
-    type: Number,
-    required: true,
-  },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
-  imagePath: {
-    type: String,
-    required: true,
-  },
-  contributors: [],
-  products: [],
-})
+  {
+    timestamps: true,
+  }
+)
 
 receiptSchema.pre('save', async function (next) {
   this.products = this.products.map(product => ({
