@@ -58,7 +58,17 @@ services:
       - "traefik.docker.network=proxy"
     networks:
       - proxy
+      - rs-local-network
+
+  rs-db:
+    container_name: ${DOCKER_DB_CONTAINER_NAME}
+    image: mongo
+    restart: unless-stopped
+    networks:
+      - rs-local-network
 
 networks:
   proxy:
     external: true
+  rs-local-network:
+    driver: bridge
