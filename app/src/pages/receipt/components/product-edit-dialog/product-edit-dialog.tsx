@@ -31,7 +31,7 @@ const schema = yup.object().shape({
     .string()
     .required('Product name is required')
     .min(3, 'Product name must be at least 3 characters')
-    .max(30, 'Product name must be at most 30 characters'),
+    .max(80, 'Product name must be at most 30 characters'),
 
   price: yup
     .number()
