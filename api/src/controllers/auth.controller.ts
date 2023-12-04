@@ -32,9 +32,10 @@ export const signup: RequestHandler = async (req, res, next) => {
   const user = await userService.create(username, password)
   const token = jwtUtils.createToken(user._id, maxAge)
 
-  res
-    .cookie('jwt', token, getCookieOptions(remember))
-    .json(user.removePassword())
+  res.cookie('jwt', token, getCookieOptions(remember)).json({
+    user: user.removePassword(),
+    token,
+  })
 }
 
 export const login: RequestHandler = async (req, res, next) => {
@@ -47,9 +48,10 @@ export const login: RequestHandler = async (req, res, next) => {
   const maxAge = getMaxAge(remember) / 1000
   const token = jwtUtils.createToken(user._id, maxAge)
 
-  res
-    .cookie('jwt', token, getCookieOptions(remember))
-    .json(user.removePassword())
+  res.cookie('jwt', token, getCookieOptions(remember)).json({
+    user: user.removePassword(),
+    token,
+  })
 }
 
 export const whoami: RequestHandler = async (req, res, next) => {
@@ -64,7 +66,12 @@ export const whoami: RequestHandler = async (req, res, next) => {
 
   userService
     .getById(token._id)
-    .then(user => res.json(user.removePassword()))
+    .then(user =>
+      res.json({
+        user: user.removePassword(),
+        token,
+      })
+    )
     .catch(() => res.clearCookie('jwt', getCookieOptions(false)).json(null))
 }
 

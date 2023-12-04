@@ -5,10 +5,13 @@ import {
   ChangeUserLangBody,
   ChangeUsernameBody,
   LoginUserBody,
+  LoginUserResponse,
   LogoutUserBody,
   SignupUserBody,
+  SignupUserResponse,
   ToggleThemeBody,
   WhoamiUserBody,
+  WhoamiUserResponse,
 } from './user.api.types'
 
 import { User } from 'src/types/generic.types'
@@ -16,16 +19,16 @@ import { rsApi } from 'src/helpers/api'
 
 export const loginUser = async (body: LoginUserBody) => {
   const url = '/auth/login'
-  const response = await rsApi.post<User>(url, body)
+  const response = await rsApi.post<LoginUserResponse>(url, body)
 
-  return response.data
+  return response.data.user
 }
 
 export const signupUser = async (body: SignupUserBody) => {
   const url = '/auth/signup'
-  const response = await rsApi.post<User>(url, body)
+  const response = await rsApi.post<SignupUserResponse>(url, body)
 
-  return response.data
+  return response.data.user
 }
 
 export const logoutUser = async (body: LogoutUserBody) => {
@@ -37,9 +40,9 @@ export const logoutUser = async (body: LogoutUserBody) => {
 
 export const whoamiUser = async (body: WhoamiUserBody) => {
   const url = '/auth/whoami'
-  const response = await rsApi.get<User | null>(url, body)
+  const response = await rsApi.get<WhoamiUserResponse>(url, body)
 
-  return response.data
+  return response.data.user
 }
 
 export const changeUsername = async (body: ChangeUsernameBody) => {
