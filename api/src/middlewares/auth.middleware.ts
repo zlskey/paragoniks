@@ -13,8 +13,22 @@ declare global {
   }
 }
 
+const getJwtFromHeader = (header: string) => {
+  if (!header) {
+    return null
+  }
+
+  const [type, token] = header.split(' ')
+
+  if (type !== 'Bearer') {
+    return null
+  }
+
+  return token
+}
+
 const authorizeCookie: RequestHandler = async (req, res, next) => {
-  const jwt = req.cookies.jwt
+  const jwt = req.cookies.jwt || getJwtFromHeader(req.headers.authorization)
 
   const token = jwtUtils.validateToken(jwt)
 
