@@ -66,6 +66,8 @@ services:
     restart: unless-stopped
     networks:
       - rs-local-network
+    volumes:
+      - ./db:/data/db
 
 networks:
   proxy:
