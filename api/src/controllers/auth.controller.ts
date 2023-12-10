@@ -5,6 +5,7 @@ import {
 
 import { RequestHandler } from 'express'
 import _ from 'lodash'
+import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
 import { jwtUtils } from 'src/utils'
 import { userService } from 'src/services'
 
@@ -55,7 +56,7 @@ export const login: RequestHandler = async (req, res, next) => {
 }
 
 export const whoami: RequestHandler = async (req, res, next) => {
-  const jwt = req.cookies.jwt
+  const jwt = req.cookies.jwt || getJwtFromHeader(req.headers.authorization)
 
   const token = jwtUtils.validateToken(jwt)
 
@@ -69,7 +70,7 @@ export const whoami: RequestHandler = async (req, res, next) => {
     .then(user =>
       res.json({
         user: user.removePassword(),
-        token,
+        token: jwt,
       })
     )
     .catch(() => res.clearCookie('jwt', getCookieOptions(false)).json(null))

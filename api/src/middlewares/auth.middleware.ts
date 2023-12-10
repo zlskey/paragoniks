@@ -2,6 +2,7 @@ import { ErrorObject } from './error.middleware'
 import { IUser } from 'src/models/User.model'
 import { RequestHandler } from 'express'
 import constants from 'src/constants'
+import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
 import { jwtUtils } from 'src/utils'
 import { userService } from 'src/services'
 
@@ -11,20 +12,6 @@ declare global {
       user?: IUser
     }
   }
-}
-
-const getJwtFromHeader = (header: string) => {
-  if (!header) {
-    return null
-  }
-
-  const [type, token] = header.split(' ')
-
-  if (type !== 'Bearer') {
-    return null
-  }
-
-  return token
 }
 
 const authorizeCookie: RequestHandler = async (req, res, next) => {
