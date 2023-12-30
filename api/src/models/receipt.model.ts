@@ -7,6 +7,7 @@ export interface IProduct {
   name: string
   price: number
   count: number
+  discount: number
   _id: ProductId
 }
 

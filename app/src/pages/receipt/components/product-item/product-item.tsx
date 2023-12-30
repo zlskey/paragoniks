@@ -29,7 +29,9 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
   }
 
   const userCut = useMemo(() => {
-    const cut = (product.price * product.count) / product.comprising.length
+    const cut =
+      (product.price - (product.discount || 0) * product.count) /
+      product.comprising.length
 
     const userCutRaw = isComprising ? cut : 0
 
@@ -52,6 +54,7 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
 
               <Typography variant='body2' color='lightgray'>
                 {getPrice(product.price)} * {product.count}
+                {product.discount && ` - ${getPrice(product.discount)}`}
               </Typography>
             </Stack>
 

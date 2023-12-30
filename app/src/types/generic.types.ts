@@ -50,6 +50,7 @@ export interface Product {
   comprising: UserId[]
   name: string
   price: number
+  discount?: number // remove optional after all models are updated
   count: number
 }
 
