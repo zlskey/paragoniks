@@ -29,6 +29,11 @@ singleReceiptRouter.patch(
   wrapAsync(receiptController.handleUpdateProduct)
 )
 
+singleReceiptRouter.delete(
+  '/product/:productId',
+  wrapAsync(receiptController.handleRemoveProduct)
+)
+
 singleReceiptRouter.patch(
   '/product/:productId/comprising',
   wrapAsync(receiptController.handleToggleComprising)

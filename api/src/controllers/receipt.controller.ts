@@ -125,6 +125,18 @@ export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
   res.status(201).json(updatedReceipt)
 }
 
+export const handleRemoveProduct: RequestHandler = async (req, res, next) => {
+  const receipt = req.receipt
+  const { productId } = req.params
+
+  const updatedReceipt = await receiptService.removeProduct(
+    receipt,
+    productId as unknown as ProductId
+  )
+
+  res.status(201).json(updatedReceipt)
+}
+
 export const handleGetContributors: RequestHandler = async (req, res, next) => {
   const receipt = req.receipt
 

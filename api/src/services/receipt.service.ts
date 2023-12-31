@@ -180,6 +180,21 @@ export const updateProduct = async (
   )
 }
 
+export const removeProduct = async (
+  receipt: IReceipt,
+  productId: ProductId
+) => {
+  const updatedProducts = receipt.products.filter(
+    product => !compareIds(product._id, productId)
+  )
+
+  return await Receipt.findByIdAndUpdate(
+    receipt._id,
+    { products: updatedProducts },
+    { new: true }
+  )
+}
+
 export const getContributors = (receipt: IReceipt) => {
   const contributors = receipt.contributors.concat(receipt.owner)
 
