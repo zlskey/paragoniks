@@ -36,7 +36,7 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
     const userCutRaw = isComprising ? cut : 0
 
     return getPrice(userCutRaw)
-  }, [product.comprising])
+  }, [product])
 
   return (
     <ProductItemContainer>
