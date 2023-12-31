@@ -49,7 +49,7 @@ msgstr "Already have an account?"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:199
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:222
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -78,13 +78,13 @@ msgid "Choose a color"
 msgstr "Choose a color"
 
 #: src/pages/home/components/upload-receipt/upload-receipt.tsx:90
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:210
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:233
 #: src/pages/settings/components/change-password-modal/change-password-modal.tsx:103
 #: src/pages/settings/components/change-username-modal/change-username-modal.tsx:67
 msgid "Confirm"
 msgstr "Confirm"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:148
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:157
 msgid "Count"
 msgstr "Count"
 
@@ -108,11 +108,15 @@ msgstr "Decline"
 msgid "Disable or enable dark theme"
 msgstr "Disable or enable dark theme"
 
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:171
+msgid "Discount"
+msgstr "Discount"
+
 #: src/pages/auth/auth.tsx:36
 msgid "Don't have account yet?"
 msgstr "Don't have account yet?"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:115
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:124
 msgid "Edit"
 msgstr "Edit"
 
@@ -122,7 +126,7 @@ msgstr "Edit"
 msgid "Friends"
 msgstr "Friends"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:163
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:186
 msgid "Friends that comprise"
 msgstr "Friends that comprise"
 
@@ -167,7 +171,7 @@ msgstr "Manage your account details"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:122
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:131
 msgid "Name"
 msgstr "Name"
 
@@ -233,7 +237,7 @@ msgstr "Password"
 msgid "Pick your avatar color"
 msgstr "Pick your avatar color"
 
-#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:134
+#: src/pages/receipt/components/product-edit-dialog/product-edit-dialog.tsx:143
 msgid "Price"
 msgstr "Price"
 

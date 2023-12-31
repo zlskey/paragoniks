@@ -54,7 +54,7 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
 
               <Typography variant='body2' color='lightgray'>
                 {getPrice(product.price)} * {product.count}
-                {product.discount && ` - ${getPrice(product.discount)}`}
+                {!!product.discount && ` - ${getPrice(product.discount)}`}
               </Typography>
             </Stack>
 
