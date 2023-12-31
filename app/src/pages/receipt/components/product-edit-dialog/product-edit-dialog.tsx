@@ -11,10 +11,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { ContributorId } from 'src/types/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import ConfirmIcon from '@mui/icons-material/CheckOutlined'
+import { ContributorId } from 'src/types/generic.types'
 import { LoadingButton } from '@mui/lab'
 import { ProductEditDialogProps } from './product-edit-dialog.types'
 import RemoveIcon from '@mui/icons-material/DeleteForeverOutlined'
@@ -42,7 +42,14 @@ const schema = yup.object().shape({
   count: yup
     .number()
     .required('Product count is required')
+    .min(0, 'Product count must be at least 0')
     .max(100000, 'Product count must be at most 100000'),
+
+  discount: yup
+    .number()
+    .required('Product discount is required')
+    .min(0, 'Product discount must be at least 0')
+    .max(100000, 'Product discount must be at most 100000'),
 
   comprising: yup.array(),
 })
@@ -51,6 +58,7 @@ const defaultValues = {
   name: '',
   price: 0,
   count: 0,
+  discount: 0,
   comprising: [] as ContributorId[],
 }
 
@@ -65,6 +73,7 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
       price: product.price,
       count: product.count,
       comprising: product.comprising,
+      discount: product.discount || 0,
     })
   }, [product])
 
@@ -129,7 +138,7 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 label={<Trans>Price</Trans>}
                 type='number'
@@ -143,7 +152,7 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 label={<Trans>Count</Trans>}
                 type='number'
@@ -154,6 +163,20 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
                 helperText={getErrorMessage('count')}
                 disabled={isPending}
                 {...formState.register('count')}
+              />
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField
+                label={<Trans>Discount</Trans>}
+                type='number'
+                placeholder='5'
+                fullWidth
+                inputProps={{ step: 0.01 }}
+                error={Boolean(getErrorMessage('discount'))}
+                helperText={getErrorMessage('discount')}
+                disabled={isPending}
+                {...formState.register('discount')}
               />
             </Grid>
 

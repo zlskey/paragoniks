@@ -157,7 +157,10 @@ export const removeContributor = async (
 export const updateProduct = async (
   receipt: IReceipt,
   productId: ProductId,
-  product: Pick<IProduct, 'name' | 'count' | 'price' | 'comprising'>
+  product: Pick<
+    IProduct,
+    'name' | 'count' | 'price' | 'comprising' | 'discount'
+  >
 ) => {
   const updatedProducts = receipt.products.map(receiptProduct => {
     if (compareIds(receiptProduct._id, productId)) {

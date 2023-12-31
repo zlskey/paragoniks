@@ -42,7 +42,7 @@ export interface RemoveContributorBody {
 export interface UpdateProductBody {
   receiptId: ReceiptId
   productId: ProductId
-  product: Pick<Product, 'name' | 'price' | 'comprising' | 'count'>
+  product: Pick<Product, 'name' | 'price' | 'comprising' | 'count' | 'discount'>
 }
 
 export interface GetContributorsBody {
