@@ -13,7 +13,7 @@ const useUserCutCalc = (userId?: UserId, receipt?: Receipt) => {
       if (product.comprising.find(comprisingId => comprisingId === userId)) {
         return (
           acc +
-          (product.price - (product.discount || 0) * product.count) /
+          ((product.price - (product.discount || 0)) * product.count) /
             product.comprising.length
         )
       }
