@@ -21,7 +21,7 @@ msgstr "<0/>"
 msgid "Accept"
 msgstr "Accept"
 
-#: src/pages/settings/settings.tsx:38
+#: src/pages/settings/settings.tsx:58
 msgid "Account"
 msgstr "Account"
 
@@ -37,7 +37,7 @@ msgstr "Add a new friend"
 msgid "Add new receipt"
 msgstr "Add new receipt"
 
-#: src/pages/settings/settings.tsx:66
+#: src/pages/settings/settings.tsx:93
 msgid "Adjust your style settings"
 msgstr "Adjust your style settings"
 
@@ -45,7 +45,7 @@ msgstr "Adjust your style settings"
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
-#: src/pages/settings/settings.tsx:77
+#: src/pages/settings/settings.tsx:104
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -53,7 +53,7 @@ msgstr "Avatar"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/pages/settings/settings.tsx:58
+#: src/pages/settings/settings.tsx:85
 msgid "Change language"
 msgstr "Change language"
 
@@ -65,11 +65,11 @@ msgstr "Change password"
 msgid "Change username"
 msgstr "Change username"
 
-#: src/pages/settings/settings.tsx:51
+#: src/pages/settings/settings.tsx:71
 msgid "Change your password"
 msgstr "Change your password"
 
-#: src/pages/settings/settings.tsx:44
+#: src/pages/settings/settings.tsx:64
 msgid "Change your username"
 msgstr "Change your username"
 
@@ -96,7 +96,7 @@ msgstr "Current password"
 msgid "Customize your avatar!"
 msgstr "Customize your avatar!"
 
-#: src/pages/settings/settings.tsx:70
+#: src/pages/settings/settings.tsx:97
 msgid "Dark Theme"
 msgstr "Dark Theme"
 
@@ -104,7 +104,7 @@ msgstr "Dark Theme"
 msgid "Decline"
 msgstr "Decline"
 
-#: src/pages/settings/settings.tsx:71
+#: src/pages/settings/settings.tsx:98
 msgid "Disable or enable dark theme"
 msgstr "Disable or enable dark theme"
 
@@ -146,7 +146,7 @@ msgstr "Home"
 msgid "Inbox"
 msgstr "Inbox"
 
-#: src/pages/settings/settings.tsx:57
+#: src/pages/settings/settings.tsx:84
 msgid "Language"
 msgstr "Language"
 
@@ -160,10 +160,15 @@ msgid "Login Here"
 msgstr "Login Here"
 
 #: src/components/header/components/popup-menu/popup-menu.tsx:48
+#: src/pages/settings/settings.tsx:77
 msgid "Logout"
 msgstr "Logout"
 
-#: src/pages/settings/settings.tsx:39
+#: src/pages/settings/settings.tsx:78
+msgid "Logout from your account"
+msgstr "Logout from your account"
+
+#: src/pages/settings/settings.tsx:59
 msgid "Manage your account details"
 msgstr "Manage your account details"
 
@@ -209,7 +214,7 @@ msgstr "Page not found 🔎"
 
 #: src/pages/auth/components/login-form/login-form.tsx:51
 #: src/pages/auth/components/signup-form/signup-form.tsx:68
-#: src/pages/settings/settings.tsx:50
+#: src/pages/settings/settings.tsx:70
 msgid "Password"
 msgstr "Password"
 
@@ -233,7 +238,7 @@ msgstr "Password"
 #~ msgid "Passwords do not match"
 #~ msgstr "Passwords do not match"
 
-#: src/pages/settings/settings.tsx:78
+#: src/pages/settings/settings.tsx:105
 msgid "Pick your avatar color"
 msgstr "Pick your avatar color"
 
@@ -315,7 +320,7 @@ msgstr "Select image"
 
 #: src/components/header/header.tsx:48
 #: src/components/mobile-navigation/mobile-navigation.tsx:75
-#: src/pages/settings/settings.tsx:32
+#: src/pages/settings/settings.tsx:52
 msgid "Settings"
 msgstr "Settings"
 
@@ -343,7 +348,7 @@ msgstr "Signup Here"
 msgid "Stats"
 msgstr "Stats"
 
-#: src/pages/settings/settings.tsx:65
+#: src/pages/settings/settings.tsx:92
 msgid "Style"
 msgstr "Style"
 
@@ -354,7 +359,7 @@ msgstr "Style"
 #: src/pages/auth/components/login-form/login-form.tsx:45
 #: src/pages/auth/components/signup-form/signup-form.tsx:59
 #: src/pages/friends/components/add-new-friend-section/add-new-friend-section.tsx:51
-#: src/pages/settings/settings.tsx:43
+#: src/pages/settings/settings.tsx:63
 msgid "Username"
 msgstr "Username"
 
