@@ -30,7 +30,7 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
 
   const userCut = useMemo(() => {
     const cut =
-      ((product.price - (product.discount || 0)) * product.count) /
+      (product.price * product.count - (product.discount || 0)) /
       product.comprising.length
 
     const userCutRaw = isComprising ? cut : 0
