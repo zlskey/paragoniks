@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export const extractReceiptDataFromText = async (text: string) => {
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo-16k-0613',
+    model: 'gpt-4-0613',
     messages: [
       {
         role: 'user',
