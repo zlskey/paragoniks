@@ -39,6 +39,9 @@ services:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
     image: mongo
     restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
     ports:
       - 27017:27017
     networks:

@@ -64,10 +64,26 @@ services:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
     image: mongo
     restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
     networks:
       - rs-local-network
     volumes:
       - ./db:/data/db
+    labels:
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+
+      # HTTPS Secure Router Configuration
+      - "traefik.http.routers.rs-db.entrypoints=https"
+      - "traefik.http.routers.rs-db.rule=Host(`db.${DOCKER_DOMAIN}`)"
+      - "traefik.http.routers.rs-db.tls=true"
+      - "traefik.http.routers.rs-db.service=rs-db-service"
+      - "traefik.http.services.rs-db-service.loadbalancer.server.port=27017"
+
+      # Docker Network Configuration
+      - "traefik.docker.network=proxy"
 
 networks:
   proxy:
