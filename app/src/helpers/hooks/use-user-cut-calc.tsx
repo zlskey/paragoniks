@@ -11,10 +11,11 @@ const useUserCutCalc = (userId?: UserId, receipt?: Receipt) => {
 
     const sum = receipt.products.reduce((acc: number, product: Product) => {
       if (product.comprising.find(comprisingId => comprisingId === userId)) {
+        const discount = Math.abs(product.discount || 0)
+
         return (
           acc +
-          (product.price * product.count - (product.discount || 0)) /
-            product.comprising.length
+          (product.price * product.count - discount) / product.comprising.length
         )
       }
 

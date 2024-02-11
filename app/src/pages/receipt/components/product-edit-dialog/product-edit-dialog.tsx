@@ -73,7 +73,7 @@ const ProductEditDialog = ({ product, onClose }: ProductEditDialogProps) => {
       price: product.price,
       count: product.count,
       comprising: product.comprising,
-      discount: product.discount || 0,
+      discount: Math.abs(product.discount || 0),
     })
   }, [product])
 

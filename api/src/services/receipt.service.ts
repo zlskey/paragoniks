@@ -38,6 +38,11 @@ export const createReceipt = async (
     contributors: [],
   }
 
+  receiptObj.products = receiptObj.products.map(product => ({
+    ...product,
+    discount: Math.abs(product.discount || 0),
+  }))
+
   return await Receipt.create(receiptObj)
 }
 

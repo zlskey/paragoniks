@@ -24,14 +24,15 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
 
   const isOwner = receipt.owner === user._id
 
+  const discount = Math.abs(product.discount || 0)
+
   const onToggleComprising = () => {
     handleToggleComprising()
   }
 
   const userCut = useMemo(() => {
     const cut =
-      (product.price * product.count - (product.discount || 0)) /
-      product.comprising.length
+      (product.price * product.count - discount) / product.comprising.length
 
     const userCutRaw = isComprising ? cut : 0
 
@@ -54,7 +55,7 @@ const ProductItem = ({ product, onEdit }: ProductItemProps) => {
 
               <Typography variant='body2' color='lightgray'>
                 {getPrice(product.price)} * {product.count}
-                {!!product.discount && ` - ${getPrice(product.discount)}`}
+                {!!discount && ` - ${getPrice(discount)}`}
               </Typography>
             </Stack>
 
