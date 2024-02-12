@@ -71,6 +71,8 @@ services:
       - rs-local-network
     volumes:
       - ./db:/data/db
+    ports:
+      - 2137:27017
 
 networks:
   proxy:

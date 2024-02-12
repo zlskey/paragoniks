@@ -15,6 +15,7 @@ if (!dbURI) throw Error('MONGODB_URL is not defined')
 
 mongoose
   .connect(dbURI, {
+    authSource: "admin",
     user: dbRootUsername,
     pass: dbRootPassword,
   })
