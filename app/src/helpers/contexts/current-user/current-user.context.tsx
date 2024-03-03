@@ -32,15 +32,13 @@ const CurrentUserContextProvider: FC<PropsWithChildren> = ({ children }) => {
   })
 
   useEffect(() => {
-    if (currentUser) {
-      setCachedUser(currentUser)
-    }
+    setCachedUser(currentUser)
   }, [currentUser])
 
   return (
     <CurrentUserContext.Provider
       value={{
-        profile: currentUser || dummyUser,
+        profile: currentUser ?? dummyUser,
         isLoggedIn: !!currentUser?._id,
       }}
     >

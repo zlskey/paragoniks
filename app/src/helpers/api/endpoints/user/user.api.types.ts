@@ -27,8 +27,8 @@ export interface LogoutUserBody {}
 export interface WhoamiUserBody {}
 
 export interface WhoamiUserResponse {
-  user: User
-  token: string
+  user: User | null
+  token: string | null
 }
 
 export interface ChangeUsernameBody {

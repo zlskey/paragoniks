@@ -20,6 +20,11 @@ const cookieOptions = {
   domain,
 }
 
+const emptyUserResponse = {
+  user: null,
+  token: null,
+}
+
 export const signup: RequestHandler = async (req, res, next) => {
   const { username, password } = req.body
 
@@ -55,7 +60,7 @@ export const whoami: RequestHandler = async (req, res, next) => {
   const token = jwtUtils.validateToken(jwt)
 
   if (!token) {
-    res.json(null)
+    res.json(emptyUserResponse)
     return
   }
 
@@ -67,9 +72,9 @@ export const whoami: RequestHandler = async (req, res, next) => {
         token: jwt,
       })
     )
-    .catch(() => res.clearCookie('jwt', cookieOptions).json(null))
+    .catch(() => res.clearCookie('jwt', cookieOptions).json(emptyUserResponse))
 }
 
 export const logout: RequestHandler = async (req, res, next) => {
-  res.clearCookie('jwt', cookieOptions).status(200).json({})
+  res.clearCookie('jwt', cookieOptions).status(200).json(emptyUserResponse)
 }
