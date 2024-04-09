@@ -3,6 +3,7 @@ import { UserId } from 'src/types/generic.types'
 import _ from 'lodash'
 import constants from 'src/constants'
 import { userService } from 'src/services'
+import { writeFileSync } from 'fs'
 
 export const handleChangeUsername: RequestHandler = async (req, res, next) => {
   const { username } = req.body
@@ -51,9 +52,11 @@ export const handleChangeAvatarImage: RequestHandler = async (
   next
 ) => {
   const user = req.user
-  const image = req.file.path
+  const avatarImage = Buffer.from(req.body.image, 'base64')
+  const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
+  writeFileSync(imagePath, avatarImage)
 
-  const updatedUser = await user.changeAvatarImage(image)
+  const updatedUser = await user.changeAvatarImage(imagePath)
 
   res.status(201).json(updatedUser)
 }
