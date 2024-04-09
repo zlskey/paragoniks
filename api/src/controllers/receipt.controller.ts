@@ -4,6 +4,7 @@ import { receiptService, userService } from 'src/services'
 import { RequestHandler } from 'express'
 import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
 import { getTextFromImage } from 'src/utils/get-text-from-image'
+import { writeFileSync } from 'fs'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
   const user = req.user
@@ -11,6 +12,28 @@ export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
   const receipts = await receiptService.getAllReceipts(user._id)
 
   res.status(200).json(receipts)
+}
+
+export const handleCreateReceiptBase64: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const user = req.user
+
+  const receiptImage = Buffer.from(req.body.image, 'base64')
+  const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
+  writeFileSync(receiptImage, imagePath)
+
+  const text = await getTextFromImage(receiptImage)
+  const receipt = await extractReceiptDataFromText(text)
+
+  const receiptObj = await receiptService.createReceipt(
+    { ...receipt, imagePath },
+    user._id
+  )
+
+  res.status(201).json(receiptObj)
 }
 
 export const handleCreateReceipt: RequestHandler = async (req, res, next) => {

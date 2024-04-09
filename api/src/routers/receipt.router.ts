@@ -26,6 +26,12 @@ receiptRouter.post(
   wrapAsync(receiptController.handleCreateReceipt)
 )
 
+receiptRouter.post(
+  '/base64',
+  limiter,
+  wrapAsync(receiptController.handleCreateReceiptBase64)
+)
+
 receiptRouter.use(
   '/:receiptId',
   receiptMiddleware.findAndValidateReceipt,
