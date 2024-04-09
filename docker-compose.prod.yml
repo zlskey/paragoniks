@@ -36,6 +36,8 @@ services:
   rs-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
     restart: unless-stopped
+    volumes:
+      - ./data/uploads:/usr/src/app/uploads
     build:
       context: ./api
       dockerfile: docker/Dockerfile
@@ -70,7 +72,7 @@ services:
     networks:
       - rs-local-network
     volumes:
-      - ./db:/data/db
+      - ./data/db:/data/db
     ports:
       - 2137:27017
 

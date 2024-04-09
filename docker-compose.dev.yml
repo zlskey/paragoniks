@@ -27,6 +27,7 @@ services:
       target: development
     volumes:
       - ./api:/usr/src/app
+      - ./data/uploads:/usr/src/app/uploads
     env_file:
       - ".env"
       - "./api/.env"

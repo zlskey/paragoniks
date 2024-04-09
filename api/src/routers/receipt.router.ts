@@ -28,7 +28,6 @@ receiptRouter.post(
 
 receiptRouter.post(
   '/base64',
-  limiter,
   wrapAsync(receiptController.handleCreateReceiptBase64)
 )
 

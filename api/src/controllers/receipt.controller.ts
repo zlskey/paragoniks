@@ -23,7 +23,7 @@ export const handleCreateReceiptBase64: RequestHandler = async (
 
   const receiptImage = Buffer.from(req.body.image, 'base64')
   const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
-  writeFileSync(receiptImage, imagePath)
+  writeFileSync(imagePath, receiptImage)
 
   const text = await getTextFromImage(receiptImage)
   const receipt = await extractReceiptDataFromText(text)
