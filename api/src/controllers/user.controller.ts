@@ -53,7 +53,7 @@ export const handleChangeAvatarImage: RequestHandler = async (
 ) => {
   const user = req.user
   const avatarImage = Buffer.from(req.body.image, 'base64')
-  const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
+  const imagePath = `uploads/${user._id}_${new Date().getTime()}.png`
   writeFileSync(imagePath, avatarImage)
 
   const updatedUser = await user.changeAvatarImage(imagePath)
