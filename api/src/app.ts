@@ -12,7 +12,7 @@ const app = express()
 
 app.use(
   express.json({
-    limit: '5mb',
+    limit: '20mb',
   })
 )
 app.use(cookieParser())
