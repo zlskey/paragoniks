@@ -2,8 +2,15 @@ import { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
 
 import mongoose from 'mongoose'
 
+export type DivisionType = 'percentage' | 'amount' | 'shares'
+
+export interface Division {
+  [index: string]: number | null
+}
+
 export interface IProduct {
-  comprising: UserId[]
+  division: Division
+  divisionType: DivisionType
   name: string
   price: number
   count: number
