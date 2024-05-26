@@ -25,8 +25,7 @@ export const handleCreateReceiptBase64: RequestHandler = async (
   const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
   writeFileSync(imagePath, receiptImage)
 
-  const text = await getTextFromImage(receiptImage)
-  const receipt = await extractReceiptDataFromText(text)
+  const receipt = await extractReceiptDataFromText(receiptImage.toString())
 
   const receiptObj = await receiptService.createReceipt(
     { ...receipt, imagePath },
