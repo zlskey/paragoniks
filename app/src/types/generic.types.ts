@@ -45,16 +45,9 @@ export interface Friendship {
   status: 'accepted' | 'pending'
 }
 
-export type DivisionType = 'percentage' | 'amount' | 'shares'
-
-export interface Division {
-  [index: string]: number | null
-}
-
 export interface Product {
   _id: ProductId
-  division: Division
-  divisionType: DivisionType
+  comprising: UserId[]
   name: string
   price: number
   discount?: number // remove optional after all models are updated
