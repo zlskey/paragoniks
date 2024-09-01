@@ -8,6 +8,7 @@ import Receipt, {
 } from 'src/models/receipt.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
+import { calculateDivision } from 'src/utils/calculate-division'
 import { compareIds } from 'src/utils/ids-util'
 
 export const getAllReceipts = async (userId: UserId) => {
@@ -67,24 +68,20 @@ export const toggleComprising = async (
   userId: UserId
 ) => {
   const updatedProducts = receipt.products.map(product => {
-    if (compareIds(product._id, productId)) {
-      const comprising = product.comprising.find(comprising =>
-        compareIds(comprising, userId)
-      )
-
-      if (comprising) {
-        product.comprising = product.comprising.filter(
-          comprisingId => !compareIds(comprisingId, userId)
-        )
-        return product
-      }
-
-      product.comprising.push(userId)
-
+    if (!compareIds(product._id, productId)) {
       return product
     }
 
-    return product
+    const currentDivision = product.division
+    const userIdString = userId.toString()
+
+    if (currentDivision[userIdString]) {
+      delete currentDivision[userIdString]
+    } else {
+      currentDivision[userIdString] = 0
+    }
+
+    return calculateDivision(product)
   })
 
   const updatedReceipt = await Receipt.findByIdAndUpdate(
@@ -145,12 +142,12 @@ export const removeContributor = async (
     contributor => !compareIds(contributor, contributorId)
   )
 
-  const updatedProducts = receipt.products.map(product => ({
-    ...product,
-    comprising: product.comprising.filter(
-      friend => !compareIds(friend, contributorId)
-    ),
-  }))
+  const updatedProducts = receipt.products.map(product => {
+    const updatedDivision = { ...product.division }
+    delete updatedDivision[contributorId.toString()]
+
+    return { ...product, division: updatedDivision }
+  })
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
@@ -162,10 +159,7 @@ export const removeContributor = async (
 export const updateProduct = async (
   receipt: IReceipt,
   productId: ProductId,
-  product: Pick<
-    IProduct,
-    'name' | 'count' | 'price' | 'comprising' | 'discount'
-  >
+  product: Pick<IProduct, 'name' | 'count' | 'price' | 'division' | 'discount'>
 ) => {
   const updatedProducts = receipt.products.map(receiptProduct => {
     if (compareIds(receiptProduct._id, productId)) {
