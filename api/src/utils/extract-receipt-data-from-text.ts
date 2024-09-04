@@ -21,14 +21,15 @@ export const extractReceiptDataFromText = async (imageBase64: string) => {
           {
             type: 'image_url',
             image_url: {
-              url: imageBase64,
+              url: `data:image/jpeg;base64,${imageBase64}`,
+              detail: 'high'
             },
           },
         ],
       },
     ],
     temperature: 1,
-    max_tokens: 256,
+    max_tokens: 2048,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
