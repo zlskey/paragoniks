@@ -1,5 +1,6 @@
 import 'src/utils/system.utils'
 import 'src/migrations/comprising-to-division'
+import 'src/migrations/division-amount-to-shares'
 
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
