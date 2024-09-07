@@ -8,7 +8,6 @@ import Receipt, {
 } from 'src/models/receipt.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import { calculateDivision } from 'src/utils/calculate-division'
 import { compareIds } from 'src/utils/ids-util'
 
 export const getAllReceipts = async (userId: UserId) => {
@@ -42,6 +41,13 @@ export const createReceipt = async (
   receiptObj.products = receiptObj.products.map(product => ({
     ...product,
     discount: Math.abs(product.discount || 0),
+    divisionType: 'shares',
+    /**
+     *
+     * @todo - it should work properly ig
+     *
+     */
+    division: { [userId.toString()]: 1 },
   }))
 
   return await Receipt.create(receiptObj)
@@ -55,6 +61,7 @@ export const removeReceiptForUser = async (
 
   if (isContributor) {
     await removeContributor(receipt, userId)
+    return
   }
 
   await Receipt.findByIdAndRemove(receipt._id)
@@ -74,14 +81,14 @@ export const toggleComprising = async (
 
     const currentDivision = product.division
     const userIdString = userId.toString()
+    const currentUserDivision = currentDivision[userIdString]
 
-    if (currentDivision[userIdString]) {
-      delete currentDivision[userIdString]
-    } else {
-      currentDivision[userIdString] = 0
+    const updatedDivision = {
+      ...currentDivision,
+      [userIdString]: currentUserDivision === 1 ? null : 1,
     }
 
-    return calculateDivision(product)
+    return { ...product, division: updatedDivision }
   })
 
   const updatedReceipt = await Receipt.findByIdAndUpdate(
@@ -122,10 +129,19 @@ export const addContributor = async (
   }
 
   const updatedContributors = [...contributors, contributorId]
+  const updatedProducts = receipt.products.map(product => {
+    return {
+      ...product,
+      division: {
+        ...product.division,
+        [contributorId.toString()]: null,
+      },
+    }
+  })
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { contributors: updatedContributors },
+    { contributors: updatedContributors, products: updatedProducts },
     { new: true }
   )
 }
