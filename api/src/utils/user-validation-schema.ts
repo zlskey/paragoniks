@@ -39,6 +39,6 @@ export const validateAndThrow = async (
       throw new ErrorObject(message, 401)
     }
 
-    throw new ErrorObject('Something went wrong', 500)
+    throw new ErrorObject('Coś poszło nie tak', 500)
   }
 }

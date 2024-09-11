@@ -15,7 +15,7 @@ export const findFriendship = async (firstId: FriendId, secondId: FriendId) => {
   })
 
   if (!friendship) {
-    throw new ErrorObject('Friend not found')
+    throw new ErrorObject('Przyjaciel nie istnieje')
   }
 
   return friendship
@@ -56,7 +56,7 @@ export const sendFriendshipRequest = async (
   const secondFriendId = user._id
 
   if (compareIds(friendId, secondFriendId)) {
-    throw new ErrorObject("You can't send request to yourself")
+    throw new ErrorObject('Nie możesz wysłać zaproszenia do siebie')
   }
 
   const alreadyExistingFriendship = await Friendship.findOne({
@@ -77,12 +77,12 @@ export const sendFriendshipRequest = async (
 
   // Friendship request already accepted
   if (alreadyExistingFriendship.status === 'accepted') {
-    throw new ErrorObject("You're already friends")
+    throw new ErrorObject('Jesteście już znajomymi')
   }
 
   // Friendship request already sent from current user
   if (alreadyExistingFriendship.secondFriendId.equals(secondFriendId)) {
-    throw new ErrorObject("You've already sent a request")
+    throw new ErrorObject('Znajomy dostał już zaproszenie')
   }
 
   // Friendship request already sent from other user, accept it

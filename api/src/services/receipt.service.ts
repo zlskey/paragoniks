@@ -22,7 +22,7 @@ export const getReceipt = async (receiptId: ReceiptId) => {
   const receipt = await Receipt.findById(receiptId)
 
   if (!receipt) {
-    throw new ErrorObject('Receipt not found', 404)
+    throw new ErrorObject('Paragon nie istnieje', 404)
   }
 
   return receipt
@@ -34,21 +34,15 @@ export const createReceipt = async (
 ) => {
   const receiptObj = {
     ...receipt,
+    products: receipt.products.map(product => ({
+      ...product,
+      discount: Math.abs(product.discount ?? 0),
+      divisionType: 'shares',
+      division: { [userId.toString()]: 1 },
+    })),
     owner: userId,
     contributors: [],
   }
-
-  receiptObj.products = receiptObj.products.map(product => ({
-    ...product,
-    discount: Math.abs(product.discount || 0),
-    divisionType: 'shares',
-    /**
-     *
-     * @todo - it should work properly ig
-     *
-     */
-    division: { [userId.toString()]: 1 },
-  }))
 
   return await Receipt.create(receiptObj)
 }
@@ -79,12 +73,19 @@ export const toggleComprising = async (
       return product
     }
 
-    const currentDivision = product.division
     const userIdString = userId.toString()
-    const currentUserDivision = currentDivision[userIdString]
+    const { division, divisionType } = product
+    const currentUserDivision = division[userIdString]
+
+    if (divisionType !== 'shares') {
+      throw new ErrorObject(
+        'Szybki podział jest dostępny tylko przy udziałach',
+        400
+      )
+    }
 
     const updatedDivision = {
-      ...currentDivision,
+      ...division,
       [userIdString]: currentUserDivision === 1 ? null : 1,
     }
 
@@ -119,21 +120,24 @@ export const addContributor = async (
   const { contributors } = receipt
 
   if (!compareIds(receipt.owner, userId)) {
-    throw new ErrorObject('Only owner can add contributors', 400)
+    throw new ErrorObject('Tylko właściciel może dodawać użytkowników', 400)
   }
 
-  if (
-    contributors.find(contributor => compareIds(contributor, contributorId))
-  ) {
-    return receipt
+  const contributorAlreadyAdded = contributors.find(contributor =>
+    compareIds(contributor, contributorId)
+  )
+
+  if (contributorAlreadyAdded) {
+    throw new ErrorObject('Użytkownik został już dodany')
   }
 
   const updatedContributors = [...contributors, contributorId]
   const updatedProducts = receipt.products.map(product => {
+    const { division } = product
     return {
       ...product,
       division: {
-        ...product.division,
+        ...division,
         [contributorId.toString()]: null,
       },
     }
@@ -151,7 +155,7 @@ export const removeContributor = async (
   contributorId: UserId
 ) => {
   if (compareIds(receipt.owner, contributorId)) {
-    throw new ErrorObject('Cannot remove owner', 400)
+    throw new ErrorObject('Nie można usunąć właściciela', 400)
   }
 
   const updatedContributors = receipt.contributors.filter(
@@ -175,7 +179,7 @@ export const removeContributor = async (
 export const updateProduct = async (
   receipt: IReceipt,
   productId: ProductId,
-  product: Pick<IProduct, 'name' | 'count' | 'price' | 'division' | 'discount'>
+  product: Omit<IProduct, '_id'>
 ) => {
   const updatedProducts = receipt.products.map(receiptProduct => {
     if (compareIds(receiptProduct._id, productId)) {
