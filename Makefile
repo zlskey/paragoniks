@@ -6,6 +6,7 @@ start-production:
 
 start-development:
 	docker compose -f docker-compose.dev.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate
+	ngrok http --domain=cunning-pipefish-especially.ngrok-free.app 3000
 
 stop-production:
 	docker compose -f docker-compose.prod.yml stop
