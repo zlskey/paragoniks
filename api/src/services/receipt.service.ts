@@ -6,6 +6,10 @@ import Receipt, {
   IReceipt,
   ISimpleReceipt,
 } from 'src/models/receipt.model'
+import {
+  getCalculatedTotalsForReceipt,
+  getEvenDivision,
+} from 'src/utils/calculators'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { compareIds } from 'src/utils/ids-util'
@@ -32,16 +36,19 @@ export const createReceipt = async (
   receipt: ISimpleReceipt,
   userId: UserId
 ) => {
+  const products = receipt.products.map(product => ({
+    ...product,
+    discount: Math.abs(product.discount ?? 0),
+    divisionType: 'shares',
+    division: { [userId.toString()]: 1 },
+  })) as IProduct[]
+
+  const contributors = { [userId.toString()]: 1 }
+
   const receiptObj = {
     ...receipt,
-    products: receipt.products.map(product => ({
-      ...product,
-      discount: Math.abs(product.discount ?? 0),
-      divisionType: 'shares',
-      division: { [userId.toString()]: 1 },
-    })),
     owner: userId,
-    contributors: [],
+    ...getCalculatedTotalsForReceipt({ contributors, products }),
   }
 
   return await Receipt.create(receiptObj)
@@ -51,7 +58,7 @@ export const removeReceiptForUser = async (
   receipt: IReceipt,
   userId: UserId
 ) => {
-  const isContributor = receipt.contributors.includes(userId)
+  const isContributor = receipt.contributors[userId.toString()]
 
   if (isContributor) {
     await removeContributor(receipt, userId)
@@ -61,44 +68,6 @@ export const removeReceiptForUser = async (
   await Receipt.findByIdAndRemove(receipt._id)
 
   fs.rmSync(receipt.imagePath)
-}
-
-export const toggleComprising = async (
-  receipt: IReceipt,
-  productId: ProductId,
-  userId: UserId
-) => {
-  const updatedProducts = receipt.products.map(product => {
-    if (!compareIds(product._id, productId)) {
-      return product
-    }
-
-    const userIdString = userId.toString()
-    const { division, divisionType } = product
-    const currentUserDivision = division[userIdString]
-
-    if (divisionType !== 'shares') {
-      throw new ErrorObject(
-        'Szybki podział jest dostępny tylko przy udziałach',
-        400
-      )
-    }
-
-    const updatedDivision = {
-      ...division,
-      [userIdString]: currentUserDivision === 1 ? null : 1,
-    }
-
-    return { ...product, division: updatedDivision }
-  })
-
-  const updatedReceipt = await Receipt.findByIdAndUpdate(
-    receipt._id,
-    { products: updatedProducts },
-    { new: true }
-  )
-
-  return updatedReceipt
 }
 
 export const changeReceiptTitle = async (
@@ -123,17 +92,15 @@ export const addContributor = async (
     throw new ErrorObject('Tylko właściciel może dodawać użytkowników', 400)
   }
 
-  const contributorAlreadyAdded = contributors.find(contributor =>
-    compareIds(contributor, contributorId)
-  )
+  const contributorAlreadyAdded = contributors[contributorId.toString()]
 
   if (contributorAlreadyAdded) {
     throw new ErrorObject('Użytkownik został już dodany')
   }
 
-  const updatedContributors = [...contributors, contributorId]
-  const updatedProducts = receipt.products.map(product => {
-    const { division } = product
+  contributors[contributorId.toString()] = 0
+
+  const updatedProducts = receipt.products.map(({ division, ...product }) => {
     return {
       ...product,
       division: {
@@ -145,7 +112,7 @@ export const addContributor = async (
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { contributors: updatedContributors, products: updatedProducts },
+    { contributors, products: updatedProducts },
     { new: true }
   )
 }
@@ -154,24 +121,36 @@ export const removeContributor = async (
   receipt: IReceipt,
   contributorId: UserId
 ) => {
+  const contributors = receipt.contributors
   if (compareIds(receipt.owner, contributorId)) {
     throw new ErrorObject('Nie można usunąć właściciela', 400)
   }
 
-  const updatedContributors = receipt.contributors.filter(
-    contributor => !compareIds(contributor, contributorId)
-  )
+  delete contributors[contributorId.toString()]
 
   const updatedProducts = receipt.products.map(product => {
-    const updatedDivision = { ...product.division }
-    delete updatedDivision[contributorId.toString()]
+    const { divisionType, totalPrice } = product
+    const divisionCopy = { ...product.division }
+    const userDivision = divisionCopy[contributorId.toString()]
+    delete divisionCopy[contributorId.toString()]
 
-    return { ...product, division: updatedDivision }
+    if (userDivision === null || divisionType === 'shares') {
+      return { ...product, division: divisionCopy }
+    }
+
+    return {
+      ...product,
+      division: getEvenDivision({
+        division: divisionCopy,
+        divisionType: divisionType,
+        totalPrice: totalPrice,
+      }),
+    }
   })
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { contributors: updatedContributors, products: updatedProducts },
+    getCalculatedTotalsForReceipt({ contributors, products: updatedProducts }),
     { new: true }
   )
 }
@@ -194,7 +173,10 @@ export const updateProduct = async (
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    { products: updatedProducts },
+    getCalculatedTotalsForReceipt({
+      contributors: receipt.contributors,
+      products: updatedProducts,
+    }),
     { new: true }
   )
 }
@@ -212,10 +194,4 @@ export const removeProduct = async (
     { products: updatedProducts },
     { new: true }
   )
-}
-
-export const getContributors = (receipt: IReceipt) => {
-  const contributors = receipt.contributors.concat(receipt.owner)
-
-  return contributors
 }

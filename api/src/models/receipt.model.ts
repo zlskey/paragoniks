@@ -14,6 +14,7 @@ export interface IProduct {
   name: string
   price: number
   count: number
+  totalPrice: number
   discount: number
   _id: ProductId
 }
@@ -28,7 +29,7 @@ export interface ISimpleReceipt {
 export interface IReceipt extends ISimpleReceipt {
   _id: ReceiptId
   owner: UserId
-  contributors: UserId[]
+  contributors: Record<string, number>
   createdAt: string
   updatedAt: string
 }
@@ -51,7 +52,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>(
       type: String,
       required: true,
     },
-    contributors: [],
+    contributors: {},
     products: [],
   },
   {
@@ -63,7 +64,6 @@ receiptSchema.pre('save', async function (next) {
   this.products = this.products.map(product => ({
     ...product,
     _id: new mongoose.Types.ObjectId(),
-    comprising: [],
   }))
 
   next()

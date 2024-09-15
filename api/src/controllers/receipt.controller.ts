@@ -1,8 +1,8 @@
 import { ProductId, UserId } from 'src/types/generic.types'
-import { receiptService, userService } from 'src/services'
 
 import { RequestHandler } from 'express'
 import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
+import { receiptService } from 'src/services'
 import { writeFileSync } from 'fs'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
@@ -57,24 +57,6 @@ export const handleRemoveReceipt: RequestHandler = async (req, res, next) => {
   const receipts = await receiptService.getAllReceipts(user._id)
 
   res.status(200).json(receipts)
-}
-
-export const handleToggleComprising: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
-  const receipt = req.receipt
-  const { productId } = req.params
-  const user = req.user
-
-  const updatedReceipt = await receiptService.toggleComprising(
-    receipt,
-    productId as unknown as ProductId,
-    user._id
-  )
-
-  res.status(200).json(updatedReceipt)
 }
 
 export const handleChangeReceiptTitle: RequestHandler = async (
@@ -147,14 +129,4 @@ export const handleRemoveProduct: RequestHandler = async (req, res, next) => {
   )
 
   res.status(201).json(updatedReceipt)
-}
-
-export const handleGetContributors: RequestHandler = async (req, res, next) => {
-  const receipt = req.receipt
-
-  const contributors = receiptService.getContributors(receipt)
-
-  const profiles = await userService.getProfiles(contributors)
-
-  res.status(200).json(profiles)
 }

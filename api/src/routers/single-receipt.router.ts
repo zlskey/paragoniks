@@ -19,11 +19,6 @@ singleReceiptRouter.patch(
   wrapAsync(receiptController.handleChangeReceiptTitle)
 )
 
-singleReceiptRouter.get(
-  '/contributors',
-  wrapAsync(receiptController.handleGetContributors)
-)
-
 singleReceiptRouter.patch(
   '/product/:productId',
   wrapAsync(receiptController.handleUpdateProduct)
@@ -32,11 +27,6 @@ singleReceiptRouter.patch(
 singleReceiptRouter.delete(
   '/product/:productId',
   wrapAsync(receiptController.handleRemoveProduct)
-)
-
-singleReceiptRouter.patch(
-  '/product/:productId/comprising',
-  wrapAsync(receiptController.handleToggleComprising)
 )
 
 singleReceiptRouter.patch(
