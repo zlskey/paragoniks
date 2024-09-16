@@ -58,9 +58,9 @@ export const removeReceiptForUser = async (
   receipt: IReceipt,
   userId: UserId
 ) => {
-  const isContributor = receipt.contributors[userId.toString()]
+  const isOwner = compareIds(receipt.owner, userId)
 
-  if (isContributor) {
+  if (!isOwner) {
     await removeContributor(receipt, userId)
     return
   }
