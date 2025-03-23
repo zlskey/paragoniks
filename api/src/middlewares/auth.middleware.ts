@@ -1,5 +1,5 @@
 import { ErrorObject } from './error.middleware'
-import { IUser } from 'src/models/User.model'
+import { IUser } from 'src/models/user.model'
 import { RequestHandler } from 'express'
 import constants from 'src/constants'
 import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'

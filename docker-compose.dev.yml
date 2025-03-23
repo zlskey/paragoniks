@@ -1,22 +1,4 @@
-version: "3.9"
-
 services:
-  rs-app:
-    container_name: ${DOCKER_APP_CONTAINER_NAME}
-    restart: unless-stopped
-    command: npm run dev
-    build:
-      context: ./app/docker
-      dockerfile: Dockerfile
-      target: development
-    volumes:
-      - ./app:/usr/src/app
-    env_file:
-      - ".env"
-      - "./app/.env"
-    ports: 
-      - 5000:5000
-
   rs-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
     command: npm run dev

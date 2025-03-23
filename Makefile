@@ -8,9 +8,6 @@ start-development:
 	docker compose -f docker-compose.dev.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate
 	ngrok http --domain=pro-loudly-sheep.ngrok-free.app 3000
 
-start-development-backend:
-	docker compose -f docker-compose.dev.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate rs-api rs-db
-
 stop-production:
 	docker compose -f docker-compose.prod.yml stop
 

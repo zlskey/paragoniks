@@ -1,28 +1,22 @@
-import { Container, Stack, Toolbar } from '@mui/material'
+import { colors, getPx } from 'src/app/styles'
 
-import Header from '../header'
-import MobileNavigation from '../mobile-navigation/mobile-navigation'
-import { WrapperProps } from './wrapper.types'
-import useScreenSize from 'src/helpers/hooks/use-screen-size'
+import React from 'react'
+import { View } from 'react-native'
 
-const Wrapper = ({ children }: WrapperProps) => {
-  const { isDesktop } = useScreenSize()
-
+function Wrapper({ children }: React.PropsWithChildren) {
   return (
-    <Stack>
-      {isDesktop && (
-        <>
-          <Header />
-          <Toolbar />
-        </>
-      )}
-
-      <Container sx={{ mt: 2, mb: isDesktop ? 3 : 10 }} component='main'>
-        {children}
-      </Container>
-
-      {!isDesktop && <MobileNavigation />}
-    </Stack>
+    <View
+      style={{
+        backgroundColor: colors.background,
+        padding: getPx(2),
+        paddingTop: getPx(1),
+        paddingBottom: getPx(4),
+        flexGrow: 1,
+        flex: 1,
+      }}
+    >
+      {children}
+    </View>
   )
 }
 

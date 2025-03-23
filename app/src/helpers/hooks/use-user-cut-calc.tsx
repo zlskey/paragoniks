@@ -1,31 +1,31 @@
-import { Product, Receipt, UserId } from 'src/types/generic.types'
+import { Product, UserId } from 'src/app/generic.types'
 
-import { getPrice } from '../utils/get-price'
+import { getLocaleCurrency } from '@helpers/utils'
 import { useMemo } from 'react'
 
-const useUserCutCalc = (userId?: UserId, receipt?: Receipt) => {
+const useUserCutCalc = (product: Product, userId: UserId) => {
   const userCut = useMemo(() => {
-    if (!userId || !receipt) {
-      return ''
+    const { totalPrice, divisionType, division } = product
+    const userDivision = division[userId] ?? 0
+
+    switch (divisionType) {
+      case 'percentage':
+        return totalPrice * (userDivision / 100)
+
+      case 'amount':
+        return userDivision
+
+      case 'shares':
+        const noOfShares = Object.values(division).reduce(
+          (sharesAcc, share) => (sharesAcc || 0) + (share || 0),
+          0
+        ) as number
+
+        return totalPrice / (noOfShares / userDivision)
     }
+  }, [product, userId])
 
-    const sum = receipt.products.reduce((acc: number, product: Product) => {
-      if (product.comprising.find(comprisingId => comprisingId === userId)) {
-        const discount = Math.abs(product.discount || 0)
-
-        return (
-          acc +
-          (product.price * product.count - discount) / product.comprising.length
-        )
-      }
-
-      return acc
-    }, 0)
-
-    return getPrice(sum)
-  }, [receipt, userId])
-
-  return userCut
+  return getLocaleCurrency(isNaN(userCut) ? 0 : userCut)
 }
 
 export default useUserCutCalc

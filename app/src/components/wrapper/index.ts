@@ -1,1 +1,1 @@
-export { default as default } from './wrapper'
+export { default } from './wrapper'

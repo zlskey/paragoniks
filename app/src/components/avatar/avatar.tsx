@@ -1,0 +1,97 @@
+import { AvatarColor, Profile } from 'src/app/generic.types'
+import { Image, StyleSheet, View } from 'react-native'
+import { colors, getPx } from 'src/app/styles'
+
+import Typography from '@components/typography'
+
+const EXPO_PUBLIC_RS_API_URL = process.env.EXPO_PUBLIC_RS_API_URL
+
+const getContainerSize = (size: 'sm' | 'md' | 'lg' | 'xs') => {
+  switch (size) {
+    case 'xs':
+      return getPx(1.8)
+    case 'sm':
+      return getPx(4)
+    case 'md':
+      return getPx(5)
+    case 'lg':
+      return getPx(6)
+  }
+}
+
+const getTextSize = (size: 'sm' | 'md' | 'lg' | 'xs') => {
+  switch (size) {
+    case 'xs':
+      return getPx(0.9)
+    case 'sm':
+      return getPx(1.9)
+    case 'md':
+      return getPx(3)
+    case 'lg':
+      return getPx(2.8)
+  }
+}
+
+const getStyles = (size: 'sm' | 'md' | 'lg' | 'xs') =>
+  StyleSheet.create({
+    container: {
+      width: getContainerSize(size),
+      height: getContainerSize(size),
+      borderRadius: getPx(10),
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    },
+    text: {
+      lineHeight: getContainerSize(size),
+      color: colors.text,
+      fontSize: getTextSize(size),
+      fontFamily: 'Poppins-Medium',
+    },
+  })
+
+interface AvatarProps {
+  size?: 'sm' | 'md' | 'lg' | 'xs'
+  profile?: Pick<Profile, 'avatarColor' | 'avatarImage' | 'username'>
+}
+
+function Avatar({
+  size = 'md',
+  profile = {
+    avatarColor: AvatarColor.Default,
+    avatarImage: '',
+    username: '',
+  },
+}: AvatarProps) {
+  const styles = getStyles(size)
+
+  const backgroundColor =
+    profile.avatarColor === AvatarColor.Default
+      ? '#546e7a'
+      : profile.avatarColor
+
+  if (profile.avatarImage) {
+    return (
+      <View style={styles.container}>
+        <Image
+          resizeMode='cover'
+          width={getContainerSize(size)}
+          height={getContainerSize(size)}
+          source={{ uri: `${EXPO_PUBLIC_RS_API_URL}/${profile.avatarImage}` }}
+          alt='User Avatar'
+        />
+      </View>
+    )
+  }
+
+  return (
+    <View style={[{ backgroundColor }, styles.container]}>
+      <Typography styles={styles.text}>
+        {profile.username.charAt(0).toUpperCase()}
+      </Typography>
+    </View>
+  )
+}
+
+export default Avatar

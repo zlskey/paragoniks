@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156258838519",
+    "project_id": "paragoniks",
+    "storage_bucket": "paragoniks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156258838519:android:4a5761671cd555b8cb30f2",
+        "android_client_info": {
+          "package_name": "com.zlskey.paragoniks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUOdbG37uReHJenTEkeJA_78ejx3syXls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,104 @@
+import { FormProvider, useForm } from 'react-hook-form'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+import Avatar from '@components/avatar'
+import { AvatarColor } from '@app/generic.types'
+import Button from '@components/button'
+import Flex from '@components/flex'
+import { StyleSheet } from 'react-native'
+import TextField from '@components/text-field'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Typography from '@components/typography'
+import { ValueOf } from 'react-native-gesture-handler/lib/typescript/typeUtils'
+import Wrapper from '@components/wrapper'
+import { createAnonim } from '@api/endpoints/anonim/anonim.api'
+import { router } from 'expo-router'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
+
+const colors = Object.values(AvatarColor) as ValueOf<typeof AvatarColor>[]
+
+const defaultValues = {
+  username: '',
+  avatarColor: AvatarColor.Default,
+}
+
+function CreateAnonim() {
+  const addNotification = useNotificationContext()
+
+  const queryClient = useQueryClient()
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['anonim', 'create'],
+    mutationFn: createAnonim,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['anonims', 'all'] })
+      router.back()
+    },
+    onError: () => {
+      addNotification('Nie udało się stworzyć anonima', 'error')
+    },
+  })
+  const form = useForm({ defaultValues })
+
+  const { username, avatarColor } = form.watch()
+
+  const buttonDisabled = isPending || !!form.formState.errors.username
+
+  return (
+    <Wrapper>
+      <Flex
+        nativeFlex
+        direction='column'
+        alignContent='stretch'
+        justifyContent='space-between'
+      >
+        <FormProvider {...form}>
+          <Flex direction='column' alignContent='stretch' spacing={1}>
+            <TextField
+              autoFocus
+              name='username'
+              label='Nazwa użytkownika'
+              error={form.formState.errors.username}
+            />
+
+            <Flex direction='column' alignContent='stretch'>
+              <Typography styles={styles.label}>Kolor avatara</Typography>
+
+              <Flex alignContent='center' justifyContent='space-evenly'>
+                {colors.map(color => (
+                  <TouchableOpacity
+                    key={color}
+                    onPress={() => {
+                      form.setValue('avatarColor', color)
+                    }}
+                  >
+                    <Avatar
+                      size={avatarColor === color ? 'md' : 'sm'}
+                      profile={{
+                        username: username || 'Anonim',
+                        avatarColor: color,
+                        avatarImage: '',
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </Flex>
+            </Flex>
+          </Flex>
+        </FormProvider>
+
+        <Button
+          onPress={form.handleSubmit(data => mutate(data))}
+          isDisabled={buttonDisabled}
+        >
+          Stwórz
+        </Button>
+      </Flex>
+    </Wrapper>
+  )
+}
+
+const styles = StyleSheet.create({
+  label: {},
+})
+
+export default CreateAnonim

@@ -195,3 +195,17 @@ export const removeProduct = async (
     { new: true }
   )
 }
+
+export const removeUserFromAllReceipts = async (
+  userToBeRemoved: UserId,
+  ownerOfReceipts: UserId
+) => {
+  const receipts = await Receipt.find({
+    [`contributors.${userToBeRemoved}`]: { $exists: true },
+    owner: ownerOfReceipts,
+  })
+
+  for (const receipt of receipts) {
+    await removeContributor(receipt, userToBeRemoved)
+  }
+}

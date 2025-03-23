@@ -1,8 +1,8 @@
+import { anonimUsersService, userService } from 'src/services'
+
 import { RequestHandler } from 'express'
 import { UserId } from 'src/types/generic.types'
-import _ from 'lodash'
 import constants from 'src/constants'
-import { userService } from 'src/services'
 import { writeFileSync } from 'fs'
 
 export const handleChangeUsername: RequestHandler = async (req, res, next) => {
@@ -69,8 +69,19 @@ export const handleGetProfile: RequestHandler = async (req, res, next) => {
   }
 
   const profile = await userService.getProfile(userId as unknown as UserId)
+  if (profile) {
+    res.status(200).json(profile)
+    return
+  }
 
-  res.status(201).json(profile)
+  const anonimProfile = await anonimUsersService.getById(
+    userId as unknown as UserId
+  )
+  if (!anonimProfile) {
+    throw new Error(constants.invalid_username)
+  }
+
+  res.status(200).json(anonimProfile)
 }
 
 export const handleSetLang: RequestHandler = async (req, res, next) => {

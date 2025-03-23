@@ -1,10 +1,9 @@
 import { FriendId, UserId } from 'src/types/generic.types'
+import { receiptService, userService } from '.'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import Friendship from 'src/models/friend.model'
-import _ from 'lodash'
 import { compareIds } from 'src/utils/ids-util'
-import { userService } from '.'
 
 export const findFriendship = async (firstId: FriendId, secondId: FriendId) => {
   const friendship = await Friendship.findOne({
@@ -91,7 +90,7 @@ export const sendFriendshipRequest = async (
 
 export const removeFriendship = async (firstId: UserId, secondId: UserId) => {
   const friend = await findFriendship(firstId, secondId)
-
+  await receiptService.removeUserFromAllReceipts(secondId, firstId)
   await friend.remove()
 }
 

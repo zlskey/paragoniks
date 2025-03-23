@@ -1,0 +1,58 @@
+import { Receipt } from 'src/app/generic.types'
+
+export const receiptMockup: Receipt = {
+  _id: 'a45hqa45ryha45etrfgay45rytga45ey',
+  owner: 'Test user',
+  contributors: {
+    'Test user': 120.34,
+    'Test user 2': 0.0,
+    'Test user 3': 0.0,
+  },
+  imagePath: '',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  sum: 120.34,
+  title: 'Test receipt',
+  products: [
+    {
+      _id: 'product1',
+      division: {},
+      totalPrice: 50.0,
+      divisionType: 'amount',
+      name: 'Product 1',
+      price: 50.0,
+      discount: 0,
+      count: 1,
+    },
+    {
+      _id: 'product2',
+      division: {},
+      totalPrice: 50.0,
+      divisionType: 'amount',
+      name: 'Product 2',
+      price: 30.0,
+      discount: 3,
+      count: 2,
+    },
+    {
+      _id: 'product3',
+      division: {},
+      totalPrice: 50.0,
+      divisionType: 'amount',
+      name: 'Product 3',
+      price: 13.34,
+      discount: 0,
+      count: 1,
+    },
+    {
+      _id: 'product4',
+      division: {},
+      totalPrice: 50.0,
+      divisionType: 'amount',
+      name: 'Product 4',
+      price: 10.0,
+      discount: 0,
+      count: 3,
+    },
+  ],
+}

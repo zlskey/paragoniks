@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "Paragoniks",
+    "slug": "paragoniks",
+    "version": "1.1.5",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo.png",
+    "scheme": "paragoniks",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0F0F0F"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#0F0F0F"
+      },
+      "package": "com.zlskey.paragoniks",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 12
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adfc708a-b990-4549-b269-3bf1fbca4e8f"
+      }
+    }
+  }
+}

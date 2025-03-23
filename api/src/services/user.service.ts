@@ -1,8 +1,7 @@
-import User, { IProfile, IUser } from 'src/models/User.model'
+import User, { IProfile, IUser } from 'src/models/user.model'
 
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { UserId } from 'src/types/generic.types'
-import _ from 'lodash'
 import constants from 'src/constants'
 
 export const create = async (
@@ -57,8 +56,12 @@ export const update = async (userId: UserId, payload: any): Promise<IUser> => {
   return await User.findByIdAndUpdate(userId, payload, { new: true })
 }
 
-export const getProfile = async (userId: UserId): Promise<IProfile> => {
+export const getProfile = async (userId: UserId): Promise<IProfile | null> => {
   const user = await User.findOne({ _id: userId })
+
+  if (!user) {
+    return null
+  }
 
   return user.pickProfile()
 }
