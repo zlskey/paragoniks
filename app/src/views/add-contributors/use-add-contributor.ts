@@ -1,9 +1,9 @@
-import { Receipt, ReceiptId, UserId } from '@app/generic.types'
+import type { Receipt, ReceiptId, UserId } from '@app/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { addContributor } from 'src/api/endpoints/receipt/receipt.api'
 
-const useAddContributor = ({ receiptId }: { receiptId: ReceiptId }) => {
+function useAddContributor({ receiptId }: { receiptId: ReceiptId }) {
   const queryClient = useQueryClient()
 
   const queryKey = ['receipt', receiptId]
@@ -26,7 +26,7 @@ const useAddContributor = ({ receiptId }: { receiptId: ReceiptId }) => {
 
       return { oldReceipt }
     },
-    onSuccess: receipt => {
+    onSuccess: (receipt) => {
       queryClient.setQueryData(queryKey, receipt)
       queryClient.invalidateQueries({
         queryKey: ['receipt', receiptId],

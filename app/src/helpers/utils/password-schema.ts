@@ -17,7 +17,7 @@ export const passwordSchema = yup.object().shape({
     .max(32, 'Hasło może mieć maksymalnie 32 znaki')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/g,
-      'Hasło musi zawierać co najmniej jedną wielką literę, jedną małą literę i jedną cyfrę'
+      'Hasło musi zawierać co najmniej jedną wielką literę, jedną małą literę i jedną cyfrę',
     ),
   repeatPassword: yup
     .string()

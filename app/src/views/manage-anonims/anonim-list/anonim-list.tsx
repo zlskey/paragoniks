@@ -1,12 +1,12 @@
-import { Anonim } from '@app/generic.types'
+import type { Anonim } from '@app/generic.types'
+import { colors } from '@app/styles'
 import Avatar from '@components/avatar'
-import { FlatList } from 'react-native'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
-import RemoveAnonimButton from './remove-anonim'
-import { Swipeable } from 'react-native-gesture-handler'
 import Typography from '@components/typography'
-import { colors } from '@app/styles'
+import { FlatList } from 'react-native'
+import { Swipeable } from 'react-native-gesture-handler'
+import RemoveAnonimButton from './remove-anonim'
 import useRemoveAnonim from './remove-anonim/use-remove-anonim'
 
 interface AnonimItemProps {
@@ -19,7 +19,6 @@ function AnonimItem({ anonim }: AnonimItemProps) {
   function onSwipeableOpen(direction: 'left' | 'right') {
     if (direction === 'right') {
       handleRemoveAnonim({ username: anonim.username })
-      return
     }
   }
 
@@ -31,11 +30,11 @@ function AnonimItem({ anonim }: AnonimItemProps) {
     >
       <Flex
         styles={{ backgroundColor: colors.paper }}
-        alignContent='center'
+        alignContent="center"
         spacing={1}
         p={1.25}
       >
-        <Avatar profile={anonim} size='sm' />
+        <Avatar profile={anonim} size="sm" />
         <Typography>{anonim.username}</Typography>
       </Flex>
     </Swipeable>
@@ -50,12 +49,12 @@ function AnonimList({ anonims }: AnonimListProps) {
   const noAnonims = !anonims.length
 
   if (noAnonims) {
-    return <Typography variant='subtitle'>Brak anonimów</Typography>
+    return <Typography variant="subtitle">Brak anonimów</Typography>
   }
 
   return (
-    <Flex direction='column' alignContent='stretch' spacing={1}>
-      <Typography variant='subtitle'>Twoje anonimy</Typography>
+    <Flex direction="column" alignContent="stretch" spacing={1}>
+      <Typography variant="subtitle">Twoje anonimy</Typography>
 
       <Paper>
         <FlatList

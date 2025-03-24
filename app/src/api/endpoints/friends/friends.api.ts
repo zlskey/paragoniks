@@ -1,14 +1,14 @@
-import {
+import type { Friendship } from 'src/app/generic.types'
+
+import type {
   GetAllFriendshipsBody,
   RemoveFriendBody,
   RespondToFriendRequestBody,
   SendFriendRequestBody,
 } from './friends.api.types'
-
-import { Friendship } from 'src/app/generic.types'
 import { getRsApi } from 'src/api/rs.api'
 
-export const getAllFriendships = async (body: GetAllFriendshipsBody) => {
+export async function getAllFriendships(body: GetAllFriendshipsBody) {
   const url = 'friend'
   const rsApi = await getRsApi()
   const response = await rsApi.get<Friendship[]>(url, body)
@@ -16,7 +16,7 @@ export const getAllFriendships = async (body: GetAllFriendshipsBody) => {
   return response.data
 }
 
-export const sendFriendRequest = async (body: SendFriendRequestBody) => {
+export async function sendFriendRequest(body: SendFriendRequestBody) {
   const url = 'friend'
   const rsApi = await getRsApi()
   const response = await rsApi.post<Friendship>(url, body)
@@ -24,9 +24,7 @@ export const sendFriendRequest = async (body: SendFriendRequestBody) => {
   return response.data
 }
 
-export const respondToFriendRequest = async (
-  body: RespondToFriendRequestBody
-) => {
+export async function respondToFriendRequest(body: RespondToFriendRequestBody) {
   const url = 'friend/respond'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<Friendship>(url, body)
@@ -34,7 +32,7 @@ export const respondToFriendRequest = async (
   return response.data
 }
 
-export const removeFriend = async (body: RemoveFriendBody) => {
+export async function removeFriend(body: RemoveFriendBody) {
   const url = `friend/${body.friendId}`
   const rsApi = await getRsApi()
   const response = await rsApi.delete<Friendship>(url)

@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getUserReceipts } from '@api/endpoints/receipt/receipt.api'
 
 import { getQueryInterval } from '@helpers/utils/get-query-interval'
-import { getUserReceipts } from '@api/endpoints/receipt/receipt.api'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
 function useUserReceipts() {

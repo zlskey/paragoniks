@@ -1,11 +1,11 @@
-import ContributorItem from './contributor-item'
-import ContributorListSkeleton from './contributor-list.skeleton'
-import { FlatList } from 'react-native'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
 import Typography from '@components/typography'
 import useProfiles from '@helpers/hooks/use-profiles'
+import { FlatList } from 'react-native'
 import { useReceiptContext } from 'src/views/receipt/receipt.context'
+import ContributorItem from './contributor-item'
+import ContributorListSkeleton from './contributor-list.skeleton'
 
 function ContributorList() {
   const { receipt } = useReceiptContext()
@@ -20,9 +20,11 @@ function ContributorList() {
   }
 
   return (
-    <Flex direction='column' alignContent='stretch' spacing={1}>
-      <Typography variant='subtitle2'>
-        Podzielone między • {profiles.length}
+    <Flex direction="column" alignContent="stretch" spacing={1}>
+      <Typography variant="subtitle2">
+        Podzielone między •
+        {' '}
+        {profiles.length}
       </Typography>
 
       <Paper>

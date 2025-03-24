@@ -1,4 +1,4 @@
-import { Profile } from '@app/generic.types'
+import type { Profile } from '@app/generic.types'
 
 interface Section {
   data: Profile[]
@@ -15,7 +15,8 @@ export function getProfilesAlphabetically(profiles: Profile[]) {
 
       if (section) {
         section.data.push(profile)
-      } else {
+      }
+      else {
         acc.push({
           title: firstLetter,
           data: [profile],

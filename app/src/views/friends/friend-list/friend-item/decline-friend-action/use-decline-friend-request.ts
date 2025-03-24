@@ -1,9 +1,9 @@
-import { Friendship, UserId } from 'src/app/generic.types'
+import type { Friendship, UserId } from 'src/app/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { respondToFriendRequest } from 'src/api/endpoints/friends/friends.api'
 
-const useDeclineFriendRequest = () => {
+function useDeclineFriendRequest() {
   const queryClient = useQueryClient()
 
   const queryKey = ['friend']
@@ -18,8 +18,7 @@ const useDeclineFriendRequest = () => {
       const oldFriendships = queryClient.getQueryData<Friendship[]>(queryKey)
 
       queryClient.setQueryData(queryKey, (old: Friendship[]) =>
-        old.filter(friendship => friendship.friendId !== friendId)
-      )
+        old.filter(friendship => friendship.friendId !== friendId))
 
       return { oldFriendships }
     },

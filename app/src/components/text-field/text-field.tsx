@@ -1,9 +1,11 @@
-import { Controller, FieldError, useFormContext } from 'react-hook-form'
-import { StyleSheet, TextInput, TextInputProps, View } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
-import { useRef, useState } from 'react'
-
+import type { FieldError } from 'react-hook-form'
+import type { TextInputProps } from 'react-native'
 import Typography from '@components/typography'
+import { useRef, useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
+import { StyleSheet, TextInput, View } from 'react-native'
+
+import { colors, getPx } from 'src/app/styles'
 
 interface TextFieldProps extends TextInputProps {
   name: string
@@ -91,7 +93,7 @@ function TextField({
               ref={ref}
               onFocus={() => setIsFocused(true)}
               value={value?.toString()}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setIsFilled(!!text)
                 onChange(text)
               }}
@@ -108,7 +110,7 @@ function TextField({
       />
 
       {error && (
-        <Typography variant='base2' styles={{ color: colors.red }}>
+        <Typography variant="base2" styles={{ color: colors.red }}>
           {error.message}
         </Typography>
       )}

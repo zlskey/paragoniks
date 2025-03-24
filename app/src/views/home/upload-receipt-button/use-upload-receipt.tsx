@@ -1,11 +1,11 @@
-import { ImageBase64, Receipt } from 'src/app/generic.types'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
+import type { ImageBase64, Receipt } from 'src/app/generic.types'
 
-import { AxiosError } from 'axios'
-import { createReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createReceipt } from 'src/api/endpoints/receipt/receipt.api'
 
-const useUploadReceipt = () => {
+function useUploadReceipt() {
   const queryClient = useQueryClient()
   const addNotification = useNotificationContext()
 
@@ -19,7 +19,7 @@ const useUploadReceipt = () => {
         addNotification('Limit of 2 receipts per 6 hours reached', 'error')
       }
     },
-    onSuccess: data => {
+    onSuccess: (data) => {
       if (!data) {
         return
       }

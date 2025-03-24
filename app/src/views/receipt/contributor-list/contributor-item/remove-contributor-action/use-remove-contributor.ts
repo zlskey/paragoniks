@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { UserId } from 'src/app/generic.types'
 
-import { UserId } from 'src/app/generic.types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeContributor } from 'src/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/views/receipt/receipt.context'
 
-const useRemoveContributor = ({ contributorId }: { contributorId: UserId }) => {
+function useRemoveContributor({ contributorId }: { contributorId: UserId }) {
   const queryClient = useQueryClient()
   const { receipt: oldReceipt } = useReceiptContext()
 
@@ -24,7 +24,7 @@ const useRemoveContributor = ({ contributorId }: { contributorId: UserId }) => {
         return {
           ...oldReceipt,
           contributors: contributorsCopy,
-          products: oldReceipt.products.map(product => {
+          products: oldReceipt.products.map((product) => {
             delete product.division[contributorId]
 
             return product

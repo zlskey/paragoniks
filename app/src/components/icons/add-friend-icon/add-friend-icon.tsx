@@ -1,17 +1,17 @@
-import { Dialog, Portal } from 'react-native-paper'
-import { FormProvider, useForm } from 'react-hook-form'
-import { colors, getPx } from 'src/app/styles'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
-import { AntDesign } from '@expo/vector-icons'
 import Button from '@components/button'
 import Flex from '@components/flex'
 import IconButton from '@components/icon-button'
 import TextField from '@components/text-field'
+
 import Typography from '@components/typography'
-import { sendFriendRequest } from 'src/api/endpoints/friends/friends.api'
+import { AntDesign } from '@expo/vector-icons'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { Dialog, Portal } from 'react-native-paper'
+import { sendFriendRequest } from 'src/api/endpoints/friends/friends.api'
+import { colors, getPx } from 'src/app/styles'
 
 const defaultValues = {
   friendUsername: '',
@@ -34,9 +34,9 @@ function AddFriendIcon() {
       queryClient.invalidateQueries({ queryKey: ['friend'] })
       addNotification(
         `Zaproszenie do ${formState.getValues(
-          'friendUsername'
+          'friendUsername',
         )} zostało wysłane`,
-        'success'
+        'success',
       )
       formState.reset()
       setIsDialogOpened(false)
@@ -70,7 +70,7 @@ function AddFriendIcon() {
     <>
       <IconButton
         icon={
-          <AntDesign name='adduser' size={getPx(2.3)} color={colors.text} />
+          <AntDesign name="adduser" size={getPx(2.3)} color={colors.text} />
         }
         onPress={handleOpenDialog}
       />
@@ -85,32 +85,32 @@ function AddFriendIcon() {
           }}
         >
           <FormProvider {...formState}>
-            <Flex direction='column' alignContent='stretch' spacing={2} p={2}>
-              <Flex justifyContent='space-between'>
-                <Typography variant='subtitle'>Zaproś znajomych</Typography>
+            <Flex direction="column" alignContent="stretch" spacing={2} p={2}>
+              <Flex justifyContent="space-between">
+                <Typography variant="subtitle">Zaproś znajomych</Typography>
 
                 <AntDesign
                   onPress={handleCloseDialog}
-                  name='close'
+                  name="close"
                   size={24}
-                  color='white'
+                  color="white"
                 />
               </Flex>
 
               <TextField
                 error={formState.formState.errors.friendUsername}
                 style={{ textTransform: 'lowercase' }}
-                label='Nazwa znajomego'
-                name='friendUsername'
+                label="Nazwa znajomego"
+                name="friendUsername"
                 autoCorrect={false}
                 autoFocus
               />
 
-              <Flex spacing={1} justifyContent='flex-end'>
+              <Flex spacing={1} justifyContent="flex-end">
                 <Button
                   onPress={formState.handleSubmit(onSubmit)}
                   isDisabled={isPending}
-                  variant='contained'
+                  variant="contained"
                   small
                 >
                   Zaproś

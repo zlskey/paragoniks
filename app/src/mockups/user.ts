@@ -1,4 +1,5 @@
-import { AvatarColor, User } from 'src/app/generic.types'
+import type { User } from 'src/app/generic.types'
+import { AvatarColor } from 'src/app/generic.types'
 
 export const userMockup: User = {
   _id: 'some_id',

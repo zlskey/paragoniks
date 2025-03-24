@@ -1,19 +1,18 @@
-import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
-import Avatar from '@components/avatar'
+import type { ValueOf } from 'react-native-gesture-handler/lib/typescript/typeUtils'
+import { createAnonim } from '@api/endpoints/anonim/anonim.api'
 import { AvatarColor } from '@app/generic.types'
+import Avatar from '@components/avatar'
 import Button from '@components/button'
 import Flex from '@components/flex'
-import { StyleSheet } from 'react-native'
 import TextField from '@components/text-field'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import Typography from '@components/typography'
-import { ValueOf } from 'react-native-gesture-handler/lib/typescript/typeUtils'
 import Wrapper from '@components/wrapper'
-import { createAnonim } from '@api/endpoints/anonim/anonim.api'
-import { router } from 'expo-router'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { router } from 'expo-router'
+import { FormProvider, useForm } from 'react-hook-form'
+import { StyleSheet } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const colors = Object.values(AvatarColor) as ValueOf<typeof AvatarColor>[]
 
@@ -47,23 +46,23 @@ function CreateAnonim() {
     <Wrapper>
       <Flex
         nativeFlex
-        direction='column'
-        alignContent='stretch'
-        justifyContent='space-between'
+        direction="column"
+        alignContent="stretch"
+        justifyContent="space-between"
       >
         <FormProvider {...form}>
-          <Flex direction='column' alignContent='stretch' spacing={1}>
+          <Flex direction="column" alignContent="stretch" spacing={1}>
             <TextField
               autoFocus
-              name='username'
-              label='Nazwa użytkownika'
+              name="username"
+              label="Nazwa użytkownika"
               error={form.formState.errors.username}
             />
 
-            <Flex direction='column' alignContent='stretch'>
+            <Flex direction="column" alignContent="stretch">
               <Typography styles={styles.label}>Kolor avatara</Typography>
 
-              <Flex alignContent='center' justifyContent='space-evenly'>
+              <Flex alignContent="center" justifyContent="space-evenly">
                 {colors.map(color => (
                   <TouchableOpacity
                     key={color}

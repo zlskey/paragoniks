@@ -1,7 +1,7 @@
 import Flex from '@components/flex'
+import Typography from '@components/typography'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Typography from '@components/typography'
 import { colors } from 'src/app/styles'
 
 interface SwipeableActionProps {
@@ -13,7 +13,7 @@ interface SwipeableActionProps {
   left?: boolean
 }
 
-const getColor = (color: SwipeableActionProps['color']) => {
+function getColor(color: SwipeableActionProps['color']) {
   switch (color) {
     case 'red':
       return colors.red
@@ -24,21 +24,21 @@ const getColor = (color: SwipeableActionProps['color']) => {
   }
 }
 
-const SwipeableAction = ({
+function SwipeableAction({
   label,
   startIcon,
   endIcon,
   onClick,
   color,
   left,
-}: SwipeableActionProps) => {
+}: SwipeableActionProps) {
   return (
     <TouchableOpacity onPress={onClick}>
       <Flex
         pr={2}
         pl={2}
         spacing={1}
-        alignContent='center'
+        alignContent="center"
         justifyContent={left ? undefined : 'flex-end'}
         styles={{
           width: '100%',

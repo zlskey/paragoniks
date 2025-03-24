@@ -1,5 +1,5 @@
-export { getRsApi } from './rs.api'
-export * as receiptService from './endpoints/receipt/receipt.api'
-export * as userService from './endpoints/user/user.api'
 export * as friendsService from './endpoints/friends/friends.api'
 export * as profilesService from './endpoints/profiles/profiles.api'
+export * as receiptService from './endpoints/receipt/receipt.api'
+export * as userService from './endpoints/user/user.api'
+export { getRsApi } from './rs.api'

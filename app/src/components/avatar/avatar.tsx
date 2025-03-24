@@ -1,12 +1,13 @@
-import { AvatarColor, Profile } from 'src/app/generic.types'
-import { Image, StyleSheet, View } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
-
+import type { Profile } from 'src/app/generic.types'
 import Typography from '@components/typography'
+import { Image, StyleSheet, View } from 'react-native'
+import { AvatarColor } from 'src/app/generic.types'
+
+import { colors, getPx } from 'src/app/styles'
 
 const EXPO_PUBLIC_RS_API_URL = process.env.EXPO_PUBLIC_RS_API_URL
 
-const getContainerSize = (size: 'sm' | 'md' | 'lg' | 'xs') => {
+function getContainerSize(size: 'sm' | 'md' | 'lg' | 'xs') {
   switch (size) {
     case 'xs':
       return getPx(1.8)
@@ -19,7 +20,7 @@ const getContainerSize = (size: 'sm' | 'md' | 'lg' | 'xs') => {
   }
 }
 
-const getTextSize = (size: 'sm' | 'md' | 'lg' | 'xs') => {
+function getTextSize(size: 'sm' | 'md' | 'lg' | 'xs') {
   switch (size) {
     case 'xs':
       return getPx(0.9)
@@ -32,8 +33,8 @@ const getTextSize = (size: 'sm' | 'md' | 'lg' | 'xs') => {
   }
 }
 
-const getStyles = (size: 'sm' | 'md' | 'lg' | 'xs') =>
-  StyleSheet.create({
+function getStyles(size: 'sm' | 'md' | 'lg' | 'xs') {
+  return StyleSheet.create({
     container: {
       width: getContainerSize(size),
       height: getContainerSize(size),
@@ -50,6 +51,7 @@ const getStyles = (size: 'sm' | 'md' | 'lg' | 'xs') =>
       fontFamily: 'Poppins-Medium',
     },
   })
+}
 
 interface AvatarProps {
   size?: 'sm' | 'md' | 'lg' | 'xs'
@@ -66,8 +68,8 @@ function Avatar({
 }: AvatarProps) {
   const styles = getStyles(size)
 
-  const backgroundColor =
-    profile.avatarColor === AvatarColor.Default
+  const backgroundColor
+    = profile.avatarColor === AvatarColor.Default
       ? '#546e7a'
       : profile.avatarColor
 
@@ -75,11 +77,11 @@ function Avatar({
     return (
       <View style={styles.container}>
         <Image
-          resizeMode='cover'
+          resizeMode="cover"
           width={getContainerSize(size)}
           height={getContainerSize(size)}
           source={{ uri: `${EXPO_PUBLIC_RS_API_URL}/${profile.avatarImage}` }}
-          alt='User Avatar'
+          alt="User Avatar"
         />
       </View>
     )

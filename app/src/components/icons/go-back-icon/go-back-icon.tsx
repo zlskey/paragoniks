@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { useRouter } from 'expo-router'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from 'src/app/styles'
-import { useRouter } from 'expo-router'
 
 function GoBackIcon() {
   const router = useRouter()
@@ -14,7 +14,7 @@ function GoBackIcon() {
 
   return (
     <TouchableOpacity onPress={goBack}>
-      <Ionicons name='arrow-back' size={24} color={colors.text} />
+      <Ionicons name="arrow-back" size={24} color={colors.text} />
     </TouchableOpacity>
   )
 }

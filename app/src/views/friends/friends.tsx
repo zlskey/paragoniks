@@ -1,15 +1,15 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
-
 import Flex from '@components/flex'
-import FriendList from './friend-list'
+
 import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
+import { getQueryInterval } from '@helpers/utils/get-query-interval'
+import { useQueries, useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { getAllFriendships } from 'src/api/endpoints/friends/friends.api'
 import { getProfile } from 'src/api/endpoints/profiles/profiles.api'
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
+import FriendList from './friend-list'
 import { getSplittedAndFilteredFriendships } from './get-splitted-friendships'
-import { useState } from 'react'
 
 function Friends() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -31,19 +31,19 @@ function Friends() {
   const friendsState = getSplittedAndFilteredFriendships(
     results,
     friendships,
-    searchQuery
+    searchQuery,
   )
 
-  const noFriends =
-    !friendsState.accepted.length && !friendsState.pending.length
+  const noFriends
+    = !friendsState.accepted.length && !friendsState.pending.length
 
   return (
     <Wrapper>
-      <Flex direction='column' alignContent='stretch' spacing={2}>
+      <Flex direction="column" alignContent="stretch" spacing={2}>
         {!!friendships.length && <SearchBar onSearch={setSearchQuery} />}
 
         {noFriends && (
-          <Typography variant='subtitle'>
+          <Typography variant="subtitle">
             Nie masz jeszcze żadnych znajomych 😢
           </Typography>
         )}
@@ -51,16 +51,16 @@ function Friends() {
         {friendsState.accepted.length > 0 && (
           <FriendList
             items={friendsState.accepted}
-            status='accepted'
-            title='Twoi znajomi'
+            status="accepted"
+            title="Twoi znajomi"
           />
         )}
 
         {friendsState.pending.length > 0 && (
           <FriendList
             items={friendsState.pending}
-            status='pending'
-            title='Oczekujący znajomi'
+            status="pending"
+            title="Oczekujący znajomi"
           />
         )}
       </Flex>

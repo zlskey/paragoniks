@@ -1,6 +1,6 @@
-import * as ImagePicker from 'expo-image-picker'
+import type { ImageBase64 } from 'src/app/generic.types'
 
-import { ImageBase64 } from 'src/app/generic.types'
+import * as ImagePicker from 'expo-image-picker'
 
 function useUploadImage() {
   async function handleUpload(fun: (image: ImageBase64) => any) {

@@ -1,10 +1,11 @@
-import { TextInput, TextInputProps, View } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
-import { useEffect, useState } from 'react'
-
-import { Product } from 'src/app/generic.types'
+import type { TextInputProps } from 'react-native'
+import type { Product } from 'src/app/generic.types'
 import Typography from '@components/typography'
+
+import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { TextInput, View } from 'react-native'
+import { colors, getPx } from 'src/app/styles'
 import { usePreciseProductEditContext } from 'src/views/product-edit/product-edit.context'
 
 interface ProductEditTextFieldProps extends TextInputProps {
@@ -37,9 +38,9 @@ function ProductEditTextField({
       return
     }
 
-    const valueToNum = parseFloat(parseFloat(value).toFixed(2))
+    const valueToNum = Number.parseFloat(Number.parseFloat(value).toFixed(2))
 
-    if (isNaN(valueToNum)) {
+    if (Number.isNaN(valueToNum)) {
       return
     }
 
@@ -51,9 +52,9 @@ function ProductEditTextField({
       return
     }
 
-    const valueToNum = parseFloat(parseFloat(value).toFixed(2))
+    const valueToNum = Number.parseFloat(Number.parseFloat(value).toFixed(2))
 
-    if (isNaN(valueToNum)) {
+    if (Number.isNaN(valueToNum)) {
       setValue(product[name].toString())
       return
     }
@@ -63,7 +64,7 @@ function ProductEditTextField({
 
   return (
     <View style={{ flex: 1 }}>
-      <Typography variant='subtitle2'>{label}</Typography>
+      <Typography variant="subtitle2">{label}</Typography>
 
       <TextInput
         value={value}

@@ -4,9 +4,9 @@ import { Stack } from 'expo-router'
 export default () => (
   <Stack>
     <Stack.Screen
-      name='index'
+      name="index"
       options={{
-        header: () => <NavigationHeader title='Start' />,
+        header: () => <NavigationHeader title="Start" />,
       }}
     />
   </Stack>

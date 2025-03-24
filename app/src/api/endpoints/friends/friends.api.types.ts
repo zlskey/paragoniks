@@ -1,4 +1,4 @@
-import { UserId } from 'src/app/generic.types'
+import type { UserId } from 'src/app/generic.types'
 
 export interface GetAllFriendshipsBody {}
 

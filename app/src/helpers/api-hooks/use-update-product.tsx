@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Receipt } from 'src/app/generic.types'
 
-import { Receipt } from 'src/app/generic.types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateProduct } from 'src/api/endpoints/receipt/receipt.api'
 
 interface UseUpdateProductProps {
@@ -24,7 +24,7 @@ function useUpdateProduct({ receipt, onSuccess }: UseUpdateProductProps) {
         products: old.products.map(oldProduct =>
           oldProduct._id === productId
             ? { ...oldProduct, ...product }
-            : oldProduct
+            : oldProduct,
         ),
       }))
 

@@ -1,14 +1,14 @@
-import DivisionSwitch from './division-switch'
+import type { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
-import { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
 import Typography from '@components/typography'
-import UserItem from './user-item'
-import useDivision from './use-division'
+import useProfiles from '@helpers/hooks/use-profiles'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { usePreciseProductEditContext } from 'src/views/product-edit/product-edit.context'
-import useProfiles from '@helpers/hooks/use-profiles'
+import DivisionSwitch from './division-switch'
+import useDivision from './use-division'
+import UserItem from './user-item'
 
 function DivisionForm() {
   const form = useFormContext<PreciseEditFormValues>()
@@ -28,9 +28,9 @@ function DivisionForm() {
   }, [division, divisionType, form.setValue])
 
   return (
-    <Flex direction='column' alignContent='stretch' spacing={0.5}>
-      <Flex justifyContent='space-between'>
-        <Typography variant='subtitle2'>Podziel między</Typography>
+    <Flex direction="column" alignContent="stretch" spacing={0.5}>
+      <Flex justifyContent="space-between">
+        <Typography variant="subtitle2">Podziel między</Typography>
 
         <DivisionSwitch
           divisionType={divisionType}
@@ -39,7 +39,7 @@ function DivisionForm() {
       </Flex>
 
       <Paper styles={{ overflow: 'hidden' }}>
-        <Flex direction='column' alignContent='stretch'>
+        <Flex direction="column" alignContent="stretch">
           {profiles.map(contributor => (
             <UserItem
               division={division}

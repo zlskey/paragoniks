@@ -1,20 +1,20 @@
-import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler'
-import { getLocaleCurrency, getLocaleDate } from '@helpers/utils/locale'
-
+import type { Receipt } from 'src/app/generic.types'
 import Avatar from '@components/avatar'
+
 import AvatarGroup from '@components/avatar-group'
 import Flex from '@components/flex'
-import { Receipt } from 'src/app/generic.types'
-import RemoveReceiptAction from './remove-receipt-action'
 import Typography from '@components/typography'
-import { View } from 'react-native'
-import { colors } from 'src/app/styles'
+import { useUserContext } from '@helpers/contexts/user.context'
+import useProfiles from '@helpers/hooks/use-profiles'
+import { getLocaleCurrency, getLocaleDate } from '@helpers/utils/locale'
+import { useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useMemo } from 'react'
-import useProfiles from '@helpers/hooks/use-profiles'
-import { useQueryClient } from '@tanstack/react-query'
+import { View } from 'react-native'
+import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler'
+import { colors } from 'src/app/styles'
+import RemoveReceiptAction from './remove-receipt-action'
 import useRemoveReceipt from './use-remove-receipt'
-import { useUserContext } from '@helpers/contexts/user.context'
 
 interface ReceiptItemProps {
   receipt: Receipt
@@ -49,11 +49,11 @@ function ReceiptItem({ receipt }: ReceiptItemProps) {
   const sumText = useMemo(() => getLocaleCurrency(sum), [sum])
   const ownerProfile = useMemo(
     () => profiles.find(profile => profile._id === receipt.owner),
-    [profiles, receipt.owner]
+    [profiles, receipt.owner],
   )
   const isOwner = useMemo(
     () => receipt.owner === user._id,
-    [receipt.owner, user._id]
+    [receipt.owner, user._id],
   )
 
   return (
@@ -64,14 +64,14 @@ function ReceiptItem({ receipt }: ReceiptItemProps) {
     >
       <View style={{ backgroundColor: colors.paper }}>
         <TouchableOpacity onPress={handlePress}>
-          <Flex justifyContent='space-between' alignContent='center' p={1.5}>
-            <Flex alignContent='center' spacing={1}>
-              <Avatar size='sm' profile={ownerProfile} />
+          <Flex justifyContent="space-between" alignContent="center" p={1.5}>
+            <Flex alignContent="center" spacing={1}>
+              <Avatar size="sm" profile={ownerProfile} />
 
-              <Flex direction='column'>
-                <Typography variant='subtitle2'>{title}</Typography>
+              <Flex direction="column">
+                <Typography variant="subtitle2">{title}</Typography>
 
-                <Flex alignContent='center' spacing={1}>
+                <Flex alignContent="center" spacing={1}>
                   <Typography opacity>{createdAtText}</Typography>
                   <Typography opacity>|</Typography>
                   <AvatarGroup profiles={profiles} />
@@ -79,7 +79,7 @@ function ReceiptItem({ receipt }: ReceiptItemProps) {
               </Flex>
             </Flex>
 
-            <Typography variant='subtitle2'>{sumText}</Typography>
+            <Typography variant="subtitle2">{sumText}</Typography>
           </Flex>
         </TouchableOpacity>
       </View>

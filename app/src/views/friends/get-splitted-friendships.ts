@@ -1,12 +1,8 @@
-import { Friendship, Profile } from 'src/app/generic.types'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import { UseQueryResult } from '@tanstack/react-query'
+import type { Friendship, Profile } from 'src/app/generic.types'
 
-export const getSplittedAndFilteredFriendships = (
-  profiles: UseQueryResult<Profile, Error>[],
-  friendships: Friendship[],
-  query: string
-) => {
+export function getSplittedAndFilteredFriendships(profiles: UseQueryResult<Profile, Error>[], friendships: Friendship[], query: string) {
   return profiles.reduce(
     (acc, { data }) => {
       if (!data) {
@@ -14,7 +10,7 @@ export const getSplittedAndFilteredFriendships = (
       }
 
       const friendship = friendships.find(
-        friendship => friendship.friendId === data._id
+        friendship => friendship.friendId === data._id,
       )
 
       if (!friendship) {
@@ -31,6 +27,6 @@ export const getSplittedAndFilteredFriendships = (
 
       return acc
     },
-    { accepted: [] as Profile[], pending: [] as Profile[] }
+    { accepted: [] as Profile[], pending: [] as Profile[] },
   )
 }

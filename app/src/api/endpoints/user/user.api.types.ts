@@ -1,4 +1,4 @@
-import { AvatarColor, ImageBase64, User } from 'src/app/generic.types'
+import type { AvatarColor, ImageBase64, User } from 'src/app/generic.types'
 
 export interface LoginUserBody {
   username: string

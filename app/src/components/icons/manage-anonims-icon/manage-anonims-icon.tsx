@@ -1,7 +1,7 @@
 import { colors, getPx } from '@app/styles'
 
-import FontAwesome from '@expo/vector-icons/FontAwesome'
 import IconButton from '@components/icon-button'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { router } from 'expo-router'
 
 function ManageAnonimsIcon() {
@@ -14,7 +14,7 @@ function ManageAnonimsIcon() {
     <IconButton
       onPress={handlePress}
       icon={
-        <FontAwesome name='user-secret' size={getPx(2.3)} color={colors.text} />
+        <FontAwesome name="user-secret" size={getPx(2.3)} color={colors.text} />
       }
     />
   )

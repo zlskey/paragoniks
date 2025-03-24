@@ -1,12 +1,12 @@
-import { Division, DivisionType, Profile } from 'src/app/generic.types'
-import { colors, getPx } from 'src/app/styles'
-
+import type { Division, DivisionType, Profile } from 'src/app/generic.types'
 import Avatar from '@components/avatar'
-import { Checkbox } from 'react-native-paper'
-import DivisionInput from './division-input'
+
 import Flex from '@components/flex'
-import { FontAwesome } from '@expo/vector-icons'
 import Typography from '@components/typography'
+import { FontAwesome } from '@expo/vector-icons'
+import { Checkbox } from 'react-native-paper'
+import { colors, getPx } from 'src/app/styles'
+import DivisionInput from './division-input'
 
 interface UserItemProps {
   division: Division
@@ -30,9 +30,9 @@ function UserItem({
     <Flex
       p={1}
       spacing={1}
-      alignContent='center'
+      alignContent="center"
       key={contributor._id}
-      justifyContent='space-between'
+      justifyContent="space-between"
     >
       <Checkbox
         color={colors.primary}
@@ -42,12 +42,12 @@ function UserItem({
         }
       />
 
-      <Flex alignContent='center' spacing={1} nativeFlex>
-        <Avatar profile={contributor} size='sm' />
+      <Flex alignContent="center" spacing={1} nativeFlex>
+        <Avatar profile={contributor} size="sm" />
         <Typography>{contributor.username}</Typography>
         {contributor.ownerId && (
           <FontAwesome
-            name='user-secret'
+            name="user-secret"
             size={getPx(2)}
             color={colors.placeholder}
           />

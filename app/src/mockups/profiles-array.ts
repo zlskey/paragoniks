@@ -1,4 +1,5 @@
-import { AvatarColor, Profile } from 'src/app/generic.types'
+import type { Profile } from 'src/app/generic.types'
+import { AvatarColor } from 'src/app/generic.types'
 
 export const profilesMockup: Profile[] = [
   {

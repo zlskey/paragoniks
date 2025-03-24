@@ -1,15 +1,15 @@
-import ContributorListSkeleton from './contributor-list/contributor-list.skeleton'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
-import { Skeleton } from 'moti/skeleton'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
+import { Skeleton } from 'moti/skeleton'
 import { getPx } from 'src/app/styles'
+import ContributorListSkeleton from './contributor-list/contributor-list.skeleton'
 
 function ReceiptSkeleton() {
   return (
     <Wrapper>
-      <Flex direction='column' spacing={2} alignContent='stretch'>
+      <Flex direction="column" spacing={2} alignContent="stretch">
         <ContributorListSkeleton />
         <ProductListSkeleton />
       </Flex>
@@ -19,14 +19,14 @@ function ReceiptSkeleton() {
 
 function ProductListSkeleton() {
   return (
-    <Flex direction='column' spacing={0.5} alignContent='stretch'>
-      <Typography variant='subtitle2'>Produkty</Typography>
+    <Flex direction="column" spacing={0.5} alignContent="stretch">
+      <Typography variant="subtitle2">Produkty</Typography>
 
       <Paper>
-        <Flex direction='column' alignContent='stretch' p={0.5} spacing={0.5}>
+        <Flex direction="column" alignContent="stretch" p={0.5} spacing={0.5}>
           <Paper>
-            <Flex direction='column' alignContent='stretch' p={1} spacing={0.5}>
-              <Flex justifyContent='space-between' nativeFlex>
+            <Flex direction="column" alignContent="stretch" p={1} spacing={0.5}>
+              <Flex justifyContent="space-between" nativeFlex>
                 <Flex nativeFlex>
                   <Skeleton width={getPx(7)} height={getPx(1.5)} />
                 </Flex>
@@ -34,7 +34,7 @@ function ProductListSkeleton() {
                 <Skeleton width={getPx(4)} height={getPx(1.5)} />
               </Flex>
 
-              <Flex justifyContent='space-between'>
+              <Flex justifyContent="space-between">
                 <Skeleton width={getPx(4)} height={getPx(1.2)} />
 
                 <Flex spacing={-0.6}>
@@ -44,8 +44,8 @@ function ProductListSkeleton() {
             </Flex>
           </Paper>
           <Paper>
-            <Flex direction='column' alignContent='stretch' p={1} spacing={0.5}>
-              <Flex justifyContent='space-between' nativeFlex>
+            <Flex direction="column" alignContent="stretch" p={1} spacing={0.5}>
+              <Flex justifyContent="space-between" nativeFlex>
                 <Flex nativeFlex>
                   <Skeleton width={getPx(7)} height={getPx(1.5)} />
                 </Flex>
@@ -53,7 +53,7 @@ function ProductListSkeleton() {
                 <Skeleton width={getPx(4)} height={getPx(1.5)} />
               </Flex>
 
-              <Flex justifyContent='space-between'>
+              <Flex justifyContent="space-between">
                 <Skeleton width={getPx(4)} height={getPx(1.2)} />
 
                 <Flex spacing={-0.6}>
@@ -63,8 +63,8 @@ function ProductListSkeleton() {
             </Flex>
           </Paper>
           <Paper>
-            <Flex direction='column' alignContent='stretch' p={1} spacing={0.5}>
-              <Flex justifyContent='space-between' nativeFlex>
+            <Flex direction="column" alignContent="stretch" p={1} spacing={0.5}>
+              <Flex justifyContent="space-between" nativeFlex>
                 <Flex nativeFlex>
                   <Skeleton width={getPx(7)} height={getPx(1.5)} />
                 </Flex>
@@ -72,7 +72,7 @@ function ProductListSkeleton() {
                 <Skeleton width={getPx(4)} height={getPx(1.5)} />
               </Flex>
 
-              <Flex justifyContent='space-between'>
+              <Flex justifyContent="space-between">
                 <Skeleton width={getPx(4)} height={getPx(1.2)} />
 
                 <Flex spacing={-0.6}>
@@ -82,8 +82,8 @@ function ProductListSkeleton() {
             </Flex>
           </Paper>
           <Paper>
-            <Flex direction='column' alignContent='stretch' p={1} spacing={0.5}>
-              <Flex justifyContent='space-between' nativeFlex>
+            <Flex direction="column" alignContent="stretch" p={1} spacing={0.5}>
+              <Flex justifyContent="space-between" nativeFlex>
                 <Flex nativeFlex>
                   <Skeleton width={getPx(7)} height={getPx(1.5)} />
                 </Flex>
@@ -91,7 +91,7 @@ function ProductListSkeleton() {
                 <Skeleton width={getPx(4)} height={getPx(1.5)} />
               </Flex>
 
-              <Flex justifyContent='space-between'>
+              <Flex justifyContent="space-between">
                 <Skeleton width={getPx(4)} height={getPx(1.2)} />
 
                 <Flex spacing={-0.6}>
@@ -101,8 +101,8 @@ function ProductListSkeleton() {
             </Flex>
           </Paper>
           <Paper>
-            <Flex direction='column' alignContent='stretch' p={1} spacing={0.5}>
-              <Flex justifyContent='space-between' nativeFlex>
+            <Flex direction="column" alignContent="stretch" p={1} spacing={0.5}>
+              <Flex justifyContent="space-between" nativeFlex>
                 <Flex nativeFlex>
                   <Skeleton width={getPx(7)} height={getPx(1.5)} />
                 </Flex>
@@ -110,7 +110,7 @@ function ProductListSkeleton() {
                 <Skeleton width={getPx(4)} height={getPx(1.5)} />
               </Flex>
 
-              <Flex justifyContent='space-between'>
+              <Flex justifyContent="space-between">
                 <Skeleton width={getPx(4)} height={getPx(1.2)} />
 
                 <Flex spacing={-0.6}>

@@ -1,11 +1,11 @@
-import { FlatList } from 'react-native'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
-import ProductItem from './product-item/product-item'
 import Typography from '@components/typography'
 import { useQueryClient } from '@tanstack/react-query'
-import { useReceiptContext } from 'src/views/receipt/receipt.context'
 import { useState } from 'react'
+import { FlatList } from 'react-native'
+import { useReceiptContext } from 'src/views/receipt/receipt.context'
+import ProductItem from './product-item/product-item'
 
 function ProductList() {
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -19,9 +19,11 @@ function ProductList() {
   }
 
   return (
-    <Flex alignContent='stretch' direction='column' spacing={1} nativeFlex>
-      <Typography variant='subtitle2'>
-        Produkty • {receipt.products.length}
+    <Flex alignContent="stretch" direction="column" spacing={1} nativeFlex>
+      <Typography variant="subtitle2">
+        Produkty •
+        {' '}
+        {receipt.products.length}
       </Typography>
 
       <Paper>

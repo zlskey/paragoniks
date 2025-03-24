@@ -4,7 +4,7 @@ import { receiptMockup } from 'src/mockups/receipt'
 
 export const ReceiptContext = createContext({ receipt: receiptMockup })
 
-export const useReceiptContext = () => {
+export function useReceiptContext() {
   const context = useContext(ReceiptContext)
 
   return context

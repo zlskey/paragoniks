@@ -1,22 +1,22 @@
 import { colors, getPx } from '@app/styles'
-import { useMemo, useState } from 'react'
-
 import Avatar from '@components/avatar'
+
 import Flex from '@components/flex'
-import { FontAwesome } from '@expo/vector-icons'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
 import SearchBar from '@components/search-bar'
-import { TouchableOpacity } from 'react-native'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
-import { getAllFriendships } from 'src/api/endpoints/friends/friends.api'
+import { FontAwesome } from '@expo/vector-icons'
+import useAnonims from '@helpers/hooks/use-anonims'
+import useProfiles from '@helpers/hooks/use-profiles'
 import { getQueryInterval } from '@helpers/utils/get-query-interval'
+import { useQuery } from '@tanstack/react-query'
+import { useLocalSearchParams } from 'expo-router'
+import { useMemo, useState } from 'react'
+import { TouchableOpacity } from 'react-native'
+import { getAllFriendships } from 'src/api/endpoints/friends/friends.api'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import useAddContributor from './use-add-contributor'
-import useAnonims from '@helpers/hooks/use-anonims'
-import { useLocalSearchParams } from 'expo-router'
-import useProfiles from '@helpers/hooks/use-profiles'
-import { useQuery } from '@tanstack/react-query'
 
 function AddContributors() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -44,33 +44,33 @@ function AddContributors() {
 
   const { profiles } = useProfiles(
     friendships.flatMap(friendship =>
-      friendship.status === 'accepted' ? [friendship.friendId] : []
-    )
+      friendship.status === 'accepted' ? [friendship.friendId] : [],
+    ),
   )
 
   const { anonims } = useAnonims()
 
   const allProfiles = useMemo(
     () => [...profiles, ...anonims],
-    [profiles, anonims]
+    [profiles, anonims],
   )
 
   const unaddedProfiles = useMemo(
     () => allProfiles.filter(profile => !contributorsIds.includes(profile._id)),
-    [allProfiles, contributorsIds]
+    [allProfiles, contributorsIds],
   )
 
   const filteredProfiles = useMemo(
     () =>
       unaddedProfiles.filter(profile =>
-        profile.username.includes(searchQuery.toLowerCase())
+        profile.username.includes(searchQuery.toLowerCase()),
       ),
-    [unaddedProfiles, searchQuery]
+    [unaddedProfiles, searchQuery],
   )
 
   return (
     <Wrapper>
-      <Flex direction='column' spacing={2} alignContent='stretch' nativeFlex>
+      <Flex direction="column" spacing={2} alignContent="stretch" nativeFlex>
         <SearchBar onSearch={setSearchQuery} query={searchQuery} />
 
         <ProfilesAlphabeticallList
@@ -85,15 +85,15 @@ function AddContributors() {
               <Flex
                 p={1}
                 spacing={1}
-                alignContent='center'
+                alignContent="center"
                 styles={{ backgroundColor: colors.paper }}
               >
-                <Avatar profile={profile} size='sm' />
+                <Avatar profile={profile} size="sm" />
                 <Typography>{profile.username}</Typography>
 
                 {profile.ownerId && (
                   <FontAwesome
-                    name='user-secret'
+                    name="user-secret"
                     size={getPx(2)}
                     color={colors.placeholder}
                   />

@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { logoutUser } from 'src/api/endpoints/user/user.api'
 import { useUserContext } from '@helpers/contexts/user.context'
 
-const useLogoutMutation = () => {
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { logoutUser } from 'src/api/endpoints/user/user.api'
+
+function useLogoutMutation() {
   const user = useUserContext()
 
   const queryClient = useQueryClient()

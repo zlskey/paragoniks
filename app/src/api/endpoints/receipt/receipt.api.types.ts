@@ -1,4 +1,4 @@
-import {
+import type {
   ImageBase64,
   Product,
   ProductId,

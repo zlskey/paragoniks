@@ -1,11 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
-    "alwaysStrict": true,
     "baseUrl": ".",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "paths": {
       "@mockups/*": ["src/mockups/*"],
       "@components/*": ["src/components/*"],
@@ -14,7 +10,11 @@
       "@styles/*": ["styles"],
       "@api/*": ["src/api/*"],
       "@helpers/*": ["src/helpers/*"]
-    }
+    },
+    "strict": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "**/**.ts",

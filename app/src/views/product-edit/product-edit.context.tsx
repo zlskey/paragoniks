@@ -1,13 +1,14 @@
-import { Product, Receipt } from 'src/app/generic.types'
-import { PropsWithChildren, createContext, useContext } from 'react'
+import type { PropsWithChildren } from 'react'
+import type { Product, Receipt } from 'src/app/generic.types'
+import { createContext, useContext } from 'react'
 
 interface PreciseProductEditContextValue {
   product: Product
   receipt: Receipt
 }
 
-const PreciseProductEditContext =
-  createContext<PreciseProductEditContextValue | null>(null)
+const PreciseProductEditContext
+  = createContext<PreciseProductEditContextValue | null>(null)
 
 function PreciseProductEditProvider({
   children,
@@ -26,7 +27,7 @@ function usePreciseProductEditContext() {
 
   if (!preciseProductEditContext) {
     throw new Error(
-      'usePreciseProductEditContext must be used within a PreciseProductEditProvider'
+      'usePreciseProductEditContext must be used within a PreciseProductEditProvider',
     )
   }
 

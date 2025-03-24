@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { ProductId } from 'src/app/generic.types'
 
-import { ProductId } from 'src/app/generic.types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeProduct } from 'src/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/views/receipt/receipt.context'
 
@@ -8,7 +8,7 @@ interface UseToggleComprisingProps {
   productId: ProductId
 }
 
-const useRemoveProduct = ({ productId }: UseToggleComprisingProps) => {
+function useRemoveProduct({ productId }: UseToggleComprisingProps) {
   const { receipt } = useReceiptContext()
   const receiptId = receipt._id
 

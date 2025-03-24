@@ -1,10 +1,10 @@
-import { colors, getPx } from 'src/app/styles'
-
 import Flex from '@components/flex'
+
 import GoBackIcon from '@components/icons/go-back-icon/go-back-icon'
+import Typography from '@components/typography'
 import { Skeleton } from 'moti/skeleton'
 import { StyleSheet } from 'react-native'
-import Typography from '@components/typography'
+import { colors, getPx } from 'src/app/styles'
 
 const styles = StyleSheet.create({
   container: {
@@ -22,17 +22,19 @@ function StackHeader({ title, endAdornment }: StackHeaderProps) {
   return (
     <Flex
       pt={5}
-      alignContent='center'
+      alignContent="center"
       styles={styles.container}
-      justifyContent='space-between'
+      justifyContent="space-between"
     >
-      <Flex spacing={1} alignContent='center'>
+      <Flex spacing={1} alignContent="center">
         <GoBackIcon />
-        {title ? (
-          <Typography variant='title'>{title}</Typography>
-        ) : (
-          <Skeleton width={getPx(10)} height={getPx(3.3)} />
-        )}
+        {title
+          ? (
+              <Typography variant="title">{title}</Typography>
+            )
+          : (
+              <Skeleton width={getPx(10)} height={getPx(3.3)} />
+            )}
       </Flex>
       {endAdornment}
     </Flex>

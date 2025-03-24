@@ -1,17 +1,17 @@
-import * as yup from 'yup'
-
-import { FormProvider, useForm } from 'react-hook-form'
-
 import Button from '@components/button'
+
 import Flex from '@components/flex'
+
 import TextField from '@components/text-field'
 import Wrapper from '@components/wrapper'
-import { changePassword } from 'src/api/endpoints/user/user.api'
-import { passwordSchema } from '@helpers/utils/password-schema'
-import { router } from 'expo-router'
-import { useMutation } from '@tanstack/react-query'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { passwordSchema } from '@helpers/utils/password-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { router } from 'expo-router'
+import { FormProvider, useForm } from 'react-hook-form'
+import { changePassword } from 'src/api/endpoints/user/user.api'
+import * as yup from 'yup'
 
 export const passwordSchemaWithCurrent = yup
   .object()
@@ -50,33 +50,33 @@ function ChangePassword() {
     },
   })
 
-  const buttonDisabled =
-    isPending ||
-    formState.formState.isSubmitting ||
-    !!formState.formState.errors.password
+  const buttonDisabled
+    = isPending
+      || formState.formState.isSubmitting
+      || !!formState.formState.errors.password
 
   return (
     <FormProvider {...formState}>
       <Wrapper>
-        <Flex direction='column' alignContent='stretch' spacing={4} nativeFlex>
+        <Flex direction="column" alignContent="stretch" spacing={4} nativeFlex>
           <TextField
-            name='currentPassword'
-            label='Stare hasło'
+            name="currentPassword"
+            label="Stare hasło"
             error={formState.formState.errors.currentPassword}
             secureTextEntry
             autoFocus
           />
 
-          <Flex direction='column' alignContent='stretch' spacing={2}>
+          <Flex direction="column" alignContent="stretch" spacing={2}>
             <TextField
-              name='password'
-              label='Nowe hasło'
+              name="password"
+              label="Nowe hasło"
               error={formState.formState.errors.password}
               secureTextEntry
             />
             <TextField
-              name='repeatPassword'
-              label='Powtórz nowe hasło'
+              name="repeatPassword"
+              label="Powtórz nowe hasło"
               error={formState.formState.errors.repeatPassword}
               secureTextEntry
             />

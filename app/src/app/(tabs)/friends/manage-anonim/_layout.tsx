@@ -1,17 +1,17 @@
 import CreateAnonimsIcon from '@components/icons/create-anonim-icon'
-import { Stack } from 'expo-router'
 import StackHeader from '@components/stack-header'
+import { Stack } from 'expo-router'
 
 export default () => (
   <Stack>
     <Stack.Screen
-      name='index'
+      name="index"
       options={{
         header: () => (
-          <StackHeader title='Anonimy' endAdornment={<CreateAnonimsIcon />} />
+          <StackHeader title="Anonimy" endAdornment={<CreateAnonimsIcon />} />
         ),
       }}
     />
-    <Stack.Screen name='create-anonim' options={{ headerShown: false }} />
+    <Stack.Screen name="create-anonim" options={{ headerShown: false }} />
   </Stack>
 )

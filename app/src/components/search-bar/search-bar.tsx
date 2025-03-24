@@ -1,12 +1,12 @@
-import { StyleSheet, TextInput } from 'react-native'
-import { colors, getPx } from '../../app/styles'
-
 import React from 'react'
+import { StyleSheet, TextInput } from 'react-native'
+
+import { colors, getPx } from '../../app/styles'
 
 type Colors = keyof typeof colors
 
-const getStyles = (background?: Colors) =>
-  StyleSheet.create({
+function getStyles(background?: Colors) {
+  return StyleSheet.create({
     searchInput: {
       backgroundColor: colors[background || 'paper'],
       borderRadius: getPx(10),
@@ -15,6 +15,7 @@ const getStyles = (background?: Colors) =>
       color: 'white',
     },
   })
+}
 
 interface SearchBarProps {
   background?: Colors
@@ -29,7 +30,7 @@ function SearchBar({ onSearch, background, query }: SearchBarProps) {
     <TextInput
       value={query}
       onChangeText={onSearch}
-      placeholder='Szukaj'
+      placeholder="Szukaj"
       style={styles.searchInput}
       placeholderTextColor={colors.text}
     />

@@ -1,7 +1,7 @@
-import { colors, getPx } from 'src/app/styles'
-
 import React from 'react'
+
 import { View } from 'react-native'
+import { colors, getPx } from 'src/app/styles'
 
 function Wrapper({ children }: React.PropsWithChildren) {
   return (

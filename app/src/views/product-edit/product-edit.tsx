@@ -1,23 +1,23 @@
-import * as yup from 'yup'
+import type { DivisionType, Product } from 'src/app/generic.types'
 
-import { DivisionType, Product } from 'src/app/generic.types'
+import Flex from '@components/flex'
+import Typography from '@components/typography'
+import Wrapper from '@components/wrapper'
+
+import { getQueryInterval } from '@helpers/utils/get-query-interval'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useQuery } from '@tanstack/react-query'
+import { useLocalSearchParams } from 'expo-router'
 import { FormProvider, useForm } from 'react-hook-form'
+import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
+import { colors } from 'src/app/styles'
+import * as yup from 'yup'
+import DivisionForm from './division-form'
+import ProductEditTextField from './product-edit-text-field'
 import PreciseProductEditProvider, {
   usePreciseProductEditContext,
 } from './product-edit.context'
-
-import DivisionForm from './division-form'
-import Flex from '@components/flex'
-import ProductEditTextField from './product-edit-text-field'
 import SaveButton from './save-button'
-import Typography from '@components/typography'
-import Wrapper from '@components/wrapper'
-import { colors } from 'src/app/styles'
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
-import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
-import { useLocalSearchParams } from 'expo-router'
-import { useQuery } from '@tanstack/react-query'
-import { yupResolver } from '@hookform/resolvers/yup'
 
 export type PreciseEditFormValues = Omit<Product, '_id' | 'totalPrice'>
 
@@ -52,7 +52,7 @@ const productSchema = yup.object().shape({
       .number()
       .nullable()
       .transform((value, originalValue) =>
-        originalValue === 0 ? null : value
+        originalValue === 0 ? null : value,
       ),
   }),
 
@@ -78,45 +78,45 @@ function PreciseProductEdit() {
   return (
     <Wrapper>
       <FormProvider {...formState}>
-        <Flex nativeFlex spacing={1} direction='column' alignContent='stretch'>
-          <Flex direction='column' alignContent='stretch'>
+        <Flex nativeFlex spacing={1} direction="column" alignContent="stretch">
+          <Flex direction="column" alignContent="stretch">
             <Flex>
-              <ProductEditTextField name='name' label='Nazwa' />
+              <ProductEditTextField name="name" label="Nazwa" />
             </Flex>
 
             {nameError && (
-              <Typography variant='base1' styles={{ color: colors.red }}>
+              <Typography variant="base1" styles={{ color: colors.red }}>
                 {nameError.message}
               </Typography>
             )}
           </Flex>
 
-          <Flex direction='column' alignContent='stretch'>
+          <Flex direction="column" alignContent="stretch">
             <Flex
               spacing={2}
-              alignContent='stretch'
-              justifyContent='space-between'
+              alignContent="stretch"
+              justifyContent="space-between"
             >
               <ProductEditTextField
-                name='price'
-                label='Cena'
-                keyboardType='numeric'
+                name="price"
+                label="Cena"
+                keyboardType="numeric"
               />
 
               <ProductEditTextField
-                name='count'
-                label='Ilość'
-                keyboardType='numeric'
+                name="count"
+                label="Ilość"
+                keyboardType="numeric"
               />
 
               <ProductEditTextField
-                name='discount'
-                label='Zniżka'
-                keyboardType='numeric'
+                name="discount"
+                label="Zniżka"
+                keyboardType="numeric"
               />
             </Flex>
             {pricingError && (
-              <Typography variant='base1' styles={{ color: colors.red }}>
+              <Typography variant="base1" styles={{ color: colors.red }}>
                 {pricingError.message}
               </Typography>
             )}

@@ -1,10 +1,10 @@
-import { View } from 'react-native'
 import { getPx } from '@app/styles'
+import { View } from 'react-native'
 
 function getSectionListItemWrapper(
   index: number,
   length: number,
-  item: JSX.Element
+  item: JSX.Element,
 ) {
   const isFirst = index === 0
   const isLast = length === index + 1

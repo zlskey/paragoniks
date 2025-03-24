@@ -1,4 +1,4 @@
-import { Division, DivisionType } from 'src/app/generic.types'
+import type { Division, DivisionType } from 'src/app/generic.types'
 
 import { getUniqueArray } from './array'
 
@@ -7,7 +7,7 @@ export function isNull(value: any): value is null {
 }
 
 export function parseFloatWithTwoDecimals(number: number): number {
-  return parseFloat(number.toFixed(2))
+  return Number.parseFloat(number.toFixed(2))
 }
 
 export function getValueOrNull(value: any) {
@@ -19,7 +19,7 @@ export function getValueOrNull(value: any) {
     return null
   }
 
-  if (isNaN(value)) {
+  if (Number.isNaN(value)) {
     return 0
   }
 
@@ -34,7 +34,7 @@ export function getValidDivision(maybeDivision: any): Division {
   return Object.fromEntries(
     Object.entries(maybeDivision).map(([key, value]) => {
       return [key, getValueOrNull(value)]
-    })
+    }),
   )
 }
 
@@ -46,7 +46,7 @@ export function splitNumberEqually(numberToSplit: number, partsCount: number) {
       return evenPart
     }
     return parseFloatWithTwoDecimals(
-      numberToSplit - evenPart * currentPartCount
+      numberToSplit - evenPart * currentPartCount,
     )
   })
   return resultArray
@@ -76,11 +76,16 @@ export function getEvenDivision({
   const users = Object.keys(mockDivision)
 
   switch (divisionType) {
+    case 'shares':
+      return Object.fromEntries(
+        users.map(user => [user, mockDivision[user] ? 1 : null]),
+      )
+
     case 'amount':
-    case 'percentage':
+    case 'percentage': {
       const evenDivision = splitNumberEqually(numberToSplit, total)
       return Object.fromEntries(
-        users.map(user => {
+        users.map((user) => {
           if (isNull(mockDivision[user])) {
             return [user, null]
           }
@@ -92,13 +97,9 @@ export function getEvenDivision({
           }
 
           return [user, newValue]
-        })
+        }),
       )
-
-    case 'shares':
-      return Object.fromEntries(
-        users.map(user => [user, mockDivision[user] ? 1 : null])
-      )
+    }
   }
 }
 
@@ -150,13 +151,13 @@ export function getNewDivision({
   const ignoreUsers = getIgnoreUsers(divisionUpdateStack, userId)
   const divisionToUpdate = Object.fromEntries(
     Object.entries(divisionWithNewValue).filter(
-      ([id]) => nonNullUsers.includes(id) && !ignoreUsers.includes(id)
-    )
+      ([id]) => nonNullUsers.includes(id) && !ignoreUsers.includes(id),
+    ),
   )
 
   const ignoreUsersSum = ignoreUsers.reduce(
     (acc, id) => acc + (divisionWithNewValue[id] ?? 0),
-    0
+    0,
   )
   const numberToSplit = total - ignoreUsersSum
 

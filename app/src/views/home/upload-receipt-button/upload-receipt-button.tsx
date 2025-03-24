@@ -1,8 +1,8 @@
-import { colors, getPx } from 'src/app/styles'
-
 import Button from '@components/button'
+
 import Feather from '@expo/vector-icons/Feather'
 import useUploadImage from '@helpers/hooks/use-upload-image'
+import { colors, getPx } from 'src/app/styles'
 import useUploadReceipt from './use-upload-receipt'
 
 function UploadReceiptButton() {
@@ -20,7 +20,7 @@ function UploadReceiptButton() {
       onPress={handleUploadReceipt}
       style={{ backgroundColor: colors.paper, borderRadius: getPx(5) }}
       startIcon={
-        <Feather name='upload' size={getPx(1.5)} color={colors.text} />
+        <Feather name="upload" size={getPx(1.5)} color={colors.text} />
       }
     >
       Dodaj

@@ -1,6 +1,7 @@
-import { StyleProp, View, ViewStyle } from 'react-native'
-
+import type { StyleProp, ViewStyle } from 'react-native'
 import React from 'react'
+
+import { View } from 'react-native'
 import { getPx } from '../../app/styles'
 
 interface FlexProps {
@@ -56,7 +57,7 @@ function Flex({
         {
           display: 'flex',
           flexDirection: direction,
-          justifyContent: justifyContent,
+          justifyContent,
           alignItems: alignContent,
           flexWrap: wrap,
           gap: getPx(spacing),

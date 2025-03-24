@@ -1,9 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 import { Snackbar } from 'react-native-paper'
 import { colors } from 'src/app/styles'
 
-type Notification = {
+interface Notification {
   message: string
   type: 'success' | 'error' | 'info'
 }
@@ -20,7 +21,7 @@ function NotificationWrapper({ children }: PropsWithChildren) {
 
   function addNotification(
     message: Notification['message'],
-    type: Notification['type'] = 'info'
+    type: Notification['type'] = 'info',
   ) {
     setNotifications([...notifications, { message, type }])
   }

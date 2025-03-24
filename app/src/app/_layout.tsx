@@ -1,29 +1,28 @@
-import 'react-native-reanimated'
-import 'react-native-gesture-handler'
+import Wrapper from '@components/wrapper'
+import { FontAwesome } from '@expo/vector-icons'
 
-import * as SplashScreen from 'expo-splash-screen'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+
+import NotificationWrapper from '@helpers/contexts/notification.context'
+import UserContextProvider, {
+  useUserContext,
+} from '@helpers/contexts/user.context'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query'
-import UserContextProvider, {
-  useUserContext,
-} from '@helpers/contexts/user.context'
-import { useEffect, useState } from 'react'
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import { FontAwesome } from '@expo/vector-icons'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import NotificationWrapper from '@helpers/contexts/notification.context'
-import { Provider as PaperProvider } from 'react-native-paper'
-import { Stack } from 'expo-router'
-import Wrapper from '@components/wrapper'
 import { useFonts } from 'expo-font'
-import { userMockup } from 'src/mockups/user'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { useEffect, useState } from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
+import { userMockup } from 'src/mockups/user'
+import 'react-native-reanimated'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -36,28 +35,28 @@ function RootLayoutNav() {
     <PaperProvider>
       <BottomSheetModalProvider>
         <Stack>
-          <Stack.Screen name='index' redirect />
+          <Stack.Screen name="index" redirect />
 
           <Stack.Screen
             redirect={loggedIn}
-            name='auth'
+            name="auth"
             options={{ headerShown: false }}
           />
 
           <Stack.Screen
-            name='(tabs)'
+            name="(tabs)"
             options={{ headerShown: false }}
             redirect={!loggedIn}
           />
 
           <Stack.Screen
-            name='profile'
+            name="profile"
             redirect={!loggedIn}
             options={{ headerShown: false }}
           />
 
           <Stack.Screen
-            name='receipt/[id]'
+            name="receipt/[id]"
             redirect={!loggedIn}
             options={{ headerShown: false }}
           />

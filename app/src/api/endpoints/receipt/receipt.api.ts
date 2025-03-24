@@ -1,4 +1,6 @@
-import {
+import type { Receipt } from 'src/app/generic.types'
+
+import type {
   AddContributorBody,
   ChangeReceiptTitleBody,
   CreateReceiptBody,
@@ -10,11 +12,9 @@ import {
   ToggleProductComprisingBody,
   UpdateProductBody,
 } from './receipt.api.types'
-
-import { Receipt } from 'src/app/generic.types'
 import { getRsApi } from '../../rs.api'
 
-export const getUserReceipts = async ({}: GetUserReceiptsBody) => {
+export async function getUserReceipts({}: GetUserReceiptsBody) {
   const url = '/receipt'
   const rsApi = await getRsApi()
   const response = await rsApi.get<Receipt[]>(url)
@@ -22,7 +22,7 @@ export const getUserReceipts = async ({}: GetUserReceiptsBody) => {
   return response.data
 }
 
-export const createReceipt = async ({ image }: CreateReceiptBody) => {
+export async function createReceipt({ image }: CreateReceiptBody) {
   const url = '/receipt/base64'
   const rsApi = await getRsApi()
   const response = await rsApi.post<Receipt>(url, { image }, { timeout: 30000 })
@@ -30,7 +30,7 @@ export const createReceipt = async ({ image }: CreateReceiptBody) => {
   return response.data
 }
 
-export const getReceipt = async ({ receiptId }: GetReceiptBody) => {
+export async function getReceipt({ receiptId }: GetReceiptBody) {
   const url = `/receipt/${receiptId}`
   const rsApi = await getRsApi()
   const response = await rsApi.get<Receipt>(url)
@@ -38,10 +38,10 @@ export const getReceipt = async ({ receiptId }: GetReceiptBody) => {
   return response.data
 }
 
-export const toggleProductComprising = async ({
+export async function toggleProductComprising({
   receiptId,
   productId,
-}: ToggleProductComprisingBody) => {
+}: ToggleProductComprisingBody) {
   const url = `/receipt/${receiptId}/product/${productId}/comprising`
   const rsApi = await getRsApi()
   const response = await rsApi.patch<Receipt>(url)
@@ -49,7 +49,7 @@ export const toggleProductComprising = async ({
   return response.data
 }
 
-export const removeReceipt = async ({ receiptId }: RemoveReceiptBody) => {
+export async function removeReceipt({ receiptId }: RemoveReceiptBody) {
   const url = `/receipt/${receiptId}`
   const rsApi = await getRsApi()
   const response = await rsApi.delete<Receipt[]>(url)
@@ -57,10 +57,10 @@ export const removeReceipt = async ({ receiptId }: RemoveReceiptBody) => {
   return response.data
 }
 
-export const changeReceiptTitle = async ({
+export async function changeReceiptTitle({
   receiptId,
   newTitle,
-}: ChangeReceiptTitleBody) => {
+}: ChangeReceiptTitleBody) {
   const url = `/receipt/${receiptId}/title`
   const rsApi = await getRsApi()
   const response = await rsApi.patch<Receipt>(url, {
@@ -70,10 +70,10 @@ export const changeReceiptTitle = async ({
   return response.data
 }
 
-export const addContributor = async ({
+export async function addContributor({
   receiptId,
   contributorId,
-}: AddContributorBody) => {
+}: AddContributorBody) {
   const url = `/receipt/${receiptId}/friend/${contributorId}`
   const rsApi = await getRsApi()
   const response = await rsApi.patch<Receipt>(url)
@@ -81,10 +81,10 @@ export const addContributor = async ({
   return response.data
 }
 
-export const removeContributor = async ({
+export async function removeContributor({
   receiptId,
   contributorId,
-}: RemoveContributorBody) => {
+}: RemoveContributorBody) {
   const url = `/receipt/${receiptId}/friend/${contributorId}`
   const rsApi = await getRsApi()
   const response = await rsApi.delete<Receipt>(url)
@@ -92,11 +92,11 @@ export const removeContributor = async ({
   return response.data
 }
 
-export const updateProduct = async ({
+export async function updateProduct({
   receiptId,
   productId,
   product,
-}: UpdateProductBody) => {
+}: UpdateProductBody) {
   const url = `/receipt/${receiptId}/product/${productId}`
   const rsApi = await getRsApi()
   const response = await rsApi.patch<Receipt>(url, { product })
@@ -104,10 +104,10 @@ export const updateProduct = async ({
   return response.data
 }
 
-export const removeProduct = async ({
+export async function removeProduct({
   receiptId,
   productId,
-}: RemoveProductBody) => {
+}: RemoveProductBody) {
   const url = `/receipt/${receiptId}/product/${productId}`
   const rsApi = await getRsApi()
   const response = await rsApi.delete<Receipt>(url)

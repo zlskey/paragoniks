@@ -1,3 +1,3 @@
-export const getArrayOfNumbers = (length: number) => {
+export function getArrayOfNumbers(length: number) {
   return Array.from({ length }, (_, i) => i)
 }

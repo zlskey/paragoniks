@@ -1,12 +1,12 @@
-import { Stack } from 'expo-router'
 import StackHeader from '@components/stack-header'
+import { Stack } from 'expo-router'
 
 export default () => (
   <Stack>
     <Stack.Screen
-      name='index'
+      name="index"
       options={{
-        header: () => <StackHeader title='Edycja produktu' />,
+        header: () => <StackHeader title="Edycja produktu" />,
       }}
     />
   </Stack>

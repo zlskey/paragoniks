@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Anonim } from '@app/generic.types'
 
-import { Anonim } from '@app/generic.types'
 import { removeAnonim } from '@api/endpoints/anonim/anonim.api'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 function useRemoveAnonim() {
   const queryClient = useQueryClient()
@@ -18,8 +18,7 @@ function useRemoveAnonim() {
       const oldAnonim = queryClient.getQueryData<Anonim[]>(queryKey)
 
       queryClient.setQueryData(queryKey, (old: Anonim[]) =>
-        old.filter(anonim => anonim.username !== username)
-      )
+        old.filter(anonim => anonim.username !== username))
 
       return { oldAnonim }
     },

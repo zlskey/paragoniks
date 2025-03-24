@@ -1,9 +1,9 @@
-import { Friendship, Profile } from 'src/app/generic.types'
+import type { Friendship, Profile } from 'src/app/generic.types'
 
 import Flex from '@components/flex'
-import FriendItem from './friend-item'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
 import Typography from '@components/typography'
+import FriendItem from './friend-item'
 
 interface FriendListProps {
   status: Friendship['status']
@@ -13,8 +13,8 @@ interface FriendListProps {
 
 function FriendList({ status, title, items }: FriendListProps) {
   return (
-    <Flex direction='column' alignContent='stretch' spacing={1}>
-      <Typography variant='subtitle'>{title}</Typography>
+    <Flex direction="column" alignContent="stretch" spacing={1}>
+      <Typography variant="subtitle">{title}</Typography>
 
       <ProfilesAlphabeticallList
         profiles={items}

@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from 'react'
-import { StyleProp, View, ViewStyle } from 'react-native'
+import type { PropsWithChildren, Ref } from 'react'
+import type { StyleProp, ViewStyle } from 'react-native'
+import React from 'react'
+import { View } from 'react-native'
 import { colors, getPx } from '../../app/styles'
-
-import { Ref } from 'react'
 
 interface PaperProps extends PropsWithChildren {
   elevation?: number
@@ -27,7 +27,7 @@ const Paper: React.FC<PaperProps> = React.forwardRef(
         {children}
       </View>
     )
-  }
+  },
 )
 
 export default Paper

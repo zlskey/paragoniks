@@ -1,12 +1,13 @@
-import { Division, DivisionType, DivisionUnitEnum } from 'src/app/generic.types'
-import { StyleSheet, TextInput } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
-
+import type { Division, DivisionType } from 'src/app/generic.types'
 import Color from 'color'
 import { useState } from 'react'
 
+import { StyleSheet, TextInput } from 'react-native'
+import { DivisionUnitEnum } from 'src/app/generic.types'
+import { colors, getPx } from 'src/app/styles'
+
 function isNumber(value: number | null | undefined): value is number {
-  return typeof value === 'number' ? !isNaN(value) : false
+  return typeof value === 'number' ? !Number.isNaN(value) : false
 }
 
 const inputStylesObj = {
@@ -76,13 +77,13 @@ function DivisionInput({
         value === null
           ? DivisionInputStyles.inputDisabled
           : isFocused
-          ? DivisionInputStyles.inputFocused
-          : DivisionInputStyles.input
+            ? DivisionInputStyles.inputFocused
+            : DivisionInputStyles.input
       }
       editable={typeof value === 'number'}
       value={getValueToRender(value)}
       onChangeText={handleChange}
-      keyboardType='numeric'
+      keyboardType="numeric"
       placeholder={unit}
       onFocus={onFocus}
       onBlur={onBlur}

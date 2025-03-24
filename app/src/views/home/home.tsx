@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react'
-
 import Flex from '@components/flex'
-import MonthSectionsList from './month-section'
+
 import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
-import UploadReceiptButton from './upload-receipt-button'
 import Wrapper from '@components/wrapper'
+import { useMemo, useState } from 'react'
+import MonthSectionsList from './month-section'
+import UploadReceiptButton from './upload-receipt-button'
 import useUserReceipts from './use-user-receipts'
 
 function Home() {
@@ -15,7 +15,7 @@ function Home() {
 
   const filteredReceipts = useMemo(() => {
     return data.filter(receipt =>
-      receipt.title.toLowerCase().includes(searchQuery.toLowerCase())
+      receipt.title.toLowerCase().includes(searchQuery.toLowerCase()),
     )
   }, [data, searchQuery])
 
@@ -23,16 +23,16 @@ function Home() {
     <Wrapper>
       <SearchBar onSearch={setSearchQuery} query={searchQuery} />
 
-      <Flex mt={2} alignContent='stretch' direction='column' nativeFlex>
-        <Flex justifyContent='space-between'>
-          <Typography variant='subtitle'>Twoje paragony</Typography>
+      <Flex mt={2} alignContent="stretch" direction="column" nativeFlex>
+        <Flex justifyContent="space-between">
+          <Typography variant="subtitle">Twoje paragony</Typography>
 
           <UploadReceiptButton />
         </Flex>
 
-        <Flex nativeFlex direction='column' alignContent='stretch'>
+        <Flex nativeFlex direction="column" alignContent="stretch">
           {filteredReceipts.length === 0 && (
-            <Typography variant='subtitle2'>
+            <Typography variant="subtitle2">
               Brak paragonów do wyświetlenia
             </Typography>
           )}

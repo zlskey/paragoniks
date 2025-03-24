@@ -1,10 +1,9 @@
-import { colors, getPx } from 'src/app/styles'
+import type { PropsWithChildren } from 'react'
 
 import Flex from '@components/flex'
-import { PropsWithChildren } from 'react'
-import { StyleSheet } from 'react-native'
-import { TouchableOpacity } from 'react-native'
 import Typography from '@components/typography'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { colors, getPx } from 'src/app/styles'
 
 interface ButtonProps extends PropsWithChildren {
   onPress?: () => void
@@ -61,13 +60,13 @@ function Button({
   startIcon,
   endIcon,
 }: ButtonProps) {
-  const variantStyle =
-    variant === 'contained' ? styles.contained : styles.outlined
+  const variantStyle
+    = variant === 'contained' ? styles.contained : styles.outlined
   return (
     <TouchableOpacity onPress={onPress} disabled={isDisabled}>
       <Flex
-        justifyContent='center'
-        alignContent='center'
+        justifyContent="center"
+        alignContent="center"
         spacing={1}
         styles={{
           ...variantStyle,

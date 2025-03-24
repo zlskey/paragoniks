@@ -1,14 +1,14 @@
-import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
 import Flex from '@components/flex'
 import Paper from '@components/paper'
+
 import TextField from '@components/text-field'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import Typography from '@components/typography'
-import { colors } from 'src/app/styles'
-import { loginUser } from 'src/api/endpoints/user/user.api'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { loginUser } from 'src/api/endpoints/user/user.api'
+import { colors } from 'src/app/styles'
 
 const defaultValues = {
   username: '',
@@ -25,7 +25,7 @@ function LoginForm() {
   const { mutate } = useMutation({
     mutationKey: ['auth', 'login'],
     mutationFn: loginUser,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(['user', 'whoami'], data)
     },
     onError: (err: any) => {
@@ -38,8 +38,8 @@ function LoginForm() {
   return (
     <Paper>
       <FormProvider {...formState}>
-        <Flex direction='column' alignContent='stretch' p={2} spacing={2}>
-          <Typography variant='title'>Zaloguj się</Typography>
+        <Flex direction="column" alignContent="stretch" p={2} spacing={2}>
+          <Typography variant="title">Zaloguj się</Typography>
 
           {error && (
             <Paper styles={{ backgroundColor: colors.red }}>
@@ -50,19 +50,19 @@ function LoginForm() {
           )}
 
           <TextField
-            name='username'
-            label='Nazwa użytkownika'
+            name="username"
+            label="Nazwa użytkownika"
             style={{ backgroundColor: colors.background }}
           />
 
           <TextField
-            name='password'
-            label='Hasło'
+            name="password"
+            label="Hasło"
             secureTextEntry
             style={{ backgroundColor: colors.background }}
           />
 
-          <Flex justifyContent='center'>
+          <Flex justifyContent="center">
             <TouchableOpacity
               onPress={formState.handleSubmit(data => mutate(data))}
             >

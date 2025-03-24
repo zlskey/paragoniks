@@ -1,4 +1,4 @@
-import { Receipt, ReceiptId } from 'src/app/generic.types'
+import type { Receipt, ReceiptId } from 'src/app/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { removeReceipt } from 'src/api/endpoints/receipt/receipt.api'
@@ -22,7 +22,7 @@ function useRemoveReceipt({ receiptId }: UseRemoveReceiptProps) {
 
       queryClient.setQueryData(
         ['receipt'],
-        previousReceipts.filter(receipt => receipt._id !== receiptId)
+        previousReceipts.filter(receipt => receipt._id !== receiptId),
       )
 
       return { previousReceipts }
@@ -33,7 +33,7 @@ function useRemoveReceipt({ receiptId }: UseRemoveReceiptProps) {
     onError: (_1, _2, context: any) => {
       queryClient.setQueryData(
         ['receipt'],
-        context?.previousReceipts as Receipt[]
+        context?.previousReceipts as Receipt[],
       )
     },
   })

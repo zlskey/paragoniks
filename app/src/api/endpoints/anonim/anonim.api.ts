@@ -1,6 +1,6 @@
-import { CreateAnonimBody, RemoveAnonimBody } from './anonim.api.types'
+import type { Anonim } from '@app/generic.types'
 
-import { Anonim } from '@app/generic.types'
+import type { CreateAnonimBody, RemoveAnonimBody } from './anonim.api.types'
 import { getRsApi } from '@api/rs.api'
 
 export async function createAnonim(body: CreateAnonimBody) {

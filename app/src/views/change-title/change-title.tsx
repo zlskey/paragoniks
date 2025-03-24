@@ -1,16 +1,16 @@
-import * as yup from 'yup'
-
-import { FormProvider, useForm } from 'react-hook-form'
-import { router, useLocalSearchParams } from 'expo-router'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Receipt } from 'src/app/generic.types'
 
 import Button from '@components/button'
-import { Receipt } from 'src/app/generic.types'
 import TextField from '@components/text-field'
 import Wrapper from '@components/wrapper'
-import { changeReceiptTitle } from 'src/api/endpoints/receipt/receipt.api'
-import { useEffect } from 'react'
+
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { router, useLocalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { changeReceiptTitle } from 'src/api/endpoints/receipt/receipt.api'
+import * as yup from 'yup'
 
 const defaultValues = {
   newTitle: '',
@@ -41,7 +41,7 @@ function ChangeReceiptTitle() {
   const { mutate, isPending } = useMutation({
     mutationKey: ['receipt', id, 'title'],
     mutationFn: changeReceiptTitle,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(['receipt', id], data)
       router.back()
     },
@@ -67,8 +67,8 @@ function ChangeReceiptTitle() {
       <Wrapper>
         <TextField
           error={formState.formState.errors.newTitle}
-          name='newTitle'
-          label='Nowy tytuł'
+          name="newTitle"
+          label="Nowy tytuł"
           fullWidth
           autoFocus
         />
@@ -76,7 +76,7 @@ function ChangeReceiptTitle() {
         <Button
           onPress={formState.handleSubmit(handleSubmit)}
           isDisabled={buttonDisabled}
-          variant='contained'
+          variant="contained"
         >
           Potwierdź
         </Button>

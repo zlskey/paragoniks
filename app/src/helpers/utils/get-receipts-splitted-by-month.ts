@@ -1,15 +1,15 @@
-import { Receipt } from 'src/app/generic.types'
+import type { Receipt } from 'src/app/generic.types'
 
 interface Section {
   data: Receipt[]
   title: string
 }
 
-export const getReceiptsSplittedByMonth = (receipts: Receipt[]) => {
+export function getReceiptsSplittedByMonth(receipts: Receipt[]) {
   return receipts
     .sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
     .reduce((acc, receipt) => {
       const key = new Date(receipt.createdAt)
@@ -22,7 +22,8 @@ export const getReceiptsSplittedByMonth = (receipts: Receipt[]) => {
 
       if (section) {
         section.data.push(receipt)
-      } else {
+      }
+      else {
         acc.push({
           title: key,
           data: [receipt],

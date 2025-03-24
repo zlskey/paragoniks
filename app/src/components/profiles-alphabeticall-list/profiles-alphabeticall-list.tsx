@@ -1,11 +1,12 @@
-import { SectionList, SectionListProps, View } from 'react-native'
+import type { Profile } from '@app/generic.types'
+import type { SectionListProps } from 'react-native'
 import { colors, getPx } from '@app/styles'
 
-import { Profile } from '@app/generic.types'
 import Typography from '@components/typography'
 import { getProfilesAlphabetically } from '@helpers/utils/get-profiles-alphabetically'
 import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrapper'
 import { useMemo } from 'react'
+import { SectionList, View } from 'react-native'
 
 interface SectionHeaderProps {
   title: string
@@ -37,7 +38,7 @@ function ProfilesAlphabeticallList({
 }: ProfilesAlphabeticallListProps) {
   const sections = useMemo(
     () => getProfilesAlphabetically(profiles),
-    [profiles]
+    [profiles],
   )
   return (
     <SectionList
@@ -49,9 +50,8 @@ function ProfilesAlphabeticallList({
         getSectionListItemWrapper(
           data.index,
           data.section.data.length,
-          <ProfileItem profile={data.item} />
-        )
-      }
+          <ProfileItem profile={data.item} />,
+        )}
       renderSectionHeader={({ section: { title } }) => (
         <SectionHeader title={title} />
       )}

@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Friendship } from 'src/app/generic.types'
 
-import { Friendship } from 'src/app/generic.types'
-import { removeFriend } from 'src/api/endpoints/friends/friends.api'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { removeFriend } from 'src/api/endpoints/friends/friends.api'
 
-const useRemoveFriend = () => {
+function useRemoveFriend() {
   const addNotification = useNotificationContext()
   const queryClient = useQueryClient()
 
@@ -20,8 +20,7 @@ const useRemoveFriend = () => {
       const oldFriendships = queryClient.getQueryData<Friendship[]>(queryKey)
 
       queryClient.setQueryData(queryKey, (old: Friendship[]) =>
-        old.filter(friendship => friendship.friendId !== friendId)
-      )
+        old.filter(friendship => friendship.friendId !== friendId))
 
       return { oldFriendships }
     },

@@ -1,10 +1,10 @@
-import { DivisionType, Product } from 'src/app/generic.types'
-import { getEvenDivision, getNewDivision } from '@helpers/utils/division'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-
-import { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
-import { getTotalPrice } from '@helpers/utils/get-total-price'
+import type { DivisionType, Product } from 'src/app/generic.types'
+import type { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
 import { getUniqueArray } from '@helpers/utils/array'
+
+import { getEvenDivision, getNewDivision } from '@helpers/utils/division'
+import { getTotalPrice } from '@helpers/utils/get-total-price'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 function getNumberToSplit(totalPrice: number, divisionType: DivisionType) {
@@ -30,11 +30,11 @@ function useDivision(product: Product) {
 
   const totalPrice = useMemo(
     () => getTotalPrice({ price, count, discount }),
-    [price, count, discount]
+    [price, count, discount],
   )
   const numberToSplit = useMemo(
     () => getNumberToSplit(totalPrice, divisionType),
-    [totalPrice, divisionType]
+    [totalPrice, divisionType],
   )
 
   useEffect(() => {
@@ -57,14 +57,14 @@ function useDivision(product: Product) {
       const newDivision = getEvenDivision({
         division,
         divisionType,
-        numberToSplit: numberToSplit,
+        numberToSplit,
         userToToggle: profileId,
       })
 
       setDivision(newDivision)
       setDivisionUpdateStack([])
     },
-    [division, divisionType, numberToSplit, setDivision, setDivision]
+    [division, divisionType, numberToSplit, setDivision, setDivision],
   )
 
   const onDivisionValueChange = useCallback(
@@ -75,13 +75,14 @@ function useDivision(product: Product) {
       ])
       const divisionUpdateStackLength = newDivisionUpdateStack.length
       const divisionLength = Object.entries(division).filter(
-        ([_, val]) => val !== null
+        ([_, val]) => val !== null,
       ).length
 
       const ignoreUpdateStack = divisionUpdateStackLength === divisionLength
       if (ignoreUpdateStack) {
         setDivisionUpdateStack([])
-      } else {
+      }
+      else {
         setDivisionUpdateStack(newDivisionUpdateStack)
       }
 
@@ -89,14 +90,14 @@ function useDivision(product: Product) {
         division,
         divisionType,
         userId: profileId,
-        newValue: parseFloat(value),
+        newValue: Number.parseFloat(value),
         total: numberToSplit,
         divisionUpdateStack: ignoreUpdateStack ? [] : newDivisionUpdateStack,
       })
 
       setDivision(newDivision)
     },
-    [division, divisionType, divisionUpdateStack, numberToSplit]
+    [division, divisionType, divisionUpdateStack, numberToSplit],
   )
 
   const onDivisionTypeChange = (newDivisionType: DivisionType) => {

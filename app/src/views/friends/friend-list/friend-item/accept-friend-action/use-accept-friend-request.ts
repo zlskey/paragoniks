@@ -1,9 +1,9 @@
-import { Friendship, UserId } from 'src/app/generic.types'
+import type { Friendship, UserId } from 'src/app/generic.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { respondToFriendRequest } from 'src/api/endpoints/friends/friends.api'
 
-const useAcceptFriendRequest = () => {
+function useAcceptFriendRequest() {
   const queryClient = useQueryClient()
 
   const queryKey = ['friend']
@@ -18,7 +18,7 @@ const useAcceptFriendRequest = () => {
       const oldFriendships = queryClient.getQueryData<Friendship[]>(queryKey)
 
       queryClient.setQueryData(queryKey, (old: Friendship[]) =>
-        old.map(friendship => {
+        old.map((friendship) => {
           if (friendship.friendId === friendId) {
             return {
               ...friendship,
@@ -27,8 +27,7 @@ const useAcceptFriendRequest = () => {
           }
 
           return friendship
-        })
-      )
+        }))
 
       return { oldFriendships }
     },

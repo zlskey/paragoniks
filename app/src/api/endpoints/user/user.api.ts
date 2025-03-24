@@ -1,4 +1,6 @@
-import {
+import type { User } from 'src/app/generic.types'
+
+import type {
   ChangeAvatarColorBody,
   ChangeAvatarImageBody,
   ChangePasswordBody,
@@ -13,11 +15,9 @@ import {
   WhoamiUserBody,
   WhoamiUserResponse,
 } from './user.api.types'
-
-import { User } from 'src/app/generic.types'
 import { getRsApi } from 'src/api/rs.api'
 
-export const loginUser = async (body: LoginUserBody) => {
+export async function loginUser(body: LoginUserBody) {
   const url = '/auth/login'
   const rsApi = await getRsApi()
   const response = await rsApi.post<LoginUserResponse>(url, body)
@@ -25,7 +25,7 @@ export const loginUser = async (body: LoginUserBody) => {
   return response.data
 }
 
-export const signupUser = async (body: SignupUserBody) => {
+export async function signupUser(body: SignupUserBody) {
   const url = '/auth/signup'
   const rsApi = await getRsApi()
   const response = await rsApi.post<SignupUserResponse>(url, body)
@@ -33,7 +33,7 @@ export const signupUser = async (body: SignupUserBody) => {
   return response.data
 }
 
-export const logoutUser = async (body: LogoutUserBody) => {
+export async function logoutUser(body: LogoutUserBody) {
   const url = '/auth/logout'
   const rsApi = await getRsApi()
   const response = await rsApi.get<{}>(url, body)
@@ -41,7 +41,7 @@ export const logoutUser = async (body: LogoutUserBody) => {
   return response.data
 }
 
-export const whoamiUser = async (body: WhoamiUserBody) => {
+export async function whoamiUser(body: WhoamiUserBody) {
   const url = '/auth/whoami'
   const rsApi = await getRsApi()
   const response = await rsApi.get<WhoamiUserResponse | null>(url, body)
@@ -49,7 +49,7 @@ export const whoamiUser = async (body: WhoamiUserBody) => {
   return response.data
 }
 
-export const testt = async (body: WhoamiUserBody) => {
+export async function testt(body: WhoamiUserBody) {
   const url = '/auth/test'
   const rsApi = await getRsApi()
   const response = await rsApi.get<User | null>(url, body)
@@ -57,7 +57,7 @@ export const testt = async (body: WhoamiUserBody) => {
   return response.data
 }
 
-export const changeUsername = async (body: ChangeUsernameBody) => {
+export async function changeUsername(body: ChangeUsernameBody) {
   const url = 'user/username'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
@@ -65,7 +65,7 @@ export const changeUsername = async (body: ChangeUsernameBody) => {
   return response.data
 }
 
-export const changePassword = async (body: ChangePasswordBody) => {
+export async function changePassword(body: ChangePasswordBody) {
   const url = 'user/password'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
@@ -73,7 +73,7 @@ export const changePassword = async (body: ChangePasswordBody) => {
   return response.data
 }
 
-export const toggleTheme = async (body: ToggleThemeBody) => {
+export async function toggleTheme(body: ToggleThemeBody) {
   const url = 'user/theme'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
@@ -81,7 +81,7 @@ export const toggleTheme = async (body: ToggleThemeBody) => {
   return response.data
 }
 
-export const changeAvatarColor = async (body: ChangeAvatarColorBody) => {
+export async function changeAvatarColor(body: ChangeAvatarColorBody) {
   const url = 'user/avatar/color'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
@@ -89,7 +89,7 @@ export const changeAvatarColor = async (body: ChangeAvatarColorBody) => {
   return response.data
 }
 
-export const changeAvatarImage = async (body: ChangeAvatarImageBody) => {
+export async function changeAvatarImage(body: ChangeAvatarImageBody) {
   const url = 'user/avatar/image'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
@@ -97,7 +97,7 @@ export const changeAvatarImage = async (body: ChangeAvatarImageBody) => {
   return response.data
 }
 
-export const changeUserLang = async ({ lang }: ChangeUserLangBody) => {
+export async function changeUserLang({ lang }: ChangeUserLangBody) {
   const url = `user/lang/${lang}`
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url)

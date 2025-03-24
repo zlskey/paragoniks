@@ -1,10 +1,10 @@
 import Flex from '@components/flex'
-import LoginForm from './login-form'
-import SignupForm from './signup-form'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
 import { useState } from 'react'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import LoginForm from './login-form'
+import SignupForm from './signup-form'
 
 function Auth() {
   const [view, setView] = useState<'login' | 'signup'>('login')
@@ -16,9 +16,9 @@ function Auth() {
   return (
     <Wrapper>
       <Flex
-        direction='column'
-        justifyContent='center'
-        alignContent='stretch'
+        direction="column"
+        justifyContent="center"
+        alignContent="stretch"
         nativeFlex
         spacing={1}
       >

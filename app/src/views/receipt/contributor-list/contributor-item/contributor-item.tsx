@@ -1,16 +1,16 @@
-import { colors, getPx } from 'src/app/styles'
+import type { Profile } from 'src/app/generic.types'
 
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
-import { FontAwesome } from '@expo/vector-icons'
-import { Profile } from 'src/app/generic.types'
-import RemoveContributorIcon from './remove-contributor-action'
-import { Swipeable } from 'react-native-gesture-handler'
 import Typography from '@components/typography'
-import { getLocaleCurrency } from '@helpers/utils'
-import { useReceiptContext } from 'src/views/receipt/receipt.context'
-import useRemoveContributor from './remove-contributor-action/use-remove-contributor'
+import { FontAwesome } from '@expo/vector-icons'
 import { useUserContext } from '@helpers/contexts/user.context'
+import { getLocaleCurrency } from '@helpers/utils'
+import { Swipeable } from 'react-native-gesture-handler'
+import { colors, getPx } from 'src/app/styles'
+import { useReceiptContext } from 'src/views/receipt/receipt.context'
+import RemoveContributorIcon from './remove-contributor-action'
+import useRemoveContributor from './remove-contributor-action/use-remove-contributor'
 
 interface ContributorItemProps {
   contributor: Profile
@@ -31,24 +31,22 @@ function ContributorItem({ contributor }: ContributorItemProps) {
     <Swipeable
       friction={1}
       onSwipeableOpen={direction =>
-        direction === 'right' && onRemoveContributor()
-      }
+        direction === 'right' && onRemoveContributor()}
       renderRightActions={() =>
-        isOwner && !isContributor && <RemoveContributorIcon />
-      }
+        isOwner && !isContributor && <RemoveContributorIcon />}
     >
       <Flex
         styles={{ backgroundColor: colors.paper }}
-        justifyContent='space-between'
-        alignContent='center'
+        justifyContent="space-between"
+        alignContent="center"
         p={1.25}
       >
-        <Flex alignContent='center' spacing={1}>
-          <Avatar profile={contributor} size='sm' />
+        <Flex alignContent="center" spacing={1}>
+          <Avatar profile={contributor} size="sm" />
           <Typography>{contributor.username}</Typography>
           {contributor.ownerId && (
             <FontAwesome
-              name='user-secret'
+              name="user-secret"
               size={getPx(2)}
               color={colors.placeholder}
             />

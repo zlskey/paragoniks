@@ -1,15 +1,15 @@
-import { Friendship, Profile } from '@app/generic.types'
+import type { Friendship, Profile } from '@app/generic.types'
 
-import AcceptFriendAction from './accept-friend-action/accept-friend-action'
-import Avatar from '@components/avatar'
-import DeclineFriendAction from './decline-friend-action'
-import Flex from '@components/flex'
-import RemoveFriendButton from './remove-friend-button/remove-friend-button'
-import { Swipeable } from 'react-native-gesture-handler'
-import Typography from '@components/typography'
 import { colors } from '@app/styles'
+import Avatar from '@components/avatar'
+import Flex from '@components/flex'
+import Typography from '@components/typography'
+import { Swipeable } from 'react-native-gesture-handler'
+import AcceptFriendAction from './accept-friend-action/accept-friend-action'
 import useAcceptFriendRequest from './accept-friend-action/use-accept-friend-request'
+import DeclineFriendAction from './decline-friend-action'
 import useDeclineFriendRequest from './decline-friend-action/use-decline-friend-request'
+import RemoveFriendButton from './remove-friend-button/remove-friend-button'
 import useRemoveFriend from './remove-friend-button/use-remove-friend'
 
 interface FriendItemProps {
@@ -45,16 +45,15 @@ function FriendItem({ friend, status }: FriendItemProps) {
       onSwipeableOpen={onSwipeableOpen}
       renderLeftActions={() => !isAccepted && <AcceptFriendAction />}
       renderRightActions={() =>
-        isAccepted ? <RemoveFriendButton /> : <DeclineFriendAction />
-      }
+        isAccepted ? <RemoveFriendButton /> : <DeclineFriendAction />}
     >
       <Flex
-        alignContent='center'
+        alignContent="center"
         styles={{ backgroundColor: colors.paper }}
         spacing={1}
         p={1.25}
       >
-        <Avatar profile={friend} size='sm' />
+        <Avatar profile={friend} size="sm" />
         <Typography>{friend.username}</Typography>
       </Flex>
     </Swipeable>
