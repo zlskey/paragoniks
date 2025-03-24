@@ -1,0 +1,11 @@
+name: Eslint check
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  eslint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check"
