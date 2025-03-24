@@ -15,12 +15,6 @@ jobs:
         with:
           version: 9
           run_install: false
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          run_install: false
-          cache: 'pnpm'
       - name: Run ESlint check for frontend
         run: |
           pnpm ci
