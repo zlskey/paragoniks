@@ -19,6 +19,7 @@ jobs:
         run: |
           pnpm ci
           pnpm lint
+        working-directory: ./app
       - name: Run ESlint check for backend
         run: |
           pnpm ci
