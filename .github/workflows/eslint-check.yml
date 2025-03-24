@@ -5,7 +5,19 @@ on:
       - main
 
 jobs:
-  eslint-check:
+  eslint-check-frontend:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Check"
+      - uses: node@20.10.0-bullseye-slim
+      - uses: actions/checkout@main
+      - run: cd app
+      - run: pnpm ci
+      - run: pnpm lint
+  eslint-check-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: node@20.10.0-bullseye-slim
+      - uses: actions/checkout@main
+      - run: cd api
+      - run: pnpm ci
+      - run: pnpm lint
