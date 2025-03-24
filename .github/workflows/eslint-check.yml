@@ -17,11 +17,11 @@ jobs:
           run_install: false
       - name: Run ESlint check for frontend
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./app
       - name: Run ESlint check for backend
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./api
