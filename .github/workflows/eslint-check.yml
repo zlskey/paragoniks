@@ -19,14 +19,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - name: Run commands in frontend dir
+      - name: Run ESlint check for frontend
         run: |
-          cd app
           pnpm ci
           pnpm lint
-      - name: Move to backend dir
-        run: cd ../api
-      - name: Install deps
-        run: pnpm ci
-      - name: ESlint check
-        run: pnpm lint
+        working-directory: ./app
+      - name: Run ESlint check for backend
+        run: |
+          pnpm ci
+          pnpm lint
+        working-directory: ./api
