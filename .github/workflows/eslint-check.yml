@@ -5,19 +5,31 @@ on: push
   #     - main
 
 jobs:
-  eslint-check-frontend:
-    runs-on: ubuntu-latest
-    container:
-      image: node:20.10.0
-      env:
-        NODE_ENV: development
-      options: --cpus 1
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20.10]
     steps:
-      - uses: actions/checkout@main
-      - run: cd app
-      - run: pnpm ci
-      - run: pnpm lint
-      - run: cd ../api
-      - run: pnpm ci
-      - run: pnpm lint
-      
+    - uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+    - name: Move to frontend dir
+      run: cd app
+    - name: Install deps
+      run: pnpm ci
+    - name: ESlint check
+      run: pnpm lint
+    - name: Move to backend dir
+      run: cd ../api
+    - name: Install deps
+      run: pnpm ci
+    - name: ESlint check
+      run: pnpm lint
