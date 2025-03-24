@@ -7,8 +7,12 @@ on: push
 jobs:
   eslint-check-frontend:
     runs-on: ubuntu-latest
+    container:
+      image: node:20.10.0
+      env:
+        NODE_ENV: development
+      options: --cpus 1
     steps:
-      - uses: node@20.10.0-bullseye-slim
       - uses: actions/checkout@main
       - run: cd app
       - run: pnpm ci
