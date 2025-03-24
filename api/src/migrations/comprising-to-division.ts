@@ -1,6 +1,7 @@
 import Receipt from 'src/models/receipt.model'
 import { getCalculatedTotalsForReceipt } from 'src/utils/calculators'
 ;
+
 (async () => {
   console.log('Migration: comprising-to-division started')
 
@@ -16,7 +17,7 @@ import { getCalculatedTotalsForReceipt } from 'src/utils/calculators'
     const updatedContributors = Object.fromEntries(
       contributors
         .concat([receipt.owner.toString()])
-        .map(contributor => [contributor, 0])
+        .map(contributor => [contributor, 0]),
     )
 
     await Receipt.findByIdAndUpdate(
@@ -24,7 +25,7 @@ import { getCalculatedTotalsForReceipt } from 'src/utils/calculators'
       {
         $set: getCalculatedTotalsForReceipt({
           contributors: updatedContributors,
-          products: receipt.products.map(product => {
+          products: receipt.products.map((product) => {
             // @ts-ignore
             if ('comprising' in product) {
               // @ts-ignore
@@ -37,7 +38,7 @@ import { getCalculatedTotalsForReceipt } from 'src/utils/calculators'
       },
       {
         new: true,
-      }
+      },
     )
   }
 

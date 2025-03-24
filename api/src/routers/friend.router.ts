@@ -9,19 +9,19 @@ friendRouter.get('/', wrapAsync(friendController.defaultFriendController))
 friendRouter.post(
   '/',
   wrapAsync(friendController.handleCreateFriendshipRequest),
-  wrapAsync(friendController.defaultFriendController)
+  wrapAsync(friendController.defaultFriendController),
 )
 
 friendRouter.delete(
   '/:friendId',
   wrapAsync(friendController.handleRemoveFriend),
-  wrapAsync(friendController.defaultFriendController)
+  wrapAsync(friendController.defaultFriendController),
 )
 
 friendRouter.patch(
   '/respond',
   wrapAsync(friendController.handleRespondToFriendRequest),
-  wrapAsync(friendController.defaultFriendController)
+  wrapAsync(friendController.defaultFriendController),
 )
 
 export default friendRouter

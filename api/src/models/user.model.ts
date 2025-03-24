@@ -1,9 +1,9 @@
-import { ErrorObject } from 'src/middlewares/error.middleware'
-import { UserId } from 'src/types/generic.types'
-import _ from 'lodash'
+import type { UserId } from 'src/types/generic.types'
 import bcrypt from 'bcrypt'
-import constants from 'src/constants'
+import _ from 'lodash'
 import mongoose from 'mongoose'
+import constants from 'src/constants'
+import { ErrorObject } from 'src/middlewares/error.middleware'
 import { userService } from 'src/services'
 
 export type AvatarColor =
@@ -37,15 +37,15 @@ export interface IUser {
 
   lang: Lang
 
-  removePassword(): Omit<IUser, 'password'>
-  validatePassword(this: IUser, password: string): Promise<void>
-  changePassword(this: IUser, password: string): Promise<void>
-  changeUsername(this: IUser, username: string): Promise<IUser>
-  toggleTheme(this: IUser): Promise<IUser>
-  changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser>
-  changeAvatarImage(this: IUser, image: string): Promise<IUser>
-  pickProfile(this: IUser): IProfile
-  setLang(this: IUser, lang: string): Promise<IUser>
+  removePassword: () => Omit<IUser, 'password'>
+  validatePassword: (this: IUser, password: string) => Promise<void>
+  changePassword: (this: IUser, password: string) => Promise<void>
+  changeUsername: (this: IUser, username: string) => Promise<IUser>
+  toggleTheme: (this: IUser) => Promise<IUser>
+  changeAvatarColor: (this: IUser, color: AvatarColor) => Promise<IUser>
+  changeAvatarImage: (this: IUser, image: string) => Promise<IUser>
+  pickProfile: (this: IUser) => IProfile
+  setLang: (this: IUser, lang: string) => Promise<IUser>
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -86,14 +86,15 @@ class UserClass {
   async validatePassword(this: IUser, password: string): Promise<void> {
     const isValid = await bcrypt.compare(password, this.password)
 
-    if (isValid) return
+    if (isValid)
+      return
 
     throw new ErrorObject(constants.invalid_password, 401)
   }
 
   async changePassword(
     this: IUser,
-    password: IUser['password']
+    password: IUser['password'],
   ): Promise<void> {
     const salt = await bcrypt.genSalt()
     const newPassword = (password = await bcrypt.hash(password, salt))

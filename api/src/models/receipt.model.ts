@@ -1,4 +1,4 @@
-import { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
+import type { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
 
 import mongoose from 'mongoose'
 
@@ -57,7 +57,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>(
   },
   {
     timestamps: true,
-  }
+  },
 )
 
 receiptSchema.pre('save', async function (next) {

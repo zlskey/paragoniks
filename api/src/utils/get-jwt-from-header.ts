@@ -1,4 +1,4 @@
-export const getJwtFromHeader = (header: string) => {
+export function getJwtFromHeader(header: string) {
   if (!header) {
     return null
   }

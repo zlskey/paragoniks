@@ -1,15 +1,15 @@
-import { ErrorRequestHandler, RequestHandler } from 'express'
+import type { ErrorRequestHandler, RequestHandler } from 'express'
 
 export const notFound: RequestHandler = (req, res, next) => {
   const error = new ErrorObject(
     `Invalid route - ${req.method} ${req.originalUrl}`,
-    404
+    404,
   )
 
   next(error)
 }
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = (err, req, res) => {
   const statusCode = err.code || 500
 
   if (err instanceof ErrorObject === false) {
@@ -26,9 +26,9 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 }
 
 export function ErrorObject(
-  this: { message: string; code: number },
+  this: { message: string, code: number },
   message: string,
-  code: number = 400
+  code: number = 400,
 ) {
   this.message = message
   this.code = code

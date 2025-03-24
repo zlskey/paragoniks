@@ -1,11 +1,11 @@
-import { ProductId, UserId } from 'src/types/generic.types'
+import type { RequestHandler } from 'express'
 
-import { RequestHandler } from 'express'
-import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
+import type { ProductId, UserId } from 'src/types/generic.types'
+import { writeFileSync } from 'node:fs'
 import { receiptService } from 'src/services'
-import { writeFileSync } from 'fs'
+import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
 
-export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
+export const handleGetUserReceipts: RequestHandler = async (req, res) => {
   const user = req.user
 
   const receipts = await receiptService.getAllReceipts(user._id)
@@ -13,15 +13,11 @@ export const handleGetUserReceipts: RequestHandler = async (req, res, next) => {
   res.status(200).json(receipts)
 }
 
-export const handleCreateReceiptBase64: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleCreateReceiptBase64: RequestHandler = async (req, res) => {
   const user = req.user
   const imageBase64 = req.body.image as string
 
-  const receiptImage = Buffer.from(imageBase64, 'base64')
+  const receiptImage = Buffer.from(imageBase64, 'base64').toString()
   const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
   writeFileSync(imagePath, receiptImage)
 
@@ -29,26 +25,22 @@ export const handleCreateReceiptBase64: RequestHandler = async (
 
   const receiptObj = await receiptService.createReceipt(
     { ...receipt, imagePath },
-    user._id
+    user._id,
   )
 
   res.status(201).json(receiptObj)
 }
 
 // unsupported
-export const handleCreateReceipt: RequestHandler = async (req, res, next) => {
+export const handleCreateReceipt: RequestHandler = async (req, res) => {
   res.status(500).end()
 }
 
-export const handleGetSingleReceipt: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleGetSingleReceipt: RequestHandler = async (req, res) => {
   res.status(200).json(req.receipt)
 }
 
-export const handleRemoveReceipt: RequestHandler = async (req, res, next) => {
+export const handleRemoveReceipt: RequestHandler = async (req, res) => {
   const receipt = req.receipt
   const user = req.user
 
@@ -59,23 +51,19 @@ export const handleRemoveReceipt: RequestHandler = async (req, res, next) => {
   res.status(200).json(receipts)
 }
 
-export const handleChangeReceiptTitle: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleChangeReceiptTitle: RequestHandler = async (req, res) => {
   const receipt = req.receipt
   const { newTitle } = req.body
 
   const updatedReceipt = await receiptService.changeReceiptTitle(
     receipt,
-    newTitle
+    newTitle,
   )
 
   res.status(200).json(updatedReceipt)
 }
 
-export const handleAddContributor: RequestHandler = async (req, res, next) => {
+export const handleAddContributor: RequestHandler = async (req, res) => {
   const receipt = req.receipt
   const user = req.user
   const { contributorId } = req.params
@@ -83,29 +71,25 @@ export const handleAddContributor: RequestHandler = async (req, res, next) => {
   const updatedReceipt = await receiptService.addContributor(
     receipt,
     user._id,
-    contributorId as unknown as UserId
+    contributorId as unknown as UserId,
   )
 
   res.status(201).json(updatedReceipt)
 }
 
-export const handleRemoveContributor: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleRemoveContributor: RequestHandler = async (req, res) => {
   const receipt = req.receipt
   const { contributorId } = req.params
 
   const updatedReceipt = await receiptService.removeContributor(
     receipt,
-    contributorId as unknown as UserId
+    contributorId as unknown as UserId,
   )
 
   res.status(201).json(updatedReceipt)
 }
 
-export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
+export const handleUpdateProduct: RequestHandler = async (req, res) => {
   const receipt = req.receipt
   const { productId } = req.params
   const { product } = req.body
@@ -113,19 +97,19 @@ export const handleUpdateProduct: RequestHandler = async (req, res, next) => {
   const updatedReceipt = await receiptService.updateProduct(
     receipt,
     productId as unknown as ProductId,
-    product
+    product,
   )
 
   res.status(201).json(updatedReceipt)
 }
 
-export const handleRemoveProduct: RequestHandler = async (req, res, next) => {
+export const handleRemoveProduct: RequestHandler = async (req, res) => {
   const receipt = req.receipt
   const { productId } = req.params
 
   const updatedReceipt = await receiptService.removeProduct(
     receipt,
-    productId as unknown as ProductId
+    productId as unknown as ProductId,
   )
 
   res.status(201).json(updatedReceipt)

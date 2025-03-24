@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import type mongoose from 'mongoose'
 
 export type UserId = mongoose.Types.ObjectId
 

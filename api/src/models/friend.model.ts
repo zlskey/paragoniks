@@ -1,5 +1,4 @@
-import { FriendId, } from 'src/types/generic.types'
-import _ from 'lodash'
+import type { FriendId } from 'src/types/generic.types'
 import mongoose from 'mongoose'
 
 export interface IFriendship {
@@ -20,7 +19,7 @@ const friendshipSchema = new mongoose.Schema<IFriendship>({
   status: {
     type: String,
     default: 'pending',
-  }
+  },
 })
 
 const Friendship = mongoose.model<IFriendship>('Friendships', friendshipSchema)

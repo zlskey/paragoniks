@@ -1,4 +1,4 @@
-import {
+import type {
   Division,
   DivisionType,
   IProduct,
@@ -6,11 +6,11 @@ import {
 } from 'src/models/receipt.model'
 
 export function parseFloatWithTwoDecimals(number: number): number {
-  return parseFloat(number.toFixed(2))
+  return Number.parseFloat(number.toFixed(2))
 }
 
 export function getTotalPrice(
-  product: Pick<IProduct, 'price' | 'count' | 'discount'>
+  product: Pick<IProduct, 'price' | 'count' | 'discount'>,
 ) {
   return product.price * product.count - Math.abs(product.discount)
 }
@@ -18,32 +18,38 @@ export function getTotalPrice(
 export function getTotalContribution(products: IProduct[], userId: string) {
   return products.reduce((total, product) => {
     const userDivision = product.division[userId]
+
     if (userDivision === null) {
       return total
     }
+
     switch (product.divisionType) {
-      case 'amount':
-        return parseFloatWithTwoDecimals(total + userDivision)
-      case 'shares':
+      case 'shares': {
         const totalShares = Object.values(product.division).reduce(
           (total, share) => (total ?? 0) + (share ?? 0),
-          0
+          0,
         )
         return parseFloatWithTwoDecimals(
-          total + (product.totalPrice / totalShares) * userDivision
+          total + (product.totalPrice / totalShares) * userDivision,
         )
+      }
       case 'percentage':
         return parseFloatWithTwoDecimals(
-          total + (userDivision / 100) * product.totalPrice
+          total + (userDivision / 100) * product.totalPrice,
         )
+      case 'amount':
+        return parseFloatWithTwoDecimals(total + userDivision)
+
+      default:
+        return 0
     }
   }, 0)
 }
 
 export function getCalculatedTotalsForReceipt(
-  receipt: Pick<IReceipt, 'contributors' | 'products'>
+  receipt: Pick<IReceipt, 'contributors' | 'products'>,
 ) {
-  const products = receipt.products.map(product => {
+  const products = receipt.products.map((product) => {
     const totalPrice = getTotalPrice(product)
 
     return { ...product, totalPrice }
@@ -53,14 +59,14 @@ export function getCalculatedTotalsForReceipt(
     Object.entries(receipt.contributors).map(([userId]) => {
       const contribution = getTotalContribution(products, userId)
       return [userId, contribution]
-    })
+    }),
   )
 
   const sum = parseFloatWithTwoDecimals(
     Object.values(products).reduce(
       (total, product) => total + product.totalPrice,
-      0
-    )
+      0,
+    ),
   )
 
   return { contributors, products, sum }
@@ -74,7 +80,7 @@ export function splitNumberEqually(numberToSplit: number, partsCount: number) {
       return evenPart
     }
     return parseFloatWithTwoDecimals(
-      numberToSplit - evenPart * currentPartCount
+      numberToSplit - evenPart * currentPartCount,
     )
   })
   return resultArray
@@ -101,7 +107,7 @@ export function getEvenDivision({
   const evenDivision = splitNumberEqually(numberToSplit, total)
 
   return Object.fromEntries(
-    users.map(user => {
+    users.map((user) => {
       if (mockDivision[user] === null) {
         return [user, null]
       }
@@ -113,6 +119,6 @@ export function getEvenDivision({
       }
 
       return [user, newValue]
-    })
+    }),
   )
 }

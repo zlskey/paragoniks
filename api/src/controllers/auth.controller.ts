@@ -1,13 +1,12 @@
+import type { RequestHandler } from 'express'
+
+import { userService } from 'src/services'
+import { jwtUtils } from 'src/utils'
+import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
 import {
   userValidationSchema,
   validateAndThrow,
 } from 'src/utils/user-validation-schema'
-
-import { RequestHandler } from 'express'
-import _ from 'lodash'
-import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
-import { jwtUtils } from 'src/utils'
-import { userService } from 'src/services'
 
 const domain = process.env.MAIN_DOMAIN || 'localhost'
 
@@ -25,7 +24,7 @@ const emptyUserResponse = {
   token: null,
 }
 
-export const signup: RequestHandler = async (req, res, next) => {
+export const signup: RequestHandler = async (req, res) => {
   const { username, password } = req.body
 
   await validateAndThrow(userValidationSchema, username, password)
@@ -39,7 +38,7 @@ export const signup: RequestHandler = async (req, res, next) => {
   })
 }
 
-export const login: RequestHandler = async (req, res, next) => {
+export const login: RequestHandler = async (req, res) => {
   const { username, password } = req.body
 
   const user = await userService.getByUsername(username)
@@ -54,7 +53,7 @@ export const login: RequestHandler = async (req, res, next) => {
   })
 }
 
-export const whoami: RequestHandler = async (req, res, next) => {
+export const whoami: RequestHandler = async (req, res) => {
   const jwt = req.cookies.jwt || getJwtFromHeader(req.headers.authorization)
 
   const token = jwtUtils.validateToken(jwt)
@@ -70,11 +69,11 @@ export const whoami: RequestHandler = async (req, res, next) => {
       res.json({
         user: user.removePassword(),
         token: jwt,
-      })
+      }),
     )
     .catch(() => res.clearCookie('jwt', cookieOptions).json(emptyUserResponse))
 }
 
-export const logout: RequestHandler = async (req, res, next) => {
+export const logout: RequestHandler = async (req, res) => {
   res.clearCookie('jwt', cookieOptions).status(200).json(emptyUserResponse)
 }

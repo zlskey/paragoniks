@@ -1,8 +1,8 @@
-import { ErrorObject } from './error.middleware'
-import { IReceipt } from 'src/models/receipt.model'
-import { ReceiptId } from 'src/types/generic.types'
-import { RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
+import type { IReceipt } from 'src/models/receipt.model'
+import type { ReceiptId } from 'src/types/generic.types'
 import { receiptService } from 'src/services'
+import { ErrorObject } from './error.middleware'
 
 declare global {
   namespace Express {
@@ -15,14 +15,14 @@ declare global {
 export const findAndValidateReceipt: RequestHandler = async (
   req,
   res,
-  next
+  next,
 ) => {
   const { receiptId } = req.params
 
   const { _id } = req.user
 
   const receipt = await receiptService.getReceipt(
-    receiptId as unknown as ReceiptId
+    receiptId as unknown as ReceiptId,
   )
 
   const { contributors } = receipt
@@ -34,6 +34,6 @@ export const findAndValidateReceipt: RequestHandler = async (
   }
 
   return next(
-    new ErrorObject('You are not authorized to view this receipt', 403)
+    new ErrorObject('You are not authorized to view this receipt', 403),
   )
 }

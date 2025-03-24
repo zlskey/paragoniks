@@ -1,10 +1,10 @@
-import { ErrorObject } from './error.middleware'
-import { IUser } from 'src/models/user.model'
-import { RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
+import type { IUser } from 'src/models/user.model'
 import constants from 'src/constants'
-import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
-import { jwtUtils } from 'src/utils'
 import { userService } from 'src/services'
+import { jwtUtils } from 'src/utils'
+import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
+import { ErrorObject } from './error.middleware'
 
 declare global {
   namespace Express {

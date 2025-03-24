@@ -1,12 +1,11 @@
-import { RequestHandler } from 'express'
-import { UserId } from 'src/types/generic.types'
-import _ from 'lodash'
+import type { RequestHandler } from 'express'
+import type { UserId } from 'src/types/generic.types'
 import { friendService } from 'src/services'
 
 export const handleCreateFriendshipRequest: RequestHandler = async (
   req,
   res,
-  next
+  next,
 ) => {
   const { username } = req.body
 
@@ -30,7 +29,7 @@ export const handleRemoveFriend: RequestHandler = async (req, res, next) => {
 export const handleRespondToFriendRequest: RequestHandler = async (
   req,
   res,
-  next
+  next,
 ) => {
   const { friendId, accept } = req.body
 
@@ -38,18 +37,15 @@ export const handleRespondToFriendRequest: RequestHandler = async (
 
   if (accept) {
     await friendService.acceptFriendship(user._id, friendId)
-  } else {
+  }
+  else {
     await friendService.removeFriendship(user._id, friendId)
   }
 
   next()
 }
 
-export const defaultFriendController: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const defaultFriendController: RequestHandler = async (req, res) => {
   const user = req.user
 
   const friendships = await friendService.findUserFriendships(user._id)

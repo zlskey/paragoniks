@@ -1,13 +1,11 @@
-import User, { IProfile, IUser } from 'src/models/user.model'
+import type { IProfile, IUser } from 'src/models/user.model'
+import type { UserId } from 'src/types/generic.types'
 
-import { ErrorObject } from 'src/middlewares/error.middleware'
-import { UserId } from 'src/types/generic.types'
 import constants from 'src/constants'
+import { ErrorObject } from 'src/middlewares/error.middleware'
+import User from 'src/models/user.model'
 
-export const create = async (
-  username: string,
-  password: string
-): Promise<Omit<IUser, 'password'>> => {
+export async function create(username: string, password: string): Promise<Omit<IUser, 'password'>> {
   try {
     if (!username || !password) {
       throw new ErrorObject(constants.missing_args)
@@ -16,7 +14,8 @@ export const create = async (
     const user = await User.create({ username, password })
 
     return user.removePassword()
-  } catch (err: any) {
+  }
+  catch (err: any) {
     if (err?.code === 11000) {
       throw new ErrorObject(constants.username_duplicate)
     }
@@ -25,9 +24,7 @@ export const create = async (
   }
 }
 
-export const getByUsername = async (
-  username: IUser['username']
-): Promise<IUser> => {
+export async function getByUsername(username: IUser['username']): Promise<IUser> {
   const user = await User.findOne({ username })
 
   if (!user) {
@@ -37,7 +34,7 @@ export const getByUsername = async (
   return user
 }
 
-export const getById = async (userId: UserId | string): Promise<IUser> => {
+export async function getById(userId: UserId | string): Promise<IUser> {
   const user = await User.findById(userId)
 
   if (!user) {
@@ -47,16 +44,16 @@ export const getById = async (userId: UserId | string): Promise<IUser> => {
   return user
 }
 
-export const remove = async (userId: UserId): Promise<void> => {
+export async function remove(userId: UserId): Promise<void> {
   await getById(userId) // to validate if user exist
   await User.findByIdAndRemove(userId)
 }
 
-export const update = async (userId: UserId, payload: any): Promise<IUser> => {
+export async function update(userId: UserId, payload: any): Promise<IUser> {
   return await User.findByIdAndUpdate(userId, payload, { new: true })
 }
 
-export const getProfile = async (userId: UserId): Promise<IProfile | null> => {
+export async function getProfile(userId: UserId): Promise<IProfile | null> {
   const user = await User.findOne({ _id: userId })
 
   if (!user) {
@@ -66,7 +63,7 @@ export const getProfile = async (userId: UserId): Promise<IProfile | null> => {
   return user.pickProfile()
 }
 
-export const getProfiles = async (usersIds: UserId[]): Promise<IProfile[]> => {
+export async function getProfiles(usersIds: UserId[]): Promise<IProfile[]> {
   const users = await User.find({ _id: { $in: usersIds } })
 
   return users.map(user => user.pickProfile())

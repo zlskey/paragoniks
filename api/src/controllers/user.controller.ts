@@ -1,11 +1,11 @@
+import type { RequestHandler } from 'express'
+
+import type { UserId } from 'src/types/generic.types'
+import { writeFileSync } from 'node:fs'
+import constants from 'src/constants'
 import { anonimUsersService, userService } from 'src/services'
 
-import { RequestHandler } from 'express'
-import { UserId } from 'src/types/generic.types'
-import constants from 'src/constants'
-import { writeFileSync } from 'fs'
-
-export const handleChangeUsername: RequestHandler = async (req, res, next) => {
+export const handleChangeUsername: RequestHandler = async (req, res) => {
   const { username } = req.body
 
   const user = req.user
@@ -14,7 +14,7 @@ export const handleChangeUsername: RequestHandler = async (req, res, next) => {
   res.status(201).json(updatedUser)
 }
 
-export const handleChangePassword: RequestHandler = async (req, res, next) => {
+export const handleChangePassword: RequestHandler = async (req, res) => {
   const { currentPassword, newPassword } = req.body
 
   const user = req.user
@@ -25,7 +25,7 @@ export const handleChangePassword: RequestHandler = async (req, res, next) => {
   res.status(202).json('success')
 }
 
-export const handleToggleTheme: RequestHandler = async (req, res, next) => {
+export const handleToggleTheme: RequestHandler = async (req, res) => {
   const user = req.user
 
   const updatedUser = await user.toggleTheme()
@@ -33,11 +33,7 @@ export const handleToggleTheme: RequestHandler = async (req, res, next) => {
   res.status(201).json(updatedUser)
 }
 
-export const handleChangeAvatarColor: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleChangeAvatarColor: RequestHandler = async (req, res) => {
   const user = req.user
   const { color } = req.body
 
@@ -46,13 +42,9 @@ export const handleChangeAvatarColor: RequestHandler = async (
   res.status(201).json(updatedUser)
 }
 
-export const handleChangeAvatarImage: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleChangeAvatarImage: RequestHandler = async (req, res) => {
   const user = req.user
-  const avatarImage = Buffer.from(req.body.image, 'base64')
+  const avatarImage = Buffer.from(req.body.image, 'base64').toString()
   const imagePath = `uploads/${user._id}_${new Date().getTime()}.png`
   writeFileSync(imagePath, avatarImage)
 
@@ -61,7 +53,7 @@ export const handleChangeAvatarImage: RequestHandler = async (
   res.status(201).json(updatedUser)
 }
 
-export const handleGetProfile: RequestHandler = async (req, res, next) => {
+export const handleGetProfile: RequestHandler = async (req, res) => {
   const { userId } = req.params
 
   if (!userId) {
@@ -75,7 +67,7 @@ export const handleGetProfile: RequestHandler = async (req, res, next) => {
   }
 
   const anonimProfile = await anonimUsersService.getById(
-    userId as unknown as UserId
+    userId as unknown as UserId,
   )
   if (!anonimProfile) {
     throw new Error(constants.invalid_username)
@@ -84,7 +76,7 @@ export const handleGetProfile: RequestHandler = async (req, res, next) => {
   res.status(200).json(anonimProfile)
 }
 
-export const handleSetLang: RequestHandler = async (req, res, next) => {
+export const handleSetLang: RequestHandler = async (req, res) => {
   const { lang } = req.params
 
   const user = req.user

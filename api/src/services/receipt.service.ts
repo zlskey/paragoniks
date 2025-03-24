@@ -1,20 +1,21 @@
-import * as fs from 'fs'
-
-import { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
-import Receipt, {
+import type {
   IProduct,
   IReceipt,
   ISimpleReceipt,
 } from 'src/models/receipt.model'
+
+import type { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
+import * as fs from 'node:fs'
+import { ErrorObject } from 'src/middlewares/error.middleware'
+import Receipt from 'src/models/receipt.model'
+
 import {
   getCalculatedTotalsForReceipt,
   getEvenDivision,
 } from 'src/utils/calculators'
-
-import { ErrorObject } from 'src/middlewares/error.middleware'
 import { compareIds } from 'src/utils/ids-util'
 
-export const getAllReceipts = async (userId: UserId) => {
+export async function getAllReceipts(userId: UserId) {
   const receipts = await Receipt.find({
     $or: [{ owner: userId }, { contributors: userId.toString() }],
   })
@@ -22,7 +23,7 @@ export const getAllReceipts = async (userId: UserId) => {
   return receipts
 }
 
-export const getReceipt = async (receiptId: ReceiptId) => {
+export async function getReceipt(receiptId: ReceiptId) {
   const receipt = await Receipt.findById(receiptId)
 
   if (!receipt) {
@@ -32,10 +33,7 @@ export const getReceipt = async (receiptId: ReceiptId) => {
   return receipt
 }
 
-export const createReceipt = async (
-  receipt: ISimpleReceipt,
-  userId: UserId
-) => {
+export async function createReceipt(receipt: ISimpleReceipt, userId: UserId) {
   const products = receipt.products.map(product => ({
     ...product,
     discount: Math.abs(product.discount ?? 0),
@@ -54,10 +52,7 @@ export const createReceipt = async (
   return await Receipt.create(receiptObj)
 }
 
-export const removeReceiptForUser = async (
-  receipt: IReceipt,
-  userId: UserId
-) => {
+export async function removeReceiptForUser(receipt: IReceipt, userId: UserId) {
   const isOwner = compareIds(receipt.owner, userId)
 
   if (!isOwner) {
@@ -70,22 +65,15 @@ export const removeReceiptForUser = async (
   fs.rmSync(receipt.imagePath)
 }
 
-export const changeReceiptTitle = async (
-  receipt: IReceipt,
-  newTitle: string
-) => {
+export async function changeReceiptTitle(receipt: IReceipt, newTitle: string) {
   return await Receipt.findByIdAndUpdate(
     receipt._id,
     { title: newTitle },
-    { new: true }
+    { new: true },
   )
 }
 
-export const addContributor = async (
-  receipt: IReceipt,
-  userId: UserId,
-  contributorId: UserId
-) => {
+export async function addContributor(receipt: IReceipt, userId: UserId, contributorId: UserId) {
   const { contributors } = receipt
 
   if (!compareIds(receipt.owner, userId)) {
@@ -113,14 +101,11 @@ export const addContributor = async (
   return await Receipt.findByIdAndUpdate(
     receipt._id,
     { contributors, products: updatedProducts },
-    { new: true }
+    { new: true },
   )
 }
 
-export const removeContributor = async (
-  receipt: IReceipt,
-  contributorId: UserId
-) => {
+export async function removeContributor(receipt: IReceipt, contributorId: UserId) {
   const contributors = receipt.contributors
   if (compareIds(receipt.owner, contributorId)) {
     throw new ErrorObject('Nie można usunąć właściciela', 400)
@@ -128,7 +113,7 @@ export const removeContributor = async (
 
   delete contributors[contributorId.toString()]
 
-  const updatedProducts = receipt.products.map(product => {
+  const updatedProducts = receipt.products.map((product) => {
     const { divisionType, totalPrice } = product
     const divisionCopy = { ...product.division }
     const userDivision = divisionCopy[contributorId.toString()]
@@ -142,8 +127,8 @@ export const removeContributor = async (
       ...product,
       division: getEvenDivision({
         division: divisionCopy,
-        divisionType: divisionType,
-        totalPrice: totalPrice,
+        divisionType,
+        totalPrice,
       }),
     }
   })
@@ -151,16 +136,12 @@ export const removeContributor = async (
   return await Receipt.findByIdAndUpdate(
     receipt._id,
     getCalculatedTotalsForReceipt({ contributors, products: updatedProducts }),
-    { new: true }
+    { new: true },
   )
 }
 
-export const updateProduct = async (
-  receipt: IReceipt,
-  productId: ProductId,
-  product: Omit<IProduct, '_id'>
-) => {
-  const updatedProducts = receipt.products.map(receiptProduct => {
+export async function updateProduct(receipt: IReceipt, productId: ProductId, product: Omit<IProduct, '_id'>) {
+  const updatedProducts = receipt.products.map((receiptProduct) => {
     if (compareIds(receiptProduct._id, productId)) {
       return {
         ...receiptProduct,
@@ -177,29 +158,23 @@ export const updateProduct = async (
       contributors: receipt.contributors,
       products: updatedProducts,
     }),
-    { new: true }
+    { new: true },
   )
 }
 
-export const removeProduct = async (
-  receipt: IReceipt,
-  productId: ProductId
-) => {
+export async function removeProduct(receipt: IReceipt, productId: ProductId) {
   const updatedProducts = receipt.products.filter(
-    product => !compareIds(product._id, productId)
+    product => !compareIds(product._id, productId),
   )
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
     { products: updatedProducts },
-    { new: true }
+    { new: true },
   )
 }
 
-export const removeUserFromAllReceipts = async (
-  userToBeRemoved: UserId,
-  ownerOfReceipts: UserId
-) => {
+export async function removeUserFromAllReceipts(userToBeRemoved: UserId, ownerOfReceipts: UserId) {
   const receipts = await Receipt.find({
     [`contributors.${userToBeRemoved}`]: { $exists: true },
     owner: ownerOfReceipts,

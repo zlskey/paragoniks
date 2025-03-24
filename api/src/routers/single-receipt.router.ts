@@ -6,37 +6,37 @@ const singleReceiptRouter = Router()
 
 singleReceiptRouter.get(
   '/',
-  wrapAsync(receiptController.handleGetSingleReceipt)
+  wrapAsync(receiptController.handleGetSingleReceipt),
 )
 
 singleReceiptRouter.delete(
   '/',
-  wrapAsync(receiptController.handleRemoveReceipt)
+  wrapAsync(receiptController.handleRemoveReceipt),
 )
 
 singleReceiptRouter.patch(
   '/title',
-  wrapAsync(receiptController.handleChangeReceiptTitle)
+  wrapAsync(receiptController.handleChangeReceiptTitle),
 )
 
 singleReceiptRouter.patch(
   '/product/:productId',
-  wrapAsync(receiptController.handleUpdateProduct)
+  wrapAsync(receiptController.handleUpdateProduct),
 )
 
 singleReceiptRouter.delete(
   '/product/:productId',
-  wrapAsync(receiptController.handleRemoveProduct)
+  wrapAsync(receiptController.handleRemoveProduct),
 )
 
 singleReceiptRouter.patch(
   '/friend/:contributorId',
-  wrapAsync(receiptController.handleAddContributor)
+  wrapAsync(receiptController.handleAddContributor),
 )
 
 singleReceiptRouter.delete(
   '/friend/:contributorId',
-  wrapAsync(receiptController.handleRemoveContributor)
+  wrapAsync(receiptController.handleRemoveContributor),
 )
 
 export default singleReceiptRouter

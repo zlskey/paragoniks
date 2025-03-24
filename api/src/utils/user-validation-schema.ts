@@ -1,6 +1,6 @@
-import * as yup from 'yup'
-
 import { ErrorObject } from 'src/middlewares/error.middleware'
+
+import * as yup from 'yup'
 
 export const usernameSchema = yup.object().shape({
   username: yup
@@ -19,20 +19,17 @@ export const passwordSchema = yup.object().shape({
     .max(32, 'Password must be at most 32 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/g,
-      'Password must contain at least one uppercase letter, one lowercase letter and one number'
+      'Password must contain at least one uppercase letter, one lowercase letter and one number',
     ),
 })
 
 export const userValidationSchema = usernameSchema.concat(passwordSchema)
 
-export const validateAndThrow = async (
-  schema: yup.ObjectSchema<any>,
-  username: string,
-  password: string
-) => {
+export async function validateAndThrow(schema: yup.ObjectSchema<any>, username: string, password: string) {
   try {
     await schema.validate({ username, password })
-  } catch (error) {
+  }
+  catch (error) {
     if (error instanceof yup.ValidationError) {
       const message = error.errors[0]
 

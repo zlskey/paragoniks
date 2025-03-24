@@ -1,16 +1,13 @@
-import Anonim, { IAnonim } from 'src/models/anonim.model'
+import type { IAnonim } from 'src/models/anonim.model'
+import type { AvatarColor } from 'src/models/user.model'
 
-import { AvatarColor } from 'src/models/user.model'
-import { ErrorObject } from 'src/middlewares/error.middleware'
-import { UserId } from 'src/types/generic.types'
+import type { UserId } from 'src/types/generic.types'
 import constants from 'src/constants'
+import { ErrorObject } from 'src/middlewares/error.middleware'
+import Anonim from 'src/models/anonim.model'
 import { receiptService } from '.'
 
-export const create = async (
-  ownerId: UserId,
-  username: string,
-  avatarColor: AvatarColor
-): Promise<IAnonim> => {
+export async function create(ownerId: UserId, username: string, avatarColor: AvatarColor): Promise<IAnonim> {
   if (!username || !avatarColor) {
     throw new ErrorObject(constants.missing_args)
   }
@@ -24,10 +21,7 @@ export const create = async (
   return Anonim.create({ username, ownerId, avatarColor })
 }
 
-export const getByUsername = async (
-  ownerId: UserId,
-  username: IAnonim['username']
-): Promise<IAnonim> => {
+export async function getByUsername(ownerId: UserId, username: IAnonim['username']): Promise<IAnonim> {
   const anonim = await Anonim.findOne({ username, ownerId })
 
   if (!anonim) {
@@ -37,7 +31,7 @@ export const getByUsername = async (
   return anonim
 }
 
-export const getById = async (anonimId: UserId | string): Promise<IAnonim> => {
+export async function getById(anonimId: UserId | string): Promise<IAnonim> {
   const anonim = await Anonim.findById(anonimId)
 
   if (!anonim) {
@@ -47,25 +41,18 @@ export const getById = async (anonimId: UserId | string): Promise<IAnonim> => {
   return anonim
 }
 
-export const removeByUsername = async (
-  ownerId: UserId,
-  username: string
-): Promise<void> => {
+export async function removeByUsername(ownerId: UserId, username: string): Promise<void> {
   const anonim = await getByUsername(ownerId, username)
   await receiptService.removeUserFromAllReceipts(anonim._id, ownerId)
   await Anonim.findOneAndRemove({ ownerId, username })
 }
 
-export const update = async (
-  ownerId: UserId,
-  username: string,
-  payload: any
-): Promise<IAnonim> => {
+export async function update(ownerId: UserId, username: string, payload: any): Promise<IAnonim> {
   return await Anonim.findOneAndUpdate({ ownerId, username }, payload, {
     new: true,
   })
 }
 
-export const getAllUserAnonims = async (ownerId: UserId) => {
+export async function getAllUserAnonims(ownerId: UserId) {
   return await Anonim.find({ ownerId })
 }

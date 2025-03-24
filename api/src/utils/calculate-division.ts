@@ -1,4 +1,4 @@
-import { IProduct } from 'src/models/receipt.model'
+import type { IProduct } from 'src/models/receipt.model'
 
 function roundToTwoDecimals(num: number) {
   return Math.round((num + Number.EPSILON) * 100) / 100

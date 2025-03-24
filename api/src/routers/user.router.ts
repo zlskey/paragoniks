@@ -12,12 +12,12 @@ userRouter.patch('/theme', wrapAsync(userController.handleToggleTheme))
 
 userRouter.patch(
   '/avatar/color',
-  wrapAsync(userController.handleChangeAvatarColor)
+  wrapAsync(userController.handleChangeAvatarColor),
 )
 
 userRouter.patch(
   '/avatar/image',
-  wrapAsync(userController.handleChangeAvatarImage)
+  wrapAsync(userController.handleChangeAvatarImage),
 )
 
 userRouter.get('/profile/:userId', wrapAsync(userController.handleGetProfile))

@@ -1,11 +1,11 @@
-import { FriendId, UserId } from 'src/types/generic.types'
-import { receiptService, userService } from '.'
-
+import type { FriendId, UserId } from 'src/types/generic.types'
 import { ErrorObject } from 'src/middlewares/error.middleware'
+
 import Friendship from 'src/models/friend.model'
 import { compareIds } from 'src/utils/ids-util'
+import { receiptService, userService } from '.'
 
-export const findFriendship = async (firstId: FriendId, secondId: FriendId) => {
+export async function findFriendship(firstId: FriendId, secondId: FriendId) {
   const friendship = await Friendship.findOne({
     $or: [
       { friendId: firstId, secondFriendId: secondId },
@@ -20,17 +20,17 @@ export const findFriendship = async (firstId: FriendId, secondId: FriendId) => {
   return friendship
 }
 
-export const findUserFriendships = async (userId: UserId) => {
+export async function findUserFriendships(userId: UserId) {
   const friendships = await Friendship.find({
     $or: [{ friendId: userId, status: 'accepted' }, { secondFriendId: userId }],
   })
 
-  const simplifiedFriendships = friendships.map(friendship => {
+  const simplifiedFriendships = friendships.map((friendship) => {
     const stringFriendId = friendship.friendId.toString()
     const stringSecondFriendId = friendship.secondFriendId.toString()
 
-    const friendId =
-      stringFriendId === userId.toString()
+    const friendId
+      = stringFriendId === userId.toString()
         ? stringSecondFriendId
         : stringFriendId
 
@@ -46,10 +46,7 @@ export const findUserFriendships = async (userId: UserId) => {
   return simplifiedFriendships
 }
 
-export const sendFriendshipRequest = async (
-  friendId: FriendId,
-  friendUsername: string
-) => {
+export async function sendFriendshipRequest(friendId: FriendId, friendUsername: string) {
   const user = await userService.getByUsername(friendUsername)
 
   const secondFriendId = user._id
@@ -60,7 +57,7 @@ export const sendFriendshipRequest = async (
 
   const alreadyExistingFriendship = await Friendship.findOne({
     $or: [
-      { friendId: friendId, secondFriendId: secondFriendId },
+      { friendId, secondFriendId },
       { friendId: secondFriendId, secondFriendId: friendId },
     ],
   })
@@ -88,13 +85,13 @@ export const sendFriendshipRequest = async (
   await acceptFriendship(friendId, secondFriendId)
 }
 
-export const removeFriendship = async (firstId: UserId, secondId: UserId) => {
+export async function removeFriendship(firstId: UserId, secondId: UserId) {
   const friend = await findFriendship(firstId, secondId)
   await receiptService.removeUserFromAllReceipts(secondId, firstId)
   await friend.remove()
 }
 
-export const acceptFriendship = async (firstId: UserId, secondId: UserId) => {
+export async function acceptFriendship(firstId: UserId, secondId: UserId) {
   const friendship = await findFriendship(firstId, secondId)
 
   await Friendship.findByIdAndUpdate(friendship._id, {

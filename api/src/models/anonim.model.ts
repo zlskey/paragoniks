@@ -1,18 +1,18 @@
-import { AvatarColor, IUser } from './user.model'
+import type { UserId } from 'src/types/generic.types'
 
-import { ErrorObject } from 'src/middlewares/error.middleware'
-import { UserId } from 'src/types/generic.types'
-import { anonimUsersService } from 'src/services'
-import constants from 'src/constants'
+import type { AvatarColor, IUser } from './user.model'
 import mongoose from 'mongoose'
+import constants from 'src/constants'
+import { ErrorObject } from 'src/middlewares/error.middleware'
+import { anonimUsersService } from 'src/services'
 
 export interface IAnonim
   extends Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'> {
   ownerId: UserId
 
-  changeUsername(this: IAnonim, username: string): Promise<IAnonim>
-  changeAvatarImage(this: IAnonim, image: string): Promise<IAnonim>
-  changeAvatarColor(this: IAnonim, color: AvatarColor): Promise<IAnonim>
+  changeUsername: (this: IAnonim, username: string) => Promise<IAnonim>
+  changeAvatarImage: (this: IAnonim, image: string) => Promise<IAnonim>
+  changeAvatarColor: (this: IAnonim, color: AvatarColor) => Promise<IAnonim>
 }
 
 const anonimSchema = new mongoose.Schema<IAnonim>({
