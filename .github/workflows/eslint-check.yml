@@ -53,9 +53,9 @@ jobs:
             PORT=${{ vars.PORT }}
             CORS_ORIGIN=${{ vars.CORS_ORIGIN }}
           secrets: |
-            JWT_SECRET
-            MONGODB_URL
-            MONGODB_ROOT_USERNAME
-            MONGODB_ROOT_PASSWORD
-            OPENAI_API_KEY
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            MONGODB_URL=${{ secrets.MONGODB_URL }}
+            MONGODB_ROOT_USERNAME=${{ secrets.MONGODB_ROOT_USERNAME }}
+            MONGODB_ROOT_PASSWORD=${{ secrets.MONGODB_ROOT_PASSWORD }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
           push: true
