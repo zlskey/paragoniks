@@ -3,7 +3,7 @@ version: "3.9"
 services:
   paragoniks-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
-    image: zlskey/some-image
+    image: zlskey/paragoniks-api:latest
     restart: unless-stopped
     volumes:
       - ./data/uploads:/usr/src/app/uploads
