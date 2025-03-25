@@ -3,9 +3,8 @@ name: Backend
 on:
   workflow_run:
     workflows: [ESLint Check]
-    types:
-      - completed
-
+    types: [completed]
+    
 jobs:
   build-backend:
     runs-on: ubuntu-latest
