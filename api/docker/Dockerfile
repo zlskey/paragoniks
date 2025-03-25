@@ -1,4 +1,4 @@
-FROM node:18.14.2-bullseye-slim AS prepare
+FROM node:20.10.0-bullseye-slim AS prepare
 
 # Install gosu and node-sass dependencies
 # OpenSSH server has to be started by root user
@@ -32,6 +32,11 @@ WORKDIR "${APP_DIR}"
 # Set ownership and permissions on app directory
 RUN chown -R "${USER_NAME}":"${USER_NAME}" "${APP_DIR}" && chmod 755 "${APP_DIR}"
 
+# Install pnpm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 
 # ------------   Development   ------------
 
@@ -52,29 +57,31 @@ FROM prepare AS builder
 
 # Copy package.json and package-lock.json
 COPY package*.json .
+COPY pnpm* .
 
 # Install dependencies
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Build application
-RUN npm run build
+RUN pnpm build
 
 
 # ------------   Production   ------------
 
-
+    
 FROM prepare AS production
 
-# Copy package.json and package-lock.json
+# Copy package.json and pnpm-lock.yaml
 COPY package*.json .
+COPY pnpm* .
 
 # Install dependencies
-RUN npm ci --only=production
+RUN pnpm install --prod --frozen-lockfile
 
 # Copy build directory from builder
 COPY --from=builder /usr/src/app/dist ./src
 
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

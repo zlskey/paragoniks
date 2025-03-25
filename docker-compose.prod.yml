@@ -1,68 +1,30 @@
 version: "3.9"
 
 services:
-  rs-app:
-    container_name: ${DOCKER_APP_CONTAINER_NAME}
-    restart: unless-stopped
-    build:
-      context: ./app
-      dockerfile: docker/Dockerfile
-      target: production
-      args:
-        - VITE_NODE_ENV=${DOCKER_APP_NODE_ENV}
-        - VITE_PORT=${DOCKER_APP_INTERNAL_PORT}
-        - VITE_RS_API_URL=${DOCKER_APP_API_URL}
-    env_file:
-      - ".env"
-      - "./app/.env"
-    labels:
-      # Enable Traefik for this container
-      - "traefik.enable=true"
-
-      # HTTPS Secure Router Configuration
-      - "traefik.http.routers.rs.entrypoints=https"
-      - "traefik.http.routers.rs.rule=Host(`${DOCKER_DOMAIN}`)"
-      - "traefik.http.routers.rs.tls=true"
-      - "traefik.http.routers.rs.service=rs-service"
-      - "traefik.http.services.rs-service.loadbalancer.server.port=80"
-
-      # Docker Network Configuration
-      - "traefik.docker.network=proxy"
-    networks:
-      - proxy
-    depends_on:
-      - rs-api
-
-  rs-api:
+  paragoniks-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
+    image: zlskey/paragoniks-api:latest
     restart: unless-stopped
     volumes:
       - ./data/uploads:/usr/src/app/uploads
-    build:
-      context: ./api
-      dockerfile: docker/Dockerfile
-      target: production
-    env_file:
-      - ".env"
-      - "./api/.env"
     labels:
       # Enable Traefik for this container
       - "traefik.enable=true"
 
       # HTTPS Secure Router Configuration
-      - "traefik.http.routers.rs-api.entrypoints=https"
-      - "traefik.http.routers.rs-api.rule=Host(`api.${DOCKER_DOMAIN}`)"
-      - "traefik.http.routers.rs-api.tls=true"
-      - "traefik.http.routers.rs-api.service=rs-api-service"
-      - "traefik.http.services.rs-api-service.loadbalancer.server.port=${DOCKER_API_INTERNAL_PORT}"
+      - "traefik.http.routers.paragoniks-api.entrypoints=https"
+      - "traefik.http.routers.paragoniks-api.rule=Host(`api.${DOCKER_DOMAIN}`)"
+      - "traefik.http.routers.paragoniks-api.tls=true"
+      - "traefik.http.routers.paragoniks-api.service=paragoniks-api-service"
+      - "traefik.http.services.paragoniks-api-service.loadbalancer.server.port=${DOCKER_API_INTERNAL_PORT}"
 
       # Docker Network Configuration
       - "traefik.docker.network=proxy"
     networks:
       - proxy
-      - rs-local-network
+      - paragoniks-local-network
 
-  rs-db:
+  paragoniks-db:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
     image: mongo
     restart: unless-stopped
@@ -70,7 +32,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
     networks:
-      - rs-local-network
+      - paragoniks-local-network
     volumes:
       - ./data/db:/data/db
     ports:
@@ -79,5 +41,5 @@ services:
 networks:
   proxy:
     external: true
-  rs-local-network:
+  paragoniks-local-network:
     driver: bridge

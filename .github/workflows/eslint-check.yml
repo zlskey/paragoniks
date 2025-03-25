@@ -1,21 +1,29 @@
-name: Eslint check
+name: ESLint Check
 
 on: [push]
 
 jobs:
-  eslint-check-frontend:
-    runs-on: ubuntu-latest
+  eslint:
+    runs-on: ubuntu-22.04
+    name: ESLint
+    strategy:
+      matrix:
+        node-version: [20]
     steps:
-      - uses: node@20.10.0-bullseye-slim
-      - uses: actions/checkout@main
-      - run: cd app
-      - run: pnpm ci
-      - run: pnpm lint
-  eslint-check-backend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: node@20.10.0-bullseye-slim
-      - uses: actions/checkout@main
-      - run: cd api
-      - run: pnpm ci
-      - run: pnpm lint
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+      - name: Run ESLint check for frontend
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm lint
+        working-directory: ./app
+      - name: Run ESLint check for backend
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm lint
+        working-directory: ./api
+

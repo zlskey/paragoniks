@@ -4,7 +4,7 @@ import { ErrorObject } from 'src/middlewares/error.middleware'
 import { getPrompt } from './get-prompt'
 
 const openai = new OpenAI({
-  apiKey: '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', // replace with your own API key
+  apiKey: process.env.OPENAI_API_KEY,
 })
 
 export async function extractReceiptDataFromText(imageBase64: string) {
