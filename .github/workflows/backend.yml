@@ -10,6 +10,7 @@ jobs:
   build-backend:
     runs-on: ubuntu-latest
     name: Build Backend
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
