@@ -74,14 +74,18 @@ jobs:
           key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
           user: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
           command: |
+            echo "Moving into project directory"
             cd /home/projects/roommate-shopper
             
             # Set global git config for the deployer if needed
+            echo "Pulling git changes"
             git config --global user.name ${{ vars.GITHUB_USERNAME }}
             git config --global user.email ${{ vars.GITHUB_MAIL }}
             git remote set-url origin https://${{ vars.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GITHUB_USERNAME }}/paragoniks.git
             git pull
             
+            echo "Pulling images"
             make pull-images
+            echo "Starting docker"
             make start-production
 
