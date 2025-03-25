@@ -69,15 +69,22 @@ jobs:
       - name: ssh-job
         uses: nekiro/ssh-job@e0d177751aced5bcaf110ce4d782a681e5e12856
         with:
-          host: 192.109.241.187
-          port: 420
+          host: ${{ secrets.PARAGONIKS_SSH_IP }}
+          port: ${{ secrets.PARAGONIKS_SSH_PORT }}
           key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
-          user: paragoniks-deployer
+          user: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
           command: |
             cd /home/projects/roommate-shopper
+            
+            # Set global git config for the deployer if needed
+            #git config --global user.name "Deployer Name"
+            #git config --global user.email "deployer@example.com"
+            
+            # Set up SSH authentication for git if using SSH key
+            eval $(ssh-agent -s)
+            echo "${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}" | ssh-add -
             git pull
+            
             make pull-images
             make start-production
-    
-    
 
