@@ -1,4 +1,4 @@
-name: ESLint Check
+name: Super Workflow # @todo - split it sometime in the future
 
 on: [push]
 
