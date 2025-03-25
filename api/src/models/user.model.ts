@@ -1,5 +1,5 @@
 import type { UserId } from 'src/types/generic.types'
-import bcrypt from 'bcrypt'
+import { compare, genSalt, hash } from 'bcryptjs'
 import _ from 'lodash'
 import mongoose from 'mongoose'
 import constants from 'src/constants'
@@ -76,15 +76,15 @@ const userSchema = new mongoose.Schema<IUser>({
 })
 
 userSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt()
-  this.password = await bcrypt.hash(this.password, salt)
+  const salt = await genSalt()
+  this.password = await hash(this.password, salt)
 
   next()
 })
 
 class UserClass {
   async validatePassword(this: IUser, password: string): Promise<void> {
-    const isValid = await bcrypt.compare(password, this.password)
+    const isValid = await compare(password, this.password)
 
     if (isValid)
       return
@@ -96,8 +96,8 @@ class UserClass {
     this: IUser,
     password: IUser['password'],
   ): Promise<void> {
-    const salt = await bcrypt.genSalt()
-    const newPassword = (password = await bcrypt.hash(password, salt))
+    const salt = await genSalt()
+    const newPassword = (password = await hash(password, salt))
 
     await User.findByIdAndUpdate(this._id, { password: newPassword })
   }
