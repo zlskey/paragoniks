@@ -13,7 +13,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res) => {
   const statusCode = err.code || 500
 
   if (err instanceof ErrorObject === false) {
-    console.error(err)
+    console.error(JSON.stringify(err))
   }
 
   res.status(statusCode).json({
