@@ -78,7 +78,7 @@ jobs:
           username: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
           script: |
             echo "Moving into project directory"
-            cd /home/projects/roommate-shopper
+            cd /home/projects/paragoniks
             
             # Set global git config for the deployer if needed
             echo "Pulling git changes"

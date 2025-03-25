@@ -172,6 +172,5 @@ dist
 # IntelliJ based IDEs
 .idea
 
-uploads
+data
 api/pol.traineddata
-db
