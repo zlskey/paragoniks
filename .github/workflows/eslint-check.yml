@@ -47,7 +47,7 @@ jobs:
           context: ./api
           file: ./api/docker/Dockerfile
           target: production
-          tags: paragoniks-api:latest
+          tags: zlskey/paragoniks-api:latest
           build-args: |
             NODE_ENV=${{ vars.NODE_ENV }}
             PORT=${{ vars.PORT }}
