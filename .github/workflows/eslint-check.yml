@@ -5,6 +5,7 @@ on: [push]
 jobs:
   lint:
     runs-on: ubuntu-22.04
+    name: ESlint
     strategy:
       matrix:
         node-version: [20]
@@ -25,9 +26,11 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./api
-  build:
+  build-backend:
     runs-on: ubuntu-latest
-
+    name: Build Backend
+    needs: lint
+    if: needs.lint.outputs.src == 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
