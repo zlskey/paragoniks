@@ -66,12 +66,12 @@ jobs:
     name: Deploy Backend
     needs: build-backend
     steps:
-      - name: ssh-job
-        uses: nekiro/ssh-job@e0d177751aced5bcaf110ce4d782a681e5e12856
+      - name: Deploying through SSH
+        uses: D3rHase/ssh-command-action@36e5d63b8db905eaca2128e5943597fcd7727786
         with:
-          host: ${{ secrets.PARAGONIKS_SSH_IP }}
+          hostname: ${{ secrets.PARAGONIKS_SSH_IP }}
           port: ${{ secrets.PARAGONIKS_SSH_PORT }}
-          key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
+          private-key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
           user: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
           command: |
             echo "Moving into project directory"
