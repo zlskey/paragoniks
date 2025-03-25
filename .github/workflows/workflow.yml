@@ -82,12 +82,13 @@ jobs:
             
             # Set global git config for the deployer if needed
             echo "Pulling git changes"
-            git config --global user.name ${{ vars.GITHUB_USERNAME }}
-            git config --global user.email ${{ vars.GITHUB_MAIL }}
-            git remote set-url origin https://${{ vars.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GITHUB_USERNAME }}/paragoniks.git
+            git config --global user.name ${{ vars.GIT_USERNAME }}
+            git config --global user.email ${{ vars.GIT_MAIL }}
+            git remote set-url origin https://${{ vars.GIT_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USERNAME }}/paragoniks.git
             git pull
             
             echo "Pulling images"
+            echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
             make pull-images
             echo "Starting docker"
             make start-production
