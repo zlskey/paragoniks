@@ -77,12 +77,9 @@ jobs:
             cd /home/projects/roommate-shopper
             
             # Set global git config for the deployer if needed
-            #git config --global user.name "Deployer Name"
-            #git config --global user.email "deployer@example.com"
-            
-            # Set up SSH authentication for git if using SSH key
-            eval $(ssh-agent -s)
-            echo "${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}" | ssh-add -
+            git config --global user.name ${{ vars.GITHUB_USERNAME }}
+            git config --global user.email ${{ vars.GITHUB_MAIL }}
+            git remote set-url origin https://${{ vars.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GITHUB_USERNAME }}/paragoniks.git
             git pull
             
             make pull-images
