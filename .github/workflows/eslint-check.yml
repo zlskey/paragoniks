@@ -69,7 +69,7 @@ jobs:
       - name: Deploying through SSH
         uses: D3rHase/ssh-command-action@36e5d63b8db905eaca2128e5943597fcd7727786
         with:
-          hostname: ${{ secrets.PARAGONIKS_SSH_IP }}
+          host: ${{ secrets.PARAGONIKS_SSH_IP }}
           port: ${{ secrets.PARAGONIKS_SSH_PORT }}
           private-key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
           user: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
