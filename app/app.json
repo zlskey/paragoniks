@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/logo.png",
     "scheme": "paragoniks",
+    "platforms": ["android"],
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/splash.png",
