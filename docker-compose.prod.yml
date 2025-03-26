@@ -5,6 +5,9 @@ services:
     container_name: ${DOCKER_API_CONTAINER_NAME}
     image: zlskey/paragoniks-api:latest
     restart: unless-stopped
+    env_file:
+      - ".env"
+      - "./api/.env"
     volumes:
       - ./data/uploads:/usr/src/app/uploads
     labels:

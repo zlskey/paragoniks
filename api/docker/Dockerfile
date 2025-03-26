@@ -79,7 +79,7 @@ COPY package*.json .
 COPY pnpm* .
 
 # Install dependencies
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # Copy build directory from builder
 COPY --from=builder /usr/src/app/dist ./src
