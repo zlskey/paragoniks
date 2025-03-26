@@ -6,7 +6,9 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/splash.png",
     "scheme": "paragoniks",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "userInterfaceStyle": "automatic",
     "splash": {
       "backgroundColor": "#0F0F0F",
@@ -41,7 +43,8 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true,
