@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#0F0F0F"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -47,6 +49,7 @@
       "eas": {
         "projectId": "adfc708a-b990-4549-b269-3bf1fbca4e8f"
       }
-    }
+    },
+    "owner": "zlskey"
   }
 }
