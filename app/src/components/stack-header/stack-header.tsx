@@ -21,7 +21,6 @@ interface StackHeaderProps {
 function StackHeader({ title, endAdornment }: StackHeaderProps) {
   return (
     <Flex
-      pt={5}
       alignContent="center"
       styles={styles.container}
       justifyContent="space-between"

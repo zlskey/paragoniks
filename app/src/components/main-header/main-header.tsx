@@ -26,7 +26,6 @@ function MainHeader({ title, endAdornment }: MainHeaderProps) {
 
   return (
     <Flex
-      pt={5}
       direction="row"
       styles={styles.container}
       justifyContent="space-between"

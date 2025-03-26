@@ -86,3 +86,5 @@ export interface Receipt extends SimpleReceipt {
 }
 
 export type ImageBase64 = string
+
+export default {}
