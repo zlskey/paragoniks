@@ -49,10 +49,13 @@ jobs:
           context: ./api
           file: ./api/docker/Dockerfile
           target: production
-          tags: zlskey/paragoniks-api:latest
+          tags: |
+            zlskey/paragoniks-api:latest
+            zlskey/paragoniks-api:${{ github.sha::7 }}
           push: true
           cache-from: type=registry,ref=zlskey/paragoniks-api:buildcache
           cache-to: type=registry,ref=zlskey/paragoniks-api:buildcache,mode=max
+
 
   deploy-backend:
     runs-on: ubuntu-latest
