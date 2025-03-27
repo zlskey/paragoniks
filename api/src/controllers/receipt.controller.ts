@@ -17,9 +17,10 @@ export const handleCreateReceiptBase64: RequestHandler = async (req, res) => {
   const user = req.user
   const imageBase64 = req.body.image as string
 
-  const receiptImage = Buffer.from(imageBase64, 'base64').toString()
+  const receiptImage = Buffer.from(imageBase64, 'base64')
+  const receiptImageUint8Array = new Uint8Array(receiptImage.buffer, receiptImage.byteOffset, receiptImage.byteLength)
   const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
-  writeFileSync(imagePath, receiptImage)
+  writeFileSync(imagePath, receiptImageUint8Array)
 
   const receipt = await extractReceiptDataFromText(imageBase64)
 

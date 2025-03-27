@@ -44,9 +44,10 @@ export const handleChangeAvatarColor: RequestHandler = async (req, res) => {
 
 export const handleChangeAvatarImage: RequestHandler = async (req, res) => {
   const user = req.user
-  const avatarImage = Buffer.from(req.body.image, 'base64').toString()
+  const avatarImage = Buffer.from(req.body.image, 'base64')
+  const avatarImageUint8Array = new Uint8Array(avatarImage.buffer, avatarImage.byteOffset, avatarImage.byteLength)
   const imagePath = `uploads/${user._id}_${new Date().getTime()}.png`
-  writeFileSync(imagePath, avatarImage)
+  writeFileSync(imagePath, avatarImageUint8Array)
 
   const updatedUser = await user.changeAvatarImage(imagePath)
 

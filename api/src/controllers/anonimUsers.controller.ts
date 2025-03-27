@@ -41,11 +41,12 @@ export const handleChangeUsername: RequestHandler = async (req, res) => {
 export const handleChangeAvatarImage: RequestHandler = async (req, res) => {
   const user = req.user
   const { username } = req.body
-  const avatarImage = Buffer.from(req.body.image, 'base64').toString() // @todo check if works
+  const avatarImage = Buffer.from(req.body.image, 'base64')
+  const avatarImageUint8Array = new Uint8Array(avatarImage.buffer, avatarImage.byteOffset, avatarImage.byteLength)
   const imagePath = `uploads/${
     user._id
   }_a:${username}_${new Date().getTime()}.png`
-  writeFileSync(imagePath, avatarImage)
+  writeFileSync(imagePath, avatarImageUint8Array)
 
   await anonimUsersService.update(user._id, username, { avatarImage })
 
