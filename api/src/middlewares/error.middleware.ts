@@ -9,11 +9,11 @@ export const notFound: RequestHandler = (req, res, next) => {
   next(error)
 }
 
-export const errorHandler: ErrorRequestHandler = (err, req, res) => {
+export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   const statusCode = err.code || 500
 
   if (err instanceof ErrorObject === false) {
-    console.error(JSON.stringify(err))
+    console.error(JSON.stringify(err).toString())
   }
 
   res.status(statusCode).json({

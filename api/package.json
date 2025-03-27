@@ -1,6 +1,6 @@
 {
   "name": "typescript-express-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "template for typescript express api with jwt auth and mongodb",
   "author": "zlskey",
   "license": "MIT",
