@@ -29,10 +29,9 @@ export async function findUserFriendships(userId: UserId) {
     const stringFriendId = friendship.friendId.toString()
     const stringSecondFriendId = friendship.secondFriendId.toString()
 
-    const friendId
-      = stringFriendId === userId.toString()
-        ? stringSecondFriendId
-        : stringFriendId
+    const friendId = stringFriendId === userId.toString()
+      ? stringSecondFriendId
+      : stringFriendId
 
     const { _id, status } = friendship
 

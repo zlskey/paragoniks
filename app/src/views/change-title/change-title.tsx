@@ -4,10 +4,12 @@ import Button from '@components/button'
 import TextField from '@components/text-field'
 import Wrapper from '@components/wrapper'
 
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { changeReceiptTitle } from 'src/api/endpoints/receipt/receipt.api'
 import * as yup from 'yup'
@@ -28,6 +30,7 @@ function ChangeReceiptTitle() {
   const { id } = useLocalSearchParams()
 
   const queryClient = useQueryClient()
+  const addNotification = useNotificationContext()
 
   const receipt = queryClient.getQueryData<Receipt>(['receipt', id])
 
@@ -45,6 +48,7 @@ function ChangeReceiptTitle() {
       queryClient.setQueryData(['receipt', id], data)
       router.back()
     },
+    onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
   })
 
   function handleSubmit(data: typeof defaultValues) {

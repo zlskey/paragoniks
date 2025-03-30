@@ -1,9 +1,11 @@
 import type { Anonim } from '@app/generic.types'
-
 import { removeAnonim } from '@api/endpoints/anonim/anonim.api'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 function useRemoveAnonim() {
+  const addNotification = useNotificationContext()
   const queryClient = useQueryClient()
 
   const mutationKey = ['anonim', 'remove']
@@ -23,6 +25,8 @@ function useRemoveAnonim() {
       return { oldAnonim }
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey }),
+    onSuccess: (_, { username }) => addNotification(`Anonim ${username} usunięty`, 'success'),
+    onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
   })
 
   return handleRemoveAnonim

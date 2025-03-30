@@ -4,11 +4,13 @@ import Flex from '@components/flex'
 
 import TextField from '@components/text-field'
 import Wrapper from '@components/wrapper'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { passwordSchema } from '@helpers/utils/password-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { router } from 'expo-router'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { changePassword } from 'src/api/endpoints/user/user.api'
 import * as yup from 'yup'
@@ -46,14 +48,15 @@ function ChangePassword() {
           type: 'manual',
           message: err.response.data.error.message,
         })
+        return
       }
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
   })
 
-  const buttonDisabled
-    = isPending
-      || formState.formState.isSubmitting
-      || !!formState.formState.errors.password
+  const buttonDisabled = isPending
+    || formState.formState.isSubmitting
+    || !!formState.formState.errors.password
 
   return (
     <FormProvider {...formState}>

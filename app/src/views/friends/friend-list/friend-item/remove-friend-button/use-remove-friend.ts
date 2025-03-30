@@ -1,5 +1,6 @@
 import type { Friendship } from 'src/app/generic.types'
 
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeFriend } from 'src/api/endpoints/friends/friends.api'
@@ -26,8 +27,7 @@ function useRemoveFriend() {
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey }),
     onSuccess: () => addNotification('Znajomy usunięty', 'success'),
-    onError: () =>
-      addNotification('Wystąpił błąd, spróbuj ponownie później', 'error'),
+    onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
   })
 
   return handleRemoveFriend

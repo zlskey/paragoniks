@@ -1,12 +1,14 @@
 import type { WhoamiUserResponse } from 'src/api/endpoints/user/user.api.types'
 import Button from '@components/button'
-
 import Flex from '@components/flex'
-import TextField from '@components/text-field'
 import Typography from '@components/typography'
+import UsernameTextField from '@components/username-text-field'
 import Wrapper from '@components/wrapper'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { changeUsername } from 'src/api/endpoints/user/user.api'
 
@@ -15,6 +17,7 @@ const defaultValues = {
 }
 
 function ChangeUsername() {
+  const addNotification = useNotificationContext()
   const formState = useForm({
     defaultValues,
   })
@@ -33,6 +36,7 @@ function ChangeUsername() {
       }))
       formState.reset()
       router.back()
+      addNotification('Nazwa zmieniona', 'success')
     },
     onError: (err: any) => {
       if (err.response.data.error.message) {
@@ -40,7 +44,9 @@ function ChangeUsername() {
           type: 'manual',
           message: err.response.data.error.message,
         })
+        return
       }
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
   })
 
@@ -54,12 +60,10 @@ function ChangeUsername() {
             Spersonalizuj swoją nazwę, aby znajomi mogli Cię znaleźć.
           </Typography>
 
-          <TextField
-            error={formState.formState.errors.username}
-            name="username"
-            label="Nazwa"
-            fullWidth
+          <UsernameTextField
             autoFocus
+            fullWidth
+            error={formState.formState.errors.username}
           />
         </Flex>
 

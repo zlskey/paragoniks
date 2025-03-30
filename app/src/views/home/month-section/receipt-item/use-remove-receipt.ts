@@ -1,6 +1,7 @@
 import type { Receipt, ReceiptId } from 'src/app/generic.types'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-
 import { removeReceipt } from 'src/api/endpoints/receipt/receipt.api'
 
 interface UseRemoveReceiptProps {
@@ -9,6 +10,7 @@ interface UseRemoveReceiptProps {
 
 function useRemoveReceipt({ receiptId }: UseRemoveReceiptProps) {
   const queryClient = useQueryClient()
+  const addNotification = useNotificationContext()
 
   return useMutation({
     mutationKey: ['receipt', { receiptId }],
@@ -30,7 +32,9 @@ function useRemoveReceipt({ receiptId }: UseRemoveReceiptProps) {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['receipt'] })
     },
+    onSuccess: () => addNotification('Paragon usunięty', 'success'),
     onError: (_1, _2, context: any) => {
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
       queryClient.setQueryData(
         ['receipt'],
         context?.previousReceipts as Receipt[],

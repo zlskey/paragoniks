@@ -4,12 +4,14 @@ import { AvatarColor } from '@app/generic.types'
 import Avatar from '@components/avatar'
 import Button from '@components/button'
 import Flex from '@components/flex'
-import TextField from '@components/text-field'
 import Typography from '@components/typography'
+import UsernameTextField from '@components/username-text-field'
 import Wrapper from '@components/wrapper'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -28,12 +30,13 @@ function CreateAnonim() {
   const { mutate, isPending } = useMutation({
     mutationKey: ['anonim', 'create'],
     mutationFn: createAnonim,
-    onSuccess: async () => {
+    onSuccess: async (_, { username }) => {
+      addNotification(`Anonim ${username} dodany!`, 'success')
       await queryClient.invalidateQueries({ queryKey: ['anonims', 'all'] })
       router.back()
     },
     onError: () => {
-      addNotification('Nie udało się stworzyć anonima', 'error')
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
   })
   const form = useForm({ defaultValues })
@@ -52,10 +55,8 @@ function CreateAnonim() {
       >
         <FormProvider {...form}>
           <Flex direction="column" alignContent="stretch" spacing={1}>
-            <TextField
+            <UsernameTextField
               autoFocus
-              name="username"
-              label="Nazwa użytkownika"
               error={form.formState.errors.username}
             />
 

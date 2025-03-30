@@ -25,6 +25,7 @@ const MonthSectionList = React.memo(({ receipts }: MonthSectionProps) => {
 
   return (
     <SectionList
+      style={{ flex: 1 }}
       refreshing={!!isLoading}
       onRefresh={onRefresh}
       sections={getReceiptsSplittedByMonth(receipts)}

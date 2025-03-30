@@ -1,13 +1,14 @@
 import Button from '@components/button'
 import Flex from '@components/flex'
 import IconButton from '@components/icon-button'
-import TextField from '@components/text-field'
 
 import Typography from '@components/typography'
+import UsernameTextField from '@components/username-text-field'
 import { AntDesign } from '@expo/vector-icons'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Dialog, Portal } from 'react-native-paper'
 import { sendFriendRequest } from 'src/api/endpoints/friends/friends.api'
@@ -43,11 +44,7 @@ function AddFriendIcon() {
     },
     onError: (err: any) => {
       const errorMessage = err?.response?.data.error.message
-
-      formState.setError('friendUsername', {
-        type: 'manual',
-        message: errorMessage || 'Something went wrong',
-      })
+      addNotification(errorMessage || SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
   })
 
@@ -97,12 +94,9 @@ function AddFriendIcon() {
                 />
               </Flex>
 
-              <TextField
-                error={formState.formState.errors.friendUsername}
-                style={{ textTransform: 'lowercase' }}
+              <UsernameTextField
                 label="Nazwa znajomego"
                 name="friendUsername"
-                autoCorrect={false}
                 autoFocus
               />
 

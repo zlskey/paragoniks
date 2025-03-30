@@ -1,13 +1,13 @@
 import type { FieldError } from 'react-hook-form'
 import type { TextInputProps } from 'react-native'
 import Typography from '@components/typography'
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { StyleSheet, TextInput, View } from 'react-native'
 
 import { colors, getPx } from 'src/app/styles'
 
-interface TextFieldProps extends TextInputProps {
+export interface TextFieldProps extends TextInputProps {
   name: string
   label: string
   fullWidth?: boolean

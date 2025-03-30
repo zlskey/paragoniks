@@ -1,5 +1,6 @@
 import type { UserId } from 'src/app/generic.types'
-
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeContributor } from 'src/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/views/receipt/receipt.context'
@@ -7,6 +8,7 @@ import { useReceiptContext } from 'src/views/receipt/receipt.context'
 function useRemoveContributor({ contributorId }: { contributorId: UserId }) {
   const queryClient = useQueryClient()
   const { receipt: oldReceipt } = useReceiptContext()
+  const addNotification = useNotificationContext()
 
   const receiptId = oldReceipt._id
   const mutationKey = ['receipt', receiptId]
@@ -34,14 +36,11 @@ function useRemoveContributor({ contributorId }: { contributorId: UserId }) {
 
       return { oldReceipt }
     },
-    onError: (err, _, context) => {
+    onError: (_1, _2, context) => {
       if (context?.oldReceipt) {
         queryClient.setQueryData(mutationKey, context.oldReceipt)
       }
-
-      if (err) {
-        console.error(err)
-      }
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey })

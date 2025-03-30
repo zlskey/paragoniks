@@ -3,8 +3,11 @@ import Paper from '@components/paper'
 
 import TextField from '@components/text-field'
 import Typography from '@components/typography'
+import UsernameTextField from '@components/username-text-field'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { loginUser } from 'src/api/endpoints/user/user.api'
@@ -16,9 +19,8 @@ const defaultValues = {
 }
 
 function LoginForm() {
+  const addNotification = useNotificationContext()
   const formState = useForm({ defaultValues })
-
-  const [error, setError] = useState('')
 
   const queryClient = useQueryClient()
 
@@ -27,11 +29,10 @@ function LoginForm() {
     mutationFn: loginUser,
     onSuccess: (data) => {
       queryClient.setQueryData(['user', 'whoami'], data)
+      addNotification(`Witaj ponownie ${data.user.username} ❣️`, 'success')
     },
     onError: (err: any) => {
-      if (err.response.data.error.message) {
-        setError(err.response.data.error.message)
-      }
+      addNotification(err.response.data.error.message ?? SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
   })
 
@@ -41,19 +42,7 @@ function LoginForm() {
         <Flex direction="column" alignContent="stretch" p={2} spacing={2}>
           <Typography variant="title">Zaloguj się</Typography>
 
-          {error && (
-            <Paper styles={{ backgroundColor: colors.red }}>
-              <Flex p={1}>
-                <Typography styles={{ color: colors.text }}>{error}</Typography>
-              </Flex>
-            </Paper>
-          )}
-
-          <TextField
-            name="username"
-            label="Nazwa użytkownika"
-            style={{ backgroundColor: colors.background }}
-          />
+          <UsernameTextField style={{ backgroundColor: colors.background }} />
 
           <TextField
             name="password"

@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios'
 import type { ImageBase64, Receipt } from 'src/app/generic.types'
-
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createReceipt } from 'src/api/endpoints/receipt/receipt.api'
@@ -16,8 +16,10 @@ function useUploadReceipt() {
     },
     onError: (err: AxiosError) => {
       if (err?.response?.status === 429) {
-        addNotification('Limit of 2 receipts per 6 hours reached', 'error')
+        addNotification('Limit 2 paragonów na 6 godzin osiągniety', 'error')
+        return
       }
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
     onSuccess: (data) => {
       if (!data) {
@@ -28,6 +30,7 @@ function useUploadReceipt() {
         ...oldReceipts,
         data,
       ])
+      addNotification('Paragon dodany', 'success')
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['receipt'] })

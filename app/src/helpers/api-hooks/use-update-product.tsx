@@ -1,5 +1,7 @@
 import type { Receipt } from 'src/app/generic.types'
 
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateProduct } from 'src/api/endpoints/receipt/receipt.api'
 
@@ -9,8 +11,10 @@ interface UseUpdateProductProps {
 }
 
 function useUpdateProduct({ receipt, onSuccess }: UseUpdateProductProps) {
+  const addNotification = useNotificationContext()
   const queryClient = useQueryClient()
   const queryKey = ['receipt', receipt._id]
+
   return useMutation({
     mutationKey: ['receipt'],
     mutationFn: updateProduct,
@@ -36,6 +40,7 @@ function useUpdateProduct({ receipt, onSuccess }: UseUpdateProductProps) {
       })
       onSuccess?.()
     },
+    onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
   })
 }
 

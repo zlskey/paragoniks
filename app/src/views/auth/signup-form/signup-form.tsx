@@ -3,10 +3,13 @@ import Paper from '@components/paper'
 
 import TextField from '@components/text-field'
 import Typography from '@components/typography'
+import UsernameTextField from '@components/username-text-field'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { userSchema } from '@helpers/utils/password-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { signupUser } from 'src/api/endpoints/user/user.api'
@@ -19,9 +22,8 @@ const defaultValues = {
 }
 
 function SignupForm() {
+  const addNotification = useNotificationContext()
   const form = useForm({ defaultValues, resolver: yupResolver(userSchema) })
-
-  const [error, setError] = useState('')
 
   const queryClient = useQueryClient()
 
@@ -29,12 +31,11 @@ function SignupForm() {
     mutationKey: ['auth', 'signup'],
     mutationFn: signupUser,
     onSuccess: (data) => {
+      addNotification(`Witamy ${data.user.username}!`, 'success')
       queryClient.setQueryData(['user', 'whoami'], data)
     },
     onError: (err: any) => {
-      if (err.response.data.error.message) {
-        setError(err.response.data.error.message)
-      }
+      addNotification(err.response.data.error.message ?? SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
   })
 
@@ -44,19 +45,9 @@ function SignupForm() {
         <Flex direction="column" alignContent="stretch" p={2} spacing={2}>
           <Typography variant="title">Zarejestruj się</Typography>
 
-          {error && (
-            <Paper styles={{ backgroundColor: colors.red }}>
-              <Flex p={1}>
-                <Typography styles={{ color: colors.text }}>{error}</Typography>
-              </Flex>
-            </Paper>
-          )}
-
-          <TextField
-            name="username"
-            label="Nazwa użytkownika"
-            style={{ backgroundColor: colors.background }}
+          <UsernameTextField
             error={form.formState.errors.username}
+            style={{ backgroundColor: colors.background }}
           />
 
           <TextField
@@ -77,10 +68,7 @@ function SignupForm() {
 
           <Flex justifyContent="center">
             <TouchableOpacity
-              onPress={() => {
-                setError('')
-                form.handleSubmit(data => mutate(data))()
-              }}
+              onPress={form.handleSubmit(data => mutate(data))}
             >
               <Typography>Zarejestruj się</Typography>
             </TouchableOpacity>

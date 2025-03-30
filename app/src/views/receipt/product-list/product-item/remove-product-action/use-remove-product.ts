@@ -1,5 +1,6 @@
 import type { ProductId } from 'src/app/generic.types'
-
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeProduct } from 'src/api/endpoints/receipt/receipt.api'
 import { useReceiptContext } from 'src/views/receipt/receipt.context'
@@ -9,6 +10,7 @@ interface UseToggleComprisingProps {
 }
 
 function useRemoveProduct({ productId }: UseToggleComprisingProps) {
+  const addNotification = useNotificationContext()
   const { receipt } = useReceiptContext()
   const receiptId = receipt._id
 
@@ -35,6 +37,7 @@ function useRemoveProduct({ productId }: UseToggleComprisingProps) {
       }
 
       queryClient.setQueryData(['receipt', receipt._id], context.previousValue)
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
