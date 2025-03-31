@@ -4,7 +4,7 @@ import Typography from '@components/typography'
 import { getReceiptsSplittedByMonth } from '@helpers/utils'
 import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrapper'
 import { useQueryClient } from '@tanstack/react-query'
-import React from 'react'
+import React, { useState } from 'react'
 import { SectionList, View } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
 import ReceiptItem from './receipt-item'
@@ -15,18 +15,20 @@ interface MonthSectionProps {
 
 const MonthSectionList = React.memo(({ receipts }: MonthSectionProps) => {
   const queryClient = useQueryClient()
-  const isLoading = queryClient.isFetching({ queryKey: ['receipt'] })
+  const [isLoading, setisLoading] = useState(false)
 
-  function onRefresh() {
-    queryClient.invalidateQueries({
+  async function onRefresh() {
+    setisLoading(true)
+    await queryClient.invalidateQueries({
       queryKey: ['receipt'],
     })
+    setisLoading(false)
   }
 
   return (
     <SectionList
       style={{ flex: 1 }}
-      refreshing={!!isLoading}
+      refreshing={isLoading}
       onRefresh={onRefresh}
       sections={getReceiptsSplittedByMonth(receipts)}
       keyExtractor={receipt => receipt._id}

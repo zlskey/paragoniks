@@ -1,7 +1,7 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import type { DivisionType } from 'src/app/generic.types'
 import type { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
 import SplitByDrawer from './split-by-drawer'
 

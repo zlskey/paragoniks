@@ -18,11 +18,16 @@ export type ProductId = string
 export type ReceiptId = string
 export type FriendshipId = string
 
+export interface UserMeta {
+  media_quality_warning_accepted?: boolean
+}
+
 export interface User {
   _id: UserId
   username: string
   avatarColor: AvatarColor
   avatarImage: string
+  meta?: UserMeta
 }
 
 export interface Anonim extends User {

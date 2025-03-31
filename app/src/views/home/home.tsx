@@ -4,8 +4,8 @@ import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
 import React, { useMemo, useState } from 'react'
+import CreateReceiptButton from './create-receipt-button'
 import MonthSectionsList from './month-section'
-import UploadReceiptButton from './upload-receipt-button'
 import useUserReceipts from './use-user-receipts'
 
 function Home() {
@@ -26,8 +26,7 @@ function Home() {
       <Flex mt={2} alignContent="stretch" direction="column" nativeFlex>
         <Flex justifyContent="space-between">
           <Typography variant="subtitle">Twoje paragony</Typography>
-
-          <UploadReceiptButton />
+          <CreateReceiptButton />
         </Flex>
 
         <Flex nativeFlex direction="column" alignContent="stretch">

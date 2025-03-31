@@ -23,5 +23,6 @@ userRouter.patch(
 userRouter.get('/profile/:userId', wrapAsync(userController.handleGetProfile))
 
 userRouter.patch('/lang/:lang', wrapAsync(userController.handleSetLang))
+userRouter.patch('/meta', wrapAsync(userController.handleUpdateMeta))
 
 export default userRouter

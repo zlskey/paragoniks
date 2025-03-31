@@ -17,7 +17,7 @@ import {
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
@@ -93,7 +93,7 @@ function RootLayout() {
     })()
   }, [data])
 
-  const user = data?.user || userMockup
+  const user = data?.user ?? userMockup
 
   if (isPending || !loaded) {
     return <Wrapper />
@@ -109,11 +109,13 @@ function RootLayout() {
 export default function App() {
   return (
     <GestureHandlerRootView>
-      <QueryClientProvider client={queryClient}>
-        <NotificationWrapper>
-          <RootLayout />
-        </NotificationWrapper>
-      </QueryClientProvider>
+      <BottomSheetModalProvider>
+        <QueryClientProvider client={queryClient}>
+          <NotificationWrapper>
+            <RootLayout />
+          </NotificationWrapper>
+        </QueryClientProvider>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   )
 }

@@ -1,4 +1,4 @@
-import type { AvatarColor, ImageBase64, User } from 'src/app/generic.types'
+import type { AvatarColor, ImageBase64, User, UserMeta } from 'src/app/generic.types'
 
 export interface LoginUserBody {
   username: string
@@ -50,4 +50,8 @@ export interface ChangeAvatarImageBody {
 
 export interface ChangeUserLangBody {
   lang: 'PL' | 'EN'
+}
+
+export interface UpdateUserMetaBody {
+  meta: Partial<UserMeta>
 }

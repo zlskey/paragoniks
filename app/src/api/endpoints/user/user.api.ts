@@ -12,6 +12,7 @@ import type {
   SignupUserBody,
   SignupUserResponse,
   ToggleThemeBody,
+  UpdateUserMetaBody,
   WhoamiUserBody,
   WhoamiUserResponse,
 } from './user.api.types'
@@ -101,6 +102,14 @@ export async function changeUserLang({ lang }: ChangeUserLangBody) {
   const url = `user/lang/${lang}`
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url)
+
+  return response.data
+}
+
+export async function updateUserMeta(body: UpdateUserMetaBody) {
+  const url = 'user/meta'
+  const rsApi = await getRsApi()
+  const response = await rsApi.patch<User>(url, body)
 
   return response.data
 }

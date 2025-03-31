@@ -24,6 +24,10 @@ export enum Lang {
   AUTO = 'auto',
 }
 
+export interface UserMeta {
+  media_quality_warning_accepted: boolean
+}
+
 export interface IUser {
   _id: UserId
 
@@ -37,6 +41,8 @@ export interface IUser {
 
   lang: Lang
 
+  meta: UserMeta
+
   removePassword: () => Omit<IUser, 'password'>
   validatePassword: (this: IUser, password: string) => Promise<void>
   changePassword: (this: IUser, password: string) => Promise<void>
@@ -46,6 +52,7 @@ export interface IUser {
   changeAvatarImage: (this: IUser, image: string) => Promise<IUser>
   pickProfile: (this: IUser) => IProfile
   setLang: (this: IUser, lang: string) => Promise<IUser>
+  updateMeta: (this: IUser, meta: UserMeta) => Promise<IUser>
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -72,6 +79,12 @@ const userSchema = new mongoose.Schema<IUser>({
   lang: {
     type: String,
     default: Lang.AUTO,
+  },
+  meta: {
+    media_quality_warning_accepted: {
+      type: Boolean,
+      default: false,
+    },
   },
 })
 
@@ -144,6 +157,11 @@ class UserClass {
     }
 
     return userService.update(this._id, { lang })
+  }
+
+  updateMeta(this: IUser, meta: UserMeta) {
+    const currentMeta = this.meta ?? {}
+    return userService.update(this._id, { meta: { ...currentMeta, ...meta } })
   }
 }
 

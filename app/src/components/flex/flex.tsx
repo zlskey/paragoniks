@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { getPx } from '../../app/styles'
 
 interface FlexProps {
-  direction?: 'row' | 'column'
+  direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
   justifyContent?:
     | 'flex-start'
     | 'flex-end'

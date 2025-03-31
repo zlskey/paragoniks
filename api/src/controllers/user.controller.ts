@@ -86,3 +86,13 @@ export const handleSetLang: RequestHandler = async (req, res) => {
 
   res.status(201).json(profile)
 }
+
+export const handleUpdateMeta: RequestHandler = async (req, res) => {
+  const { meta } = req.body
+
+  const user = req.user
+
+  const profile = await user.updateMeta(meta)
+
+  res.status(201).json(profile)
+}

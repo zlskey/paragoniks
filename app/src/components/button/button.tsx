@@ -2,6 +2,7 @@ import type { PropsWithChildren } from 'react'
 
 import Flex from '@components/flex'
 import Typography from '@components/typography'
+import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
 
