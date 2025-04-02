@@ -6,25 +6,17 @@ import Wrapper from '@components/wrapper'
 
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { receiptSchema } from '@helpers/validation-schemes/receipt'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { changeReceiptTitle } from 'src/api/endpoints/receipt/receipt.api'
-import * as yup from 'yup'
 
 const defaultValues = {
-  newTitle: '',
+  title: '',
 }
-
-const schema = yup.object().shape({
-  newTitle: yup
-    .string()
-    .required('Nazwa paragonu jest wymagana')
-    .min(3, 'Nazwa paragonu musi mieć co najmniej 3 znaki')
-    .max(30, 'Nazwa paragonu nie może mieć więcej niż 30 znaków'),
-})
 
 function ChangeReceiptTitle() {
   const { id } = useLocalSearchParams()
@@ -36,10 +28,10 @@ function ChangeReceiptTitle() {
 
   const formState = useForm({
     defaultValues,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(receiptSchema.pick(['title'])),
   })
 
-  const newTitle = formState.watch('newTitle')
+  const newTitle = formState.watch('title')
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['receipt', id, 'title'],
@@ -54,13 +46,13 @@ function ChangeReceiptTitle() {
   function handleSubmit(data: typeof defaultValues) {
     mutate({
       receiptId: id as string,
-      newTitle: data.newTitle,
+      newTitle: data.title,
     })
   }
 
   useEffect(() => {
     formState.reset({
-      newTitle: receipt?.title,
+      title: receipt?.title,
     })
   }, [receipt])
 
@@ -70,8 +62,8 @@ function ChangeReceiptTitle() {
     <FormProvider {...formState}>
       <Wrapper>
         <TextField
-          error={formState.formState.errors.newTitle}
-          name="newTitle"
+          error={formState.formState.errors.title}
+          name="title"
           label="Nowy tytuł"
           fullWidth
           autoFocus

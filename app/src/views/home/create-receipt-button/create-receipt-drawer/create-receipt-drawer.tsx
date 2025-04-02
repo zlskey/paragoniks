@@ -9,6 +9,7 @@ import AntDesign from '@expo/vector-icons/AntDesign'
 import useUpdateUserMeta from '@helpers/api-hooks/use-update-user-meta'
 import { useUserContext } from '@helpers/contexts/user.context'
 import useUploadImage from '@helpers/hooks/use-upload-image'
+import { router } from 'expo-router'
 import React, { useCallback, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
@@ -37,7 +38,8 @@ function CreateReceiptDrawer({ drawerRef }: CreateReceiptDrawerProps) {
   } = useUpdateUserMeta()
 
   function onFillManuallyClicked() {
-    console.log()
+    router.push({ pathname: '/receipt/create' })
+    drawerRef.current?.dismiss()
   }
 
   const onGenerateFromImageClicked = useCallback(async () => {
@@ -46,7 +48,7 @@ function CreateReceiptDrawer({ drawerRef }: CreateReceiptDrawerProps) {
       return
     }
     await uploadImage(handleUploadReceipt)
-    drawerRef?.current?.present()
+    drawerRef.current?.dismiss()
   }, [
     user,
     uploadImage,
@@ -56,7 +58,7 @@ function CreateReceiptDrawer({ drawerRef }: CreateReceiptDrawerProps) {
   const onImageQualityWarningAccept = useCallback(async () => {
     await handleUpdateUserMeta({ media_quality_warning_accepted: true })
     await uploadImage(handleUploadReceipt)
-    drawerRef.current?.present()
+    drawerRef.current?.dismiss()
   }, [
     uploadImage,
     handleUploadReceipt,
@@ -103,7 +105,8 @@ function CreateReceiptDrawer({ drawerRef }: CreateReceiptDrawerProps) {
               <AntDesign name="warning" size={getPx(3)} color={colors.text} />
               <Typography>
                 Dane odczytane z nieostrych zdjęć mogą zawierać błędy.
-                Dlatego pamiętaj, aby zadbać o jak najlepszą jakość widoczności paragonu na fotografii.
+                Dlatego pamiętaj, aby zadbać o jak najlepszą jakość
+                widoczności paragonu na fotografii.
               </Typography>
             </Flex>
           </Paper>
@@ -123,7 +126,10 @@ function CreateReceiptDrawer({ drawerRef }: CreateReceiptDrawerProps) {
 
       {isPending && (
         <Flex direction="column" alignContent="center" justifyContent="center" pb={3} spacing={2}>
-          <Typography>Trwa skanowanie paragonu, możesz zamknąć to okno, a my poinformujemy Cię gdy paragon będzie gotowy.</Typography>
+          <Typography>
+            Trwa skanowanie paragonu, możesz zamknąć to okno,
+            a my poinformujemy Cię gdy paragon będzie gotowy.
+          </Typography>
           <ActivityIndicator size="small" />
         </Flex>
       )}

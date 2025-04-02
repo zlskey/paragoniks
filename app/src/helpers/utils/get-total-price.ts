@@ -1,7 +1,7 @@
-import type { Product } from 'src/app/generic.types'
+import type { SimpleProduct } from 'src/app/generic.types'
 
 export function getTotalPrice(
-  product: Pick<Product, 'price' | 'count' | 'discount'>,
+  product: Omit<SimpleProduct, 'title' | 'totalPrice'>,
 ) {
   return product.price * product.count - Math.abs(product.discount)
 }

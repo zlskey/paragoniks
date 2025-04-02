@@ -3,6 +3,7 @@ import Flex from '@components/flex'
 import GoBackIcon from '@components/icons/go-back-icon/go-back-icon'
 import Typography from '@components/typography'
 import { Skeleton } from 'moti/skeleton'
+import React from 'react'
 import { StyleSheet } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
 
@@ -15,10 +16,11 @@ const styles = StyleSheet.create({
 
 interface StackHeaderProps {
   title?: string
+  onGoBack?: () => void
   endAdornment?: React.ReactNode
 }
 
-function StackHeader({ title, endAdornment }: StackHeaderProps) {
+function StackHeader({ title, endAdornment, onGoBack }: StackHeaderProps) {
   return (
     <Flex
       alignContent="center"
@@ -26,8 +28,8 @@ function StackHeader({ title, endAdornment }: StackHeaderProps) {
       justifyContent="space-between"
     >
       <Flex spacing={1} alignContent="center">
-        <GoBackIcon />
-        {title
+        <GoBackIcon overWriteOnClick={onGoBack} />
+        {title !== undefined
           ? (
               <Typography variant="title">{title}</Typography>
             )

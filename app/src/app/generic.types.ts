@@ -44,7 +44,7 @@ export interface Friendship {
   status: 'accepted' | 'pending'
 }
 
-export type DivisionType = 'percentage' | 'amount' | 'shares'
+export type DivisionType = keyof typeof DivisionTranslationEnum
 
 export enum DivisionTranslationEnum {
   percentage = 'Procenty',
@@ -62,23 +62,35 @@ export interface Division {
   [index: string]: number | null
 }
 
-export type SimpleProduct = Omit<Product, '_id'>
-
-export interface Product {
-  _id: ProductId
-  division: Division
-  divisionType: DivisionType
+export interface SimpleProduct {
   name: string
   price: number
   count: number
   discount: number
+}
+
+export interface Product extends SimpleProduct {
+  _id: ProductId
+  division: Division
+  divisionType: DivisionType
   totalPrice: number
+}
+
+export function isProduct(obj: any): obj is Product {
+  return (
+    typeof obj === 'object'
+    && obj !== null
+    && typeof obj._id === 'string'
+    && typeof obj.totalPrice === 'number'
+    && 'division' in obj
+    && 'divisionType' in obj
+  )
 }
 
 export interface SimpleReceipt {
   sum: number
   title: string
-  products: Product[]
+  products: SimpleProduct[]
 }
 
 export interface Receipt extends SimpleReceipt {

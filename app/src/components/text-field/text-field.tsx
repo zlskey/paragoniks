@@ -12,6 +12,7 @@ export interface TextFieldProps extends TextInputProps {
   label: string
   fullWidth?: boolean
   error?: FieldError
+  labelAlwaysOnTop?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -51,6 +52,7 @@ function TextField({
   fullWidth,
   style,
   error,
+  labelAlwaysOnTop = false,
   ...props
 }: TextFieldProps) {
   const form = useFormContext()
@@ -77,9 +79,9 @@ function TextField({
         onPress={focusTextInput}
         styles={[
           styles.labelDefault,
-          isFocused || isFilled ? styles.labelFocused : styles.labelBlured,
+          isFocused || isFilled || labelAlwaysOnTop ? styles.labelFocused : styles.labelBlured,
         ]}
-        variant={isFocused || isFilled ? 'base1' : 'subtitle'}
+        variant={isFocused || isFilled || labelAlwaysOnTop ? 'base1' : 'subtitle'}
       >
         {label}
       </Typography>
@@ -94,7 +96,7 @@ function TextField({
               onFocus={() => setIsFocused(true)}
               value={value?.toString()}
               onChangeText={(text) => {
-                setIsFilled(!!text)
+                setIsFilled(text !== '')
                 onChange(text)
               }}
               onBlur={() => {

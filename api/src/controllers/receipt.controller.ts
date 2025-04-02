@@ -1,8 +1,10 @@
 import type { RequestHandler } from 'express'
 
+import type { ISimpleReceipt } from 'src/models/receipt.model'
 import type { ProductId, UserId } from 'src/types/generic.types'
 import { writeFileSync } from 'node:fs'
 import { receiptService } from 'src/services'
+import { createReceipt } from 'src/services/receipt.service'
 import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res) => {
@@ -13,7 +15,7 @@ export const handleGetUserReceipts: RequestHandler = async (req, res) => {
   res.status(200).json(receipts)
 }
 
-export const handleCreateReceiptBase64: RequestHandler = async (req, res) => {
+export const handleCreateReceiptFromImage: RequestHandler = async (req, res) => {
   const user = req.user
   const imageBase64 = req.body.image as string
 
@@ -32,9 +34,13 @@ export const handleCreateReceiptBase64: RequestHandler = async (req, res) => {
   res.status(201).json(receiptObj)
 }
 
-// unsupported
-export const handleCreateReceipt: RequestHandler = async (req, res) => {
-  res.status(500).end()
+export const handleCreateReceiptFromData: RequestHandler = async (req, res) => {
+  const user = req.user
+  const receiptBody = req.body as Pick<ISimpleReceipt, 'products' | 'title'>
+
+  const receipt = await createReceipt({ ...receiptBody, imagePath: '' }, user._id)
+
+  res.status(201).json(receipt)
 }
 
 export const handleGetSingleReceipt: RequestHandler = async (req, res) => {

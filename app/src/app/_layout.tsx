@@ -60,6 +60,12 @@ function RootLayoutNav() {
             redirect={!loggedIn}
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen
+            name="receipt/create"
+            redirect={!loggedIn}
+            options={{ headerShown: false }}
+          />
         </Stack>
       </BottomSheetModalProvider>
     </PaperProvider>

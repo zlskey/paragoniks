@@ -2,16 +2,16 @@ import Flex from '@components/flex'
 
 import AddContributorIcon from '@components/icons/add-contributor-icon'
 import ChangeTitleIcon from '@components/icons/change-title-icon'
+import ProductListConnected from '@components/product-list'
 import StackHeader from '@components/stack-header'
 import Wrapper from '@components/wrapper'
 import { useUserContext } from '@helpers/contexts/user.context'
 import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
-import { useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import ContributorList from './contributor-list'
-import ProductList from './product-list'
 import ReceiptContextProvider from './receipt.context'
 import ReceiptSkeleton from './receipt.skeleton'
 
@@ -61,7 +61,7 @@ function Receipt() {
           pb={2}
         >
           <ContributorList />
-          <ProductList />
+          <ProductListConnected />
         </Flex>
       </ReceiptContextProvider>
     </Wrapper>

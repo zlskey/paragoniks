@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 interface DrawerProps {
   title: string
   snapPoints?: number[]
+  onDismiss?: () => void
   onSnapPointChange?: (point: number) => void
   enableDynamicSizing?: boolean
 }

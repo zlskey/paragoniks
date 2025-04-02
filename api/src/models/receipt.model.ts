@@ -50,7 +50,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>(
     },
     imagePath: {
       type: String,
-      required: true,
+      default: '',
     },
     contributors: {},
     products: [],

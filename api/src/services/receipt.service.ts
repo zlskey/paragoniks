@@ -33,7 +33,7 @@ export async function getReceipt(receiptId: ReceiptId) {
   return receipt
 }
 
-export async function createReceipt(receipt: ISimpleReceipt, userId: UserId) {
+export async function createReceipt(receipt: Pick<ISimpleReceipt, 'products' | 'title' | 'imagePath'>, userId: UserId) {
   const products = receipt.products.map(product => ({
     ...product,
     discount: Math.abs(product.discount ?? 0),
@@ -62,7 +62,9 @@ export async function removeReceiptForUser(receipt: IReceipt, userId: UserId) {
 
   await Receipt.findByIdAndRemove(receipt._id)
 
-  fs.rmSync(receipt.imagePath)
+  if (receipt.imagePath !== '') {
+    fs.rmSync(receipt.imagePath)
+  }
 }
 
 export async function changeReceiptTitle(receipt: IReceipt, newTitle: string) {

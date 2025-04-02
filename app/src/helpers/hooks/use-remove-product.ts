@@ -1,9 +1,9 @@
-import type { ProductId } from 'src/app/generic.types'
+import type { ProductId } from '@app/generic.types'
+import { removeProduct } from '@api/endpoints/receipt/receipt.api'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { removeProduct } from 'src/api/endpoints/receipt/receipt.api'
-import { useReceiptContext } from 'src/views/receipt/receipt.context'
+import { useReceiptContext } from '@views/receipt/receipt.context'
 
 interface UseToggleComprisingProps {
   productId: ProductId
