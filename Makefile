@@ -2,7 +2,7 @@ BUILD := false
 FOLLOW := false
 
 start-production:
-	docker compose -f docker-compose.prod.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate 
+	docker compose -f docker-compose.prod.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate -d
 
 start-development:
 	docker compose -f docker-compose.dev.yml up $(if $(filter false,$(FOLLOW)),-d,) $(if $(filter true,$(BUILD)),--build,) --force-recreate
