@@ -87,15 +87,14 @@ jobs:
             git config --global user.email ${{ vars.GIT_MAIL }}
 
             # Checkout to the current branch
-            current_branch="${{ github.ref_name }}"
-            echo "Checking out to current branch: $current_branch"
+            echo "Checking out to main branch"
             git fetch origin
-            git checkout $current_branch
+            git checkout main
 
             # Pull the latest changes
             echo "Pulling git changes"
             git remote set-url origin https://${{ vars.GIT_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USERNAME }}/paragoniks.git
-            git pull origin $current_branch
+            git pull origin main
 
             echo "Pulling images"
             echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
