@@ -75,14 +75,12 @@ function RootLayoutNav() {
 }
 
 function isWebOnDesktop() {
+  return false
   const isWeb = Platform.OS === 'web'
 
   const isDesktopUserAgent = /Windows|Macintosh|Linux/.test(navigator.userAgent)
 
-  const isDesktopSize = typeof window !== 'undefined'
-    && window.innerWidth > 800
-
-  return isWeb && (isDesktopUserAgent || isDesktopSize)
+  return isWeb && isDesktopUserAgent
 };
 
 function RootLayout() {
