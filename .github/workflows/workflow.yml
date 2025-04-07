@@ -85,7 +85,8 @@ jobs:
             echo "Configuring git user"
             git config --global user.name ${{ vars.GIT_USERNAME }}
             git config --global user.email ${{ vars.GIT_MAIL }}
-
+            git config pull.rebase true
+            
             # Checkout to the current branch
             echo "Checking out to main branch"
             git fetch origin
