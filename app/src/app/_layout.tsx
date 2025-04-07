@@ -75,7 +75,6 @@ function RootLayoutNav() {
 }
 
 function isWebOnDesktop() {
-  return false
   const isWeb = Platform.OS === 'web'
 
   const isDesktopUserAgent = /Windows|Macintosh|Linux/.test(navigator.userAgent)
