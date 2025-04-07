@@ -74,8 +74,15 @@ function RootLayoutNav() {
   )
 }
 
-function isNotMobilePlatform() {
-  return Platform.OS !== 'ios' && Platform.OS !== 'android'
+function isWebOnDesktop() {
+  const isWeb = Platform.OS === 'web'
+
+  const isDesktopUserAgent = /Windows|Macintosh|Linux/.test(navigator.userAgent)
+
+  const isDesktopSize = typeof window !== 'undefined'
+    && window.innerWidth > 800
+
+  return isWeb && (isDesktopUserAgent || isDesktopSize)
 };
 
 function RootLayout() {
@@ -107,7 +114,7 @@ function RootLayout() {
 
   const user = data?.user ?? userMockup
 
-  if (isNotMobilePlatform()) {
+  if (isWebOnDesktop()) {
     return <NoPcSupport />
   }
 
