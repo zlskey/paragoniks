@@ -1,7 +1,7 @@
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useUserContext } from '@helpers/contexts/user.context'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { saveToStorage } from '@helpers/utils/storage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { logoutUser } from 'src/api/endpoints/user/user.api'
 
@@ -22,7 +22,7 @@ function useLogoutMutation() {
       return { previousUser: user }
     },
     onSettled: async () => {
-      await AsyncStorage.setItem('token', '')
+      await saveToStorage('token', '')
       await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
       queryClient.clear()
     },

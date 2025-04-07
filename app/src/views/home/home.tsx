@@ -14,7 +14,7 @@ function Home() {
   const { data } = useUserReceipts()
 
   const filteredReceipts = useMemo(() => {
-    return data.filter(receipt =>
+    return (data ?? []).filter(receipt =>
       receipt.title.toLowerCase().includes(searchQuery.toLowerCase()),
     )
   }, [data, searchQuery])

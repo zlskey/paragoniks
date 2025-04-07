@@ -14,10 +14,12 @@ import {
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query'
+import NoPcSupport from '@views/no-pc-support'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect, useState } from 'react'
+import { Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
@@ -72,6 +74,10 @@ function RootLayoutNav() {
   )
 }
 
+function isNotMobilePlatform() {
+  return Platform.OS !== 'ios' && Platform.OS !== 'android'
+};
+
 function RootLayout() {
   const [loggedIn, setLoggedIn] = useState(false)
   const { data, isPending } = useQuery({
@@ -100,6 +106,10 @@ function RootLayout() {
   }, [data])
 
   const user = data?.user ?? userMockup
+
+  if (isNotMobilePlatform()) {
+    return <NoPcSupport />
+  }
 
   if (isPending || !loaded) {
     return <Wrapper />

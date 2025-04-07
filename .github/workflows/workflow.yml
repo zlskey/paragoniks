@@ -101,4 +101,4 @@ jobs:
             echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
             make pull-images
             echo "Starting docker"
-            make start-production
+            make start-production BUILD=true

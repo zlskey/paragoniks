@@ -27,6 +27,32 @@ services:
       - proxy
       - paragoniks-local-network
 
+  paragoniks-web-app:
+    container_name: ${DOCKER_APP_CONTAINER_NAME}
+    restart: unless-stopped
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - ".env"
+      - "./app/.env"
+    labels:
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+
+      # HTTPS Secure Router Configuration
+      - "traefik.http.routers.paragoniks-web-app.entrypoints=https"
+      - "traefik.http.routers.paragoniks-web-app.rule=Host(`${DOCKER_DOMAIN}`)"
+      - "traefik.http.routers.paragoniks-web-app.tls=true"
+      - "traefik.http.routers.paragoniks-web-app.service=paragoniks-web-app-service"
+      - "traefik.http.services.paragoniks-web-app-service.loadbalancer.server.port=${DOCKER_APP_INTERNAL_PORT}"
+
+      # Docker Network Configuration
+      - "traefik.docker.network=proxy"
+    networks:
+      - proxy
+
   paragoniks-db:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
     image: mongo
