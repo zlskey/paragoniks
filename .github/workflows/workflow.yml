@@ -89,10 +89,6 @@ jobs:
             # Pull the latest changes
             echo "Pulling git changes"
             git remote set-url origin https://${{ vars.GIT_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USERNAME }}/paragoniks.git
-            git fetch origin
-            git checkout -b test origin/test
-            git branch -D main
-            git checkout -b main origin/main
             git pull origin main
 
             echo "Pulling images"
