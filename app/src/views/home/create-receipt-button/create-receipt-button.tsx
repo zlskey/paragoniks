@@ -1,9 +1,9 @@
 import { colors, getPx } from '@app/styles'
 import Button from '@components/button'
 import { useDrawerFunctions } from '@components/drawer'
+import CreateReceiptDrawer from '@components/drawers/create-receipt-drawer'
 import { FontAwesome6 } from '@expo/vector-icons'
 import React from 'react'
-import CreateReceiptDrawer from './create-receipt-drawer'
 
 function CreateReceiptButton() {
   const ref = useDrawerFunctions()

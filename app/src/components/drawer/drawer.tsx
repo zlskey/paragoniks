@@ -65,6 +65,7 @@ const Drawer = forwardRef<BottomSheetModal, React.PropsWithChildren<DrawerProps>
         <Flex
           pr={1.5}
           pl={1.5}
+          pb={2}
           spacing={1}
           direction="column"
           alignContent="stretch"

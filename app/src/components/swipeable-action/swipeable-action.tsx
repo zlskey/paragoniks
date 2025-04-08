@@ -33,7 +33,7 @@ function SwipeableAction({
   left,
 }: SwipeableActionProps) {
   return (
-    <TouchableOpacity onPress={onClick}>
+    <TouchableOpacity style={{ width: 1000, flex: 1 }} onPress={onClick}>
       <Flex
         pr={2}
         pl={2}

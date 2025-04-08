@@ -13,7 +13,7 @@ import { router } from 'expo-router'
 import React, { useCallback, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
-import useUploadReceipt from '../use-upload-receipt'
+import useUploadReceipt from '../../../views/home/create-receipt-button/use-upload-receipt'
 
 type State = 'main' | 'image_quality_warning'
 
