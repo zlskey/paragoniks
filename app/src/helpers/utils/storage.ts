@@ -8,7 +8,7 @@ export function isWebOnDesktop() {
     return false
   }
 
-  const isDesktopUserAgent = /Windows|Macintosh|Linux/.test(navigator.userAgent)
+  const isDesktopUserAgent = /Windows|Macintosh/.test(navigator.userAgent)
 
   return isWeb && isDesktopUserAgent
 };
