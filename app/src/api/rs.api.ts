@@ -1,5 +1,6 @@
-import { getFromStorage, isWebOnDesktop } from '@helpers/utils/storage'
+import { getFromStorage } from '@helpers/utils/storage'
 import axios from 'axios'
+import { Platform } from 'react-native'
 
 async function getRsApi() {
   const token = await getFromStorage('token')
@@ -25,7 +26,7 @@ async function getRsApi() {
     },
   }
 
-  const rsApi = axios.create(isWebOnDesktop() ? webOptions : appOptions)
+  const rsApi = axios.create(Platform.OS === 'web' ? webOptions : appOptions)
 
   return rsApi
 }

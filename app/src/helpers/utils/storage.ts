@@ -3,16 +3,6 @@ import { Platform } from 'react-native'
 
 const isWeb = Platform.OS === 'web'
 
-export function isWebOnDesktop() {
-  if (process.env.NODE_ENV === 'development') {
-    return false
-  }
-
-  const isDesktopUserAgent = /Windows|Macintosh|Linux/.test(navigator.userAgent)
-
-  return isWeb && isDesktopUserAgent
-};
-
 export function saveToStorage(key: string, data: unknown) {
   return isWeb ? localStorage.setItem(key, JSON.stringify(data)) : AsyncStorage.setItem('token', '')
 }
