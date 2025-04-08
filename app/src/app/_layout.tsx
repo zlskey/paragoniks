@@ -7,13 +7,14 @@ import NotificationWrapper from '@helpers/contexts/notification.context'
 import UserContextProvider, {
   useUserContext,
 } from '@helpers/contexts/user.context'
-import { saveToStorage } from '@helpers/utils/storage'
+import { isWebOnDesktop, saveToStorage } from '@helpers/utils/storage'
 
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query'
+import NoPcSupport from '@views/no-pc-support'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -100,6 +101,10 @@ function RootLayout() {
   }, [data])
 
   const user = data?.user ?? userMockup
+
+  if (isWebOnDesktop()) {
+    return <NoPcSupport />
+  }
 
   if (isPending || !loaded) {
     return <Wrapper />
