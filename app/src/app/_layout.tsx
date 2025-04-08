@@ -7,7 +7,7 @@ import NotificationWrapper from '@helpers/contexts/notification.context'
 import UserContextProvider, {
   useUserContext,
 } from '@helpers/contexts/user.context'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { isWebOnDesktop, saveToStorage } from '@helpers/utils/storage'
 
 import {
   QueryClient,
@@ -19,7 +19,6 @@ import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect, useState } from 'react'
-import { Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
@@ -74,14 +73,6 @@ function RootLayoutNav() {
   )
 }
 
-function isWebOnDesktop() {
-  const isWeb = Platform.OS === 'web'
-
-  const isDesktopUserAgent = /Windows|Macintosh|Linux/.test(navigator.userAgent)
-
-  return isWeb && isDesktopUserAgent
-};
-
 function RootLayout() {
   const [loggedIn, setLoggedIn] = useState(false)
   const { data, isPending } = useQuery({
@@ -104,7 +95,7 @@ function RootLayout() {
     ;(async () => {
       const token = data?.token || ''
 
-      await AsyncStorage.setItem('token', token)
+      await saveToStorage('token', token)
       setLoggedIn(!!token)
     })()
   }, [data])

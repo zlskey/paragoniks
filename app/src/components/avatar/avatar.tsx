@@ -1,8 +1,9 @@
 import type { Profile } from 'src/app/generic.types'
 import Typography from '@components/typography'
-import { Image, StyleSheet, View } from 'react-native'
-import { AvatarColor } from 'src/app/generic.types'
+import React from 'react'
+import { Image, Platform, StyleSheet, View } from 'react-native'
 
+import { AvatarColor } from 'src/app/generic.types'
 import { colors, getPx } from 'src/app/styles'
 
 const EXPO_PUBLIC_RS_API_URL = process.env.EXPO_PUBLIC_RS_API_URL
@@ -74,15 +75,31 @@ function Avatar({
       : profile.avatarColor
 
   if (profile.avatarImage) {
+    const containerSize = getContainerSize(size)
+    const iamgeUri = `${EXPO_PUBLIC_RS_API_URL}/${profile.avatarImage}`
     return (
       <View style={styles.container}>
-        <Image
-          resizeMode="cover"
-          width={getContainerSize(size)}
-          height={getContainerSize(size)}
-          source={{ uri: `${EXPO_PUBLIC_RS_API_URL}/${profile.avatarImage}` }}
-          alt="User Avatar"
-        />
+        {Platform.OS === 'web'
+          ? (
+              <img
+                src={iamgeUri}
+                alt="User Avatar"
+                style={{
+                  width: containerSize,
+                  height: containerSize,
+                  objectFit: 'cover',
+                }}
+              />
+            )
+          : (
+              <Image
+                resizeMode="cover"
+                width={containerSize}
+                height={containerSize}
+                source={{ uri: iamgeUri }}
+                alt="User Avatar"
+              />
+            )}
       </View>
     )
   }

@@ -17,10 +17,11 @@ app.use(
 )
 app.use(cookieParser())
 app.use(morgan('dev'))
-app.use(helmet())
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(
   cors({
     credentials: true,
+    optionsSuccessStatus: 200,
     origin: process.env.CORS_ORIGIN,
   }),
 )
