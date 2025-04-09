@@ -45,6 +45,20 @@ export async function findUserFriendships(userId: UserId) {
   return simplifiedFriendships
 }
 
+export async function findAllUserAcceptedFriendsIds(userId: UserId) {
+  const friendships = await Friendship.find({
+    $or: [{ friendId: userId, status: 'accepted' }, { secondFriendId: userId, status: 'accepted' }],
+  })
+
+  const userAccepterFriendsIds: FriendId[] = friendships.map((friendship) => {
+    return friendship.friendId.toString() === userId.toString()
+      ? friendship.secondFriendId
+      : friendship.friendId
+  })
+
+  return userAccepterFriendsIds
+}
+
 export async function sendFriendshipRequest(friendId: FriendId, friendUsername: string) {
   const user = await userService.getByUsername(friendUsername)
 

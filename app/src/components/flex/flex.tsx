@@ -17,6 +17,7 @@ interface FlexProps {
   wrap?: 'wrap' | 'nowrap' | 'wrap-reverse'
   spacing?: number
   nativeFlex?: boolean
+  flexGrow?: boolean
   p?: number
   pt?: number
   pr?: number
@@ -38,6 +39,7 @@ function Flex({
   wrap = 'nowrap',
   spacing = 0,
   nativeFlex = false,
+  flexGrow = false,
   p,
   pt,
   pr,
@@ -72,6 +74,7 @@ function Flex({
           marginBottom: getPx(mb),
           marginLeft: getPx(ml),
           flex: nativeFlex ? 1 : undefined,
+          flexGrow: flexGrow ? 1 : undefined,
         },
         styles,
       ]}

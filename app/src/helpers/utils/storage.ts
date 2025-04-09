@@ -14,13 +14,18 @@ export function isWebOnDesktop() {
 };
 
 export function saveToStorage(key: string, data: unknown) {
-  return isWeb ? localStorage.setItem(key, JSON.stringify(data)) : AsyncStorage.setItem('token', '')
+  if (isWeb) {
+    return localStorage.setItem(key, JSON.stringify(data))
+  }
+  return AsyncStorage.setItem('token', JSON.stringify(data))
 }
 
-export function getFromStorage(key: string) {
+export async function getFromStorage(key: string) {
   if (isWeb) {
-    const val = localStorage.getItem(key)
-    return val ? JSON.parse(val) : val
+    const val = localStorage.getItem(key) ?? ''
+    return JSON.parse(val)
   }
-  return AsyncStorage.getItem('token')
+
+  const val = await AsyncStorage.getItem('token') ?? ''
+  return JSON.parse(val)
 }

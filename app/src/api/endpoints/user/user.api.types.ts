@@ -55,3 +55,5 @@ export interface ChangeUserLangBody {
 export interface UpdateUserMetaBody {
   meta: Partial<UserMeta>
 }
+
+export interface GetUserFriendsOrAnonimsBody {}

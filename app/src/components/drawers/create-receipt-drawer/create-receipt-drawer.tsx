@@ -73,7 +73,7 @@ function CreateReceiptDrawer({ drawerRef }: CreateReceiptDrawerProps) {
       {currentState === 'main' && !isPending && (
         <Flex
           pb={2}
-          spacing={1}
+          spacing={2}
           direction="column"
           alignContent="stretch"
         >

@@ -2,8 +2,10 @@ import Flex from '@components/flex'
 
 import AddContributorIcon from '@components/icons/add-contributor-icon'
 import ChangeTitleIcon from '@components/icons/change-title-icon'
+import Paper from '@components/paper'
 import ProductListConnected from '@components/product-list'
 import StackHeader from '@components/stack-header'
+import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
 import { useUserContext } from '@helpers/contexts/user.context'
 import { getQueryInterval } from '@helpers/utils/get-query-interval'
@@ -61,7 +63,17 @@ function Receipt() {
           pb={2}
         >
           <ContributorList />
-          <ProductListConnected />
+          <Flex alignContent="stretch" direction="column" spacing={1} nativeFlex>
+            <Typography variant="subtitle2">
+              Produkty •
+              {' '}
+              {receipt.products.length}
+            </Typography>
+
+            <Paper>
+              <ProductListConnected />
+            </Paper>
+          </Flex>
         </Flex>
       </ReceiptContextProvider>
     </Wrapper>

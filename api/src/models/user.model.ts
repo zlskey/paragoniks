@@ -16,7 +16,7 @@ export type AvatarColor =
   | 'orange'
   | 'default'
 
-export type IProfile = Pick<IUser, '_id' | 'username' | 'avatarImage'>
+export type IProfile = Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'>
 
 export enum Lang {
   EN = 'en',

@@ -97,6 +97,7 @@ export interface Receipt extends SimpleReceipt {
   _id: ReceiptId
   owner: UserId
   contributors: Record<string, number>
+  products: Product[]
   imagePath: string
   createdAt: string
   updatedAt: string

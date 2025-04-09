@@ -1,10 +1,16 @@
+import StackHeader from '@components/stack-header'
 import { Stack } from 'expo-router'
 import React from 'react'
 
 export default () => {
   return (
     <Stack>
-      <Stack.Screen name="index" />
+      <Stack.Screen
+        options={{ header: () => (
+          <StackHeader title="Tworzenie paragonu" />
+        ) }}
+        name="index"
+      />
     </Stack>
   )
 }

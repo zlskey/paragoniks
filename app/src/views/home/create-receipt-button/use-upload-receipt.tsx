@@ -11,7 +11,7 @@ function useUploadReceipt() {
 
   return useMutation({
     mutationKey: ['receipt'],
-    mutationFn: async (image: ImageBase64) => {
+    mutationFn: async ({ image }: { image: ImageBase64 }) => {
       return createReceiptFromImage({ image })
     },
     onError: (err: AxiosError) => {

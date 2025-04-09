@@ -10,8 +10,10 @@ function getStyles(background?: Colors) {
     searchInput: {
       backgroundColor: colors[background || 'paper'],
       borderRadius: getPx(10),
-      paddingHorizontal: getPx(2),
-      paddingVertical: getPx(0.5),
+      paddingTop: getPx(0.5),
+      paddingBottom: getPx(0.5),
+      paddingLeft: getPx(2),
+      paddingRight: getPx(2),
       color: 'white',
     },
   })

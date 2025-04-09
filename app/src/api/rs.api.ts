@@ -1,9 +1,10 @@
-import { getFromStorage, isWebOnDesktop } from '@helpers/utils/storage'
+import { getFromStorage } from '@helpers/utils/storage'
 import axios from 'axios'
+import { Platform } from 'react-native'
 
 async function getRsApi() {
   const token = await getFromStorage('token')
-
+  console.log('getRsApi', 'token', token)
   const defaultOptions = {
     baseURL: process.env.EXPO_PUBLIC_RS_API_URL,
     timeout: 3000,
@@ -25,9 +26,7 @@ async function getRsApi() {
     },
   }
 
-  const rsApi = axios.create(isWebOnDesktop() ? webOptions : appOptions)
-
-  return rsApi
+  return axios.create(Platform.OS === 'web' ? webOptions : appOptions)
 }
 
 export { getRsApi }

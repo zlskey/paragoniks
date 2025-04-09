@@ -7,6 +7,7 @@ import UsernameTextField from '@components/username-text-field'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { userSchema } from '@helpers/utils/password-schema'
+import { saveToStorage } from '@helpers/utils/storage'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
@@ -31,6 +32,7 @@ function SignupForm() {
     mutationKey: ['auth', 'signup'],
     mutationFn: signupUser,
     onSuccess: (data) => {
+      saveToStorage('token', data.token)
       addNotification(`Witamy ${data.user.username}!`, 'success')
       queryClient.setQueryData(['user', 'whoami'], data)
     },

@@ -116,7 +116,7 @@ export const receiptSchema = yup.object({
     .required('Wymagani są współautorzy')
     .test(
       'contributor-values',
-      'Wartości współautorów muszą być nieujemnymi liczbami',
+      'Nie da się zrzucić na minusie',
       obj => Object.values(obj).every(value => typeof value === 'number' && value >= 0),
     ),
   imagePath: yup
