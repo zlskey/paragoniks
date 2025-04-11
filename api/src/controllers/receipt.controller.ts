@@ -5,7 +5,7 @@ import type { ProductId, UserId } from 'src/types/generic.types'
 import { writeFileSync } from 'node:fs'
 import { receiptService } from 'src/services'
 import { createReceipt } from 'src/services/receipt.service'
-import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
+import { extractReceiptDataFromText } from 'src/utils/openai'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res) => {
   const user = req.user
@@ -13,6 +13,11 @@ export const handleGetUserReceipts: RequestHandler = async (req, res) => {
   const receipts = await receiptService.getAllReceipts(user._id)
 
   res.status(200).json(receipts)
+}
+
+export const handleCreateReceipt: RequestHandler = async (req, res) => {
+  const user = req.user
+  const receipt = req.body.receipt as ISimpleReceipt & { shouldGenerateProducts: boolean }
 }
 
 export const handleCreateReceiptFromImage: RequestHandler = async (req, res) => {
