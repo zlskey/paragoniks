@@ -25,7 +25,6 @@ services:
       - "traefik.docker.network=proxy"
     networks:
       - proxy
-      - paragoniks-local-network
 
   paragoniks-web-app:
     container_name: ${DOCKER_APP_CONTAINER_NAME}
@@ -53,22 +52,6 @@ services:
     networks:
       - proxy
 
-  paragoniks-db:
-    container_name: ${DOCKER_DB_CONTAINER_NAME}
-    image: mongo
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
-    networks:
-      - paragoniks-local-network
-    volumes:
-      - ./data/db:/data/db
-    ports:
-      - 2137:27017
-
 networks:
   proxy:
     external: true
-  paragoniks-local-network:
-    driver: bridge
