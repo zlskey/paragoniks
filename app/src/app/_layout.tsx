@@ -94,7 +94,6 @@ function RootLayout() {
   useEffect(() => {
     ;(async () => {
       const token = data?.token || ''
-      console.log('RootLayout', 'token', token)
 
       await saveToStorage('token', token)
       setLoggedIn(!!token)

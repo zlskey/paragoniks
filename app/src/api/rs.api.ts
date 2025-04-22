@@ -4,7 +4,7 @@ import { Platform } from 'react-native'
 
 async function getRsApi() {
   const token = await getFromStorage('token')
-  console.log('getRsApi', 'token', token)
+
   const defaultOptions = {
     baseURL: process.env.EXPO_PUBLIC_RS_API_URL,
     timeout: 3000,

@@ -14,18 +14,15 @@ function parseStrictFloat(str: string) {
 
 function transformToNumber(value: number, originalValue: string | number) {
   if (typeof originalValue !== 'string') {
-    console.log(1, value, typeof value)
     return value
   }
 
   const parsedValue = parseStrictFloat(originalValue.replace(',', '.'))
 
   if (Number.isNaN(parsedValue)) {
-    console.log(2, value, typeof value)
     return originalValue
   }
 
-  console.log(3, parsedValue, typeof parsedValue)
   return parsedValue
 }
 

@@ -26,7 +26,7 @@ export async function getUserReceipts({}: GetUserReceiptsBody) {
 export async function createReceiptFromImage({ image }: CreateReceiptFromImageBody) {
   const url = '/receipt/scan'
   const rsApi = await getRsApi()
-  console.log(image)
+
   const response = await rsApi.post<Receipt>(url, { image }, { timeout: 50000 })
 
   return response.data
