@@ -43,7 +43,7 @@ function GenerateOrFillSwitch() {
   const image = createReceiptForm.watch('image')
 
   useEffect(() => {
-    if (image) {
+    if (image && image !== 'null') {
       formContext.setValue('shouldGenerateProducts', true)
     }
   }, [image])

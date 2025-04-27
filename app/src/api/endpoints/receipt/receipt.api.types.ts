@@ -3,17 +3,20 @@ import type {
   Product,
   ProductId,
   ReceiptId,
-  SimpleReceipt,
+  SimpleProduct,
   UserId,
 } from '@app/generic.types'
 
 export interface GetUserReceiptsBody {}
 
-export interface CreateReceiptFromImageBody {
-  image: ImageBase64
+export interface CreateReceiptBody {
+  title: string
+  products: SimpleProduct[]
+  contributors: Record<string, number>
+  image: ImageBase64 | null
+  shouldGenerateProducts: boolean
+  shouldGenerateTitle?: boolean
 }
-
-export interface CreateReceiptFromDataBody extends Omit<SimpleReceipt, 'sum'> {}
 
 export interface GetReceiptBody {
   receiptId: ReceiptId

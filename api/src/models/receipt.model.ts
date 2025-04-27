@@ -24,18 +24,17 @@ export interface IProduct extends ISimpleProduct {
 export interface ISimpleReceipt {
   sum: number
   title: string
-  imagePath: string
-  contributors: string[]
+  imagePath: string | null
+  contributors: Record<string, number>
   products: ISimpleProduct[]
 }
 
-export interface IReceipt extends Omit<ISimpleReceipt, 'contributors'> {
+export interface IReceipt extends ISimpleReceipt {
   _id: ReceiptId
   owner: UserId
   products: IProduct[]
   createdAt: string
   updatedAt: string
-  contributors: Record<string, number>
 }
 
 const receiptSchema = new mongoose.Schema<IReceipt>(
@@ -54,7 +53,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>(
     },
     imagePath: {
       type: String,
-      default: '',
+      default: null,
     },
     contributors: {},
     products: [],

@@ -25,6 +25,6 @@ export const createReceiptDefaultValues: CreateReceiptFormState = {
   title: '',
   products: [],
   contributors: {},
-  image: '',
+  image: 'null',
   shouldGenerateProducts: false,
 }

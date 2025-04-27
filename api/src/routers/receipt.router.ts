@@ -15,10 +15,7 @@ const receiptRouter = Router()
 
 receiptRouter.get('/', wrapAsync(receiptController.handleGetUserReceipts))
 
-receiptRouter.post(
-  '/',
-  wrapAsync(receiptController.handleCreateReceiptFromImage),
-)
+receiptRouter.post('/', wrapAsync(receiptController.handleCreateReceipt))
 
 receiptRouter.use(
   '/:receiptId',

@@ -7,8 +7,8 @@ export function getScanImagePrompt() {
     Do an exact extraction of the products on the receipt. Don't add anything.
     Your response should be in (json) format:
     {
-        sum: number,
-        title: string,
+        title: string
+        sum: number
         products: [
             {
                 name: string,
@@ -24,16 +24,18 @@ export function getScanImagePrompt() {
 `
 }
 
-export function getTitlePrompt(products: ISimpleProduct) {
+export function getTitlePrompt(products: ISimpleProduct[]) {
   return `
-      Generate a descriptive receipt name from product list.
-      \`\`\`
-      ${JSON.stringify(products)}
-      \`\`\`
-      Your response should be in (json) format:
-      {
-          title: string
-      }
-      Remember to return just the json ready to be provided into the JSON.parse(message) function. (No formatting like \`\`\`json\`\`\`)
+    Generate a descriptive receipt name from product list.
+    \`\`\`
+    ${JSON.stringify(products)}
+    \`\`\`
+    Your response should be in (json) format:
+    {
+        title: string
+    }
+    
+    If provided products aren't enough, or something is wrong - you should return just "error".
+    Remember to return just the json ready to be provided into the JSON.parse(message) function. (No formatting like \`\`\`json\`\`\`)
   `
 }

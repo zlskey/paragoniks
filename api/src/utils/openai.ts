@@ -1,7 +1,7 @@
-import type { ISimpleProduct, ISimpleReceipt } from 'src/models/receipt.model'
+import type { ISimpleProduct } from 'src/models/receipt.model'
 import { OpenAI } from 'openai'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import { getScanImagePrompt } from './prompts'
+import { getScanImagePrompt, getTitlePrompt } from './prompts'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -43,10 +43,14 @@ export async function extractReceiptDataFromText(imageBase64: string) {
 
   const receiptObj = JSON.parse(message)
 
-  return receiptObj as ISimpleReceipt
+  return receiptObj as {
+    products: ISimpleProduct[]
+    title: string
+    sum: number
+  }
 }
 
-export async function generateReceiptTitle(products: ISimpleProduct[]) {
+export async function generateReceiptTitle(products: ISimpleProduct[]): Promise<string | null> {
   const response = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
@@ -55,7 +59,7 @@ export async function generateReceiptTitle(products: ISimpleProduct[]) {
         content: [
           {
             type: 'text',
-            text: getScanImagePrompt(),
+            text: getTitlePrompt(products),
           },
         ],
       },
@@ -73,7 +77,5 @@ export async function generateReceiptTitle(products: ISimpleProduct[]) {
     return null
   }
 
-  const receiptObj = JSON.parse(message)
-
-  return receiptObj as ISimpleReceipt
+  return JSON.parse(message) as string
 }
