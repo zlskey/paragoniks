@@ -1,6 +1,6 @@
-# Roommate-shopper
+# Paragoniks
 
-Web app for easy shopping list sharing and splitting between roommates.
+Web app for easy shopping list sharing and splitting between your friends!
 
 ## Getting Started
 
@@ -16,13 +16,13 @@ Web app for easy shopping list sharing and splitting between roommates.
 1. Clone the repo
 
    ```sh
-   git clone https://github.com/zlskey/roommate-shopper.git
+   git clone https://github.com/zlskey/paragoniks.git
    ```
 
 1. Move into the project directory
 
    ```sh
-   cd roommate-shopper
+   cd paragoniks
    ```
 
 1. Copy the `.env.example` file to `.env` and change the values to your own
@@ -33,24 +33,23 @@ Web app for easy shopping list sharing and splitting between roommates.
    cp ./api/.env.example ./api/.env
    ```
 
-1. Run app
-
-   For production development, you will require [Traefik](https://traefik.io/)
+1. Run backend
 
    ```sh
-   # Add BUILD=true to build the app
-   # Add FOLLOW=true to follow the logs
-   make start-production
-   ```
-
-   App will be available at [your-domain.com](#)
-
-   For local development, you can run the app with
-
-   ```sh
-   # Add BUILD=true to build the app
-   # Add FOLLOW=true to follow the logs
    make start-development
    ```
 
-   App will be available at [localhost:5000](http://localhost:5000)
+1. Run frontend
+
+   ```sh
+   # for browser
+   pnpm web
+   
+   # for android emulator
+   pnpm android
+   
+   # for ios emulator
+   pnpm ios
+   ```
+
+   App will be available at [localhost:8081](http://localhost:8081)
