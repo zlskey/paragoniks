@@ -1,0 +1,19 @@
+# Example Terraform variables file
+# Copy to terraform.tfvars and customize for your environment
+
+# Required variables
+project_id              = "your-gcp-project-id"
+mongodb_url             = "mongodb://username:password@host:port/db?options"
+mongodb_root_username   = "root_username"
+mongodb_root_password   = "root_password"
+jwt_secret              = "your_jwt_secret"
+
+# Optional variables with defaults
+region                  = "us-central1"
+zone                    = "us-central1-a"
+api_image_name          = "paragoniks-api"
+api_service_name        = "paragoniks-api"
+cors_origin             = "https://paragoniks.app"
+main_domain             = "paragoniks.app"
+node_env                = "production"
+port                    = "8080" 
