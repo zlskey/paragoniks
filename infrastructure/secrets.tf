@@ -5,7 +5,11 @@ resource "google_secret_manager_secret" "mongodb_url" {
   secret_id = "mongodb-url"
   
   replication {
-    automatic = true
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
   }
   
   depends_on = [
@@ -23,7 +27,11 @@ resource "google_secret_manager_secret" "mongodb_root_username" {
   secret_id = "mongodb-root-username"
   
   replication {
-    automatic = true
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
   }
   
   depends_on = [
@@ -41,7 +49,11 @@ resource "google_secret_manager_secret" "mongodb_root_password" {
   secret_id = "mongodb-root-password"
   
   replication {
-    automatic = true
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
   }
   
   depends_on = [
@@ -59,7 +71,11 @@ resource "google_secret_manager_secret" "jwt_secret" {
   secret_id = "jwt-secret"
   
   replication {
-    automatic = true
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
   }
   
   depends_on = [

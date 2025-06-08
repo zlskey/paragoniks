@@ -1,3 +1,9 @@
+# Enable the Storage API
+resource "google_project_service" "storage_api" {
+  service = "storage.googleapis.com"
+  disable_on_destroy = false
+}
+
 # Create a GCS bucket to store Terraform state
 resource "google_storage_bucket" "terraform_state" {
   name     = "paragoniks-terraform-state"
