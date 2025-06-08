@@ -23,11 +23,6 @@ resource "google_cloud_run_service" "api" {
         }
         
         env {
-          name  = "PORT"
-          value = var.port
-        }
-        
-        env {
           name  = "CORS_ORIGIN"
           value = var.cors_origin
         }
@@ -73,6 +68,16 @@ resource "google_cloud_run_service" "api" {
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.jwt_secret.secret_id
+              key  = "latest"
+            }
+          }
+        }
+
+        env {
+          name = "OPENAI_API_KEY"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.openai_api_key.secret_id
               key  = "latest"
             }
           }

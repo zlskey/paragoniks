@@ -6,13 +6,13 @@ variable "project_id" {
 variable "region" {
   description = "The Google Cloud region to deploy resources"
   type        = string
-  default     = "us-central1"
+  default     = "europe-west3"
 }
 
 variable "zone" {
   description = "The Google Cloud zone to deploy resources"
   type        = string
-  default     = "us-central1-a"
+  default     = "europe-west3-a"
 }
 
 variable "api_image_name" {
@@ -74,4 +74,10 @@ variable "port" {
   description = "Port for the API server"
   type        = string
   default     = "8080"
+}
+
+variable "openai_api_key" {
+  description = "OpenAI API key for AI features"
+  type        = string
+  sensitive   = true
 } 

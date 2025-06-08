@@ -86,4 +86,26 @@ resource "google_secret_manager_secret" "jwt_secret" {
 resource "google_secret_manager_secret_version" "jwt_secret_version" {
   secret      = google_secret_manager_secret.jwt_secret.id
   secret_data = var.jwt_secret
+}
+
+# OpenAI API Key
+resource "google_secret_manager_secret" "openai_api_key" {
+  secret_id = "openai-api-key"
+  
+  replication {
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
+  }
+  
+  depends_on = [
+    google_project_service.secret_manager
+  ]
+}
+
+resource "google_secret_manager_secret_version" "openai_api_key_version" {
+  secret      = google_secret_manager_secret.openai_api_key.id
+  secret_data = var.openai_api_key
 } 

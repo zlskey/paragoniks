@@ -1,10 +1,14 @@
-name: Super Workflow # @todo - split it sometime in the future
+name: Super Workflow
 
 on:
   push:
     branches:
       - main
       - check
+    paths:
+      - 'app/**'
+      - 'api/**'
+      - 'infrastructure/**'
 
 jobs:
   eslint:
@@ -30,69 +34,79 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./api
+
+  terraform:
+    runs-on: ubuntu-latest
+    name: Apply Terraform
+    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'infrastructure/')
+    needs: [eslint, build-backend]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.0.0"
+          
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: paragoniks-455316
+          
+      - name: Terraform Init
+        run: |
+          cd infrastructure
+          terraform init
+          
+      - name: Terraform Plan
+        run: |
+          cd infrastructure
+          terraform plan
+          
+      - name: Terraform Apply
+        run: |
+          cd infrastructure
+          terraform apply -auto-approve
+
   build-backend:
     runs-on: ubuntu-latest
     name: Build Backend
-    needs: eslint
+    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'api/')
+    needs: [eslint]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: paragoniks-455316
+          
+      - name: Configure Docker for GCP Artifact Registry
+        run: |
+          gcloud auth configure-docker europe-west3-docker.pkg.dev
           
       - name: Declare commit hash variable
         shell: bash
         run: echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v6.15.0
-        with:
-          context: ./api
-          file: ./api/docker/Dockerfile
-          target: production
-          tags: |
-            zlskey/paragoniks-api:latest
-            zlskey/paragoniks-api:${{ env.sha_short }}
-          push: true
-          cache-from: type=registry,ref=zlskey/paragoniks-api:buildcache
-          cache-to: type=registry,ref=zlskey/paragoniks-api:buildcache,mode=max
-
-
-  deploy-backend:
-    runs-on: ubuntu-latest
-    name: Deploy Backend
-    needs: build-backend
-    steps:
-      - name: Deploying through SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.PARAGONIKS_SSH_IP }}
-          port: ${{ secrets.PARAGONIKS_SSH_PORT }}
-          key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
-          username: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
-          script: |
-            echo "Moving into project directory"
-            cd /home/projects/paragoniks
-
-            # Set global git config for the deployer if needed
-            echo "Configuring git user"
-            git config --global user.name ${{ vars.GIT_USERNAME }}
-            git config --global user.email ${{ vars.GIT_MAIL }}
-            
-            # Pull the latest changes
-            echo "Pulling git changes"
-            git remote set-url origin https://${{ vars.GIT_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USERNAME }}/paragoniks.git
-            git pull origin main
-
-            echo "Pulling images"
-            echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-            make pull-images
-            echo "Starting docker"
-            make start-production BUILD=true
+      - name: Build and push Docker image
+        run: |
+          docker build -t europe-west3-docker.pkg.dev/paragoniks-455316/paragoniks-api/paragoniks-api:${{ env.sha_short }} \
+                     -t europe-west3-docker.pkg.dev/paragoniks-455316/paragoniks-api/paragoniks-api:latest \
+                     -f ./api/docker/Dockerfile ./api
+          
+          docker push europe-west3-docker.pkg.dev/paragoniks-455316/paragoniks-api/paragoniks-api:${{ env.sha_short }}
+          docker push europe-west3-docker.pkg.dev/paragoniks-455316/paragoniks-api/paragoniks-api:latest
