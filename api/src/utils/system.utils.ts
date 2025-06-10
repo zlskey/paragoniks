@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 
 /**
- * it inits db and env files
+ * init env files
  */
 
 dotenv.config()
