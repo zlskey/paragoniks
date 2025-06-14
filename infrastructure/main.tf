@@ -15,7 +15,7 @@ terraform {
 
 provider "google" {
   project = var.project_id
-  region  = "europe-west3"
+  region  = "europe-west1"
 }
 
 resource "google_project_service" "secret_manager" {

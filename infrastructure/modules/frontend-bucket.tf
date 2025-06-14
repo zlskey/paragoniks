@@ -1,6 +1,6 @@
 resource "google_storage_bucket" "static-website" {
   name = "paragoniks-static-website"
-  location = "europe-west3"
+  location = "europe-west1"
   force_destroy = true
 
   uniform_bucket_level_access = true

@@ -6,7 +6,7 @@ variable "project_id" {
 variable "region" {
   description = "The Google Cloud region to deploy resources"
   type        = string
-  default     = "europe-west3"
+  default     = "europe-west1"
 }
 
 variable "git_hash" {

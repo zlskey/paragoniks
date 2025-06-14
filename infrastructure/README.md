@@ -27,7 +27,7 @@ This directory contains Terraform configuration to set up the infrastructure for
 2. Create a `terraform.tfvars` file with your values:
    ```hcl
    project_id              = "your-gcp-project-id"
-   region                  = "europe-west3"
+   region                  = "europe-west1"
    mongodb_url             = "mongodb://username:password@host:port/db?options"
    mongodb_root_username   = "root_username"
    mongodb_root_password   = "root_password"

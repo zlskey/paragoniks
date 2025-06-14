@@ -11,12 +11,12 @@ resource "google_service_account" "cloudrun" {
 
 resource "google_cloud_run_service" "api" {
   name     = "paragoniks-api"
-  location = "europe-west3"
+  location = "europe-west1"
 
   template {
     spec {
       containers {
-        image = "europe-west3-docker.pkg.dev/${var.project_id}/paragoniks-api/paragoniks-api:latest"
+        image = "europe-west1-docker.pkg.dev/${var.project_id}/paragoniks-api/paragoniks-api:latest"
         
         resources {
           limits = {

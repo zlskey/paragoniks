@@ -8,7 +8,7 @@ resource "google_project_service" "artifact_registry" {
 
 resource "google_artifact_registry_repository" "api_repository" {
   depends_on = [google_project_service.artifact_registry]
-  location = "europe-west3"
+  location = "europe-west1"
   repository_id = "paragoniks-api"
   description = "Docker repository for Paragoniks API images"
   format = "DOCKER"
