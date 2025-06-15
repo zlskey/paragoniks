@@ -1,10 +1,14 @@
-name: Super Workflow # @todo - split it sometime in the future
+name: Super Workflow
 
 on:
   push:
     branches:
       - main
       - check
+    paths:
+      - 'app/**'
+      - 'api/**'
+      - 'infrastructure/**'
 
 jobs:
   eslint:
@@ -30,69 +34,116 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./api
+
+  terraform:
+    runs-on: ubuntu-latest
+    name: Apply Terraform
+    needs: [eslint, build-backend]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.0.0"
+          
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          
+      - name: Terraform Init
+        run: |
+          cd infrastructure
+          terraform init
+          
+      - name: Terraform Plan
+        run: |
+          cd infrastructure
+          terraform plan -var="git_hash=$(git rev-parse --short "$GITHUB_SHA")" -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
+          
+      - name: Terraform Apply
+        run: |
+          cd infrastructure
+          terraform apply -auto-approve -var="git_hash=$(git rev-parse --short "$GITHUB_SHA")" -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
+
   build-backend:
     runs-on: ubuntu-latest
     name: Build Backend
-    needs: eslint
+    needs: [eslint]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          
+      - name: Configure Docker for GCP Artifact Registry
+        run: |
+          gcloud auth configure-docker europe-west1-docker.pkg.dev
           
       - name: Declare commit hash variable
         shell: bash
-        run: echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v6.15.0
-        with:
-          context: ./api
-          file: ./api/docker/Dockerfile
-          target: production
-          tags: |
-            zlskey/paragoniks-api:latest
-            zlskey/paragoniks-api:${{ env.sha_short }}
-          push: true
-          cache-from: type=registry,ref=zlskey/paragoniks-api:buildcache
-          cache-to: type=registry,ref=zlskey/paragoniks-api:buildcache,mode=max
+      - name: Build and push Docker image
+        run: |
+          docker build -t europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:${{ env.git_hash }} \
+                     -t europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:latest \
+                     -f ./api/docker/Dockerfile ./api
+          
+          docker push europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:${{ env.git_hash }}
+          docker push europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:latest
 
-
-  deploy-backend:
+  build-frontend:
     runs-on: ubuntu-latest
-    name: Deploy Backend
-    needs: build-backend
+    name: Build and Deploy Frontend
+    needs: [eslint, terraform]
     steps:
-      - name: Deploying through SSH
-        uses: appleboy/ssh-action@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          host: ${{ secrets.PARAGONIKS_SSH_IP }}
-          port: ${{ secrets.PARAGONIKS_SSH_PORT }}
-          key: ${{ secrets.PARAGONIKS_DEPLOYER_RSA_KEY }}
-          username: ${{ secrets.PARAGONIKS_DEPLOYER_USERNAME }}
-          script: |
-            echo "Moving into project directory"
-            cd /home/projects/paragoniks
+          version: 9
+          run_install: false
 
-            # Set global git config for the deployer if needed
-            echo "Configuring git user"
-            git config --global user.name ${{ vars.GIT_USERNAME }}
-            git config --global user.email ${{ vars.GIT_MAIL }}
-            
-            # Pull the latest changes
-            echo "Pulling git changes"
-            git remote set-url origin https://${{ vars.GIT_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USERNAME }}/paragoniks.git
-            git pull origin main
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+        working-directory: ./app
 
-            echo "Pulling images"
-            echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-            make pull-images
-            echo "Starting docker"
-            make start-production BUILD=true
+      - name: Build web version
+        env:
+          EXPO_PUBLIC_RS_API_URL: https://api.paragoniks.pl
+          EXPO_PUBLIC_NODE_ENV: production
+        run: |
+          pnpm npx expo export --platform web
+        working-directory: ./app
+
+      - name: Save service account key
+        run: |
+          echo "${{ secrets.GCP_SA_KEY_BASE64 }}" | base64 --decode > /tmp/firebase-credentials.json
+
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+      
+      - name: Deploy to Firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/firebase-credentials.json
+        run: firebase deploy --only hosting --project paragoniks

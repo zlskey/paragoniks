@@ -92,12 +92,13 @@ function RootLayout() {
   }, [loaded, isPending])
 
   useEffect(() => {
-    ;(async () => {
+    async function handleLoggedIn() {
       const token = data?.token || ''
 
       await saveToStorage('token', token)
       setLoggedIn(!!token)
-    })()
+    }
+    handleLoggedIn()
   }, [data])
 
   const user = data?.user ?? userMockup

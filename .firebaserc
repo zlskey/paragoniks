@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "paragoniks": {
+      "hosting": {
+        "paragoniks": [
+          "paragoniks"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
