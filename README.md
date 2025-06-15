@@ -36,13 +36,19 @@ Web app for easy shopping list sharing and splitting between your friends!
 1. Run backend
 
    ```sh
-   make start-development
+   docker compose up -d
    ```
 
 1. Run frontend
 
    ```sh
-   # for browser
+   # go to app directory
+   cd app
+
+   # install deps
+   pnpm i
+
+   # for browser (app will be available at http://localhost:8081)
    pnpm web
    
    # for android emulator
@@ -52,4 +58,3 @@ Web app for easy shopping list sharing and splitting between your friends!
    pnpm ios
    ```
 
-   App will be available at [localhost:8081](http://localhost:8081)
