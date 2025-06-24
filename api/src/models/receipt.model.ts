@@ -8,28 +8,31 @@ export interface Division {
   [index: string]: number | null
 }
 
-export interface IProduct {
-  division: Division
-  divisionType: DivisionType
+export interface ISimpleProduct {
   name: string
   price: number
   count: number
-  totalPrice: number
   discount: number
+}
+export interface IProduct extends ISimpleProduct {
   _id: ProductId
+  division: Division
+  divisionType: DivisionType
+  totalPrice: number
 }
 
 export interface ISimpleReceipt {
   sum: number
   title: string
-  products: IProduct[]
-  imagePath: string
+  imagePath: string | null
+  contributors: Record<string, number>
+  products: ISimpleProduct[]
 }
 
 export interface IReceipt extends ISimpleReceipt {
   _id: ReceiptId
   owner: UserId
-  contributors: Record<string, number>
+  products: IProduct[]
   createdAt: string
   updatedAt: string
 }
@@ -50,7 +53,7 @@ const receiptSchema = new mongoose.Schema<IReceipt>(
     },
     imagePath: {
       type: String,
-      default: '',
+      default: null,
     },
     contributors: {},
     products: [],

@@ -5,18 +5,19 @@ import { colors, getPx } from '@app/styles'
 import Typography from '@components/typography'
 import { getProfilesAlphabetically } from '@helpers/utils/get-profiles-alphabetically'
 import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrapper'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { SectionList, View } from 'react-native'
 
 interface SectionHeaderProps {
   title: string
+  backgroundColor?: string
 }
 
-function SectionHeader({ title }: SectionHeaderProps) {
+export function SectionHeader({ title, backgroundColor }: SectionHeaderProps) {
   return (
     <View
       style={{
-        backgroundColor: colors.background,
+        backgroundColor,
         paddingBottom: getPx(1),
       }}
     >
@@ -29,17 +30,20 @@ interface ProfilesAlphabeticallListProps
   extends Omit<SectionListProps<Profile>, 'sections'> {
   profiles: Profile[]
   ProfileItem: React.ComponentType<{ profile: Profile }>
+  sectionHeaderBackgroundColor?: string
 }
 
 function ProfilesAlphabeticallList({
   profiles,
   ProfileItem,
+  sectionHeaderBackgroundColor = colors.background,
   ...props
 }: ProfilesAlphabeticallListProps) {
   const sections = useMemo(
     () => getProfilesAlphabetically(profiles),
     [profiles],
   )
+
   return (
     <SectionList
       sections={sections}
@@ -53,7 +57,7 @@ function ProfilesAlphabeticallList({
           <ProfileItem profile={data.item} />,
         )}
       renderSectionHeader={({ section: { title } }) => (
-        <SectionHeader title={title} />
+        <SectionHeader title={title} backgroundColor={sectionHeaderBackgroundColor} />
       )}
       {...props}
     />

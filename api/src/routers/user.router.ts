@@ -20,6 +20,8 @@ userRouter.patch(
   wrapAsync(userController.handleChangeAvatarImage),
 )
 
+userRouter.get('/friends', wrapAsync(userController.handleGetFriends))
+
 userRouter.get('/profile/:userId', wrapAsync(userController.handleGetProfile))
 
 userRouter.patch('/lang/:lang', wrapAsync(userController.handleSetLang))

@@ -6,6 +6,7 @@ import Typography from '@components/typography'
 import UsernameTextField from '@components/username-text-field'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
+import { saveToStorage } from '@helpers/utils/storage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -28,6 +29,7 @@ function LoginForm() {
     mutationKey: ['auth', 'login'],
     mutationFn: loginUser,
     onSuccess: (data) => {
+      saveToStorage('token', data.token)
       queryClient.setQueryData(['user', 'whoami'], data)
       addNotification(`Witaj ponownie ${data.user.username} ❣️`, 'success')
     },

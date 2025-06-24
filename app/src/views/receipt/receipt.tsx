@@ -2,14 +2,17 @@ import Flex from '@components/flex'
 
 import AddContributorIcon from '@components/icons/add-contributor-icon'
 import ChangeTitleIcon from '@components/icons/change-title-icon'
+import Paper from '@components/paper'
 import ProductListConnected from '@components/product-list'
 import StackHeader from '@components/stack-header'
+import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
 import { useUserContext } from '@helpers/contexts/user.context'
 import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
+import { ScrollView } from 'react-native-gesture-handler'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import ContributorList from './contributor-list'
 import ReceiptContextProvider from './receipt.context'
@@ -29,7 +32,7 @@ function Receipt() {
     enabled: !!receiptId,
   })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       header: () => (
         <StackHeader
@@ -45,7 +48,7 @@ function Receipt() {
         />
       ),
     })
-  }, [receipt?.title])
+  }, [receipt?.title, user.user._id, navigation])
 
   if (!receipt)
     return <ReceiptSkeleton />
@@ -53,16 +56,28 @@ function Receipt() {
   return (
     <Wrapper>
       <ReceiptContextProvider value={{ receipt }}>
-        <Flex
-          nativeFlex
-          direction="column"
-          alignContent="stretch"
-          spacing={2}
-          pb={2}
-        >
-          <ContributorList />
-          <ProductListConnected />
-        </Flex>
+        <ScrollView>
+          <Flex
+            nativeFlex
+            direction="column"
+            alignContent="stretch"
+            spacing={2}
+            pb={2}
+          >
+            <ContributorList />
+            <Flex alignContent="stretch" direction="column" spacing={1} nativeFlex>
+              <Typography variant="subtitle2">
+                Produkty •
+                {' '}
+                {receipt.products.length}
+              </Typography>
+
+              <Paper>
+                <ProductListConnected />
+              </Paper>
+            </Flex>
+          </Flex>
+        </ScrollView>
       </ReceiptContextProvider>
     </Wrapper>
   )

@@ -7,7 +7,7 @@ import NotificationWrapper from '@helpers/contexts/notification.context'
 import UserContextProvider, {
   useUserContext,
 } from '@helpers/contexts/user.context'
-import { isWebOnDesktop, saveToStorage } from '@helpers/utils/storage'
+import { getFromStorage, isWebOnDesktop, saveToStorage } from '@helpers/utils/storage'
 
 import {
   QueryClient,
@@ -18,7 +18,7 @@ import NoPcSupport from '@views/no-pc-support'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
@@ -94,7 +94,9 @@ function RootLayout() {
   useEffect(() => {
     async function handleLoggedIn() {
       const token = data?.token || ''
-
+      if (await getFromStorage('token') === token) {
+        return
+      }
       await saveToStorage('token', token)
       setLoggedIn(!!token)
     }
@@ -102,6 +104,8 @@ function RootLayout() {
   }, [data])
 
   const user = data?.user ?? userMockup
+
+  const value = useMemo(() => ({ user, loggedIn }), [user, loggedIn])
 
   if (isWebOnDesktop()) {
     return <NoPcSupport />
@@ -112,7 +116,7 @@ function RootLayout() {
   }
 
   return (
-    <UserContextProvider value={{ user, loggedIn }}>
+    <UserContextProvider value={value}>
       <RootLayoutNav />
     </UserContextProvider>
   )

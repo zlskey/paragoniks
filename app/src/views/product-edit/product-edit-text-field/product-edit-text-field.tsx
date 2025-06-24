@@ -2,7 +2,7 @@ import type { TextInputProps } from 'react-native'
 import type { Product } from 'src/app/generic.types'
 import Typography from '@components/typography'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TextInput, View } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
@@ -11,6 +11,7 @@ import { usePreciseProductEditContext } from 'src/views/product-edit/product-edi
 interface ProductEditTextFieldProps extends TextInputProps {
   name: 'name' | 'price' | 'count' | 'discount'
   label: string
+  precision?: number
 }
 
 type PreciseEditProductEditTextFieldFormValues = Pick<
@@ -26,6 +27,7 @@ const errorInput = {
 function ProductEditTextField({
   name,
   label,
+  precision = 0,
   ...props
 }: ProductEditTextFieldProps) {
   const { product } = usePreciseProductEditContext()
@@ -38,7 +40,7 @@ function ProductEditTextField({
       return
     }
 
-    const valueToNum = Number.parseFloat(Number.parseFloat(value).toFixed(2))
+    const valueToNum = Number.parseFloat(Number.parseFloat(value).toFixed(precision))
 
     if (Number.isNaN(valueToNum)) {
       return
@@ -52,7 +54,7 @@ function ProductEditTextField({
       return
     }
 
-    const valueToNum = Number.parseFloat(Number.parseFloat(value).toFixed(2))
+    const valueToNum = Number.parseFloat(Number.parseFloat(value).toFixed(precision))
 
     if (Number.isNaN(valueToNum)) {
       setValue(product[name].toString())

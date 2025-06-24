@@ -3,8 +3,7 @@ import type { Receipt } from 'src/app/generic.types'
 import type {
   AddContributorBody,
   ChangeReceiptTitleBody,
-  CreateReceiptFromDataBody,
-  CreateReceiptFromImageBody,
+  CreateReceiptBody,
   GetReceiptBody,
   GetUserReceiptsBody,
   RemoveContributorBody,
@@ -23,18 +22,11 @@ export async function getUserReceipts({}: GetUserReceiptsBody) {
   return response.data
 }
 
-export async function createReceiptFromImage({ image }: CreateReceiptFromImageBody) {
-  const url = '/receipt/scan'
+export async function createReceipt(body: CreateReceiptBody) {
+  const url = '/receipt'
   const rsApi = await getRsApi()
-  const response = await rsApi.post<Receipt>(url, { image }, { timeout: 50000 })
 
-  return response.data
-}
-
-export async function createReceiptFromData(body: CreateReceiptFromDataBody) {
-  const url = '/receipt/data'
-  const rsApi = await getRsApi()
-  const response = await rsApi.post<Receipt>(url, body)
+  const response = await rsApi.post<Receipt>(url, body, { timeout: 100000 })
 
   return response.data
 }

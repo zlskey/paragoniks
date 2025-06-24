@@ -1,7 +1,7 @@
 services:
   paragoniks-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
-    command: npm run dev
+    command: pnpm run dev
     depends_on:
       - paragoniks-db
     restart: unless-stopped
@@ -17,6 +17,8 @@ services:
       - "./api/.env"
     ports: 
       - 3000:3000
+    networks:
+      - paragoniks-local-network
 
   paragoniks-db:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
@@ -27,3 +29,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
     ports:
       - 27017:27017
+    networks:
+      - paragoniks-local-network
+
+networks:
+  paragoniks-local-network:
+    driver: bridge

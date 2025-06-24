@@ -14,18 +14,15 @@ function parseStrictFloat(str: string) {
 
 function transformToNumber(value: number, originalValue: string | number) {
   if (typeof originalValue !== 'string') {
-    console.log(1, value, typeof value)
     return value
   }
 
   const parsedValue = parseStrictFloat(originalValue.replace(',', '.'))
 
   if (Number.isNaN(parsedValue)) {
-    console.log(2, value, typeof value)
     return originalValue
   }
 
-  console.log(3, parsedValue, typeof parsedValue)
   return parsedValue
 }
 
@@ -116,7 +113,7 @@ export const receiptSchema = yup.object({
     .required('Wymagani są współautorzy')
     .test(
       'contributor-values',
-      'Wartości współautorów muszą być nieujemnymi liczbami',
+      'Nie da się zrzucić na minusie',
       obj => Object.values(obj).every(value => typeof value === 'number' && value >= 0),
     ),
   imagePath: yup

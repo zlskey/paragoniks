@@ -1,6 +1,6 @@
 {
   "name": "typescript-express-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "template for typescript express api with jwt auth and mongodb",
   "author": "zlskey",
   "license": "MIT",
@@ -28,9 +28,10 @@
     "mongoose": "^6.2.2",
     "morgan": "^1.10.0",
     "node-gyp": "^11.1.0",
-    "openai": "^4.14.0",
+    "openai": "^5.7.0",
     "tslib": "^2.3.1",
-    "yup": "^1.3.2"
+    "yup": "^1.3.2",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",

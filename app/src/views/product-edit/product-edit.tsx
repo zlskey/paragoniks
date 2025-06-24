@@ -32,13 +32,13 @@ const productSchema = yup.object().shape({
   price: yup
     .number()
     .required('Product price is required')
-    .min(0.01, 'Product price must be at least 0.01')
+    .min(0, 'Product price must be at least 0')
     .max(100000, 'Product price must be at most 100000'),
 
   count: yup
     .number()
     .required('Product count is required')
-    .min(1, 'Product count must be at least 1')
+    .min(0, 'Product count must be at least 0')
     .max(100000, 'Product count must be at most 100000'),
 
   discount: yup
@@ -102,18 +102,21 @@ function PreciseProductEdit() {
                 name="price"
                 label="Cena"
                 keyboardType="numeric"
+                precision={4}
               />
 
               <ProductEditTextField
                 name="count"
                 label="Ilość"
                 keyboardType="numeric"
+                precision={4}
               />
 
               <ProductEditTextField
                 name="discount"
                 label="Zniżka"
                 keyboardType="numeric"
+                precision={4}
               />
             </Flex>
             {pricingError && (

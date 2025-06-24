@@ -1,11 +1,10 @@
 import type { RequestHandler } from 'express'
 
-import type { ISimpleReceipt } from 'src/models/receipt.model'
 import type { ProductId, UserId } from 'src/types/generic.types'
-import { writeFileSync } from 'node:fs'
+import type { HandleCreateReceiptBean } from './receipt.controller.beans'
 import { receiptService } from 'src/services'
-import { createReceipt } from 'src/services/receipt.service'
-import { extractReceiptDataFromText } from 'src/utils/extract-receipt-data-from-text'
+import { parseAndSaveImage } from 'src/utils/image'
+import { extractReceiptDataFromText, generateReceiptTitle } from 'src/utils/openai'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res) => {
   const user = req.user
@@ -15,32 +14,39 @@ export const handleGetUserReceipts: RequestHandler = async (req, res) => {
   res.status(200).json(receipts)
 }
 
-export const handleCreateReceiptFromImage: RequestHandler = async (req, res) => {
+export const handleCreateReceipt: RequestHandler = async (req, res) => {
   const user = req.user
-  const imageBase64 = req.body.image as string
+  const receipt = req.body as HandleCreateReceiptBean
 
-  const receiptImage = Buffer.from(imageBase64, 'base64')
-  const receiptImageUint8Array = new Uint8Array(receiptImage.buffer, receiptImage.byteOffset, receiptImage.byteLength)
-  const imagePath = `./uploads/${user._id}_${new Date().getTime()}.png`
-  writeFileSync(imagePath, receiptImageUint8Array)
+  const imagePath = await parseAndSaveImage(user._id, receipt.image)
 
-  const receipt = await extractReceiptDataFromText(imageBase64)
+  const { products, contributors } = receipt
 
-  const receiptObj = await receiptService.createReceipt(
-    { ...receipt, imagePath },
-    user._id,
-  )
+  if (receipt.shouldGenerateProducts) {
+    const receiptData = await extractReceiptDataFromText(receipt.image)
+    const receiptRecord = await receiptService.createReceipt(user._id, {
+      ...receiptData,
+      products,
+      imagePath,
+      contributors,
+    })
 
-  res.status(201).json(receiptObj)
-}
+    res.status(201).json(receiptRecord)
+    return
+  }
 
-export const handleCreateReceiptFromData: RequestHandler = async (req, res) => {
-  const user = req.user
-  const receiptBody = req.body as Pick<ISimpleReceipt, 'products' | 'title'>
+  const shouldGenerateTitle = !!receipt.shouldGenerateTitle
+  const generatedTitle = shouldGenerateTitle ? await generateReceiptTitle(receipt.products) : null
+  const title = generatedTitle ?? receipt.title
 
-  const receipt = await createReceipt({ ...receiptBody, imagePath: '' }, user._id)
+  const receiptRecord = await receiptService.createReceipt(user._id, {
+    title,
+    products,
+    imagePath,
+    contributors,
+  })
 
-  res.status(201).json(receipt)
+  res.status(201).json(receiptRecord)
 }
 
 export const handleGetSingleReceipt: RequestHandler = async (req, res) => {

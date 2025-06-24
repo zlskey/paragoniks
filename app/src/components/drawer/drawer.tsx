@@ -1,8 +1,9 @@
+import type { BottomSheetModalProps } from '@gorhom/bottom-sheet'
 import { colors } from '@app/styles'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
-import React, { forwardRef, useCallback, useRef } from 'react'
+import React, { forwardRef, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 export type UseDrawerFunctionsRef = React.RefObject<BottomSheetModal>
@@ -33,22 +34,15 @@ const styles = StyleSheet.create({
   },
 })
 
-interface DrawerProps {
+interface DrawerProps extends BottomSheetModalProps {
   title: string
-  snapPoints?: number[]
-  onDismiss?: () => void
   onSnapPointChange?: (point: number) => void
-  enableDynamicSizing?: boolean
 }
 
 const Drawer = forwardRef<BottomSheetModal, React.PropsWithChildren<DrawerProps>>((
   { title, children, onSnapPointChange, ...props },
   ref,
 ) => {
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log(index)
-  }, [onSnapPointChange])
-
   return (
     <BottomSheetModal
       {...props}
@@ -56,7 +50,7 @@ const Drawer = forwardRef<BottomSheetModal, React.PropsWithChildren<DrawerProps>
       enablePanDownToClose
       style={styles.bottomSheet}
       handleStyle={styles.handle}
-      onChange={handleSheetChanges}
+      onChange={onSnapPointChange}
       containerStyle={styles.container}
       backgroundStyle={styles.background}
       handleIndicatorStyle={styles.handleIndicator}

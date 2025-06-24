@@ -33,20 +33,19 @@ export async function getReceipt(receiptId: ReceiptId) {
   return receipt
 }
 
-export async function createReceipt(receipt: Pick<ISimpleReceipt, 'products' | 'title' | 'imagePath'>, userId: UserId) {
+export async function createReceipt(userId: UserId, receipt: Pick<ISimpleReceipt, 'products' | 'title' | 'imagePath' | 'contributors'>) {
+  const contributorsIds = Object.keys(receipt.contributors)
   const products = receipt.products.map(product => ({
     ...product,
     discount: Math.abs(product.discount ?? 0),
     divisionType: 'shares',
-    division: { [userId.toString()]: 1 },
+    division: receipt.contributors,
   })) as IProduct[]
 
-  const contributors = { [userId.toString()]: 1 }
-
   const receiptObj = {
-    ...receipt,
     owner: userId,
-    ...getCalculatedTotalsForReceipt({ contributors, products }),
+    ...receipt,
+    ...getCalculatedTotalsForReceipt(contributorsIds, products),
   }
 
   return await Receipt.create(receiptObj)
@@ -137,7 +136,10 @@ export async function removeContributor(receipt: IReceipt, contributorId: UserId
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    getCalculatedTotalsForReceipt({ contributors, products: updatedProducts }),
+    getCalculatedTotalsForReceipt(
+      Object.keys(contributors),
+      updatedProducts,
+    ),
     { new: true },
   )
 }
@@ -156,10 +158,10 @@ export async function updateProduct(receipt: IReceipt, productId: ProductId, pro
 
   return await Receipt.findByIdAndUpdate(
     receipt._id,
-    getCalculatedTotalsForReceipt({
-      contributors: receipt.contributors,
-      products: updatedProducts,
-    }),
+    getCalculatedTotalsForReceipt(
+      Object.keys(receipt.contributors),
+      updatedProducts,
+    ),
     { new: true },
   )
 }

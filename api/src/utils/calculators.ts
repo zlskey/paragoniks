@@ -2,7 +2,6 @@ import type {
   Division,
   DivisionType,
   IProduct,
-  IReceipt,
 } from 'src/models/receipt.model'
 
 export function parseFloatWithTwoDecimals(number: number): number {
@@ -47,29 +46,30 @@ export function getTotalContribution(products: IProduct[], userId: string) {
 }
 
 export function getCalculatedTotalsForReceipt(
-  receipt: Pick<IReceipt, 'contributors' | 'products'>,
+  contributorsIds: string[],
+  products: IProduct[],
 ) {
-  const products = receipt.products.map((product) => {
+  const calculatedProducts = products.map((product) => {
     const totalPrice = getTotalPrice(product)
 
     return { ...product, totalPrice }
   })
 
   const contributors = Object.fromEntries(
-    Object.entries(receipt.contributors).map(([userId]) => {
-      const contribution = getTotalContribution(products, userId)
+    contributorsIds.map((userId) => {
+      const contribution = getTotalContribution(calculatedProducts, userId)
       return [userId, contribution]
     }),
   )
 
   const sum = parseFloatWithTwoDecimals(
-    Object.values(products).reduce(
+    Object.values(calculatedProducts).reduce(
       (total, product) => total + product.totalPrice,
       0,
     ),
   )
 
-  return { contributors, products, sum }
+  return { contributors, products: calculatedProducts, sum }
 }
 
 export function splitNumberEqually(numberToSplit: number, partsCount: number) {

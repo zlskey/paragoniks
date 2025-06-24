@@ -3,7 +3,7 @@ import type { RequestHandler } from 'express'
 import type { UserId } from 'src/types/generic.types'
 import { writeFileSync } from 'node:fs'
 import constants from 'src/constants'
-import { anonimUsersService, userService } from 'src/services'
+import { anonimUsersService, friendService, userService } from 'src/services'
 
 export const handleChangeUsername: RequestHandler = async (req, res) => {
   const { username } = req.body
@@ -52,6 +52,17 @@ export const handleChangeAvatarImage: RequestHandler = async (req, res) => {
   const updatedUser = await user.changeAvatarImage(imagePath)
 
   res.status(201).json(updatedUser)
+}
+
+export const handleGetFriends: RequestHandler = async (req, res) => {
+  const user = req.user
+
+  const userFriendsIds = await friendService.findAllUserAcceptedFriendsIds(user._id)
+  const userFriendsProfiles = await userService.getProfiles(userFriendsIds)
+  const userAnonims = await anonimUsersService.getAllUserAnonims(user._id)
+  const combined = [...userFriendsProfiles, ...userAnonims]
+
+  res.status(200).json(combined)
 }
 
 export const handleGetProfile: RequestHandler = async (req, res) => {

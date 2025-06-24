@@ -17,6 +17,7 @@ app.use(
 )
 app.use(cookieParser())
 app.use(morgan('dev'))
+app.set('trust proxy', '127.0.0.1')
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(
   cors({

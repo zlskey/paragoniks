@@ -2,7 +2,7 @@
   "expo": {
     "name": "Paragoniks",
     "slug": "paragoniks",
-    "version": "1.1.13",
+    "version": "1.1.14",
     "orientation": "portrait",
     "icon": "./src/assets/images/splash.png",
     "scheme": "paragoniks",
@@ -29,7 +29,7 @@
       },
       "package": "com.zlskey.paragoniks",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 20
+      "versionCode": 21
     },
     "web": {
       "bundler": "metro",

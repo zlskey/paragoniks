@@ -5,7 +5,7 @@ import type {
 } from './create-or-update-simple-product-form'
 import { colors, getPx } from '@app/styles'
 import Button from '@components/button'
-import Drawer from '@components/drawer/drawer'
+import Drawer from '@components/drawer'
 import Flex from '@components/flex'
 import TextField from '@components/text-field'
 import Typography from '@components/typography'
@@ -52,10 +52,10 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
       onDismiss={onDismiss}
       title={productData ? 'Edytowanie produktu' : 'Nowy produkt'}
     >
-      <FormProvider {...newProductForm}>
-        <Flex direction="column" alignContent="stretch" spacing={2} pb={2} pt={1} p={1}>
+      <Flex direction="column" alignContent="stretch" spacing={2} pb={2} pt={1} p={1}>
+        <FormProvider {...newProductForm}>
           <Flex direction="column" alignContent="stretch">
-            <Flex>
+            <Flex direction="column" alignContent="stretch">
               <TextField
                 name="name"
                 label="Nazwa produktu"
@@ -73,7 +73,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
             )}
           </Flex>
 
-          <Flex direction="column">
+          <Flex direction="column" alignContent="stretch">
             <Flex spacing={2} justifyContent="space-between">
               <TextField
                 style={{ backgroundColor: colors.secondPaper }}
@@ -107,24 +107,22 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
             )}
           </Flex>
 
-          <Flex justifyContent="flex-end">
-            <Button
-              isDisabled={!!pricingError || !!nameError}
-              onPress={newProductForm.handleSubmit(onSubmit)}
-              startIcon={(
-                <FontAwesome6
-                  name="add"
-                  size={getPx(3)}
-                  color={colors.text}
-                />
-              )}
-              small
-            >
-              {productData ? 'Zapisz' : 'Dodaj'}
-            </Button>
-          </Flex>
-        </Flex>
-      </FormProvider>
+          <Button
+            isDisabled={!!pricingError || !!nameError}
+            onPress={newProductForm.handleSubmit(onSubmit)}
+            startIcon={(
+              <FontAwesome6
+                name="add"
+                size={getPx(3)}
+                color={colors.text}
+              />
+            )}
+            small
+          >
+            {productData ? 'Zapisz' : 'Dodaj'}
+          </Button>
+        </FormProvider>
+      </Flex>
     </Drawer>
   )
 }

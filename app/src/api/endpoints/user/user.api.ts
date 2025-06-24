@@ -1,11 +1,11 @@
-import type { User } from 'src/app/generic.types'
-
+import type { Profile, User } from '@app/generic.types'
 import type {
   ChangeAvatarColorBody,
   ChangeAvatarImageBody,
   ChangePasswordBody,
   ChangeUserLangBody,
   ChangeUsernameBody,
+  GetUserFriendsOrAnonimsBody,
   LoginUserBody,
   LoginUserResponse,
   LogoutUserBody,
@@ -16,7 +16,7 @@ import type {
   WhoamiUserBody,
   WhoamiUserResponse,
 } from './user.api.types'
-import { getRsApi } from 'src/api/rs.api'
+import { getRsApi } from '@api/rs.api'
 
 export async function loginUser(body: LoginUserBody) {
   const url = '/auth/login'
@@ -110,6 +110,13 @@ export async function updateUserMeta(body: UpdateUserMetaBody) {
   const url = 'user/meta'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
+  return response.data
+}
+
+export async function getUserFriendsOrAnonims(body: GetUserFriendsOrAnonimsBody) {
+  const url = 'user/friends'
+  const rsApi = await getRsApi()
+  const response = await rsApi.get<Profile[]>(url, body)
 
   return response.data
 }
