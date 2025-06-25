@@ -10,8 +10,9 @@ resource "google_service_account" "cloudrun" {
 }
 
 resource "google_cloud_run_service" "api" {
-  name     = "paragoniks-api"
-  location = "europe-west1"
+  name                        = "paragoniks-api"
+  location                    = "europe-west1"
+  autogenerate_revision_name = true
 
   template {
     spec {
