@@ -5,6 +5,7 @@ import useUpdateAvatarImage from '@helpers/api-hooks/use-update-avatar-image'
 import { useUserContext } from '@helpers/contexts/user.context'
 import useUploadImage from '@helpers/hooks/use-upload-image'
 import { Link } from 'expo-router'
+import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { colors } from 'src/app/styles'
 

@@ -1,9 +1,9 @@
 import type { RequestHandler } from 'express'
 
 import type { UserId } from 'src/types/generic.types'
-import { writeFileSync } from 'node:fs'
 import constants from 'src/constants'
 import { anonimUsersService, friendService, userService } from 'src/services'
+import { uploadAvatarToBucket } from 'src/utils/gcp/bucket'
 
 export const handleChangeUsername: RequestHandler = async (req, res) => {
   const { username } = req.body
@@ -45,10 +45,8 @@ export const handleChangeAvatarColor: RequestHandler = async (req, res) => {
 export const handleChangeAvatarImage: RequestHandler = async (req, res) => {
   const user = req.user
   const avatarImage = Buffer.from(req.body.image, 'base64')
-  const avatarImageUint8Array = new Uint8Array(avatarImage.buffer, avatarImage.byteOffset, avatarImage.byteLength)
-  const imagePath = `uploads/${user._id}_${new Date().getTime()}.png`
-  writeFileSync(imagePath, avatarImageUint8Array)
 
+  const imagePath = await uploadAvatarToBucket(user._id.toString(), avatarImage)
   const updatedUser = await user.changeAvatarImage(imagePath)
 
   res.status(201).json(updatedUser)
