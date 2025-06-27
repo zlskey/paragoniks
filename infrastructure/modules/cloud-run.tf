@@ -16,6 +16,7 @@ resource "google_cloud_run_service" "api" {
 
   template {
     spec {
+      service_account_name = google_service_account.cloudrun.email
       containers {
         image = "europe-west1-docker.pkg.dev/${var.project_id}/paragoniks-api/paragoniks-api:latest"
         

@@ -33,6 +33,11 @@ resource "google_service_account_key" "bucket_key" {
 resource "google_secret_manager_secret_version" "gcp_service_account_key" {
   secret      = google_secret_manager_secret.gcp_service_account_key.id
   secret_data = base64decode(google_service_account_key.bucket_key.private_key)
+  
+  depends_on = [
+    google_secret_manager_secret.gcp_service_account_key,
+    google_service_account_key.bucket_key
+  ]
 }
 
 output "bucket_url" {
