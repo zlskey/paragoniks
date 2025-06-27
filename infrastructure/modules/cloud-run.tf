@@ -41,6 +41,17 @@ resource "google_cloud_run_service" "api" {
           name  = "MAIN_DOMAIN"
           value = var.primary_domain
         }
+
+        env {
+          name  = "BUCKET_URL"
+          value = var.bucket_url
+        }
+
+        env {
+          name  = "PROJECT_ID"
+          value = var.project_id
+        }
+
         # Secret environment variables
         env {
           name = "MONGODB_URL"

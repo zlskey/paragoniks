@@ -3,7 +3,7 @@ import type { RequestHandler } from 'express'
 import type { ProductId, UserId } from 'src/types/generic.types'
 import type { HandleCreateReceiptBean } from './receipt.controller.beans'
 import { receiptService } from 'src/services'
-import { parseAndSaveImage } from 'src/utils/image'
+import { uploadReceiptToBucket } from 'src/utils/gcp/bucket'
 import { extractReceiptDataFromText, generateReceiptTitle } from 'src/utils/openai'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res) => {
@@ -18,7 +18,7 @@ export const handleCreateReceipt: RequestHandler = async (req, res) => {
   const user = req.user
   const receipt = req.body as HandleCreateReceiptBean
 
-  const imagePath = await parseAndSaveImage(user._id, receipt.image)
+  const imagePath = await uploadReceiptToBucket(user._id.toString(), Buffer.from(receipt.image, 'base64'))
 
   const { products, contributors } = receipt
 

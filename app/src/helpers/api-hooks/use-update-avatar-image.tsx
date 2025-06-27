@@ -1,6 +1,4 @@
 import type { WhoamiUserResponse } from 'src/api/endpoints/user/user.api.types'
-
-import type { ImageBase64 } from 'src/app/generic.types'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -12,7 +10,7 @@ function useUpdateAvatarImage() {
 
   return useMutation({
     mutationKey: ['user', 'avatar', 'image'],
-    mutationFn: async (image: ImageBase64) => changeAvatarImage({ image }),
+    mutationFn: changeAvatarImage,
     onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
     onSuccess: (updatedUser) => {
       if (!updatedUser) {

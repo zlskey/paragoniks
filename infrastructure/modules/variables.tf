@@ -30,3 +30,15 @@ variable "cors_origin" {
   type        = string
 }
 
+variable "bucket_name" {
+  description = "The name of the GCS bucket for storing images"
+  type        = string
+  default     = "paragoniks-images"
+}
+
+variable "bucket_url" {
+  description = "The URL of the GCS bucket for storing images"
+  type        = string
+  default     = "https://storage.googleapis.com/paragoniks-images"
+}
+
