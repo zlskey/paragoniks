@@ -3,12 +3,14 @@ import { Storage } from '@google-cloud/storage'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 
 const apiEndpoint = process.env.BUCKET_URL ?? 'http://paragoniks-bucket:4443'
+const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY ? JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY) : null
 const projectId = process.env.PROJECT_ID ?? 'paragoniks'
 const isProdEnv = process.env.NODE_ENV === 'production'
 
 const storage = new Storage({
   apiEndpoint,
   projectId,
+  credentials,
 })
 
 enum BucketName {

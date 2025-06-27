@@ -102,6 +102,16 @@ resource "google_cloud_run_service" "api" {
             }
           }
         }
+
+        env {
+          name = "GOOGLE_SERVICE_ACCOUNT_KEY"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.gcp_service_account_key.secret_id
+              key  = "latest"
+            }
+          }
+        }
       }
     }
     
