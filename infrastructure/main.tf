@@ -30,6 +30,8 @@ module "gcp" {
   node_env = "production"
   primary_domain = "paragoniks.pl"
   cors_origin = "https://paragoniks.pl"
+  bucket_name = "paragoniks-images"
+  bucket_url = "https://storage.googleapis.com/paragoniks-images"
 }
 
 variable "project_id" {
@@ -40,4 +42,4 @@ variable "project_id" {
 variable "git_hash" {
   description = "The Git hash of the current commit"
   type        = string
-} 
+}

@@ -44,7 +44,7 @@ resource "google_cloud_run_service" "api" {
 
         env {
           name  = "BUCKET_URL"
-          value = module.gcp_bucket.public_bucket_url
+          value = var.bucket_url
         }
 
         env {
