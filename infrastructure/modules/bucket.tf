@@ -29,15 +29,7 @@ resource "google_service_account_key" "bucket_key" {
   service_account_id = google_service_account.bucket_service_account.name
 }
 
-# Store the service account key in Secret Manager
-resource "google_secret_manager_secret" "gcp_service_account_key" {
-  secret_id = "gcp-service-account-key"
-  
-  replication {
-    auto {}
-  }
-}
-
+# Fill the service account key secret with the actual key value
 resource "google_secret_manager_secret_version" "gcp_service_account_key" {
   secret      = google_secret_manager_secret.gcp_service_account_key.id
   secret_data = base64decode(google_service_account_key.bucket_key.private_key)
