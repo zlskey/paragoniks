@@ -10,11 +10,13 @@ resource "google_service_account" "cloudrun" {
 }
 
 resource "google_cloud_run_service" "api" {
-  name     = "paragoniks-api"
-  location = "europe-west1"
+  name                        = "paragoniks-api"
+  location                    = "europe-west1"
+  autogenerate_revision_name = true
 
   template {
     spec {
+      service_account_name = google_service_account.cloudrun.email
       containers {
         image = "europe-west1-docker.pkg.dev/${var.project_id}/paragoniks-api/paragoniks-api:latest"
         
@@ -40,6 +42,17 @@ resource "google_cloud_run_service" "api" {
           name  = "MAIN_DOMAIN"
           value = var.primary_domain
         }
+
+        env {
+          name  = "BUCKET_NAME"
+          value = var.bucket_name
+        }
+
+        env {
+          name  = "PROJECT_ID"
+          value = var.project_id
+        }
+
         # Secret environment variables
         env {
           name = "MONGODB_URL"
@@ -86,6 +99,16 @@ resource "google_cloud_run_service" "api" {
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.openai_api_key.secret_id
+              key  = "latest"
+            }
+          }
+        }
+
+        env {
+          name = "GOOGLE_SERVICE_ACCOUNT_KEY"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.gcp_main_paragoniarz_key.secret_id
               key  = "latest"
             }
           }

@@ -1,5 +1,6 @@
 import Flex from '@components/flex'
 import Wrapper from '@components/wrapper'
+import React from 'react'
 import ChangePassword from './change-password'
 import Header from './header'
 import Logout from './logout'

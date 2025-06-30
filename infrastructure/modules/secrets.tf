@@ -47,6 +47,24 @@ resource "google_secret_manager_secret" "openai_api_key" {
   }
 }
 
+resource "google_secret_manager_secret" "gcp_main_paragoniarz_key" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "gcp_main_paragoniarz_key"
+
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret" "gcp_side_paragoniarz_key" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "gcp_side_paragoniarz_key"
+
+  replication {
+    auto {}
+  }
+}
+
 resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_mongo" {
   member = "serviceAccount:${google_service_account.cloudrun.email}"
   role = "roles/secretmanager.secretAccessor"
@@ -75,4 +93,16 @@ resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_
   member = "serviceAccount:${google_service_account.cloudrun.email}"
   role = "roles/secretmanager.secretAccessor"
   secret_id = google_secret_manager_secret.openai_api_key.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_gcp_main_paragoniarz_key" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.gcp_main_paragoniarz_key.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_gcp_side_paragoniarz_key" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.gcp_side_paragoniarz_key.id
 }

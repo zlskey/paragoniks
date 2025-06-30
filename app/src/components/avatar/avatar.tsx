@@ -6,8 +6,6 @@ import { Image, Platform, StyleSheet, View } from 'react-native'
 import { AvatarColor } from 'src/app/generic.types'
 import { colors, getPx } from 'src/app/styles'
 
-const EXPO_PUBLIC_RS_API_URL = process.env.EXPO_PUBLIC_RS_API_URL
-
 function getContainerSize(size: 'sm' | 'md' | 'lg' | 'xs') {
   switch (size) {
     case 'xs':
@@ -76,13 +74,12 @@ function Avatar({
 
   if (profile.avatarImage) {
     const containerSize = getContainerSize(size)
-    const iamgeUri = `${EXPO_PUBLIC_RS_API_URL}/${profile.avatarImage}`
     return (
       <View style={styles.container}>
         {Platform.OS === 'web'
           ? (
               <img
-                src={iamgeUri}
+                src={profile.avatarImage}
                 alt="User Avatar"
                 style={{
                   width: containerSize,
@@ -96,7 +93,7 @@ function Avatar({
                 resizeMode="cover"
                 width={containerSize}
                 height={containerSize}
-                source={{ uri: iamgeUri }}
+                source={{ uri: profile.avatarImage }}
                 alt="User Avatar"
               />
             )}
