@@ -21,11 +21,17 @@ export function saveToStorage(key: string, data: unknown) {
 }
 
 export async function getFromStorage(key: string) {
-  if (isWeb) {
-    const val = localStorage.getItem(key) ?? ''
+  try {
+    if (isWeb) {
+      const val = localStorage.getItem(key) ?? ''
+      return JSON.parse(val)
+    }
+
+    const val = await AsyncStorage.getItem('token') ?? ''
     return JSON.parse(val)
   }
-
-  const val = await AsyncStorage.getItem('token') ?? ''
-  return JSON.parse(val)
+  catch (error) {
+    console.error('Error getting data from storage:', error)
+    return ''
+  }
 }

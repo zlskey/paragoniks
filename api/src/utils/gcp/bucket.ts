@@ -4,7 +4,7 @@ import { ErrorObject } from 'src/middlewares/error.middleware'
 const BUCKET_NAME = process.env.BUCKET_NAME ?? 'paragoniks-bucket'
 const PROJECT_ID = process.env.PROJECT_ID ?? 'paragoniks'
 
-const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY ? JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY) : null
+const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY ? JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY) : undefined
 const isProdEnv = process.env.NODE_ENV === 'production'
 
 const apiEndpoint = `https://storage.googleapis.com/${BUCKET_NAME}`

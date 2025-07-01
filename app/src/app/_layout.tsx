@@ -1,14 +1,11 @@
 import Wrapper from '@components/wrapper'
 import { FontAwesome } from '@expo/vector-icons'
-
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-
-import NotificationWrapper from '@helpers/contexts/notification.context'
+import NotificationWrapper, { useNotificationContext } from '@helpers/contexts/notification.context'
 import UserContextProvider, {
   useUserContext,
 } from '@helpers/contexts/user.context'
 import { getFromStorage, isWebOnDesktop, saveToStorage } from '@helpers/utils/storage'
-
 import {
   QueryClient,
   QueryClientProvider,
@@ -19,6 +16,7 @@ import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect, useMemo, useState } from 'react'
+import { Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
@@ -75,7 +73,8 @@ function RootLayoutNav() {
 
 function RootLayout() {
   const [loggedIn, setLoggedIn] = useState(false)
-  const { data, isPending } = useQuery({
+  const showNotification = useNotificationContext()
+  const { data, isPending, error: whoamiError } = useQuery({
     queryKey: ['user', 'whoami'],
     queryFn: whoamiUser,
   })
@@ -93,6 +92,14 @@ function RootLayout() {
 
   useEffect(() => {
     async function handleLoggedIn() {
+      if (whoamiError) {
+        showNotification(
+          `System ${Platform.OS}, whoamiError: ${whoamiError.message}`,
+          'error',
+        )
+        return
+      }
+
       const token = data?.token || ''
       if (await getFromStorage('token') === token) {
         return
@@ -101,7 +108,7 @@ function RootLayout() {
       setLoggedIn(!!token)
     }
     handleLoggedIn()
-  }, [data])
+  }, [data, whoamiError])
 
   const user = data?.user ?? userMockup
 

@@ -50,14 +50,6 @@ export async function whoamiUser(body: WhoamiUserBody) {
   return response.data
 }
 
-export async function testt(body: WhoamiUserBody) {
-  const url = '/auth/test'
-  const rsApi = await getRsApi()
-  const response = await rsApi.get<User | null>(url, body)
-
-  return response.data
-}
-
 export async function changeUsername(body: ChangeUsernameBody) {
   const url = 'user/username'
   const rsApi = await getRsApi()
