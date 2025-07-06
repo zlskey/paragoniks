@@ -4,6 +4,7 @@ import type { UserId } from 'src/types/generic.types'
 import constants from 'src/constants'
 import { anonimUsersService, friendService, userService } from 'src/services'
 import { uploadAvatarImage } from 'src/utils/gcp/bucket'
+import { getImageBufferFromBase64 } from 'src/utils/image.utils'
 
 export const handleChangeUsername: RequestHandler = async (req, res) => {
   const { username } = req.body
@@ -44,7 +45,7 @@ export const handleChangeAvatarColor: RequestHandler = async (req, res) => {
 
 export const handleChangeAvatarImage: RequestHandler = async (req, res) => {
   const user = req.user
-  const avatarImage = Buffer.from(req.body.image, 'base64')
+  const avatarImage = getImageBufferFromBase64(req.body.image)
 
   const imagePath = await uploadAvatarImage(user._id.toString(), avatarImage)
   const updatedUser = await user.changeAvatarImage(imagePath)

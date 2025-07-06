@@ -28,9 +28,9 @@ function LoginForm() {
   const { mutate } = useMutation({
     mutationKey: ['auth', 'login'],
     mutationFn: loginUser,
-    onSuccess: (data) => {
-      saveToStorage('token', data.token)
-      queryClient.setQueryData(['user', 'whoami'], data)
+    onSuccess: async (data) => {
+      await saveToStorage('token', data.token)
+      await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
       addNotification(`Witaj ponownie ${data.user.username} ❣️`, 'success')
     },
     onError: (err: any) => {

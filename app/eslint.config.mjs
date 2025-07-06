@@ -10,5 +10,4 @@ export default antfu({
     'no-empty-pattern': ['off'],
     'no-console': ['off'],
   },
-
 })

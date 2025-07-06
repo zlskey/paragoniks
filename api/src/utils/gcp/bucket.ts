@@ -1,18 +1,17 @@
 import { Storage } from '@google-cloud/storage'
 import { ErrorObject } from 'src/middlewares/error.middleware'
+import { getCredentials } from './utils'
 
 const BUCKET_NAME = process.env.BUCKET_NAME ?? 'paragoniks-bucket'
 const PROJECT_ID = process.env.PROJECT_ID ?? 'paragoniks'
-
-const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY ? JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY) : undefined
 const isProdEnv = process.env.NODE_ENV === 'production'
 
-const apiEndpoint = `https://storage.googleapis.com/${BUCKET_NAME}`
-
 const storage = new Storage({
-  credentials,
   projectId: PROJECT_ID,
+  credentials: getCredentials(),
+  apiEndpoint: getApiEndpoint(),
 })
+
 const bucket = storage.bucket(BUCKET_NAME)
 
 enum DirectoryName {
@@ -25,10 +24,11 @@ function getFilePath(userId: string, directory: DirectoryName) {
 }
 
 function getImagePublicUrl(filePath: string) {
+  const serviceUrl = isProdEnv ? 'https://storage.googleapis.com' : 'http://localhost:4443'
   if (!isProdEnv) {
-    return `${apiEndpoint}/storage/v1/b/${BUCKET_NAME}/o/${encodeURIComponent(filePath)}?alt=media`
+    return `${serviceUrl}/storage/v1/b/${BUCKET_NAME}/o/${filePath}?alt=media`
   }
-  return `${apiEndpoint}/${filePath}`
+  return `${serviceUrl}/${BUCKET_NAME}/${filePath}`
 }
 
 export async function uploadImageToBucket(directory: DirectoryName, userId: string, buffer: Buffer) {
@@ -53,3 +53,19 @@ export async function uploadReceiptImage(userId: string, buffer: Buffer) {
 export async function uploadAvatarImage(userId: string, buffer: Buffer) {
   return uploadImageToBucket(DirectoryName.AVATARS, userId, buffer)
 }
+
+function getApiEndpoint() {
+  return isProdEnv ? undefined : 'http://paragoniks-bucket:4443'
+}
+
+async function createBucketForDevEnvironment() {
+  const [exists] = await bucket.exists()
+  if (exists) {
+    return null
+  }
+  if (isProdEnv) {
+    throw new Error(`Bucket ${BUCKET_NAME} does not exist in production environment.`)
+  }
+  return bucket.create()
+}
+createBucketForDevEnvironment()

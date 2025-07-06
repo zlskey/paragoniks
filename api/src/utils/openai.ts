@@ -52,7 +52,7 @@ export async function extractReceiptDataFromText(imageBase64: string) {
   const responseObj = JSON.parse(response.output_text)
 
   if (responseObj.error) {
-    throw new ErrorObject('Invalid image provided', 401)
+    throw new ErrorObject('Niepoprawne zdjęcie paragonu', 401)
   }
 
   return _.omit(responseObj, 'error') as {
