@@ -4,7 +4,7 @@ import type { ProductId, UserId } from 'src/types/generic.types'
 import type { HandleCreateReceiptBean } from './receipt.controller.beans'
 import { receiptService } from 'src/services'
 import { uploadReceiptImage } from 'src/utils/gcp/bucket'
-import { getImageBufferFromBase64 } from 'src/utils/image.utils'
+import { getCompressedImageBufferFromBase64 } from 'src/utils/image.utils'
 import { extractReceiptDataFromText, generateReceiptTitle } from 'src/utils/openai'
 
 export const handleGetUserReceipts: RequestHandler = async (req, res) => {
@@ -19,7 +19,8 @@ export const handleCreateReceipt: RequestHandler = async (req, res) => {
   const user = req.user
   const receipt = req.body as HandleCreateReceiptBean
 
-  const imagePath = await uploadReceiptImage(user._id.toString(), getImageBufferFromBase64(receipt.image))
+  const compressedImageBuffer = await getCompressedImageBufferFromBase64(receipt.image)
+  const imagePath = await uploadReceiptImage(user._id.toString(), compressedImageBuffer)
 
   const { contributors } = receipt
 
