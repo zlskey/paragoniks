@@ -14,7 +14,20 @@ resource "google_cloud_run_service" "api" {
   location                    = "europe-west1"
   autogenerate_revision_name = true
 
+  depends_on = [
+    google_project_service.cloud_run,
+    google_artifact_registry_repository.api_repository
+  ]
+
   template {
+    
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/minScale" = "0"
+        "autoscaling.knative.dev/maxScale" = "1"
+      }
+    }
+    
     spec {
       service_account_name = google_service_account.cloudrun.email
       containers {
@@ -115,24 +128,12 @@ resource "google_cloud_run_service" "api" {
         }
       }
     }
-    
-    metadata {
-      annotations = {
-        "autoscaling.knative.dev/minScale" = "0"
-        "autoscaling.knative.dev/maxScale" = "1"
-      }
-    }
   }
 
   traffic {
     percent         = 100
     latest_revision = true
   }
-
-  depends_on = [
-    google_project_service.cloud_run,
-    google_artifact_registry_repository.api_repository
-  ]
 }
 
 # IAM policy to make the service publicly accessible

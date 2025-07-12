@@ -1,4 +1,4 @@
-FROM node:20.10.0-bullseye-slim AS prepare
+FROM node:20.19.0-bullseye-slim AS prepare
 
 # Install gosu and node-sass dependencies
 # OpenSSH server has to be started by root user

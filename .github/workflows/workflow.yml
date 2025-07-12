@@ -14,68 +14,35 @@ jobs:
   eslint:
     runs-on: ubuntu-22.04
     name: ESLint
-    strategy:
-      matrix:
-        node-version: [20]
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Set up Node.js 20.19.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+      
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
+      
       - name: Run ESLint check for frontend
         run: |
           pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./app
       - name: Run ESLint check for backend
+
         run: |
           pnpm install --frozen-lockfile
           pnpm lint
         working-directory: ./api
 
-  terraform:
-    runs-on: ubuntu-latest
-    name: Apply Terraform
-    needs: [eslint, build-backend]
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.0.0"
-          
-      - name: Google Auth
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-          
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          
-      - name: Terraform Init
-        run: |
-          cd infrastructure
-          terraform init
-          
-      - name: Terraform Plan
-        run: |
-          cd infrastructure
-          terraform plan -var="git_hash=$(git rev-parse --short "$GITHUB_SHA")" -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
-          
-      - name: Terraform Apply
-        run: |
-          cd infrastructure
-          terraform apply -auto-approve -var="git_hash=$(git rev-parse --short "$GITHUB_SHA")" -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
-
   build-backend:
     runs-on: ubuntu-latest
-    name: Build Backend
+    name: Build and deploy Backend
     needs: [eslint]
     steps:
       - name: Checkout code
@@ -98,21 +65,24 @@ jobs:
           
       - name: Declare commit hash variable
         shell: bash
-        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+        run: |
+          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+          echo "IMAGE=europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api" >> "$GITHUB_ENV"
 
       - name: Build and push Docker image
         run: |
-          docker build -t europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:${{ env.git_hash }} \
-                     -t europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:latest \
-                     -f ./api/docker/Dockerfile ./api
+          docker build \
+            --build-arg GIT_HASH=${{ env.git_hash }} \
+            -t ${{ env.IMAGE }}:${{ env.git_hash }} \
+            -t ${{ env.IMAGE }}:latest \
+            -f ./api/docker/Dockerfile ./api
           
-          docker push europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:${{ env.git_hash }}
-          docker push europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/paragoniks-api/paragoniks-api:latest
+          docker push ${{ env.IMAGE }} --all-tags
 
   build-frontend:
     runs-on: ubuntu-latest
-    name: Build and Deploy Frontend
-    needs: [eslint, terraform]
+    name: Build and deploy Frontend
+    needs: [eslint]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -147,3 +117,42 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/firebase-credentials.json
         run: firebase deploy --only hosting --project paragoniks
+
+  terraform:
+    runs-on: ubuntu-latest
+    name: Apply Terraform
+    needs: [build-backend, build-frontend]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.0.0"
+          
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          
+      - name: Terraform Init
+        run: |
+          cd infrastructure
+          terraform init
+          
+      - name: Terraform Plan
+        run: |
+          cd infrastructure
+          terraform plan -var="git_hash=$(git rev-parse --short "$GITHUB_SHA")" -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
+          
+      - name: Terraform Apply
+        run: |
+          cd infrastructure
+          terraform apply -auto-approve -var="git_hash=$(git rev-parse --short "$GITHUB_SHA")" -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
+

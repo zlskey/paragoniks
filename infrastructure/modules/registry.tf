@@ -13,7 +13,7 @@ resource "google_artifact_registry_repository" "api_repository" {
   description = "Docker repository for Paragoniks API images"
   format = "DOCKER"
 
-    labels = {
+  labels = {
     exposure = "external"
   }
 }
