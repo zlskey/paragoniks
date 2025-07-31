@@ -123,15 +123,13 @@ function ProductItemConnected({ product }: ProductItemConnectedProps) {
   )
 
   function handleLongPress() {
-    if (isOwner) {
-      router.push({
-        pathname: '/receipt/[id]/[productId]',
-        params: {
-          id: receipt._id,
-          productId: product._id,
-        },
-      })
-    }
+    router.push({
+      pathname: '/receipt/[id]/[productId]',
+      params: {
+        id: receipt._id,
+        productId: product._id,
+      },
+    })
   }
 
   function handlePress() {

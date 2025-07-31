@@ -17,7 +17,10 @@ import { compareIds } from 'src/utils/ids-util'
 
 export async function getAllReceipts(userId: UserId) {
   const receipts = await Receipt.find({
-    $or: [{ owner: userId }, { contributors: userId.toString() }],
+    $or: [
+      { owner: userId },
+      { [`contributors.${userId.toString()}`]: { $exists: true } },
+    ],
   })
 
   return receipts

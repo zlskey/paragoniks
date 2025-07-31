@@ -27,7 +27,7 @@ export const findAndValidateReceipt: RequestHandler = async (
 
   const { contributors } = receipt
 
-  if (contributors[_id.toString()]) {
+  if (Object.keys(contributors).includes(_id.toString())) {
     req.receipt = receipt
 
     return next()
