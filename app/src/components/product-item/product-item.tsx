@@ -52,6 +52,7 @@ export function ProductItemInternal({
   return (
     <Swipeable
       friction={1}
+      dragOffsetFromRightEdge={5}
       onSwipeableOpen={onSwipeableOpen}
       renderRightActions={renderRightActions}
     >

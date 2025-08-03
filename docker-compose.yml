@@ -21,7 +21,7 @@ services:
 
   paragoniks-db:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
-    image: mongo
+    image: mongo:8.0.11
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}

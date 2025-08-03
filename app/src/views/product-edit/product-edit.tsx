@@ -101,21 +101,21 @@ function PreciseProductEdit() {
               <ProductEditTextField
                 name="price"
                 label="Cena"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 precision={4}
               />
 
               <ProductEditTextField
                 name="count"
                 label="Ilość"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 precision={4}
               />
 
               <ProductEditTextField
                 name="discount"
                 label="Zniżka"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 precision={4}
               />
             </Flex>
