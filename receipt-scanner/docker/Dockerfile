@@ -1,4 +1,4 @@
-FROM node:20.10.0-bullseye-slim AS prepare
+FROM node:20.19.0-bullseye-slim
 
 # Install gosu and node-sass dependencies
 # OpenSSH server has to be started by root user
@@ -37,32 +37,8 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-
-# ------------   Builder   ------------
-
-
-FROM prepare AS builder
-
-# Copy source code
-COPY . .
-
-# Install dependencies
-RUN pnpm install --frozen-lockfile
-
-# Build application
-RUN npx expo export --platform web
-
-
-# ------------   Production   ------------
-
-# Prepare the web server to use Nginx
-FROM nginx:alpine AS production
-
-# Copy built files from `dist` to the Nginx HTML location
-COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
-
-# Expose port 80 to the outside world
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Define shell script that will run on every container startup
+# By default every command inside ENTRYPOINT will be invoked by root
+# Use gosu to step down to non-root user before running any command that do not
+# need elevated privileges and especially before running final command
+ENTRYPOINT ["/usr/src/app/docker/entrypoint.sh"]

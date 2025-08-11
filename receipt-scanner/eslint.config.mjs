@@ -1,13 +1,14 @@
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
+  formatters: true,
   rules: {
     'node/prefer-global/process': ['off'],
-    'import/no-default-export': ['off'],
-    'ts/no-empty-object-type': ['off'],
+    'node/prefer-global/buffer': ['off'],
     'ts/no-use-before-define': ['off'],
-    'ts/no-require-imports': ['off'],
-    'no-empty-pattern': ['off'],
+    'ts/ban-ts-comment': ['off'],
+    'ts/no-namespace': ['off'],
     'no-console': ['off'],
   },
+  ignores: ['./src/migrations/**/*'],
 })

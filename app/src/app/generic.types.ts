@@ -101,6 +101,7 @@ export interface Receipt extends SimpleReceipt {
   imagePath: string
   createdAt: string
   updatedAt: string
+  isCreating?: boolean
 }
 
 export type ImageBase64 = string

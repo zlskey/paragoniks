@@ -3,6 +3,7 @@ import Paper from '@components/paper'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
 import { Skeleton } from 'moti/skeleton'
+import React from 'react'
 import { getPx } from 'src/app/styles'
 import ContributorListSkeleton from './contributor-list/contributor-list.skeleton'
 

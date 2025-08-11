@@ -31,10 +31,10 @@ function SignupForm() {
   const { mutate } = useMutation({
     mutationKey: ['auth', 'signup'],
     mutationFn: signupUser,
-    onSuccess: (data) => {
-      saveToStorage('token', data.token)
+    onSuccess: async (data) => {
+      await saveToStorage('token', data.token)
+      await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
       addNotification(`Witamy ${data.user.username}!`, 'success')
-      queryClient.setQueryData(['user', 'whoami'], data)
     },
     onError: (err: any) => {
       addNotification(err.response.data.error.message ?? SOMETHING_WENT_WRONG_MESSAGE, 'error')

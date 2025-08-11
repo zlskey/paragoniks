@@ -1,8 +1,8 @@
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
-import { useState } from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import { TouchableOpacity } from 'react-native'
 import LoginForm from './login-form'
 import SignupForm from './signup-form'
 

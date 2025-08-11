@@ -5,6 +5,7 @@ services:
     depends_on:
       - paragoniks-db
       - paragoniks-bucket
+      - paragoniks-pubsub
     restart: unless-stopped
     build:
       context: ./api/docker
@@ -12,7 +13,6 @@ services:
       target: development
     volumes:
       - ./api:/usr/src/app
-      - ./data/uploads:/usr/src/app/uploads
     env_file:
       - ".env"
       - "./api/.env"
@@ -26,6 +26,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
+    volumes:
+      - paragoniks-mongo:/data
     ports:
       - 27017:27017
 
@@ -42,7 +44,33 @@ services:
     ports:
       - "4443:4443"
     volumes:
-      - paragoniks-storage:/data
+      - paragoniks-bucket:/data
+
+  paragoniks-pubsub:
+    container_name: paragoniks-pubsub
+    image: google/cloud-sdk:emulators
+    ports:
+      - 8432:8432
+    command: gcloud beta emulators pubsub start --host-port=paragoniks-pubsub:8432
+    volumes:
+      - paragoniks-pubsub:/data
+
+  receipt-scanner:
+    container_name: receipt-scanner
+    build:
+      context: ./receipt-scanner
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - paragoniks-db
+      - paragoniks-pubsub
+    volumes:
+      - ./receipt-scanner:/usr/src/app
+    env_file:
+      - ".env"
+      - "./receipt-scanner/.env"
+    command: pnpm dev
 
 volumes:
-  paragoniks-storage:
+  paragoniks-bucket:
+  paragoniks-mongo:
+  paragoniks-pubsub:

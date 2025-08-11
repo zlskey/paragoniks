@@ -1,13 +1,23 @@
 resource "google_storage_bucket" "images" {
-    name     = var.bucket_name
-    location = "EU"
-    force_destroy = true
+  name     = var.bucket_name
+  location = "EU"
 
-    uniform_bucket_level_access = true
+  lifecycle {
+    prevent_destroy = false
+  }
+}
 
-    lifecycle {
-        prevent_destroy = false
-    }
+# Bucket to store Cloud Function source archives
+resource "google_storage_bucket" "functions_source" {
+  name            = "paragoniks-functions-source"
+  location        = "EU"
+  force_destroy   = true
+
+  uniform_bucket_level_access = true
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 resource "google_storage_bucket_iam_binding" "public_access" {

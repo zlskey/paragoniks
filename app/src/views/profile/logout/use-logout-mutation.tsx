@@ -10,20 +10,20 @@ function useLogoutMutation() {
   const user = useUserContext()
 
   const queryClient = useQueryClient()
+  const whoamiQueryKey = ['user', 'whoami']
 
   const { mutate } = useMutation({
     mutationKey: ['user', 'logout'],
     mutationFn: logoutUser,
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['user', 'whoami'] })
-
-      queryClient.setQueryData(['user', 'whoami'], null)
+      await queryClient.cancelQueries({ queryKey: whoamiQueryKey })
+      await queryClient.invalidateQueries({ queryKey: whoamiQueryKey })
 
       return { previousUser: user }
     },
     onSettled: async () => {
       await saveToStorage('token', '')
-      await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
+      await queryClient.invalidateQueries({ queryKey: whoamiQueryKey })
       queryClient.clear()
     },
     onSuccess: () => addNotification('Wylogowano', 'success'),

@@ -1,4 +1,4 @@
-FROM node:20.10.0-bullseye-slim AS prepare
+FROM node:20.19.0-bullseye-slim AS prepare
 
 # Install gosu and node-sass dependencies
 # OpenSSH server has to be started by root user
@@ -39,8 +39,6 @@ RUN corepack enable
 
 
 # ------------   Development   ------------
-
-
 FROM prepare AS development
 
 # Define shell script that will run on every container startup
@@ -51,8 +49,6 @@ ENTRYPOINT ["/usr/src/app/docker/entrypoint.sh"]
 
 
 # ------------   Builder   ------------
-
-
 FROM prepare AS builder
 
 # Copy package.json and package-lock.json
@@ -70,8 +66,6 @@ RUN pnpm build
 
 
 # ------------   Production   ------------
-
-    
 FROM prepare AS production
 
 # Copy package.json and pnpm-lock.yaml

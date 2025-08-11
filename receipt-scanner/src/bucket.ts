@@ -1,6 +1,4 @@
 import { Storage } from '@google-cloud/storage'
-import { ErrorObject } from 'src/middlewares/error.middleware'
-import { getCredentials } from './utils'
 
 const BUCKET_NAME = process.env.BUCKET_NAME ?? 'paragoniks-bucket'
 const PROJECT_ID = process.env.PROJECT_ID ?? 'paragoniks'
@@ -36,7 +34,7 @@ export async function uploadImageToBucket(directory: DirectoryName, userId: stri
   }
   catch (err) {
     console.error(err)
-    throw new ErrorObject('Wystąpił błąd podczas tworzenia pliku', 401)
+    throw new Error('Wystąpił błąd podczas tworzenia pliku')
   }
 
   return getImagePublicUrl(filePath)
@@ -80,3 +78,16 @@ async function createBucketForDevEnvironment() {
   return bucket.create()
 }
 createBucketForDevEnvironment()
+
+function getCredentials() {
+  if (!isProdEnv) {
+    return undefined
+  }
+
+  const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY
+  if (!credentials) {
+    throw new Error('GOOGLE_SERVICE_ACCOUNT_KEY is not set')
+  }
+
+  return JSON.parse(credentials)
+}

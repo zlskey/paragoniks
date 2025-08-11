@@ -1,0 +1,39 @@
+{
+  "name": "paragoniks receipt scanner",
+  "version": "1.0.0",
+  "description": "paragoniks receipt scanner",
+  "author": "zlskey",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "functions-framework --source=dist/index.js --target=scanReceipt --signature-type=cloudevent --port=8080",
+    "dev": "cross-env NODE_OPTIONS=\"-r ts-node/register\" functions-framework --source=src/index.ts --target=scanReceipt --signature-type=cloudevent --port=$PORT",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.0",
+    "@google-cloud/pubsub": "^4.5.2",
+    "@google-cloud/storage": "^7.16.0",
+    "bcrypt": "^6.0.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0",
+    "lodash": "^4.17.21",
+    "mongodb": "4.17.2",
+    "openai": "^5.7.0",
+    "tslib": "^2.3.1",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.11.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/lodash": "^4.14.178",
+    "@types/node": "^17.0.18",
+    "eslint": "^9.23.0",
+    "eslint-plugin-format": "^1.0.1",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.5.5"
+  }
+}
