@@ -1,5 +1,4 @@
 import Flex from '@components/flex'
-
 import AddContributorIcon from '@components/icons/add-contributor-icon'
 import ChangeTitleIcon from '@components/icons/change-title-icon'
 import Paper from '@components/paper'
@@ -8,10 +7,9 @@ import StackHeader from '@components/stack-header'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
 import { useUserContext } from '@helpers/contexts/user.context'
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import ContributorList from './contributor-list'
@@ -28,7 +26,7 @@ function Receipt() {
   const { data: receipt } = useQuery({
     queryFn: () => getReceipt({ receiptId }),
     queryKey: ['receipt', receiptId],
-    refetchInterval: getQueryInterval(2000),
+    refetchInterval: 2000,
     enabled: !!receiptId,
   })
 

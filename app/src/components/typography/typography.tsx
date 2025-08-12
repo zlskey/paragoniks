@@ -1,6 +1,5 @@
 import type { PropsWithChildren } from 'react'
 import type { StyleProp, TextProps, TextStyle } from 'react-native'
-import React from 'react'
 import { Text } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
 

@@ -1,5 +1,4 @@
 import Avatar from '@components/avatar'
-
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { useUserContext } from '@helpers/contexts/user.context'

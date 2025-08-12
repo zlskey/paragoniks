@@ -2,7 +2,6 @@ import type { Receipt, ReceiptId, UserId } from '@app/generic.types'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-
 import { addContributor } from 'src/api/endpoints/receipt/receipt.api'
 
 function useAddContributor({ receiptId }: { receiptId: ReceiptId }) {

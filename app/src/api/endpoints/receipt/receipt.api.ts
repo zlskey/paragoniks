@@ -1,5 +1,4 @@
 import type { Receipt } from 'src/app/generic.types'
-
 import type {
   AddContributorBody,
   ChangeReceiptTitleBody,

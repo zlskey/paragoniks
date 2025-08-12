@@ -1,7 +1,6 @@
 import type { Profile } from '@app/generic.types'
 import type { FlatListProps } from 'react-native'
 import Typography from '@components/typography'
-import React from 'react'
 import { FlatList } from 'react-native'
 
 interface ProfileListProps

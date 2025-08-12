@@ -1,5 +1,4 @@
 import Button from '@components/button'
-import React from 'react'
 import { getPx } from 'src/app/styles'
 
 interface IconButtonProps {

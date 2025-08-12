@@ -1,6 +1,5 @@
 import { colors, getPx } from '@app/styles'
 import Avatar from '@components/avatar'
-
 import Flex from '@components/flex'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
 import SearchBar from '@components/search-bar'
@@ -9,10 +8,9 @@ import Wrapper from '@components/wrapper'
 import { FontAwesome } from '@expo/vector-icons'
 import useAnonims from '@helpers/hooks/use-anonims'
 import useProfiles from '@helpers/hooks/use-profiles'
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { getAllFriendships } from 'src/api/endpoints/friends/friends.api'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
@@ -38,7 +36,7 @@ function AddContributors() {
   const { data: friendships } = useQuery({
     queryKey: ['friend'],
     queryFn: getAllFriendships,
-    refetchInterval: getQueryInterval(2000),
+    refetchInterval: 2000,
     initialData: [],
   })
 

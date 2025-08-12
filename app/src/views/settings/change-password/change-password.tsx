@@ -1,7 +1,5 @@
 import Button from '@components/button'
-
 import Flex from '@components/flex'
-
 import TextField from '@components/text-field'
 import Wrapper from '@components/wrapper'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
@@ -10,7 +8,6 @@ import { passwordSchema } from '@helpers/utils/password-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { changePassword } from 'src/api/endpoints/user/user.api'
 import * as yup from 'yup'

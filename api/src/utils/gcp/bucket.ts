@@ -1,6 +1,5 @@
 import { Storage } from '@google-cloud/storage'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import { getCredentials } from './utils'
 
 const BUCKET_NAME = process.env.BUCKET_NAME ?? 'paragoniks-bucket'
 const PROJECT_ID = process.env.PROJECT_ID ?? 'paragoniks'
@@ -51,12 +50,6 @@ export async function uploadAvatarImage(userId: string, buffer: Buffer) {
 }
 
 function getStorage() {
-  console.log(`Connecting to ${isProdEnv ? 'production' : 'development'} environment`)
-  console.log(`Project ID: ${PROJECT_ID}`)
-  console.log(`Bucket name: ${BUCKET_NAME}`)
-  console.log(`API endpoint: ${isProdEnv ? undefined : 'http://paragoniks-bucket:4443'}`)
-  console.log(`Credentials: ${getCredentials()}`)
-
   if (isProdEnv) {
     return new Storage({
       projectId: PROJECT_ID,
@@ -67,6 +60,19 @@ function getStorage() {
     projectId: PROJECT_ID,
     apiEndpoint: 'http://paragoniks-bucket:4443',
   })
+}
+
+export function getCredentials() {
+  if (!isProdEnv) {
+    return undefined
+  }
+
+  const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY
+  if (!credentials) {
+    throw new Error('GOOGLE_SERVICE_ACCOUNT_KEY is not set')
+  }
+
+  return JSON.parse(credentials)
 }
 
 async function createBucketForDevEnvironment() {

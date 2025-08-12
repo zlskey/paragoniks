@@ -1,5 +1,4 @@
 import { createContext, useContext } from 'react'
-
 import { receiptMockup } from 'src/mockups/receipt'
 
 export const ReceiptContext = createContext({ receipt: receiptMockup })

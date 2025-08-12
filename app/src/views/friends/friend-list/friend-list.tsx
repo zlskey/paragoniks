@@ -1,5 +1,4 @@
 import type { Friendship, Profile } from 'src/app/generic.types'
-
 import Flex from '@components/flex'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
 import Typography from '@components/typography'

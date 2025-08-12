@@ -3,7 +3,7 @@ import { colors } from '@app/styles'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
 import Typography from '@components/typography'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native'
 

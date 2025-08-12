@@ -12,7 +12,7 @@ import { getLocaleCurrency } from '@helpers/utils'
 import { getEvenDivision } from '@helpers/utils/division'
 import { useReceiptContext } from '@views/receipt/receipt.context'
 import { router } from 'expo-router'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { View } from 'react-native'
 import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler'
 import RemoveProductAction from './remove-product-action'
@@ -52,6 +52,7 @@ export function ProductItemInternal({
   return (
     <Swipeable
       friction={1}
+      dragOffsetFromRightEdge={5}
       onSwipeableOpen={onSwipeableOpen}
       renderRightActions={renderRightActions}
     >

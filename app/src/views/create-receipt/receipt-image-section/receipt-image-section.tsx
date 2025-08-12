@@ -6,7 +6,7 @@ import Paper from '@components/paper'
 import Typography from '@components/typography'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import useUploadImage from '@helpers/hooks/use-upload-image'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { Dimensions, TouchableOpacity } from 'react-native'
 

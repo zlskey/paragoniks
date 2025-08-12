@@ -1,12 +1,11 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import type { DivisionType } from 'src/app/generic.types'
 import Drawer from '@components/drawer/drawer'
-
 import Flex from '@components/flex'
 import Paper from '@components/paper'
 import Typography from '@components/typography'
 import { Entypo, FontAwesome, FontAwesome5 } from '@expo/vector-icons'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from 'src/app/styles'
 

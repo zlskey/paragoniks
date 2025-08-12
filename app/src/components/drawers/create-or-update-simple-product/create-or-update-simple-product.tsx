@@ -11,7 +11,6 @@ import TextField from '@components/text-field'
 import Typography from '@components/typography'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { yupResolver } from '@hookform/resolvers/yup'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
   createOrUpdateSimpleProductDefaultValues,

@@ -1,11 +1,7 @@
-FROM node:20.19.0-bullseye-slim AS prepare
+FROM node:20.19.0-alpine AS prepare
 
-# Install gosu and node-sass dependencies
-# OpenSSH server has to be started by root user
-# gosu is used for switching to non-root user inside entrypoint
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gosu \
-    && rm -rf /var/lib/apt/lists/*
+# Install su-exec (Alpine equivalent of gosu) that will be used in entrypoint.sh to run the app as non-root user
+RUN apk add --no-cache su-exec
 
 # Set non-root user name and group name
 ARG USER_NAME=node

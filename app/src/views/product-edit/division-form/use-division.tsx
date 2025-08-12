@@ -1,7 +1,6 @@
 import type { DivisionType, Product } from 'src/app/generic.types'
 import type { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
 import { getUniqueArray } from '@helpers/utils/array'
-
 import { getEvenDivision, getNewDivision } from '@helpers/utils/division'
 import { getTotalPrice } from '@helpers/utils/get-total-price'
 import { useCallback, useEffect, useMemo, useState } from 'react'

@@ -9,5 +9,9 @@ export default antfu({
     'ts/no-require-imports': ['off'],
     'no-empty-pattern': ['off'],
     'no-console': ['off'],
+    '@stylistic/padding-line-between-statements': [
+      'error',
+      { blankLine: 'never', prev: 'import', next: 'import' },
+    ],
   },
 })

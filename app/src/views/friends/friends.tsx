@@ -1,9 +1,7 @@
 import Flex from '@components/flex'
-
 import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { useQueries, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { getAllFriendships } from 'src/api/endpoints/friends/friends.api'
@@ -17,7 +15,7 @@ function Friends() {
   const { data: friendships } = useQuery({
     queryKey: ['friend'],
     queryFn: getAllFriendships,
-    refetchInterval: getQueryInterval(2000),
+    refetchInterval: 2000,
     initialData: [],
   })
 

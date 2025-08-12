@@ -1,5 +1,4 @@
 import type { Division, DivisionType } from 'src/app/generic.types'
-
 import { getUniqueArray } from './array'
 
 export function isNull(value: any): value is null {

@@ -58,7 +58,6 @@ export async function extractReceiptDataFromText(imageBase64: string) {
   return _.omit(responseObj, 'error') as {
     products: ISimpleProduct[]
     title: string
-    sum: number
   }
 }
 

@@ -15,6 +15,9 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   if (err instanceof ErrorObject === false) {
     console.error(JSON.stringify(err).toString())
   }
+  else {
+    console.error(err)
+  }
 
   res.status(statusCode).json({
     error: {
@@ -25,11 +28,13 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   })
 }
 
-export function ErrorObject(
-  this: { message: string, code: number },
-  message: string,
-  code: number = 400,
-) {
-  this.message = message
-  this.code = code
+export class ErrorObject extends Error {
+  code: number
+
+  constructor(message: string, code: number = 400) {
+    super(message)
+    this.code = code
+    this.name = 'ErrorObject'
+    Object.setPrototypeOf(this, ErrorObject.prototype)
+  }
 }

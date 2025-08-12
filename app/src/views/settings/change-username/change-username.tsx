@@ -8,7 +8,6 @@ import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { changeUsername } from 'src/api/endpoints/user/user.api'
 

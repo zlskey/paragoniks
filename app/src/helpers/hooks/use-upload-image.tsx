@@ -1,5 +1,4 @@
 import type { ImageBase64 } from 'src/app/generic.types'
-
 import * as ImagePicker from 'expo-image-picker'
 
 function useUploadImage() {

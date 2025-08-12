@@ -1,6 +1,5 @@
 import IconButton from '@components/icon-button'
 import { AntDesign } from '@expo/vector-icons'
-
 import { router, useLocalSearchParams } from 'expo-router'
 import { colors, getPx } from 'src/app/styles'
 

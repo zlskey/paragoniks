@@ -1,5 +1,4 @@
 import type { Friendship } from 'src/app/generic.types'
-
 import type {
   GetAllFriendshipsBody,
   RemoveFriendBody,

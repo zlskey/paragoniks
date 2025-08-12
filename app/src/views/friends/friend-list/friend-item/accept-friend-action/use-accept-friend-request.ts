@@ -1,6 +1,5 @@
 import type { Friendship, UserId } from 'src/app/generic.types'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
-
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { respondToFriendRequest } from 'src/api/endpoints/friends/friends.api'

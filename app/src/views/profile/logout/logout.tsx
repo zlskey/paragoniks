@@ -1,5 +1,4 @@
 import Flex from '@components/flex'
-
 import Paper from '@components/paper'
 import Typography from '@components/typography'
 import { MaterialIcons } from '@expo/vector-icons'

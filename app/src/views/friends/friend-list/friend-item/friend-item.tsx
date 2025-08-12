@@ -1,5 +1,4 @@
 import type { Friendship, Profile } from '@app/generic.types'
-
 import { colors } from '@app/styles'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'

@@ -3,13 +3,13 @@ import { createReceipt } from '@api/endpoints/receipt/receipt.api'
 import Button from '@components/button'
 import Flex from '@components/flex'
 import Wrapper from '@components/wrapper'
+import useScanCount from '@helpers/api-hooks/use-scan-count'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useUserContext } from '@helpers/contexts/user.context'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ScrollView } from 'react-native-gesture-handler'
 import ContributorsSection from './contributors-section'
@@ -21,11 +21,13 @@ import TitleSection from './title-section'
 function CreateReceipt() {
   const { user } = useUserContext()
   const addNotification = useNotificationContext()
+  const { data } = useScanCount()
 
   const formState = useForm<CreateReceiptFormState>({
     defaultValues: createReceiptDefaultValues,
     resolver: yupResolver(createReceiptFormSchema),
   })
+  const shouldGenerateProducts = formState.watch('shouldGenerateProducts')
 
   const queryClient = useQueryClient()
 
@@ -33,9 +35,14 @@ function CreateReceipt() {
     mutationFn: createReceipt,
     mutationKey: ['receipt', 'create'],
     onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
-    onSuccess: async () => {
+    onSuccess: async (_, body) => {
       await queryClient.invalidateQueries({ queryKey: ['receipt'] })
-      addNotification('Paragon dodany', 'success')
+      addNotification(
+        body.shouldGenerateProducts
+          ? 'Paragon przesłany do zeskanowania'
+          : 'Paragon dodany',
+        'success',
+      )
       router.replace('/(tabs)/home')
     },
   })
@@ -78,7 +85,7 @@ function CreateReceipt() {
           </ScrollView>
 
           <Button
-            isDisabled={isPending}
+            isDisabled={isPending || (data?.scansLeft === 0 && shouldGenerateProducts)}
             onPress={formState.handleSubmit(onSubmit)}
           >
             Dodaj

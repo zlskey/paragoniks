@@ -3,6 +3,7 @@ import { authMiddleware } from '../middlewares'
 import authRouter from './auth.router'
 import friendRouter from './friend.router'
 import receiptRouter from './receipt.router'
+import scanCountRouter from './scanCount.router'
 import statusRouter from './status.router'
 import uploadsRouter from './uploads.router'
 import userAnonimsRouter from './user-anonims.router'
@@ -17,5 +18,6 @@ router.use('/user', authMiddleware, userRouter)
 router.use('/receipt', authMiddleware, receiptRouter)
 router.use('/friend', authMiddleware, friendRouter)
 router.use('/anonim', authMiddleware, userAnonimsRouter)
+router.use('/scanCount', authMiddleware, scanCountRouter)
 
 export default router

@@ -9,7 +9,7 @@ import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import { FontAwesome } from '@expo/vector-icons'
 import useUserFriendsAndAnonims from '@helpers/api-hooks/use-user-friends-and-anonims'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Dimensions, TouchableOpacity } from 'react-native'
 
 interface FriendsOrAnonimsProps {

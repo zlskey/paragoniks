@@ -1,7 +1,6 @@
 import type { Division, DivisionType } from 'src/app/generic.types'
 import Color from 'color'
 import { useState } from 'react'
-
 import { StyleSheet, TextInput } from 'react-native'
 import { DivisionUnitEnum } from 'src/app/generic.types'
 import { colors, getPx } from 'src/app/styles'
@@ -83,7 +82,7 @@ function DivisionInput({
       editable={typeof value === 'number'}
       value={getValueToRender(value)}
       onChangeText={handleChange}
-      keyboardType="numeric"
+      keyboardType="decimal-pad"
       placeholder={unit}
       onFocus={onFocus}
       onBlur={onBlur}

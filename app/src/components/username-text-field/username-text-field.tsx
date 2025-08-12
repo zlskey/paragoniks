@@ -1,7 +1,5 @@
 import type { TextFieldProps } from '@components/text-field/text-field'
-
 import TextField from '@components/text-field'
-import React from 'react'
 
 function UsernameTextField({
   style,

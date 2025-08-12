@@ -1,8 +1,7 @@
 import type { TextInputProps } from 'react-native'
 import type { Product } from 'src/app/generic.types'
 import Typography from '@components/typography'
-
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TextInput, View } from 'react-native'
 import { colors, getPx } from 'src/app/styles'

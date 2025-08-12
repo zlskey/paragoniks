@@ -1,5 +1,4 @@
 import { colors, getPx } from '@app/styles'
-
 import IconButton from '@components/icon-button'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { router } from 'expo-router'

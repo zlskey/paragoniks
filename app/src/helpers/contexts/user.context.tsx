@@ -1,5 +1,4 @@
 import type { User } from 'src/app/generic.types'
-
 import { createContext, useContext } from 'react'
 import { userMockup } from 'src/mockups/user'
 

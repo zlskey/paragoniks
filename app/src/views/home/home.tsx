@@ -1,9 +1,8 @@
 import Flex from '@components/flex'
-
 import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import CreateReceiptButton from './create-receipt-button'
 import MonthSectionsList from './month-section'
 import useUserReceipts from './use-user-receipts'

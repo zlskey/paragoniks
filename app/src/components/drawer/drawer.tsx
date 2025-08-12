@@ -3,7 +3,7 @@ import { colors } from '@app/styles'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
-import React, { forwardRef, useRef } from 'react'
+import { forwardRef, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 export type UseDrawerFunctionsRef = React.RefObject<BottomSheetModal>

@@ -3,12 +3,12 @@ import type {
   IReceipt,
   ISimpleReceipt,
 } from 'src/models/receipt.model'
-
 import type { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
-import * as fs from 'node:fs'
+import mongoose from 'mongoose'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import Receipt from 'src/models/receipt.model'
-
+import Receipt, {
+  ScanningStatus,
+} from 'src/models/receipt.model'
 import {
   getCalculatedTotalsForReceipt,
   getEvenDivision,
@@ -21,19 +21,63 @@ export async function getAllReceipts(userId: UserId) {
       { owner: userId },
       { [`contributors.${userId.toString()}`]: { $exists: true } },
     ],
+    isRemoved: false,
   })
 
   return receipts
 }
 
 export async function getReceipt(receiptId: ReceiptId) {
-  const receipt = await Receipt.findById(receiptId)
+  const receipt = await Receipt.findOne({ _id: receiptId })
 
   if (!receipt) {
     throw new ErrorObject('Paragon nie istnieje', 404)
   }
 
+  if (receipt.isRemoved) {
+    throw new ErrorObject('Paragon został usunięty', 404)
+  }
+
   return receipt
+}
+
+export async function createReceiptToScan(userId: UserId, receipt: Pick<ISimpleReceipt, 'contributors' | 'imagePath'>) {
+  const contributorsIds = Object.keys(receipt.contributors)
+  return await Receipt.create({
+    sum: 0,
+    title: 'x',
+    products: [],
+    owner: userId,
+    scanning: { status: ScanningStatus.IN_PROGRESS },
+    contributors: contributorsIds,
+    ...receipt,
+  })
+}
+
+export async function fillScannedData(receiptId: ReceiptId, scannedData: Pick<ISimpleReceipt, 'products' | 'title'>) {
+  const receipt = await getReceipt(receiptId)
+
+  const products = scannedData.products.map(product => ({
+    ...product,
+    _id: new mongoose.Types.ObjectId(),
+    discount: Math.abs(product.discount ?? 0),
+    divisionType: 'shares',
+    division: receipt.contributors,
+  })) as IProduct[]
+
+  const receiptUpdate = {
+    scanning: { status: ScanningStatus.DONE },
+    title: scannedData.title,
+    ...getCalculatedTotalsForReceipt(Object.keys(receipt.contributors), products),
+  }
+
+  await Receipt.findByIdAndUpdate(receiptId, receiptUpdate)
+}
+
+export async function handleFailedScanning(receiptId: ReceiptId, message: string) {
+  await Receipt.findByIdAndUpdate(receiptId, {
+    scanning: { status: ScanningStatus.FAILED, errorMessage: message },
+  })
 }
 
 export async function createReceipt(userId: UserId, receipt: Pick<ISimpleReceipt, 'products' | 'title' | 'imagePath' | 'contributors'>) {
@@ -62,11 +106,7 @@ export async function removeReceiptForUser(receipt: IReceipt, userId: UserId) {
     return
   }
 
-  await Receipt.findByIdAndRemove(receipt._id)
-
-  if (receipt.imagePath !== '') {
-    fs.rmSync(receipt.imagePath)
-  }
+  await Receipt.findByIdAndUpdate(receipt._id, { isRemoved: true })
 }
 
 export async function changeReceiptTitle(receipt: IReceipt, newTitle: string) {

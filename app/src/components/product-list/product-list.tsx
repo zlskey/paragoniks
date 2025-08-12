@@ -5,7 +5,7 @@ import { getPx } from '@app/styles'
 import Typography from '@components/typography'
 import { useQueryClient } from '@tanstack/react-query'
 import { useReceiptContext } from '@views/receipt/receipt.context'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FlatList } from 'react-native'
 import ProductItemConnected from '../product-item'
 

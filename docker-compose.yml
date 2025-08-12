@@ -1,31 +1,32 @@
 services:
   paragoniks-api:
     container_name: ${DOCKER_API_CONTAINER_NAME}
-    command: pnpm run dev
+    command: pnpm dev
     depends_on:
       - paragoniks-db
       - paragoniks-bucket
     restart: unless-stopped
     build:
-      context: ./api/docker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api/docker/Dockerfile
       target: development
     volumes:
       - ./api:/usr/src/app
-      - ./data/uploads:/usr/src/app/uploads
     env_file:
       - ".env"
       - "./api/.env"
-    ports: 
+    ports:
       - 3000:3000
 
   paragoniks-db:
     container_name: ${DOCKER_DB_CONTAINER_NAME}
-    image: mongo
+    image: mongo:8.0.11
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DOCKER_DB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD}
+    volumes:
+      - paragoniks-mongo:/data
     ports:
       - 27017:27017
 
@@ -42,7 +43,8 @@ services:
     ports:
       - "4443:4443"
     volumes:
-      - paragoniks-storage:/data
+      - paragoniks-bucket:/data
 
 volumes:
-  paragoniks-storage:
+  paragoniks-bucket:
+  paragoniks-mongo:

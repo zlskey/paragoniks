@@ -1,7 +1,6 @@
 import ParagoniksIcon from '@components/icons/paragoniks-icon'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
-import React from 'react'
 import { colors } from 'src/app/styles'
 
 export default () => {

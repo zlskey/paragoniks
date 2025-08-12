@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express'
 import type { IReceipt } from 'src/models/receipt.model'
 import type { ReceiptId } from 'src/types/generic.types'
-import { receiptService } from 'src/services'
+import Receipt from 'src/models/receipt.model'
 import { ErrorObject } from './error.middleware'
 
 declare global {
@@ -21,7 +21,7 @@ export const findAndValidateReceipt: RequestHandler = async (
 
   const { _id } = req.user
 
-  const receipt = await receiptService.getReceipt(
+  const receipt = await Receipt.findById(
     receiptId as unknown as ReceiptId,
   )
 

@@ -11,7 +11,7 @@ import SwipeableAction from '@components/swipeable-action'
 import Typography from '@components/typography'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import { getTotalPrice } from '@helpers/utils/get-total-price'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native'
 

@@ -6,7 +6,7 @@ import TextField from '@components/text-field'
 import Typography from '@components/typography'
 import { FontAwesome5 } from '@expo/vector-icons'
 import useUserReceipts from '@views/home/use-user-receipts'
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 function TitleSection() {

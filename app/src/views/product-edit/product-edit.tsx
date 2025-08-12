@@ -1,14 +1,10 @@
 import type { DivisionType, Product } from 'src/app/generic.types'
-
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
-
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import { colors } from 'src/app/styles'
@@ -101,21 +97,21 @@ function PreciseProductEdit() {
               <ProductEditTextField
                 name="price"
                 label="Cena"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 precision={4}
               />
 
               <ProductEditTextField
                 name="count"
                 label="Ilość"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 precision={4}
               />
 
               <ProductEditTextField
                 name="discount"
                 label="Zniżka"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 precision={4}
               />
             </Flex>
@@ -143,7 +139,7 @@ function PreciseProductEditInternal() {
   const { data: receipt } = useQuery({
     queryKey: ['receipt', receiptId],
     queryFn: () => getReceipt({ receiptId }),
-    refetchInterval: getQueryInterval(2000),
+    refetchInterval: 2000,
     enabled: !!id,
   })
 

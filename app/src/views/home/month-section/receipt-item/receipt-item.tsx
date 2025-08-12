@@ -1,15 +1,15 @@
 import type { Receipt } from 'src/app/generic.types'
 import Avatar from '@components/avatar'
-
 import AvatarGroup from '@components/avatar-group'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useUserContext } from '@helpers/contexts/user.context'
 import useProfiles from '@helpers/hooks/use-profiles'
 import { getLocaleCurrency, getLocaleDate } from '@helpers/utils/locale'
 import { useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
@@ -22,8 +22,15 @@ interface ReceiptItemProps {
 }
 
 function ReceiptItem({ receipt }: ReceiptItemProps) {
+  const addNotification = useNotificationContext()
   const { mutate: handleRemoveReceipt } = useRemoveReceipt({
     receiptId: receipt._id,
+    onSuccess: () => {
+      addNotification('Paragon usunięty', 'success')
+    },
+    onError: () => {
+      addNotification('Nie udało się usunąć paragonu', 'error')
+    },
   })
   const { profiles } = useProfiles(Object.keys(receipt.contributors))
   const { user } = useUserContext()
@@ -31,7 +38,7 @@ function ReceiptItem({ receipt }: ReceiptItemProps) {
   const queryClient = useQueryClient()
 
   function handleSwipeableOpen(direction: 'left' | 'right') {
-    if (direction === 'right') {
+    if (direction === 'left') {
       handleRemoveReceipt()
     }
   }

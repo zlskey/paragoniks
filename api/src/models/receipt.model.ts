@@ -29,10 +29,21 @@ export interface ISimpleReceipt {
   products: ISimpleProduct[]
 }
 
+export enum ScanningStatus {
+  FAILED = 'failed',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
+}
+
 export interface IReceipt extends ISimpleReceipt {
   _id: ReceiptId
   owner: UserId
   products: IProduct[]
+  isRemoved: boolean
+  scanning: {
+    status: ScanningStatus
+    errorMessage?: string
+  }
   createdAt: string
   updatedAt: string
 }
@@ -54,6 +65,21 @@ const receiptSchema = new mongoose.Schema<IReceipt>(
     imagePath: {
       type: String,
       default: null,
+    },
+    scanning: {
+      status: {
+        type: String,
+        enum: ScanningStatus,
+        default: ScanningStatus.IN_PROGRESS,
+      },
+      errorMessage: {
+        type: String,
+        default: null,
+      },
+    },
+    isRemoved: {
+      type: Boolean,
+      default: false,
     },
     contributors: {},
     products: [],

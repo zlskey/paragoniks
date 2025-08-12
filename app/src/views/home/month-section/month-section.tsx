@@ -1,12 +1,13 @@
 import type { Receipt } from 'src/app/generic.types'
 import Typography from '@components/typography'
-
 import { getReceiptsSplittedByMonth } from '@helpers/utils'
 import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrapper'
 import { useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { SectionList, View } from 'react-native'
+import { ScanningStatus } from 'src/app/generic.types'
 import { colors, getPx } from 'src/app/styles'
+import ReceiptCreatingItem from './receipt-creating-item'
 import ReceiptItem from './receipt-item'
 
 interface MonthSectionProps {
@@ -36,7 +37,7 @@ const MonthSectionList = React.memo(({ receipts }: MonthSectionProps) => {
         getSectionListItemWrapper(
           data.index,
           data.section.data.length,
-          <ReceiptItem receipt={data.item} />,
+          <MonthSectionListItem receipt={data.item} />,
         )}
       renderSectionHeader={({ section: { title } }) => (
         <View
@@ -52,5 +53,17 @@ const MonthSectionList = React.memo(({ receipts }: MonthSectionProps) => {
     />
   )
 })
+
+interface MonthSectionListItemProps {
+  receipt: Receipt
+}
+
+function MonthSectionListItem({ receipt }: MonthSectionListItemProps) {
+  if (receipt.scanning?.status === ScanningStatus.DONE) {
+    return <ReceiptItem receipt={receipt} />
+  }
+
+  return <ReceiptCreatingItem receipt={receipt} />
+}
 
 export default MonthSectionList

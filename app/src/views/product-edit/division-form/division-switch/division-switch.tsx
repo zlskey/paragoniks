@@ -1,11 +1,9 @@
 import type { DivisionType } from 'src/app/generic.types'
 import { useDrawerFunctions } from '@components/drawer'
-
 import SplitByChoiceDrawer from '@components/drawers/split-by-choice/split-by-choice'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { EvilIcons } from '@expo/vector-icons'
-import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { DivisionTranslationEnum } from 'src/app/generic.types'
 import { colors } from 'src/app/styles'

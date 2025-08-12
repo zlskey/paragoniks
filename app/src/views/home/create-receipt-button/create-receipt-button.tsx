@@ -2,7 +2,6 @@ import { colors, getPx } from '@app/styles'
 import Button from '@components/button'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import React from 'react'
 
 function CreateReceiptButton() {
   const router = useRouter()

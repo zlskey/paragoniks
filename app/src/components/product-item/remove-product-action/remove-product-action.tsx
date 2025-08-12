@@ -1,6 +1,5 @@
 import SwipeableAction from '@components/swipeable-action'
 import { AntDesign } from '@expo/vector-icons'
-import React from 'react'
 import { getPx } from 'src/app/styles'
 
 function RemoveProductAction() {

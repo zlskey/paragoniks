@@ -1,6 +1,4 @@
 import { getUserReceipts } from '@api/endpoints/receipt/receipt.api'
-
-import { getQueryInterval } from '@helpers/utils/get-query-interval'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
@@ -11,7 +9,7 @@ function useUserReceipts() {
     queryKey: ['receipt'],
     queryFn: getUserReceipts,
     initialData: [],
-    refetchInterval: getQueryInterval(2000),
+    refetchInterval: 2000,
   })
 
   const { data: receipts } = query

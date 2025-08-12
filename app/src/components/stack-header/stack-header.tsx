@@ -1,9 +1,7 @@
 import Flex from '@components/flex'
-
 import GoBackIcon from '@components/icons/go-back-icon/go-back-icon'
 import Typography from '@components/typography'
 import { Skeleton } from 'moti/skeleton'
-import React from 'react'
 import { StyleSheet } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
 

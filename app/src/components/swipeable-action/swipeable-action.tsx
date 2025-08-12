@@ -1,6 +1,5 @@
 import Flex from '@components/flex'
 import Typography from '@components/typography'
-import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from 'src/app/styles'
 

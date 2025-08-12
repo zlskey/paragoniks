@@ -1,6 +1,4 @@
-import React from 'react'
 import { StyleSheet, TextInput } from 'react-native'
-
 import { colors, getPx } from '../../app/styles'
 
 type Colors = keyof typeof colors

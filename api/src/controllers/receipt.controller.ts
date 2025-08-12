@@ -1,8 +1,9 @@
 import type { RequestHandler } from 'express'
-
 import type { ProductId, UserId } from 'src/types/generic.types'
 import type { HandleCreateReceiptBean } from './receipt.controller.beans'
-import { receiptService } from 'src/services'
+import config from 'src/config'
+import { ErrorObject } from 'src/middlewares/error.middleware'
+import { receiptService, scanCountService } from 'src/services'
 import { uploadReceiptImage } from 'src/utils/gcp/bucket'
 import { getCompressedImageBufferFromBase64 } from 'src/utils/image.utils'
 import { extractReceiptDataFromText, generateReceiptTitle } from 'src/utils/openai'
@@ -25,14 +26,25 @@ export const handleCreateReceipt: RequestHandler = async (req, res) => {
   const { contributors } = receipt
 
   if (receipt.shouldGenerateProducts) {
-    const receiptData = await extractReceiptDataFromText(receipt.image)
-    const receiptRecord = await receiptService.createReceipt(user._id, {
-      ...receiptData,
-      imagePath,
-      contributors,
-    })
+    const receiptRecord = await receiptService.createReceiptToScan(user._id, { imagePath, contributors })
 
     res.status(201).json(receiptRecord)
+
+    try {
+      const scanCount = await scanCountService.getOrCreateScanCount(user._id)
+      if (scanCount.count >= config.MAX_SCAN_COUNT) {
+        throw new ErrorObject('Przekroczono limit zeskanowanych paragonów', 400)
+      }
+      await scanCount.incrementCount()
+      const receiptData = await extractReceiptDataFromText(receipt.image)
+      await receiptService.fillScannedData(receiptRecord._id, receiptData)
+    }
+    catch (err) {
+      await receiptService.handleFailedScanning(
+        receiptRecord._id,
+        err instanceof ErrorObject ? err.message : 'Nie udało się przetworzyć paragonu',
+      )
+    }
     return
   }
 

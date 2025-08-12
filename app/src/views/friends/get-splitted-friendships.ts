@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query'
-
 import type { Friendship, Profile } from 'src/app/generic.types'
 
 export function getSplittedAndFilteredFriendships(profiles: UseQueryResult<Profile, Error>[], friendships: Friendship[], query: string) {

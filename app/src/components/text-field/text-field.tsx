@@ -1,10 +1,9 @@
 import type { FieldError } from 'react-hook-form'
 import type { TextInputProps } from 'react-native'
 import Typography from '@components/typography'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { StyleSheet, TextInput, View } from 'react-native'
-
 import { colors, getPx } from 'src/app/styles'
 
 export interface TextFieldProps extends TextInputProps {

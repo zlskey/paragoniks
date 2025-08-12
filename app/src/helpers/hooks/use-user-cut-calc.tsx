@@ -1,5 +1,4 @@
 import type { Product, UserId } from 'src/app/generic.types'
-
 import { getLocaleCurrency } from '@helpers/utils'
 import { useMemo } from 'react'
 

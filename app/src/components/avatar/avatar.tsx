@@ -1,8 +1,6 @@
 import type { Profile } from 'src/app/generic.types'
 import Typography from '@components/typography'
-import React from 'react'
 import { Image, Platform, StyleSheet, View } from 'react-native'
-
 import { AvatarColor } from 'src/app/generic.types'
 import { colors, getPx } from 'src/app/styles'
 

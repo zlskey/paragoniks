@@ -93,6 +93,12 @@ export interface SimpleReceipt {
   products: SimpleProduct[]
 }
 
+export enum ScanningStatus {
+  FAILED = 'failed',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
+}
+
 export interface Receipt extends SimpleReceipt {
   _id: ReceiptId
   owner: UserId
@@ -101,6 +107,10 @@ export interface Receipt extends SimpleReceipt {
   imagePath: string
   createdAt: string
   updatedAt: string
+  scanning?: {
+    status: ScanningStatus
+    errorMessage?: string
+  }
 }
 
 export type ImageBase64 = string

@@ -175,3 +175,7 @@ dist
 
 data
 api/pol.traineddata
+
+# Expo
+.expo
+certs

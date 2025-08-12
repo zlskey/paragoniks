@@ -1,6 +1,5 @@
 import type { Division, DivisionType, Profile } from 'src/app/generic.types'
 import Avatar from '@components/avatar'
-
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { FontAwesome } from '@expo/vector-icons'

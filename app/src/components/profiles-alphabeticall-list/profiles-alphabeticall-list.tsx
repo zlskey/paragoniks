@@ -1,11 +1,10 @@
 import type { Profile } from '@app/generic.types'
 import type { SectionListProps } from 'react-native'
 import { colors, getPx } from '@app/styles'
-
 import Typography from '@components/typography'
 import { getProfilesAlphabetically } from '@helpers/utils/get-profiles-alphabetically'
 import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrapper'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { SectionList, View } from 'react-native'
 
 interface SectionHeaderProps {
