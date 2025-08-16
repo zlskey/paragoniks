@@ -1,6 +1,7 @@
 # Paragoniks
 
-Web app for easy shopping list sharing and splitting between your friends!
+Expo app for easy shopping list sharing and splitting between your friends!
+U can try it: [paragoniks.pl](https://paragoniks.pl)
 
 ## Getting Started
 
