@@ -1,8 +1,13 @@
 import type { ImageBase64 } from 'src/app/generic.types'
 import * as ImagePicker from 'expo-image-picker'
 
+export interface HandleUploadPayload {
+  image: ImageBase64
+  fileName: string
+}
+
 function useUploadImage() {
-  async function handleUpload(fun: (data: { image: ImageBase64, fileName: string }) => any) {
+  async function handleUpload(fun: (data: HandleUploadPayload) => any) {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       base64: true,

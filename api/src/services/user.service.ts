@@ -5,13 +5,17 @@ import constants from 'src/constants'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import User from 'src/models/user.model'
 
-export async function create(username: string, password: string): Promise<Omit<IUser, 'password'>> {
+export async function create(
+  username: string,
+  password: string,
+  avatarImage: string,
+): Promise<Omit<IUser, 'password'>> {
   try {
     if (!username || !password) {
       throw new ErrorObject(constants.missing_args)
     }
 
-    const user = await User.create({ username, password })
+    const user = await User.create({ username, password, avatarImage })
 
     return user.removePassword()
   }

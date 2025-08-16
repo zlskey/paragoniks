@@ -1,6 +1,7 @@
 import type { Profile } from 'src/app/generic.types'
 import Typography from '@components/typography'
-import { Image, Platform, StyleSheet, View } from 'react-native'
+import { Image } from 'expo-image'
+import { StyleSheet, View } from 'react-native'
 import { AvatarColor } from 'src/app/generic.types'
 import { colors, getPx } from 'src/app/styles'
 
@@ -74,27 +75,15 @@ function Avatar({
     const containerSize = getContainerSize(size)
     return (
       <View style={styles.container}>
-        {Platform.OS === 'web'
-          ? (
-              <img
-                src={profile.avatarImage}
-                alt="User Avatar"
-                style={{
-                  width: containerSize,
-                  height: containerSize,
-                  objectFit: 'cover',
-                }}
-              />
-            )
-          : (
-              <Image
-                resizeMode="cover"
-                width={containerSize}
-                height={containerSize}
-                source={{ uri: profile.avatarImage }}
-                alt="User Avatar"
-              />
-            )}
+        <Image
+          style={{
+            width: containerSize,
+            height: containerSize,
+            objectFit: 'cover',
+          }}
+          source={{ uri: profile.avatarImage }}
+          alt="User Avatar"
+        />
       </View>
     )
   }

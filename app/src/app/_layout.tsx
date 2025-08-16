@@ -37,7 +37,7 @@ function RootLayoutNav() {
 
           <Stack.Screen
             redirect={loggedIn}
-            name="auth"
+            name="a"
             options={{ headerShown: false }}
           />
 

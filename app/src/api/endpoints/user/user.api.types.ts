@@ -13,6 +13,7 @@ export interface LoginUserResponse {
 export interface SignupUserBody {
   username: string
   password: string
+  avatarImage: string
 }
 
 export interface SignupUserResponse {

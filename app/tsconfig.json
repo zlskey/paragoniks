@@ -10,7 +10,8 @@
       "@views/*": ["src/views/*"],
       "@styles/*": ["styles"],
       "@api/*": ["src/api/*"],
-      "@helpers/*": ["src/helpers/*"]
+      "@helpers/*": ["src/helpers/*"],
+      "@assets/*": ["src/assets/*"]
     },
     "strict": true,
     "alwaysStrict": true,

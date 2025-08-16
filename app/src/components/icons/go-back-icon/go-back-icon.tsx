@@ -1,18 +1,20 @@
+import type { StyleProp, ViewStyle } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useRouter } from 'expo-router'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from 'src/app/styles'
 
 interface GoBackIconProps {
-  overWriteOnClick?: () => void
+  overwriteOnClick?: () => void
+  style?: StyleProp<ViewStyle>
 }
 
-function GoBackIcon({ overWriteOnClick }: GoBackIconProps) {
+function GoBackIcon({ overwriteOnClick, style }: GoBackIconProps) {
   const router = useRouter()
 
   function goBack() {
-    if (overWriteOnClick) {
-      overWriteOnClick()
+    if (overwriteOnClick) {
+      overwriteOnClick()
       return
     }
 
@@ -22,7 +24,7 @@ function GoBackIcon({ overWriteOnClick }: GoBackIconProps) {
   }
 
   return (
-    <TouchableOpacity onPress={goBack}>
+    <TouchableOpacity onPress={goBack} style={style}>
       <Ionicons name="arrow-back" size={24} color={colors.text} />
     </TouchableOpacity>
   )

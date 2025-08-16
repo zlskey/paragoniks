@@ -25,11 +25,11 @@ const emptyUserResponse = {
 }
 
 export const signup: RequestHandler = async (req, res) => {
-  const { username, password } = req.body
+  const { username, password, avatarImage } = req.body
 
   await validateAndThrow(userValidationSchema, username, password)
 
-  const user = await userService.create(username, password)
+  const user = await userService.create(username, password, avatarImage)
   const token = jwtUtils.createToken(user._id, maxAge)
 
   res.cookie('jwt', token, cookieOptions).json({

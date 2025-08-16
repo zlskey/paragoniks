@@ -26,7 +26,7 @@ function StackHeader({ title, endAdornment, onGoBack }: StackHeaderProps) {
       justifyContent="space-between"
     >
       <Flex spacing={1} alignContent="center">
-        <GoBackIcon overWriteOnClick={onGoBack} />
+        <GoBackIcon overwriteOnClick={onGoBack} />
         {title !== undefined
           ? (
               <Typography variant="title">{title}</Typography>

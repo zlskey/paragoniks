@@ -3,7 +3,7 @@ import type { StyleProp, TextProps, TextStyle } from 'react-native'
 import { Text } from 'react-native'
 import { colors, getPx } from 'src/app/styles'
 
-type TypographyVariant = 'subtitle' | 'subtitle2' | 'base1' | 'base2' | 'title'
+type TypographyVariant = 'subtitle' | 'subtitle2' | 'base1' | 'base2' | 'title' | 'display'
 
 interface TypographyProps extends TextProps, PropsWithChildren {
   variant?: TypographyVariant
@@ -14,6 +14,8 @@ interface TypographyProps extends TextProps, PropsWithChildren {
 function getTypographyStyle({ variant, opacity }: TypographyProps) {
   const getFontSize = () => {
     switch (variant) {
+      case 'display':
+        return getPx(3)
       case 'title':
         return getPx(2.5)
       case 'subtitle':
