@@ -1,12 +1,14 @@
+import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import { StyleSheet, TextInput } from 'react-native'
-import { colors, getPx } from '../../app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from '../../app/styles'
 
-type Colors = keyof typeof colors
+type Colors = keyof Omit<MD3Colors, 'elevation'>
 
-function getStyles(background?: Colors) {
+function getStyles(colors: MD3Colors, background?: Colors) {
   return StyleSheet.create({
     searchInput: {
-      backgroundColor: colors[background || 'paper'],
+      backgroundColor: colors[background || 'surface'],
       borderRadius: getPx(10),
       paddingTop: getPx(0.5),
       paddingBottom: getPx(0.5),
@@ -24,7 +26,8 @@ interface SearchBarProps {
 }
 
 function SearchBar({ onSearch, background, query }: SearchBarProps) {
-  const styles = getStyles(background)
+  const { colors } = useTheme()
+  const styles = getStyles(colors, background)
 
   return (
     <TextInput
@@ -32,7 +35,7 @@ function SearchBar({ onSearch, background, query }: SearchBarProps) {
       onChangeText={onSearch}
       placeholder="Szukaj"
       style={styles.searchInput}
-      placeholderTextColor={colors.text}
+      placeholderTextColor={colors.onBackground}
     />
   )
 }

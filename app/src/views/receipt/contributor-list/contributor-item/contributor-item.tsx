@@ -6,7 +6,8 @@ import { FontAwesome } from '@expo/vector-icons'
 import { useUserContext } from '@helpers/contexts/user.context'
 import { getLocaleCurrency } from '@helpers/utils'
 import { Swipeable } from 'react-native-gesture-handler'
-import { colors, getPx } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 import { useReceiptContext } from 'src/views/receipt/receipt.context'
 import RemoveContributorIcon from './remove-contributor-action'
 import useRemoveContributor from './remove-contributor-action/use-remove-contributor'
@@ -16,6 +17,7 @@ interface ContributorItemProps {
 }
 
 function ContributorItem({ contributor }: ContributorItemProps) {
+  const { colors } = useTheme()
   const { user } = useUserContext()
   const { receipt } = useReceiptContext()
   const onRemoveContributor = useRemoveContributor({
@@ -35,7 +37,7 @@ function ContributorItem({ contributor }: ContributorItemProps) {
         isOwner && !isContributor && <RemoveContributorIcon />}
     >
       <Flex
-        styles={{ backgroundColor: colors.paper }}
+        styles={{ backgroundColor: colors.surface }}
         justifyContent="space-between"
         alignContent="center"
         p={1.25}
@@ -47,7 +49,7 @@ function ContributorItem({ contributor }: ContributorItemProps) {
             <FontAwesome
               name="user-secret"
               size={getPx(2)}
-              color={colors.placeholder}
+              color={colors.onSurfaceVariant}
             />
           )}
         </Flex>

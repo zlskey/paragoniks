@@ -1,33 +1,39 @@
+import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import type { Division, DivisionType } from 'src/app/generic.types'
 import Color from 'color'
 import { useState } from 'react'
 import { StyleSheet, TextInput } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { DivisionUnitEnum } from 'src/app/generic.types'
-import { colors, getPx } from 'src/app/styles'
+import { getPx } from 'src/app/styles'
 
 function isNumber(value: number | null | undefined): value is number {
   return typeof value === 'number' ? !Number.isNaN(value) : false
 }
 
-const inputStylesObj = {
-  borderBottomColor: Color(colors.paper).lighten(1).hex(),
-  borderBottomWidth: 1,
-  color: colors.text,
-  paddingHorizontal: getPx(1),
-  position: 'relative' as const,
+function inputStylesObj(colors: MD3Colors) {
+  return {
+    borderBottomColor: Color(colors.surface).lighten(1).hex(),
+    borderBottomWidth: 1,
+    color: colors.onBackground,
+    paddingHorizontal: getPx(1),
+    position: 'relative' as const,
+  }
 }
 
-const DivisionInputStyles = StyleSheet.create({
-  input: inputStylesObj,
-  inputFocused: {
-    ...inputStylesObj,
-    borderBottomColor: colors.primary,
-  },
-  inputDisabled: {
-    ...inputStylesObj,
-    color: Color(colors.paper).lighten(1).hex(),
-  },
-})
+function getDivisionInputStyles(colors: MD3Colors) {
+  return StyleSheet.create({
+    input: inputStylesObj(colors),
+    inputFocused: {
+      ...inputStylesObj(colors),
+      borderBottomColor: colors.primary,
+    },
+    inputDisabled: {
+      ...inputStylesObj,
+      color: Color(colors.surface).lighten(1).hex(),
+    },
+  })
+}
 
 interface DivisionInputProps {
   profileId: string
@@ -42,6 +48,7 @@ function DivisionInput({
   divisionType,
   onDivisionValueChange,
 }: DivisionInputProps) {
+  const { colors } = useTheme()
   const [isFocused, setIsFocused] = useState(false)
 
   const value = division[profileId]
@@ -70,14 +77,16 @@ function DivisionInput({
     setIsFocused(false)
   }
 
+  const styles = getDivisionInputStyles(colors)
+
   return (
     <TextInput
       style={
         value === null
-          ? DivisionInputStyles.inputDisabled
+          ? styles.inputDisabled
           : isFocused
-            ? DivisionInputStyles.inputFocused
-            : DivisionInputStyles.input
+            ? styles.inputFocused
+            : styles.input
       }
       editable={typeof value === 'number'}
       value={getValueToRender(value)}

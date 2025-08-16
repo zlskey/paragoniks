@@ -4,9 +4,12 @@ import Typography from '@components/typography'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 
 function ChangePassword() {
+  const { colors } = useTheme()
+
   function redirectToChangePassword() {
     router.push('/profile/change-password')
   }

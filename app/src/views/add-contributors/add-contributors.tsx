@@ -1,4 +1,4 @@
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
@@ -12,11 +12,13 @@ import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { getAllFriendships } from 'src/api/endpoints/friends/friends.api'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
 import useAddContributor from './use-add-contributor'
 
 function AddContributors() {
+  const { colors } = useTheme()
   const { id } = useLocalSearchParams<{ id: string }>()
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -84,7 +86,7 @@ function AddContributors() {
                 p={1}
                 spacing={1}
                 alignContent="center"
-                styles={{ backgroundColor: colors.paper }}
+                styles={{ backgroundColor: colors.surface }}
               >
                 <Avatar profile={profile} size="sm" />
                 <Typography>{profile.username}</Typography>
@@ -93,7 +95,7 @@ function AddContributors() {
                   <FontAwesome
                     name="user-secret"
                     size={getPx(2)}
-                    color={colors.placeholder}
+                    color={colors.onSurfaceVariant}
                   />
                 )}
               </Flex>

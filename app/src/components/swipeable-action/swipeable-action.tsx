@@ -1,7 +1,7 @@
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { colors } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
 
 interface SwipeableActionProps {
   label: string
@@ -12,10 +12,10 @@ interface SwipeableActionProps {
   left?: boolean
 }
 
-function getColor(color: SwipeableActionProps['color']) {
+function getColor(color: SwipeableActionProps['color'], colors: any) {
   switch (color) {
     case 'red':
-      return colors.red
+      return colors.error
     case 'blue':
       return colors.primary
     default:
@@ -31,6 +31,8 @@ function SwipeableAction({
   color,
   left,
 }: SwipeableActionProps) {
+  const { colors } = useTheme()
+
   return (
     <TouchableOpacity
       style={{ width: 1000, flex: 1 }}
@@ -46,7 +48,7 @@ function SwipeableAction({
         styles={{
           width: '100%',
           height: '100%',
-          backgroundColor: getColor(color),
+          backgroundColor: getColor(color, colors),
         }}
       >
         {startIcon}

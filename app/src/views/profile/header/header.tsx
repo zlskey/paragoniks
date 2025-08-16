@@ -6,9 +6,10 @@ import { useUserContext } from '@helpers/contexts/user.context'
 import useUploadImage from '@helpers/hooks/use-upload-image'
 import { Link } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
-import { colors } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
 
 function Header() {
+  const { colors } = useTheme()
   const { user } = useUserContext()
   const { handleUpload } = useUploadImage()
   const { mutate } = useUpdateAvatarImage()

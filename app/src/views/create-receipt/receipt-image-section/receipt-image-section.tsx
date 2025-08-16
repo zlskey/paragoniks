@@ -1,6 +1,6 @@
 import type { ImageBase64 } from '@app/generic.types'
 import type { CreateReceiptFormState } from '../create-receipt-form'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
 import Typography from '@components/typography'
@@ -9,8 +9,10 @@ import useUploadImage from '@helpers/hooks/use-upload-image'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { Dimensions, TouchableOpacity } from 'react-native'
+import { useTheme } from 'react-native-paper'
 
 function ReceiptImageSection() {
+  const { colors } = useTheme()
   const { width } = Dimensions.get('window')
 
   const createReceiptForm = useFormContext<CreateReceiptFormState>()
@@ -40,8 +42,8 @@ function ReceiptImageSection() {
         <Flex p={0.5} alignContent="stretch" direction="column" spacing={0.5}>
           <TouchableOpacity onPress={onUploadReceiptClick}>
             <Paper>
-              <Flex p={0.75} spacing={1} alignContent="center" styles={{ backgroundColor: colors.secondPaper }}>
-                <AntDesign name="upload" size={getPx(3)} color={colors.text} />
+              <Flex p={0.75} spacing={1} alignContent="center" styles={{ backgroundColor: colors.surfaceVariant }}>
+                <AntDesign name="upload" size={getPx(3)} color={colors.onBackground} />
                 <Typography>
                   {fileName ? 'Zmień' : 'Dodaj'}
                   {' '}
@@ -55,12 +57,12 @@ function ReceiptImageSection() {
             && (
               <Flex p={0.75} alignContent="center" justifyContent="space-between">
                 <Flex spacing={1} alignContent="center">
-                  <Ionicons name="receipt-outline" size={getPx(3)} color={colors.text} />
+                  <Ionicons name="receipt-outline" size={getPx(3)} color={colors.onBackground} />
                   <Typography numberOfLines={1} ellipsizeMode="tail" styles={{ maxWidth: width * 0.69 }}>{fileName}</Typography>
                 </Flex>
 
                 <TouchableOpacity onPress={handleRemoveReceipt}>
-                  <AntDesign name="delete" size={getPx(3)} color={colors.text} />
+                  <AntDesign name="delete" size={getPx(3)} color={colors.onBackground} />
                 </TouchableOpacity>
               </Flex>
             )}

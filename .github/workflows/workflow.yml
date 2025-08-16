@@ -11,9 +11,9 @@ on:
       - 'infrastructure/**'
 
 jobs:
-  eslint:
+  code-quality-backend:
     runs-on: ubuntu-22.04
-    name: ESLint
+    name: Code Quality - API (ESLint + TypeCheck)
     steps:
       - uses: actions/checkout@v4
       
@@ -25,26 +25,78 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.11.0
           run_install: false
       
-      - name: Run ESLint check for frontend
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm lint
-        working-directory: ./app
-
-      - name: Run ESLint check for backend
-
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm lint
+      - name: Get pnpm store directory
+        shell: bash
         working-directory: ./api
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-api-${{ hashFiles('api/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-api-
+      
+      - name: Install backend dependencies  
+        run: pnpm install --frozen-lockfile
+        working-directory: ./api
+
+      - name: Run backend code quality checks
+        run: |
+          pnpm lint
+          pnpm typecheck
+        working-directory: ./api
+
+  code-quality-frontend:
+    runs-on: ubuntu-22.04
+    name: Code Quality - App (ESLint + TypeCheck)
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js 20.19.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.11.0
+          run_install: false
+      
+      - name: Get pnpm store directory
+        shell: bash
+        working-directory: ./app
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-app-${{ hashFiles('app/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-app-
+      
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ./app
+      
+      - name: Run frontend code quality checks
+        run: |
+          pnpm lint
+          pnpm typecheck
+        working-directory: ./app
 
   build-backend:
     runs-on: ubuntu-latest
     name: Build and deploy Backend
-    needs: [eslint]
+    needs: [code-quality-backend, code-quality-frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -83,20 +135,39 @@ jobs:
   build-frontend:
     runs-on: ubuntu-latest
     name: Build and deploy Frontend
-    needs: [eslint]
+    needs: [code-quality-backend, code-quality-frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js 20.19.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.11.0
           run_install: false
 
-      - name: Install dependencies
+      - name: Get pnpm store directory
+        shell: bash
+        working-directory: ./app
         run: |
-          pnpm install --frozen-lockfile
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
         working-directory: ./app
 
       - name: Build web version

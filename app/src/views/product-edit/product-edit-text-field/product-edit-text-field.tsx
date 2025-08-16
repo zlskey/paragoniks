@@ -1,10 +1,12 @@
 import type { TextInputProps } from 'react-native'
+import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import type { Product } from 'src/app/generic.types'
 import Typography from '@components/typography'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TextInput, View } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 import { usePreciseProductEditContext } from 'src/views/product-edit/product-edit.context'
 
 interface ProductEditTextFieldProps extends TextInputProps {
@@ -18,9 +20,11 @@ type PreciseEditProductEditTextFieldFormValues = Pick<
   'name' | 'price' | 'count' | 'discount'
 >
 
-const errorInput = {
-  borderColor: colors.red,
-  borderWidth: 1,
+function errorInput(colors: MD3Colors) {
+  return {
+    borderColor: colors.error,
+    borderWidth: 1,
+  }
 }
 
 function ProductEditTextField({
@@ -29,6 +33,7 @@ function ProductEditTextField({
   precision = 0,
   ...props
 }: ProductEditTextFieldProps) {
+  const { colors } = useTheme()
   const { product } = usePreciseProductEditContext()
   const form = useFormContext<PreciseEditProductEditTextFieldFormValues>()
   const [value, setValue] = useState(form.getValues(name).toString())
@@ -72,12 +77,12 @@ function ProductEditTextField({
         onChangeText={setValue}
         onBlur={onBlur}
         style={{
-          backgroundColor: colors.paper,
-          color: colors.text,
+          backgroundColor: colors.surface,
+          color: colors.onBackground,
           fontSize: getPx(2),
           padding: getPx(1),
           borderRadius: getPx(1),
-          ...(form.formState.errors[name] ? errorInput : {}),
+          ...(form.formState.errors[name] ? errorInput(colors) : {}),
         }}
         {...props}
       />

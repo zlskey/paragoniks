@@ -20,6 +20,8 @@ export type FriendshipId = string
 
 export interface UserMeta {
   media_quality_warning_accepted?: boolean
+  noOfScans?: number
+  noOfReceipts?: number
 }
 
 export interface User {

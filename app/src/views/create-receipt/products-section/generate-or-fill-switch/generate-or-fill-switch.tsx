@@ -1,11 +1,11 @@
 import type { CreateReceiptFormState } from '@views/create-receipt/create-receipt-form'
-import { colors } from '@app/styles'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
 import Typography from '@components/typography'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native'
+import { useTheme } from 'react-native-paper'
 
 interface SwitchItemProps {
   label: string
@@ -18,11 +18,12 @@ function SwitchItem({
   isActive,
   onClick,
 }: SwitchItemProps) {
+  const { colors } = useTheme()
   return (
     <Paper styles={{ flexGrow: 1 }}>
       <TouchableOpacity onPress={onClick}>
         <Flex
-          styles={{ backgroundColor: isActive ? colors.secondPaper : undefined }}
+          styles={{ backgroundColor: isActive ? colors.surfaceVariant : undefined }}
           p={1}
           spacing={1}
           alignContent="center"

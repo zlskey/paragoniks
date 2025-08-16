@@ -8,7 +8,7 @@ export default () => (
       name="index"
       options={{
         header: () => (
-          <StackHeader title="Anonimy" endAdornment={<CreateAnonimsIcon />} />
+          <StackHeader title="Anonimy" endAdornment={<CreateAnonimsIcon type="screen" />} />
         ),
       }}
     />

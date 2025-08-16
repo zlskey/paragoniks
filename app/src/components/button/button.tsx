@@ -2,7 +2,8 @@ import type { PropsWithChildren } from 'react'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 
 interface ButtonProps extends PropsWithChildren {
   onPress?: () => void
@@ -39,15 +40,17 @@ function getSizeStyles(small?: boolean) {
   }
 }
 
-const styles = StyleSheet.create({
-  contained: {
-    backgroundColor: colors.primary,
-  },
-  outlined: {
-    borderColor: colors.primary,
-    borderWidth: 1,
-  },
-})
+function getStyles(colors: any) {
+  return StyleSheet.create({
+    contained: {
+      backgroundColor: colors.primary,
+    },
+    outlined: {
+      borderColor: colors.primary,
+      borderWidth: 1,
+    },
+  })
+}
 
 function Button({
   children,
@@ -59,6 +62,8 @@ function Button({
   startIcon,
   endIcon,
 }: ButtonProps) {
+  const { colors } = useTheme()
+  const styles = getStyles(colors)
   const variantStyle
     = variant === 'contained' ? styles.contained : styles.outlined
   return (

@@ -1,5 +1,4 @@
 import type { Product, Profile, SimpleProduct } from '@app/generic.types'
-import { colors } from '@app/styles'
 import AvatarGroup from '@components/avatar-group'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
@@ -15,6 +14,7 @@ import { router } from 'expo-router'
 import { useMemo } from 'react'
 import { View } from 'react-native'
 import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler'
+import { useTheme } from 'react-native-paper'
 import RemoveProductAction from './remove-product-action'
 
 interface ProductItemInternalProps {
@@ -40,6 +40,7 @@ export function ProductItemInternal({
   showZeroDiscount,
   renderRightActions,
 }: ProductItemInternalProps) {
+  const { colors } = useTheme()
   const { price, count, discount, name } = product
 
   const priceText = useMemo(() => getLocaleCurrency(price), [price])
@@ -56,7 +57,7 @@ export function ProductItemInternal({
       onSwipeableOpen={onSwipeableOpen}
       renderRightActions={renderRightActions}
     >
-      <View style={{ backgroundColor: colors.paper }}>
+      <View style={{ backgroundColor: colors.surface }}>
         <TouchableOpacity onLongPress={onLongPress} onPress={onPress}>
           <Flex
             direction="column"
@@ -72,7 +73,7 @@ export function ProductItemInternal({
               </Flex>
 
               <Typography
-                styles={{ color: highlightTotal ? colors.primary : colors.text }}
+                styles={{ color: highlightTotal ? colors.primary : colors.onBackground }}
               >
                 {typeof total === 'number' ? getLocaleCurrency(total) : total}
               </Typography>

@@ -1,4 +1,6 @@
 import type { RequestHandler } from 'express'
+import constants from 'src/constants'
+import { ErrorObject } from 'src/middlewares/error.middleware'
 
 import { userService } from 'src/services'
 import { jwtUtils } from 'src/utils'
@@ -22,6 +24,18 @@ const cookieOptions = {
 const emptyUserResponse = {
   user: null,
   token: null,
+}
+
+export const handleCheckIfUsernameIsTaken: RequestHandler = async (req, res) => {
+  const { username } = req.query
+
+  if (!username) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const isTaken = await userService.checkIfUsernameIsTaken(username as string)
+
+  res.status(200).json(isTaken)
 }
 
 export const signup: RequestHandler = async (req, res) => {

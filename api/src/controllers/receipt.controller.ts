@@ -20,6 +20,8 @@ export const handleCreateReceipt: RequestHandler = async (req, res) => {
   const user = req.user
   const receipt = req.body as HandleCreateReceiptBean
 
+  await user.incrementReceiptCount()
+
   const compressedImageBuffer = await getCompressedImageBufferFromBase64(receipt.image)
   const imagePath = await uploadReceiptImage(user._id.toString(), compressedImageBuffer)
 
@@ -36,10 +38,12 @@ export const handleCreateReceipt: RequestHandler = async (req, res) => {
         throw new ErrorObject('Przekroczono limit zeskanowanych paragonów', 400)
       }
       await scanCount.incrementCount()
+      await user.incrementScanCount()
       const receiptData = await extractReceiptDataFromText(receipt.image)
       await receiptService.fillScannedData(receiptRecord._id, receiptData)
     }
     catch (err) {
+      console.error(err)
       await receiptService.handleFailedScanning(
         receiptRecord._id,
         err instanceof ErrorObject ? err.message : 'Nie udało się przetworzyć paragonu',

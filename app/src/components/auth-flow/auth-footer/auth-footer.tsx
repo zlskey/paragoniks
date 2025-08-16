@@ -20,7 +20,12 @@ function AuthFooter({
   rightButtonProps,
 }: AuthFooterProps) {
   return (
-    <Flex direction="row-reverse" alignContent="flex-end" justifyContent="space-between" styles={{ flexGrow: 1 }}>
+    <Flex
+      direction="row-reverse"
+      alignContent="flex-end"
+      justifyContent="space-between"
+      styles={{ flexGrow: 1 }}
+    >
       {rightButtonLabel && (
         <SmallButton
           onPress={onRightButtonPress}

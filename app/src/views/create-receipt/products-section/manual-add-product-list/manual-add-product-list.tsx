@@ -1,6 +1,6 @@
 import type { SimpleProduct } from '@app/generic.types'
 import type { CreateReceiptFormState } from '@views/create-receipt/create-receipt-form'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import { useDrawerFunctions } from '@components/drawer'
 import CreateOrUpdateSimpleProduct from '@components/drawers/create-or-update-simple-product'
 import Flex from '@components/flex'
@@ -14,8 +14,10 @@ import { getTotalPrice } from '@helpers/utils/get-total-price'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native'
+import { useTheme } from 'react-native-paper'
 
 function ManualAddProductList() {
+  const { colors } = useTheme()
   const formContext = useFormContext<CreateReceiptFormState>()
   const products = formContext.watch('products')
   const drawerRef = useDrawerFunctions()
@@ -65,13 +67,13 @@ function ManualAddProductList() {
         <TouchableOpacity onPress={handleOnAddProductClick}>
           <Paper>
             <Flex
-              styles={{ backgroundColor: colors.secondPaper }}
+              styles={{ backgroundColor: colors.surfaceVariant }}
               justifyContent="space-between"
               alignContent="center"
               p={0.75}
             >
               <Flex alignContent="center" spacing={1}>
-                <Entypo name="add-to-list" size={getPx(3)} color={colors.text} />
+                <Entypo name="add-to-list" size={getPx(3)} color={colors.onBackground} />
                 <Typography>Dodaj produkt</Typography>
               </Flex>
             </Flex>

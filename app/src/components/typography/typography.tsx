@@ -1,7 +1,8 @@
 import type { PropsWithChildren } from 'react'
 import type { StyleProp, TextProps, TextStyle } from 'react-native'
 import { Text } from 'react-native'
-import { colors, getPx } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 
 type TypographyVariant = 'subtitle' | 'subtitle2' | 'base1' | 'base2' | 'title' | 'display'
 
@@ -11,7 +12,7 @@ interface TypographyProps extends TextProps, PropsWithChildren {
   styles?: StyleProp<TextStyle>
 }
 
-function getTypographyStyle({ variant, opacity }: TypographyProps) {
+function getTypographyStyle({ variant, opacity, colors }: TypographyProps & { colors: any }) {
   const getFontSize = () => {
     switch (variant) {
       case 'display':
@@ -32,7 +33,7 @@ function getTypographyStyle({ variant, opacity }: TypographyProps) {
 
   return {
     fontFamily: 'Poppins-Medium',
-    color: colors.text,
+    color: colors.onBackground,
     fontSize: getFontSize(),
     opacity: opacity ? 0.5 : 1,
   }
@@ -45,7 +46,8 @@ function Typography({
   styles,
   ...props
 }: TypographyProps) {
-  const typographyStyle = getTypographyStyle({ variant, opacity })
+  const { colors } = useTheme()
+  const typographyStyle = getTypographyStyle({ variant, opacity, colors })
 
   return (
     <Text {...props} style={[typographyStyle, styles]}>

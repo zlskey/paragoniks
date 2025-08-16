@@ -1,23 +1,23 @@
 import type { CreateReceiptFormState } from '../create-receipt-form'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
 import TextField from '@components/text-field'
 import Typography from '@components/typography'
 import { FontAwesome5 } from '@expo/vector-icons'
-import useUserReceipts from '@views/home/use-user-receipts'
-import { useEffect, useMemo } from 'react'
+import { useUserContext } from '@helpers/contexts/user.context'
+import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTheme } from 'react-native-paper'
 
 function TitleSection() {
+  const { colors } = useTheme()
   const formContext = useFormContext<CreateReceiptFormState>()
 
-  const { data: receipt } = useUserReceipts()
-
-  const noOfReceipts = useMemo(() => receipt.length || 1, [receipt])
+  const { user } = useUserContext()
 
   useEffect(() => {
-    formContext.setValue('title', `Paragon #${noOfReceipts}`)
+    formContext.setValue('title', `Paragon #${user.meta?.noOfReceipts ?? 1}`)
   }, [])
 
   return (
@@ -30,7 +30,7 @@ function TitleSection() {
       />
       <Paper>
         <Flex p={0.5} pl={1} spacing={1} styles={{ backgroundColor: '#1976d2' }} alignContent="center">
-          <FontAwesome5 name="info" size={getPx(2)} color={colors.text} />
+          <FontAwesome5 name="info" size={getPx(2)} color={colors.onBackground} />
           <Typography variant="base2">
             Pozostawiony domyślny tytuł zostanie wygenerowany na podstawie produktów/zdjęcia paragonu
           </Typography>

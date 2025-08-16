@@ -1,9 +1,9 @@
 import type { Friendship, Profile } from '@app/generic.types'
-import { colors } from '@app/styles'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { Swipeable } from 'react-native-gesture-handler'
+import { useTheme } from 'react-native-paper'
 import AcceptFriendAction from './accept-friend-action/accept-friend-action'
 import useAcceptFriendRequest from './accept-friend-action/use-accept-friend-request'
 import DeclineFriendAction from './decline-friend-action'
@@ -17,6 +17,7 @@ interface FriendItemProps {
 }
 
 function FriendItem({ friend, status }: FriendItemProps) {
+  const { colors } = useTheme()
   const handleRemoveFriend = useRemoveFriend()
   const acceptFriendRequest = useAcceptFriendRequest()
   const declineFriendRequest = useDeclineFriendRequest()
@@ -48,7 +49,7 @@ function FriendItem({ friend, status }: FriendItemProps) {
     >
       <Flex
         alignContent="center"
-        styles={{ backgroundColor: colors.paper }}
+        styles={{ backgroundColor: colors.surface }}
         spacing={1}
         p={1.25}
       >

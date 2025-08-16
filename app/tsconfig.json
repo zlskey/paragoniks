@@ -2,6 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "es6"],
     "baseUrl": ".",
     "paths": {
       "@mockups/*": ["src/mockups/*"],
@@ -13,10 +14,14 @@
       "@helpers/*": ["src/helpers/*"],
       "@assets/*": ["src/assets/*"]
     },
+    "types": ["react"],
     "strict": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": [
     "**/**.ts",

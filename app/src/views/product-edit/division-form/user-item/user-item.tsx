@@ -3,8 +3,8 @@ import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { FontAwesome } from '@expo/vector-icons'
-import { Checkbox } from 'react-native-paper'
-import { colors, getPx } from 'src/app/styles'
+import { Checkbox, useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 import DivisionInput from './division-input'
 
 interface UserItemProps {
@@ -21,6 +21,7 @@ function UserItem({
   onDivisionCheckboxChange,
   ...props
 }: UserItemProps) {
+  const { colors } = useTheme()
   function onCheckboxChange() {
     onDivisionCheckboxChange(contributor._id)
   }
@@ -48,7 +49,7 @@ function UserItem({
           <FontAwesome
             name="user-secret"
             size={getPx(2)}
-            color={colors.placeholder}
+            color={colors.onSurfaceVariant}
           />
         )}
       </Flex>

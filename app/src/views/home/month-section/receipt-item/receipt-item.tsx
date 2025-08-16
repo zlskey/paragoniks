@@ -13,7 +13,7 @@ import { useMemo } from 'react'
 import { View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
-import { colors } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
 import RemoveReceiptAction from './remove-receipt-action'
 import useRemoveReceipt from './use-remove-receipt'
 
@@ -22,6 +22,7 @@ interface ReceiptItemProps {
 }
 
 function ReceiptItem({ receipt }: ReceiptItemProps) {
+  const { colors } = useTheme()
   const addNotification = useNotificationContext()
   const { mutate: handleRemoveReceipt } = useRemoveReceipt({
     receiptId: receipt._id,
@@ -70,7 +71,7 @@ function ReceiptItem({ receipt }: ReceiptItemProps) {
       onSwipeableOpen={handleSwipeableOpen}
       renderRightActions={() => isOwner && <RemoveReceiptAction />}
     >
-      <View style={{ backgroundColor: colors.paper }}>
+      <View style={{ backgroundColor: colors.surface }}>
         <TouchableOpacity onPress={handlePress}>
           <Flex justifyContent="space-between" alignContent="center" p={1.5}>
             <Flex alignContent="center" spacing={1}>

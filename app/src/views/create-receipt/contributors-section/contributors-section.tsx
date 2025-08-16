@@ -1,6 +1,7 @@
 import type { Profile } from '@app/generic.types'
+import type { UseDrawerFunctionsRef } from '@components/drawer'
 import type { CreateReceiptFormState } from '../create-receipt-form'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Avatar from '@components/avatar'
 import { useDrawerFunctions } from '@components/drawer'
 import FriendsOrAnonimsDrawer from '@components/drawers/friends-or-anonims'
@@ -15,12 +16,14 @@ import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native'
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
+import { useTheme } from 'react-native-paper'
 
 interface ProfileItemProps {
   profile: Profile
 }
 
 function ProfileItem({ profile }: ProfileItemProps) {
+  const { colors } = useTheme()
   const createReceiptForm = useFormContext<CreateReceiptFormState>()
 
   function onSwipeableOpen(direction: 'left' | 'right') {
@@ -46,7 +49,7 @@ function ProfileItem({ profile }: ProfileItemProps) {
       )}
     >
       <Flex
-        styles={{ backgroundColor: colors.paper }}
+        styles={{ backgroundColor: colors.surface }}
         justifyContent="space-between"
         alignContent="center"
         p={1.25}
@@ -58,7 +61,7 @@ function ProfileItem({ profile }: ProfileItemProps) {
             <FontAwesome
               name="user-secret"
               size={getPx(2)}
-              color={colors.placeholder}
+              color={colors.onSurfaceVariant}
             />
           )}
         </Flex>
@@ -68,6 +71,7 @@ function ProfileItem({ profile }: ProfileItemProps) {
 }
 
 function ContributorsSection() {
+  const { colors } = useTheme()
   const createReceiptForm = useFormContext<CreateReceiptFormState>()
   const contributors = createReceiptForm.watch('contributors')
   const profilesIds = useMemo(() => Object.keys(contributors), [contributors])
@@ -87,18 +91,18 @@ function ContributorsSection() {
     <Flex direction="column" alignContent="stretch">
       <Typography>Znajomi do podziału</Typography>
 
-      <Paper styles={{ backgroundColor: colors.paper, maxHeight: 300 }}>
+      <Paper styles={{ backgroundColor: colors.surface, maxHeight: 300 }}>
         <TouchableOpacity onPress={() => friendsOrAnonimsDrawerRef.current?.present()}>
           <Flex p={0.5} flexGrow>
             <Paper styles={{ flexGrow: 1 }}>
               <Flex
-                styles={{ backgroundColor: colors.secondPaper }}
+                styles={{ backgroundColor: colors.surfaceVariant }}
                 justifyContent="space-between"
                 alignContent="center"
                 p={0.75}
               >
                 <Flex alignContent="center" spacing={1}>
-                  <AntDesign name="adduser" size={getPx(3)} color={colors.text} />
+                  <AntDesign name="adduser" size={getPx(3)} color={colors.onBackground} />
                   <Typography>Dodaj znajomego</Typography>
                 </Flex>
               </Flex>
@@ -118,7 +122,7 @@ function ContributorsSection() {
       <FriendsOrAnonimsDrawer
         filterBy={profile => profilesIds.includes(profile._id)}
         onProfilePress={handleAddProfile}
-        drawerRef={friendsOrAnonimsDrawerRef}
+        drawerRef={friendsOrAnonimsDrawerRef as UseDrawerFunctionsRef}
       />
     </Flex>
   )

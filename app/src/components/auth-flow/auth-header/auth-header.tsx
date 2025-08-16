@@ -1,10 +1,12 @@
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Flex from '@components/flex'
 import SmallButton from '@components/small-button'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
+import { useTheme } from 'react-native-paper'
 
 function AuthHeader() {
+  const { colors } = useTheme()
   function onCancelPress() {
     router.replace('/a')
   }

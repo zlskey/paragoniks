@@ -17,7 +17,7 @@ import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect, useMemo, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { Provider as PaperProvider } from 'react-native-paper'
+import { MD3DarkTheme, Provider as PaperProvider } from 'react-native-paper'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
 import { userMockup } from 'src/mockups/user'
 import 'react-native-reanimated'
@@ -26,11 +26,26 @@ SplashScreen.preventAutoHideAsync()
 
 const queryClient = new QueryClient()
 
+const darkTheme = {
+  ...MD3DarkTheme,
+  colors: {
+    ...MD3DarkTheme.colors,
+    background: '#0F0F0F',
+    primary: '#388e3c',
+    onPrimary: '#fff',
+    onBackground: '#fff',
+    error: '#bf360c',
+    surface: '#191919',
+    surfaceVariant: '#2c2c2c',
+    onSurfaceVariant: '#b3b3b3', // placeholder color
+  },
+}
+
 function RootLayoutNav() {
   const { loggedIn } = useUserContext()
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={darkTheme}>
       <BottomSheetModalProvider>
         <Stack>
           <Stack.Screen name="index" redirect />

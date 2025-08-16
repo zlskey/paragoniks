@@ -1,4 +1,4 @@
-import AuthHeader from '@components/auth-header'
+import AuthHeader from '@components/auth-flow/auth-header'
 import { Stack } from 'expo-router'
 
 export default function AuthLayout() {

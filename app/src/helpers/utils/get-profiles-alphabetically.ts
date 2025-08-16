@@ -1,11 +1,11 @@
-import type { Profile } from '@app/generic.types'
+import type { User } from '@app/generic.types'
 
-interface Section {
-  data: Profile[]
+interface Section<T extends User> {
+  data: T[]
   title: string
 }
 
-export function getProfilesAlphabetically(profiles: Profile[]) {
+export function getProfilesAlphabetically<T extends User>(profiles: T[]) {
   return profiles
     .sort((a, b) => a.username.localeCompare(b.username))
     .reduce((acc, profile) => {
@@ -24,5 +24,5 @@ export function getProfilesAlphabetically(profiles: Profile[]) {
       }
 
       return acc
-    }, [] as Section[])
+    }, [] as Section<T>[])
 }

@@ -1,8 +1,9 @@
+import { getPx } from '@app/styles'
 import Button from '@components/button'
-import { getPx } from 'src/app/styles'
+import React from 'react'
 
 interface IconButtonProps {
-  icon?: JSX.Element
+  icon?: React.ReactElement
   onPress?: () => void
 }
 

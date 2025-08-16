@@ -16,8 +16,8 @@ function ManageAnonim() {
   }
 
   return (
-    <Wrapper>
-      <Flex direction="column" alignContent="stretch" spacing={2}>
+    <Wrapper style={{ paddingBottom: 0 }}>
+      <Flex direction="column" alignContent="stretch" spacing={2} pb={0} nativeFlex>
         <SearchBar />
 
         <AnonimList anonims={data} />

@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { createContext, useContext, useState } from 'react'
 import { Snackbar } from 'react-native-paper'
-import { colors } from 'src/app/styles'
 
 interface Notification {
   message: string
@@ -49,7 +48,7 @@ function NotificationWrapper({ children }: PropsWithChildren) {
         duration={3000}
         action={{
           label: 'Zamknij',
-          labelStyle: { color: colors.text },
+          labelStyle: { color: '#fff' },
           onPress: removeFirstNotification,
         }}
         visible={!!notifications[0]}

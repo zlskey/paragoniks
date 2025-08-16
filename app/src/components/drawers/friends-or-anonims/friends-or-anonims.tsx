@@ -1,6 +1,6 @@
 import type { Profile } from '@app/generic.types'
 import type { UseDrawerFunctionsRef } from '@components/drawer/drawer'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Avatar from '@components/avatar'
 import Drawer from '@components/drawer/drawer'
 import Flex from '@components/flex'
@@ -11,6 +11,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import useUserFriendsAndAnonims from '@helpers/api-hooks/use-user-friends-and-anonims'
 import { useMemo, useState } from 'react'
 import { Dimensions, TouchableOpacity } from 'react-native'
+import { useTheme } from 'react-native-paper'
 
 interface FriendsOrAnonimsProps {
   title?: string
@@ -20,6 +21,7 @@ interface FriendsOrAnonimsProps {
 }
 
 function FriendsOrAnonims({ drawerRef, onProfilePress, filterBy, title = 'Znajomi' }: FriendsOrAnonimsProps) {
+  const { colors } = useTheme()
   const { height } = Dimensions.get('window')
   const { data: profiles } = useUserFriendsAndAnonims()
 
@@ -54,11 +56,11 @@ function FriendsOrAnonims({ drawerRef, onProfilePress, filterBy, title = 'Znajom
         <SearchBar
           query={searchQuery}
           onSearch={setSearchQuery}
-          background="secondPaper"
+          background="backdrop"
         />
 
         <ProfilesAlphabeticallList
-          sectionHeaderBackgroundColor={colors.paper}
+          sectionHeaderBackgroundColor={colors.surface}
           style={{
             maxHeight: listHeights[currentSnapPoint],
           }}
@@ -73,7 +75,7 @@ function FriendsOrAnonims({ drawerRef, onProfilePress, filterBy, title = 'Znajom
                 p={1}
                 spacing={1}
                 alignContent="center"
-                styles={{ backgroundColor: colors.secondPaper }}
+                styles={{ backgroundColor: colors.surfaceVariant }}
               >
                 <Avatar profile={profile} size="sm" />
                 <Typography>{profile.username}</Typography>
@@ -82,7 +84,7 @@ function FriendsOrAnonims({ drawerRef, onProfilePress, filterBy, title = 'Znajom
                   <FontAwesome
                     name="user-secret"
                     size={getPx(2)}
-                    color={colors.placeholder}
+                    color={colors.onSurfaceVariant}
                   />
                 )}
               </Flex>

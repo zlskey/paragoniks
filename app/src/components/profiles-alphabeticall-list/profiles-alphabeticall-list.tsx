@@ -1,6 +1,6 @@
-import type { Profile } from '@app/generic.types'
+import type { User } from '@app/generic.types'
 import type { SectionListProps } from 'react-native'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Typography from '@components/typography'
 import { getProfilesAlphabetically } from '@helpers/utils/get-profiles-alphabetically'
 import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrapper'
@@ -25,19 +25,19 @@ export function SectionHeader({ title, backgroundColor }: SectionHeaderProps) {
   )
 }
 
-interface ProfilesAlphabeticallListProps
-  extends Omit<SectionListProps<Profile>, 'sections'> {
-  profiles: Profile[]
-  ProfileItem: React.ComponentType<{ profile: Profile }>
+interface ProfilesAlphabeticallListProps<T extends User>
+  extends Omit<SectionListProps<T>, 'sections'> {
+  profiles: T[]
+  ProfileItem: React.ComponentType<{ profile: T }>
   sectionHeaderBackgroundColor?: string
 }
 
-function ProfilesAlphabeticallList({
+function ProfilesAlphabeticallList<T extends User>({
   profiles,
   ProfileItem,
-  sectionHeaderBackgroundColor = colors.background,
+  sectionHeaderBackgroundColor,
   ...props
-}: ProfilesAlphabeticallListProps) {
+}: ProfilesAlphabeticallListProps<T>) {
   const sections = useMemo(
     () => getProfilesAlphabetically(profiles),
     [profiles],
@@ -45,6 +45,7 @@ function ProfilesAlphabeticallList({
 
   return (
     <SectionList
+      style={{ flex: 1 }}
       sections={sections}
       keyExtractor={profile => profile._id}
       ListEmptyComponent={<Typography>Brak wyników</Typography>}

@@ -9,15 +9,16 @@ import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Dialog, Portal } from 'react-native-paper'
+import { Dialog, Portal, useTheme } from 'react-native-paper'
 import { sendFriendRequest } from 'src/api/endpoints/friends/friends.api'
-import { colors, getPx } from 'src/app/styles'
+import { getPx } from 'src/app/styles'
 
 const defaultValues = {
   friendUsername: '',
 }
 
 function AddFriendIcon() {
+  const { colors } = useTheme()
   const [isDialogOpened, setIsDialogOpened] = useState(false)
   const addNotification = useNotificationContext()
 
@@ -66,7 +67,7 @@ function AddFriendIcon() {
     <>
       <IconButton
         icon={
-          <AntDesign name="adduser" size={getPx(2.3)} color={colors.text} />
+          <AntDesign name="adduser" size={getPx(2.3)} color={colors.onBackground} />
         }
         onPress={handleOpenDialog}
       />

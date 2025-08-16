@@ -1,9 +1,11 @@
+import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import type { Profile } from 'src/app/generic.types'
 import Typography from '@components/typography'
 import { Image } from 'expo-image'
 import { StyleSheet, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { AvatarColor } from 'src/app/generic.types'
-import { colors, getPx } from 'src/app/styles'
+import { getPx } from 'src/app/styles'
 
 function getContainerSize(size: 'sm' | 'md' | 'lg' | 'xs') {
   switch (size) {
@@ -31,7 +33,7 @@ function getTextSize(size: 'sm' | 'md' | 'lg' | 'xs') {
   }
 }
 
-function getStyles(size: 'sm' | 'md' | 'lg' | 'xs') {
+function getStyles(size: 'sm' | 'md' | 'lg' | 'xs', colors: MD3Colors) {
   return StyleSheet.create({
     container: {
       width: getContainerSize(size),
@@ -44,7 +46,7 @@ function getStyles(size: 'sm' | 'md' | 'lg' | 'xs') {
     },
     text: {
       lineHeight: getContainerSize(size),
-      color: colors.text,
+      color: colors.onBackground,
       fontSize: getTextSize(size),
       fontFamily: 'Poppins-Medium',
     },
@@ -64,7 +66,8 @@ function Avatar({
     username: '',
   },
 }: AvatarProps) {
-  const styles = getStyles(size)
+  const { colors } = useTheme()
+  const styles = getStyles(size, colors)
 
   const backgroundColor
     = profile.avatarColor === AvatarColor.Default

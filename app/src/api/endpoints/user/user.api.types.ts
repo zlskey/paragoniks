@@ -10,6 +10,10 @@ export interface LoginUserResponse {
   token: string
 }
 
+export interface IsUsernameTakenBody {
+  username: string
+}
+
 export interface SignupUserBody {
   username: string
   password: string

@@ -1,24 +1,23 @@
 import ParagoniksIcon from '@components/icons/paragoniks-icon'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
-import { colors } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
+  const { colors } = useTheme()
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.text,
+        tabBarInactiveTintColor: colors.onBackground,
         tabBarLabelStyle: {
           fontFamily: 'Poppins-Medium',
         },
         tabBarStyle: {
-          backgroundColor: colors.paper,
+          backgroundColor: colors.surface,
           borderTopWidth: 0,
-          // add white shadow at the top of tab
-          shadowOffset: { width: 1, height: 1 },
-          shadowColor: 'gray',
-          shadowRadius: 1,
+          boxShadow: `0 0 10px 0 ${colors.shadow}`,
         },
         headerShown: false,
       }}

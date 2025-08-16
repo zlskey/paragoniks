@@ -5,8 +5,8 @@ import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { EvilIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useTheme } from 'react-native-paper'
 import { DivisionTranslationEnum } from 'src/app/generic.types'
-import { colors } from 'src/app/styles'
 
 interface DivisionSwitchProps {
   divisionType: DivisionType
@@ -17,6 +17,7 @@ function DivisionSwitch({
   divisionType,
   onDivisionTypeChange,
 }: DivisionSwitchProps) {
+  const { colors } = useTheme()
   const drawerRef = useDrawerFunctions()
 
   function expandDrawer() {

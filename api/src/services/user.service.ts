@@ -28,6 +28,12 @@ export async function create(
   }
 }
 
+export async function checkIfUsernameIsTaken(username: string): Promise<boolean> {
+  const user = await User.exists({ username: { $eq: username } })
+  console.log(user, username)
+  return !!user
+}
+
 export async function getByUsername(username: IUser['username']): Promise<IUser> {
   const user = await User.findOne({ username })
 

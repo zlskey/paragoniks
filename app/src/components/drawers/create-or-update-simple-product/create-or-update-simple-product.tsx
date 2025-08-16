@@ -3,7 +3,7 @@ import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import type {
   CreateOrUpdateSimpleProductFormState,
 } from './create-or-update-simple-product-form'
-import { colors, getPx } from '@app/styles'
+import { getPx } from '@app/styles'
 import Button from '@components/button'
 import Drawer from '@components/drawer'
 import Flex from '@components/flex'
@@ -12,6 +12,7 @@ import Typography from '@components/typography'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTheme } from 'react-native-paper'
 import {
   createOrUpdateSimpleProductDefaultValues,
   createOrUpdateSimpleProductSchema,
@@ -25,6 +26,7 @@ interface CreateOrUpdateSimpleProductProps {
 }
 
 function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose }: CreateOrUpdateSimpleProductProps) {
+  const { colors } = useTheme()
   const newProductForm = useForm<CreateOrUpdateSimpleProductFormState>({
     defaultValues: productData ?? createOrUpdateSimpleProductDefaultValues,
     resolver: yupResolver(createOrUpdateSimpleProductSchema),
@@ -62,11 +64,11 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
                 autoFocus
                 fullWidth
                 labelAlwaysOnTop
-                style={{ backgroundColor: colors.secondPaper }}
+                style={{ backgroundColor: colors.surfaceVariant }}
               />
             </Flex>
             {nameError && (
-              <Typography variant="base2" styles={{ color: colors.red }}>
+              <Typography variant="base2" styles={{ color: colors.error }}>
                 {nameError}
               </Typography>
             )}
@@ -75,7 +77,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
           <Flex direction="column" alignContent="stretch">
             <Flex spacing={2} justifyContent="space-between">
               <TextField
-                style={{ backgroundColor: colors.secondPaper }}
+                style={{ backgroundColor: colors.surfaceVariant }}
                 keyboardType="numeric"
                 labelAlwaysOnTop
                 name="price"
@@ -83,7 +85,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
                 fullWidth
               />
               <TextField
-                style={{ backgroundColor: colors.secondPaper }}
+                style={{ backgroundColor: colors.surfaceVariant }}
                 keyboardType="numeric"
                 labelAlwaysOnTop
                 name="count"
@@ -91,7 +93,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
                 fullWidth
               />
               <TextField
-                style={{ backgroundColor: colors.secondPaper }}
+                style={{ backgroundColor: colors.surfaceVariant }}
                 keyboardType="numeric"
                 labelAlwaysOnTop
                 name="discount"
@@ -100,7 +102,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
               />
             </Flex>
             {pricingError && (
-              <Typography variant="base2" styles={{ color: colors.red }}>
+              <Typography variant="base2" styles={{ color: colors.error }}>
                 {pricingError}
               </Typography>
             )}
@@ -113,7 +115,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
               <FontAwesome6
                 name="add"
                 size={getPx(3)}
-                color={colors.text}
+                color={colors.onBackground}
               />
             )}
             small

@@ -1,3 +1,4 @@
+import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
@@ -5,14 +6,17 @@ import { useUserContext } from '@helpers/contexts/user.context'
 import { router } from 'expo-router'
 import { StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { colors, getPx } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
+import { getPx } from 'src/app/styles'
 
-const styles = StyleSheet.create({
-  container: {
-    padding: getPx(2),
-    backgroundColor: colors.background,
-  },
-})
+function getStyles(colors: MD3Colors) {
+  return StyleSheet.create({
+    container: {
+      padding: getPx(2),
+      backgroundColor: colors.background,
+    },
+  })
+}
 
 interface MainHeaderProps {
   title: string
@@ -21,13 +25,14 @@ interface MainHeaderProps {
 }
 
 function MainHeader({ title, endAdornment }: MainHeaderProps) {
+  const { colors } = useTheme()
   const { user } = useUserContext()
-
+  const styles = getStyles(colors)
   return (
     <Flex
       direction="row"
-      styles={styles.container}
       justifyContent="space-between"
+      styles={styles.container}
     >
       <Flex direction="column" spacing={2}>
         <TouchableOpacity onPress={() => router.push({ pathname: '/profile' })}>

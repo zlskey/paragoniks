@@ -6,8 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTheme } from 'react-native-paper'
 import { getReceipt } from 'src/api/endpoints/receipt/receipt.api'
-import { colors } from 'src/app/styles'
 import * as yup from 'yup'
 import DivisionForm from './division-form'
 import ProductEditTextField from './product-edit-text-field'
@@ -60,6 +60,7 @@ const productSchema = yup.object().shape({
 })
 
 function PreciseProductEdit() {
+  const { colors } = useTheme()
   const { product } = usePreciseProductEditContext()
 
   const formState = useForm<PreciseEditFormValues>({
@@ -82,7 +83,7 @@ function PreciseProductEdit() {
             </Flex>
 
             {nameError && (
-              <Typography variant="base1" styles={{ color: colors.red }}>
+              <Typography variant="base1" styles={{ color: colors.error }}>
                 {nameError.message}
               </Typography>
             )}
@@ -116,7 +117,7 @@ function PreciseProductEdit() {
               />
             </Flex>
             {pricingError && (
-              <Typography variant="base1" styles={{ color: colors.red }}>
+              <Typography variant="base1" styles={{ color: colors.error }}>
                 {pricingError.message}
               </Typography>
             )}

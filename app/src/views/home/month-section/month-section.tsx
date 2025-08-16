@@ -5,8 +5,9 @@ import getSectionListItemWrapper from '@helpers/utils/get-section-list-item-wrap
 import { useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { SectionList, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { ScanningStatus } from 'src/app/generic.types'
-import { colors, getPx } from 'src/app/styles'
+import { getPx } from 'src/app/styles'
 import ReceiptCreatingItem from './receipt-creating-item'
 import ReceiptItem from './receipt-item'
 
@@ -17,6 +18,7 @@ interface MonthSectionProps {
 const MonthSectionList = React.memo(({ receipts }: MonthSectionProps) => {
   const queryClient = useQueryClient()
   const [isLoading, setisLoading] = useState(false)
+  const { colors } = useTheme()
 
   async function onRefresh() {
     setisLoading(true)

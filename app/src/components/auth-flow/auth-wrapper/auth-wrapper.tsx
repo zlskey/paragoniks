@@ -1,7 +1,7 @@
-import { colors } from '@app/styles'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
+import { useTheme } from 'react-native-paper'
 
 interface AuthWrapperProps {
   title: string
@@ -14,6 +14,7 @@ function AuthWrapper({
   subtitle,
   children,
 }: AuthWrapperProps) {
+  const { colors } = useTheme()
   return (
     <Wrapper>
       <Flex
@@ -28,7 +29,7 @@ function AuthWrapper({
         <Typography variant="display">{title}</Typography>
 
         {subtitle && (
-          <Typography variant="subtitle2" styles={{ color: colors.placeholder }}>
+          <Typography variant="subtitle2" styles={{ color: colors.onSurfaceVariant }}>
             {subtitle}
           </Typography>
         )}

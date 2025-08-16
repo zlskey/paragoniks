@@ -1,5 +1,6 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import type { DivisionType } from 'src/app/generic.types'
+import { getPx } from '@app/styles'
 import Drawer from '@components/drawer/drawer'
 import Flex from '@components/flex'
 import Paper from '@components/paper'
@@ -7,7 +8,7 @@ import Typography from '@components/typography'
 import { Entypo, FontAwesome, FontAwesome5 } from '@expo/vector-icons'
 import { useCallback } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { colors } from 'src/app/styles'
+import { useTheme } from 'react-native-paper'
 
 interface OptionItemProps {
   icon: React.JSX.Element
@@ -24,6 +25,7 @@ function OptionItem({
   isSelected,
   description,
 }: OptionItemProps) {
+  const { colors } = useTheme()
   return (
     <TouchableOpacity onPress={onPress}>
       <Flex
@@ -39,9 +41,10 @@ function OptionItem({
           <Flex
             styles={{
               backgroundColor: '#e8f5e9',
-              borderRadius: 999,
+              borderRadius: 9999,
+              height: getPx(4),
+              width: getPx(4),
             }}
-            p={1}
             alignContent="center"
             justifyContent="center"
             direction="column"
@@ -77,6 +80,7 @@ function SplitByChoice({
   onChangeDivisionType,
   divisionType,
 }: SplitByChoiceProps) {
+  const { colors } = useTheme()
   const handleDivisionTypeChange = useCallback(
     (newDivisionType: DivisionType) => {
       onChangeDivisionType(newDivisionType)
@@ -98,7 +102,7 @@ function SplitByChoice({
             isSelected={divisionType === 'amount'}
             onPress={() => handleDivisionTypeChange('amount')}
             icon={
-              <FontAwesome5 color={colors.primary} name="check" size={16} />
+              <FontAwesome5 color={colors.primary} name="dollar-sign" size={16} />
             }
           />
 

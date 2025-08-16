@@ -1,6 +1,5 @@
 import type { Receipt } from '@app/generic.types'
 import { ScanningStatus } from '@app/generic.types'
-import { colors } from '@app/styles'
 import Avatar from '@components/avatar'
 import AvatarGroup from '@components/avatar-group'
 import Fade from '@components/fade'
@@ -12,6 +11,7 @@ import useProfiles from '@helpers/hooks/use-profiles'
 import { getLocaleDate } from '@helpers/utils/locale'
 import { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import useRemoveReceipt from '../receipt-item/use-remove-receipt'
 
 interface ReceiptCreatingItemProps {
@@ -19,6 +19,7 @@ interface ReceiptCreatingItemProps {
 }
 
 function ReceiptCreatingItem({ receipt }: ReceiptCreatingItemProps) {
+  const { colors } = useTheme()
   const { mutate: handleRemoveReceipt } = useRemoveReceipt({ receiptId: receipt._id })
   const { profiles } = useProfiles(Object.keys(receipt.contributors))
 
@@ -38,7 +39,7 @@ function ReceiptCreatingItem({ receipt }: ReceiptCreatingItemProps) {
   }, [receipt.scanning])
 
   return (
-    <View style={{ backgroundColor: colors.paper }}>
+    <View style={{ backgroundColor: colors.surface }}>
       <Fade duration={1500}>
         <Flex justifyContent="space-between" alignContent="center" p={1.5}>
           <Flex alignContent="center" spacing={1}>

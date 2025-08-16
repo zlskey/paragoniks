@@ -6,6 +6,7 @@ import type {
   ChangeUserLangBody,
   ChangeUsernameBody,
   GetUserFriendsOrAnonimsBody,
+  IsUsernameTakenBody,
   LoginUserBody,
   LoginUserResponse,
   LogoutUserBody,
@@ -19,7 +20,7 @@ import type {
 import { getRsApi } from '@api/rs.api'
 
 export async function loginUser(body: LoginUserBody) {
-  const url = '/auth/login'
+  const url = 'auth/login'
   const rsApi = await getRsApi()
   const response = await rsApi.post<LoginUserResponse>(url, body)
 
@@ -27,7 +28,7 @@ export async function loginUser(body: LoginUserBody) {
 }
 
 export async function signupUser(body: SignupUserBody) {
-  const url = '/auth/signup'
+  const url = 'auth/signup'
   const rsApi = await getRsApi()
   const response = await rsApi.post<SignupUserResponse>(url, body)
 
@@ -35,7 +36,7 @@ export async function signupUser(body: SignupUserBody) {
 }
 
 export async function logoutUser(body: LogoutUserBody) {
-  const url = '/auth/logout'
+  const url = 'auth/logout'
   const rsApi = await getRsApi()
   const response = await rsApi.get<{}>(url, body)
 
@@ -43,9 +44,19 @@ export async function logoutUser(body: LogoutUserBody) {
 }
 
 export async function whoamiUser(body: WhoamiUserBody) {
-  const url = '/auth/whoami'
+  const url = 'auth/whoami'
   const rsApi = await getRsApi()
   const response = await rsApi.get<WhoamiUserResponse | null>(url, body)
+
+  return response.data
+}
+
+export async function isUsernameTaken(body: IsUsernameTakenBody) {
+  const url = 'auth/is-username-taken'
+  const params = new URLSearchParams()
+  params.append('username', body.username)
+  const rsApi = await getRsApi()
+  const response = await rsApi.get<boolean>(`${url}?${params.toString()}`)
 
   return response.data
 }

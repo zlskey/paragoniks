@@ -26,6 +26,8 @@ export enum Lang {
 
 export interface UserMeta {
   media_quality_warning_accepted: boolean
+  noOfScans: number
+  noOfReceipts: number
 }
 
 export interface IUser {
@@ -53,6 +55,8 @@ export interface IUser {
   pickProfile: (this: IUser) => IProfile
   setLang: (this: IUser, lang: string) => Promise<IUser>
   updateMeta: (this: IUser, meta: UserMeta) => Promise<IUser>
+  incrementScanCount: (this: IUser) => Promise<IUser>
+  incrementReceiptCount: (this: IUser) => Promise<IUser>
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -84,6 +88,14 @@ const userSchema = new mongoose.Schema<IUser>({
     media_quality_warning_accepted: {
       type: Boolean,
       default: false,
+    },
+    noOfScans: {
+      type: Number,
+      default: 0,
+    },
+    noOfReceipts: {
+      type: Number,
+      default: 0,
     },
   },
 })
@@ -162,6 +174,18 @@ class UserClass {
   updateMeta(this: IUser, meta: UserMeta) {
     const currentMeta = this.meta ?? {}
     return userService.update(this._id, { meta: { ...currentMeta, ...meta } })
+  }
+
+  incrementScanCount(this: IUser) {
+    const currentMeta = this.meta
+    const noOfScans = (currentMeta.noOfScans ?? 0) + 1
+    return userService.update(this._id, { meta: { ...currentMeta, noOfScans } })
+  }
+
+  incrementReceiptCount(this: IUser) {
+    const currentMeta = this.meta
+    const noOfReceipts = (currentMeta.noOfReceipts ?? 0) + 1
+    return userService.update(this._id, { meta: { ...currentMeta, noOfReceipts } })
   }
 }
 

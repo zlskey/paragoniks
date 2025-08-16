@@ -1,11 +1,10 @@
 import type { Anonim } from '@app/generic.types'
-import { colors } from '@app/styles'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
-import Paper from '@components/paper'
+import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
 import Typography from '@components/typography'
-import { FlatList } from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
+import { useTheme } from 'react-native-paper'
 import RemoveAnonimButton from './remove-anonim'
 import useRemoveAnonim from './remove-anonim/use-remove-anonim'
 
@@ -14,6 +13,7 @@ interface AnonimItemProps {
 }
 
 function AnonimItem({ anonim }: AnonimItemProps) {
+  const { colors } = useTheme()
   const handleRemoveAnonim = useRemoveAnonim()
 
   function onSwipeableOpen(direction: 'left' | 'right') {
@@ -29,7 +29,7 @@ function AnonimItem({ anonim }: AnonimItemProps) {
       renderRightActions={() => <RemoveAnonimButton />}
     >
       <Flex
-        styles={{ backgroundColor: colors.paper }}
+        styles={{ backgroundColor: colors.surface }}
         alignContent="center"
         spacing={1}
         p={1.25}
@@ -53,16 +53,13 @@ function AnonimList({ anonims }: AnonimListProps) {
   }
 
   return (
-    <Flex direction="column" alignContent="stretch" spacing={1}>
+    <Flex direction="column" alignContent="stretch" spacing={1} nativeFlex>
       <Typography variant="subtitle">Twoje anonimy</Typography>
 
-      <Paper>
-        <FlatList
-          data={anonims}
-          keyExtractor={anonim => anonim._id}
-          renderItem={({ item }) => <AnonimItem anonim={item} />}
-        />
-      </Paper>
+      <ProfilesAlphabeticallList
+        profiles={anonims}
+        ProfileItem={({ profile }) => <AnonimItem anonim={profile} />}
+      />
     </Flex>
   )
 }
