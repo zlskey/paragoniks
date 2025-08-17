@@ -43,7 +43,7 @@ function AddContributors() {
   })
 
   const { profiles } = useProfiles(
-    friendships.flatMap(friendship =>
+    friendships.flatMap((friendship: any) =>
       friendship.status === 'accepted' ? [friendship.friendId] : [],
     ),
   )

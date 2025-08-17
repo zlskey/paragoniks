@@ -25,7 +25,7 @@ function ReceiptCreatingItem({ receipt }: ReceiptCreatingItemProps) {
 
   const createdAtText = useMemo(() => getLocaleDate(receipt.createdAt), [receipt.createdAt])
   const ownerProfile = useMemo(
-    () => profiles.find(profile => profile._id === receipt.owner),
+    () => profiles.find((profile: any) => profile._id === receipt.owner),
     [profiles, receipt.owner],
   )
 

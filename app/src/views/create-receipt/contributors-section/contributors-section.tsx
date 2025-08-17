@@ -30,7 +30,7 @@ function ProfileItem({ profile }: ProfileItemProps) {
     if (direction === 'right') {
       const contributors = createReceiptForm.getValues('contributors')
       const updatedContributors = Object.fromEntries(
-        Object.entries(contributors).filter(([profileId]) => profile._id !== profileId),
+        Object.entries(contributors).filter(([profileId]: [string, any]) => profile._id !== profileId),
       )
       createReceiptForm.setValue('contributors', updatedContributors)
     }

@@ -5,7 +5,7 @@ import Typography from '@components/typography'
 import { FontAwesome } from '@expo/vector-icons'
 import { useEffect, useRef, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { ActivityIndicator, Animated, StyleSheet, TextInput, View } from 'react-native'
+import { ActivityIndicator, Animated, Platform, StyleSheet, TextInput, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { getPx } from 'src/app/styles'
 
@@ -43,11 +43,13 @@ function getStyles(colors: MD3Colors) {
       fontSize: getPx(2),
       paddingTop: getPx(1),
       paddingHorizontal: 0,
-      outline: 'none',
-      outlineWidth: 0,
-      outlineStyle: undefined,
-      outlineColor: 'transparent',
-      boxShadow: 'none',
+      // Web-specific styles for removing outline
+      ...(Platform.OS === 'web' && {
+        outlineWidth: 0,
+        outlineColor: 'transparent',
+        outline: 'none',
+        boxShadow: 'none',
+      }),
     },
     label: {
       position: 'absolute',

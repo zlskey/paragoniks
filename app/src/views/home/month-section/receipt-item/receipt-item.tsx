@@ -57,7 +57,7 @@ function ReceiptItem({ receipt }: ReceiptItemProps) {
   const createdAtText = useMemo(() => getLocaleDate(createdAt), [createdAt])
   const sumText = useMemo(() => getLocaleCurrency(sum), [sum])
   const ownerProfile = useMemo(
-    () => profiles.find(profile => profile._id === receipt.owner),
+    () => profiles.find((profile: any) => profile._id === receipt.owner),
     [profiles, receipt.owner],
   )
   const isOwner = useMemo(

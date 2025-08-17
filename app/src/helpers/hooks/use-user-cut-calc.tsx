@@ -10,7 +10,7 @@ function useUserCutCalc(product: Product, userId: UserId) {
     switch (divisionType) {
       case 'shares': {
         const noOfShares = Object.values(division).reduce(
-          (sharesAcc, share) => (sharesAcc || 0) + (share || 0),
+          (sharesAcc: number, share: any) => (sharesAcc || 0) + (share || 0),
           0,
         ) as number
 

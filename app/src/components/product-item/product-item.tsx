@@ -110,7 +110,7 @@ function ProductItemConnected({ product }: ProductItemConnectedProps) {
 
   const contributingUsers = useMemo(
     () =>
-      Object.entries(product.division).flatMap(([userId, amount]) =>
+      Object.entries(product.division).flatMap(([userId, amount]: [string, any]) =>
         amount ? userId : [],
       ),
     [product.division, user._id],

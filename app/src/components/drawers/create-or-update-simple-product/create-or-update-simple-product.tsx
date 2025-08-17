@@ -36,7 +36,7 @@ function CreateOrUpdateSimpleProduct({ drawerRef, productData, onSubmit, onClose
   const pricingError = Object
     .entries(newProductForm.formState.errors)
     .reduce(
-      (acc, [fieldName, error]) => fieldName !== 'name' && error.message ? error.message : acc,
+      (acc: string, [fieldName, error]) => fieldName !== 'name' && error?.message ? error.message : acc,
       '',
     )
 

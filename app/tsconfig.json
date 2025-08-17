@@ -2,7 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "lib": ["dom", "dom.iterable", "es6"],
+    "lib": ["dom", "dom.iterable", "es6", "es2016", "es2017", "es2019"],
     "baseUrl": ".",
     "paths": {
       "@mockups/*": ["src/mockups/*"],

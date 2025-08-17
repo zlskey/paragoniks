@@ -40,7 +40,7 @@ export const productSchema = yup.object({
     .test(
       'division-values',
       'Wartości podziału muszą być nieujemnymi liczbami',
-      obj => Object.values(obj).every(value => value === null || (typeof value === 'number' && value >= 0)),
+      obj => Object.values(obj).every((value: any) => value === null || (typeof value === 'number' && value >= 0)),
     ),
   divisionType: yup
     .mixed<keyof typeof DivisionTranslationEnum>()
@@ -114,7 +114,7 @@ export const receiptSchema = yup.object({
     .test(
       'contributor-values',
       'Nie da się zrzucić na minusie',
-      obj => Object.values(obj).every(value => typeof value === 'number' && value >= 0),
+      obj => Object.values(obj).every((value: any) => typeof value === 'number' && value >= 0),
     ),
   imagePath: yup
     .string()

@@ -31,7 +31,7 @@ export function getValidDivision(maybeDivision: any): Division {
   }
 
   return Object.fromEntries(
-    Object.entries(maybeDivision).map(([key, value]) => {
+    Object.entries(maybeDivision).map(([key, value]: [string, any]) => {
       return [key, getValueOrNull(value)]
     }),
   )
@@ -71,7 +71,7 @@ export function getEvenDivision({
     mockDivision[userToToggle] = isNull(userToToggleDivision) ? 1 : null
   }
 
-  const total = Object.values(mockDivision).filter(el => !isNull(el)).length
+  const total = Object.values(mockDivision).filter((el: any) => !isNull(el)).length
   const users = Object.keys(mockDivision)
 
   switch (divisionType) {
@@ -84,7 +84,7 @@ export function getEvenDivision({
     case 'percentage': {
       const evenDivision = splitNumberEqually(numberToSplit, total)
       return Object.fromEntries(
-        users.map((user) => {
+        users.map((user: string) => {
           if (isNull(mockDivision[user])) {
             return [user, null]
           }
@@ -104,8 +104,8 @@ export function getEvenDivision({
 
 function getNonNullUsersIds(division: Division) {
   return Object.entries(division)
-    .filter(([_, val]) => !isNull(val))
-    .map(([userId]) => userId)
+    .filter(([_, val]: [string, any]) => !isNull(val))
+    .map(([userId]: [string, any]) => userId)
 }
 
 function getIgnoreUsers(divisionUpdateStack: string[], editedId: string) {
@@ -150,7 +150,7 @@ export function getNewDivision({
   const ignoreUsers = getIgnoreUsers(divisionUpdateStack, userId)
   const divisionToUpdate = Object.fromEntries(
     Object.entries(divisionWithNewValue).filter(
-      ([id]) => nonNullUsers.includes(id) && !ignoreUsers.includes(id),
+      ([id]: [string, any]) => nonNullUsers.includes(id) && !ignoreUsers.includes(id),
     ),
   )
 

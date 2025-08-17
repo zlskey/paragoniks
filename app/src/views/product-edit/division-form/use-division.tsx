@@ -74,7 +74,7 @@ function useDivision(product: Product) {
       ])
       const divisionUpdateStackLength = newDivisionUpdateStack.length
       const divisionLength = Object.entries(division).filter(
-        ([_, val]) => val !== null,
+        ([_, val]: [string, any]) => val !== null,
       ).length
 
       const ignoreUpdateStack = divisionUpdateStackLength === divisionLength

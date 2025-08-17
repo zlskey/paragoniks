@@ -40,7 +40,7 @@ function DivisionForm() {
 
       <Paper styles={{ overflow: 'hidden' }}>
         <Flex direction="column" alignContent="stretch">
-          {profiles.map(contributor => (
+          {profiles.map((contributor: any) => (
             <UserItem
               division={division}
               key={contributor._id}
