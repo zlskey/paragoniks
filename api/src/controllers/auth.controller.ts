@@ -10,7 +10,14 @@ import {
   validateAndThrow,
 } from 'src/utils/user-validation-schema'
 
+function parseUsernameFromEmail(email: string) {
+  return email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
 const domain = process.env.MAIN_DOMAIN || 'localhost'
+const GOOGLE_ANDROID_CLIENT_ID = process.env.GOOGLE_ANDROID_CLIENT_ID
+const GOOGLE_IOS_CLIENT_ID = process.env.GOOGLE_IOS_CLIENT_ID
+const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID
 
 const maxAge = 1000 * 60 * 60 * 24 * 3
 
@@ -91,3 +98,40 @@ export const whoami: RequestHandler = async (req, res) => {
 export const logout: RequestHandler = async (req, res) => {
   res.clearCookie('jwt', cookieOptions).status(200).json(emptyUserResponse)
 }
+
+export const loginWithGoogle: RequestHandler = async (req, res) => {
+  const { idToken } = req.body as { idToken?: string }
+
+  if (!idToken) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const { OAuth2Client } = await import('google-auth-library')
+  const client = new OAuth2Client()
+  const audiences = [
+    GOOGLE_ANDROID_CLIENT_ID,
+    GOOGLE_IOS_CLIENT_ID,
+    GOOGLE_WEB_CLIENT_ID,
+  ].filter(Boolean) as string[]
+
+  const ticket = await client.verifyIdToken({ idToken, audience: audiences })
+  const payload = ticket.getPayload()
+
+  if (!payload || !payload.sub || !payload.email) {
+    throw new ErrorObject('Invalid Google token', 401)
+  }
+
+  const username = parseUsernameFromEmail(payload.email)
+
+  const user = await userService.findOrCreateGoogleAccount({
+    username,
+    email: payload.email,
+    googleId: payload.sub,
+    avatarImage: payload.picture ?? '',
+  })
+
+  const token = jwtUtils.createToken(user._id, maxAge)
+  res.cookie('jwt', token, cookieOptions).json({ user: user.removePassword(), token })
+}
+
+//

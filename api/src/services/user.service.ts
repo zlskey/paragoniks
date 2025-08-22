@@ -28,10 +28,42 @@ export async function create(
   }
 }
 
+export async function findOrCreateGoogleAccount(payload: Partial<IUser> & { username: string }): Promise<IUser> {
+  const { username, email, googleId, avatarImage } = payload
+  const foundAccount = await User.findOne({ googleId })
+
+  if (foundAccount) {
+    return await getById(foundAccount._id)
+  }
+
+  if (await checkIfEmailIsTaken(email)) {
+    throw new ErrorObject(constants.email_duplicate, 400)
+  }
+
+  const availableUsername = await generateAvailableUsername(username)
+
+  const created = await User.create({ username: availableUsername, email, googleId, avatarImage })
+  return created.removePassword()
+}
+
+export async function checkIfEmailIsTaken(email: string): Promise<boolean> {
+  const user = await User.exists({ email: { $eq: email } })
+  return !!user
+}
+
 export async function checkIfUsernameIsTaken(username: string): Promise<boolean> {
   const user = await User.exists({ username: { $eq: username } })
-  console.log(user, username)
   return !!user
+}
+
+export async function generateAvailableUsername(username: string, increment: number = 1): Promise<string> {
+  const newUsername = `${username}${increment === 1 ? '' : increment}`
+
+  if (await checkIfUsernameIsTaken(newUsername)) {
+    return generateAvailableUsername(username, increment + 1)
+  }
+
+  return newUsername
 }
 
 export async function getByUsername(username: IUser['username']): Promise<IUser> {

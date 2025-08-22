@@ -14,7 +14,7 @@ resource "google_service_account_key" "main_paragoniarz_key" {
 }
 
 resource "google_secret_manager_secret_version" "main_paragoniarz_key" {
-  depends_on = [google_project_service.secrets]
-  secret = google_secret_manager_secret.gcp_main_paragoniarz_key.id
+  depends_on  = [google_project_service.secrets]
+  secret      = google_secret_manager_secret.gcp_main_paragoniarz_key.id
   secret_data = base64decode(google_service_account_key.main_paragoniarz_key.private_key)
 }

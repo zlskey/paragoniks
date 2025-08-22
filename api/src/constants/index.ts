@@ -5,6 +5,7 @@ const constants = {
   invalid_username: 'Nie znaleziono konta z taką nazwą',
   missing_args: 'Niewystarczające dane',
   username_duplicate: 'Użytkownik o takiej nazwie już istnieje',
+  email_duplicate: 'Konto z takim adresem email już istnieje',
 }
 
 export default constants

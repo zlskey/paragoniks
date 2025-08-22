@@ -15,9 +15,11 @@ import NoPcSupport from '@views/no-pc-support'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
 import { useEffect, useMemo, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { MD3DarkTheme, Provider as PaperProvider } from 'react-native-paper'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
 import { userMockup } from 'src/mockups/user'
 import 'react-native-reanimated'
@@ -28,6 +30,12 @@ const queryClient = new QueryClient()
 
 const darkTheme = {
   ...MD3DarkTheme,
+  fonts: {
+    ...MD3DarkTheme.fonts,
+    regular: {
+      fontFamily: 'Poppins-Regular',
+    },
+  },
   colors: {
     ...MD3DarkTheme.colors,
     background: '#0F0F0F',
@@ -37,7 +45,7 @@ const darkTheme = {
     error: '#bf360c',
     surface: '#191919',
     surfaceVariant: '#2c2c2c',
-    onSurfaceVariant: '#b3b3b3', // placeholder color
+    onSurfaceVariant: '#b3b3b3',
   },
 }
 
@@ -133,14 +141,17 @@ function RootLayout() {
 
 export default function App() {
   return (
-    <GestureHandlerRootView>
-      <BottomSheetModalProvider>
-        <QueryClientProvider client={queryClient}>
-          <NotificationWrapper>
-            <RootLayout />
-          </NotificationWrapper>
-        </QueryClientProvider>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <StatusBar style="light" backgroundColor="#0F0F0F" />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <QueryClientProvider client={queryClient}>
+            <NotificationWrapper>
+              <RootLayout />
+            </NotificationWrapper>
+          </QueryClientProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   )
 }

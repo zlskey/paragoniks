@@ -131,6 +131,34 @@ resource "google_cloud_run_service" "api" {
             }
           }
         }
+        # Social auth envs from secrets
+        env {
+          name = "GOOGLE_WEB_CLIENT_ID"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.google_web_client_id.secret_id
+              key  = "latest"
+            }
+          }
+        }
+        env {
+          name = "GOOGLE_ANDROID_CLIENT_ID"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.google_android_client_id.secret_id
+              key  = "latest"
+            }
+          }
+        }
+        env {
+          name = "GOOGLE_IOS_CLIENT_ID"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.google_ios_client_id.secret_id
+              key  = "latest"
+            }
+          }
+        }
       }
     }
   }

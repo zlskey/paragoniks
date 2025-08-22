@@ -12,7 +12,7 @@ interface TypographyProps extends TextProps, PropsWithChildren {
   styles?: StyleProp<TextStyle>
 }
 
-function getTypographyStyle({ variant, opacity, colors }: TypographyProps & { colors: any }) {
+export function getTypographyStyle({ variant, opacity, colors }: TypographyProps & { colors: any }) {
   const getFontSize = () => {
     switch (variant) {
       case 'display':
@@ -33,9 +33,9 @@ function getTypographyStyle({ variant, opacity, colors }: TypographyProps & { co
 
   return {
     fontFamily: 'Poppins-Medium',
-    color: colors.onBackground,
-    fontSize: getFontSize(),
+    color: colors.onBackground, // Use theme's white color
     opacity: opacity ? 0.5 : 1,
+    fontSize: getFontSize(),
   }
 }
 

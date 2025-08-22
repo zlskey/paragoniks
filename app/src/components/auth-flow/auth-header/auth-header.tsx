@@ -7,6 +7,7 @@ import { useTheme } from 'react-native-paper'
 
 function AuthHeader() {
   const { colors } = useTheme()
+
   function onCancelPress() {
     router.replace('/a')
   }
@@ -23,7 +24,7 @@ function AuthHeader() {
       <SmallButton
         mode="text"
         onPress={onCancelPress}
-        style={{ position: 'absolute', left: getPx(2), zIndex: 1 }}
+        style={{ position: 'absolute', left: getPx(2) }}
       >
         Anuluj
       </SmallButton>

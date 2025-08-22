@@ -5,7 +5,7 @@ terraform {
       version = "~> 5.0"
     }
   }
-  
+
   backend "gcs" {
     # You'll need to create this bucket manually or use a different backend
     bucket = "paragoniks-terraform-state"
@@ -19,18 +19,18 @@ provider "google" {
 }
 
 resource "google_project_service" "secret_manager" {
-  service = "secretmanager.googleapis.com"
+  service            = "secretmanager.googleapis.com"
   disable_on_destroy = false
 }
 
 module "gcp" {
-  source = "./modules"
-  project_id = var.project_id
-  git_hash = var.git_hash
-  node_env = "production"
-  primary_domain = "paragoniks.pl"
-  cors_origin = "https://paragoniks.pl"
-  bucket_name = "paragoniks-images"
+  source                   = "./modules"
+  project_id               = var.project_id
+  git_hash                 = var.git_hash
+  node_env                 = "production"
+  primary_domain           = "paragoniks.pl"
+  cors_origin              = "https://paragoniks.pl"
+  bucket_name              = "paragoniks-images"
 }
 
 variable "project_id" {

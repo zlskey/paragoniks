@@ -9,6 +9,7 @@ import type {
   IsUsernameTakenBody,
   LoginUserBody,
   LoginUserResponse,
+  LoginWithGoogleBody,
   LogoutUserBody,
   SignupUserBody,
   SignupUserResponse,
@@ -32,6 +33,13 @@ export async function signupUser(body: SignupUserBody) {
   const rsApi = await getRsApi()
   const response = await rsApi.post<SignupUserResponse>(url, body)
 
+  return response.data
+}
+
+export async function loginWithGoogle(body: LoginWithGoogleBody) {
+  const url = 'auth/login/google'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post<LoginUserResponse>(url, body)
   return response.data
 }
 

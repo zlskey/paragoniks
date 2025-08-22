@@ -9,9 +9,9 @@ resource "google_storage_bucket" "images" {
 
 # Bucket to store Cloud Function source archives
 resource "google_storage_bucket" "functions_source" {
-  name            = "paragoniks-functions-source"
-  location        = "EU"
-  force_destroy   = true
+  name          = "paragoniks-functions-source"
+  location      = "EU"
+  force_destroy = true
 
   uniform_bucket_level_access = true
 

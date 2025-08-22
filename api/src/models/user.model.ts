@@ -34,7 +34,10 @@ export interface IUser {
   _id: UserId
 
   username: string
-  password: string
+  password?: string
+
+  email?: string
+  googleId?: string
 
   theme: 'light' | 'dark'
 
@@ -67,6 +70,17 @@ const userSchema = new mongoose.Schema<IUser>({
   },
   password: {
     type: String,
+  },
+  email: {
+    type: String,
+    lowercase: true,
+    index: true,
+    unique: false,
+  },
+  googleId: {
+    type: String,
+    index: true,
+    unique: false,
   },
   theme: {
     type: String,
@@ -101,9 +115,10 @@ const userSchema = new mongoose.Schema<IUser>({
 })
 
 userSchema.pre('save', async function (next) {
-  const salt = await genSalt()
-  this.password = await hash(this.password, salt)
-
+  if (this.isModified('password') && this.password) {
+    const salt = await genSalt()
+    this.password = await hash(this.password, salt)
+  }
   next()
 })
 

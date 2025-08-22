@@ -8,6 +8,7 @@ const router = Router()
 router.get('/is-username-taken', wrapAsync(authController.handleCheckIfUsernameIsTaken))
 router.post('/signup', wrapAsync(authController.signup))
 router.post('/login', wrapAsync(authController.login))
+router.post('/login/google', wrapAsync(authController.loginWithGoogle))
 router.get('/logout', authMiddleware, wrapAsync(authController.logout))
 
 router.get('/whoami', wrapAsync(authController.whoami))

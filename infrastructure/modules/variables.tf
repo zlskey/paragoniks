@@ -35,3 +35,24 @@ variable "bucket_name" {
   type        = string
   default     = "paragoniks-images"
 }
+
+variable "google_web_client_id" {
+  description = "Google OAuth Web Client ID"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "google_android_client_id" {
+  description = "Google OAuth Android Client ID"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "google_ios_client_id" {
+  description = "Google OAuth iOS Client ID"
+  type        = string
+  default     = ""
+  sensitive   = true
+}

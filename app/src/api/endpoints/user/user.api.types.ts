@@ -62,3 +62,7 @@ export interface UpdateUserMetaBody {
 }
 
 export interface GetUserFriendsOrAnonimsBody {}
+
+export interface LoginWithGoogleBody {
+  idToken: string
+}

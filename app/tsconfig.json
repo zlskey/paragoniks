@@ -12,7 +12,8 @@
       "@styles/*": ["styles"],
       "@api/*": ["src/api/*"],
       "@helpers/*": ["src/helpers/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@hooks/*": ["src/hooks/*"]
     },
     "types": ["react"],
     "strict": true,

@@ -56,6 +56,30 @@ resource "google_secret_manager_secret" "gcp_main_paragoniarz_key" {
   }
 }
 
+resource "google_secret_manager_secret" "google_web_client_id" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "google_web_client_id"
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret" "google_android_client_id" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "google_android_client_id"
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret" "google_ios_client_id" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "google_ios_client_id"
+  replication {
+    auto {}
+  }
+}
+
 resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_mongo" {
   member = "serviceAccount:${google_service_account.cloudrun.email}"
   role = "roles/secretmanager.secretAccessor"
@@ -90,4 +114,22 @@ resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_
   member = "serviceAccount:${google_service_account.cloudrun.email}"
   role = "roles/secretmanager.secretAccessor"
   secret_id = google_secret_manager_secret.gcp_main_paragoniarz_key.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_google_web_client_id" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.google_web_client_id.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_google_android_client_id" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.google_android_client_id.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_google_ios_client_id" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.google_ios_client_id.id
 }
