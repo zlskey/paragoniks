@@ -1,5 +1,5 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
-import type { SimpleProduct } from '@paragoniks/shared'
+import type { BaseProduct } from '@types'
 import type {
   CreateOrUpdateSimpleProductFormState,
 } from './create-or-update-simple-product-form'
@@ -20,8 +20,8 @@ import {
 
 interface CreateOrUpdateSimpleProductProps {
   drawerRef: React.RefObject<BottomSheetModal>
-  onSubmit: (data: SimpleProduct) => void
-  productData: SimpleProduct | null
+  onSubmit: (data: BaseProduct) => void
+  productData: BaseProduct | null
   onClose: () => void
 }
 

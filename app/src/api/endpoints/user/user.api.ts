@@ -1,4 +1,4 @@
-import type { Profile, User } from '@paragoniks/shared'
+import type { Profile, User } from '@types'
 import type {
   ChangeAvatarColorBody,
   ChangeAvatarImageBody,

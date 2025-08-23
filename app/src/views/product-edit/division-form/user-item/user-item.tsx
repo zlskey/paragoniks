@@ -1,4 +1,4 @@
-import type { Division, DivisionType, Profile } from '@paragoniks/shared'
+import type { Division, DivisionType, Profile } from '@types'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'

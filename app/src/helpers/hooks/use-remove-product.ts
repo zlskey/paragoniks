@@ -1,4 +1,4 @@
-import type { ProductId } from '@paragoniks/shared'
+import type { ProductId } from '@types'
 import { removeProduct } from '@api/endpoints/receipt/receipt.api'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'

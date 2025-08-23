@@ -1,4 +1,4 @@
-import type { Anonim } from '@paragoniks/shared'
+import type { Anonim } from '@types'
 import type { CreateAnonimBody, RemoveAnonimBody } from './anonim.api.types'
 import { getRsApi } from '@api/rs.api'
 

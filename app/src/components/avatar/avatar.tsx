@@ -1,7 +1,7 @@
-import type { Profile } from '@paragoniks/shared'
+import type { Profile } from '@types'
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import Typography from '@components/typography'
-import { AvatarColor } from '@paragoniks/shared'
+import { AvatarColorEnum } from '@types'
 import { Image } from 'expo-image'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
@@ -61,7 +61,7 @@ interface AvatarProps {
 function Avatar({
   size = 'md',
   profile = {
-    avatarColor: AvatarColor.Default,
+    avatarColor: AvatarColorEnum.Default,
     avatarImage: '',
     username: '',
   },
@@ -70,7 +70,7 @@ function Avatar({
   const styles = getStyles(size, colors)
 
   const backgroundColor
-    = profile.avatarColor === AvatarColor.Default
+    = profile.avatarColor === AvatarColorEnum.Default
       ? '#546e7a'
       : profile.avatarColor
 

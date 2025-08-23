@@ -2,14 +2,19 @@
   "name": "@paragoniks/shared",
   "version": "1.0.0",
   "description": "Shared types and utilities for Paragoniks frontend and backend",
-  "main": "types/index.ts",
+  "main": "dist/index.js",
+  "module": "types/index.ts",
   "types": "types/index.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "docker:build": "tsc --outDir ./dist"
   },
-  "keywords": ["types", "shared", "paragoniks"],
+  "keywords": [
+    "types",
+    "shared",
+    "paragoniks"
+  ],
   "author": "Paragoniks Team",
   "license": "MIT",
   "devDependencies": {
@@ -18,5 +23,9 @@
   "files": [
     "types/**/*",
     "dist/**/*"
-  ]
+  ],
+  "dependencies": {
+    "zod": "^4.1.0"
+  },
+  "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
 }

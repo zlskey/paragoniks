@@ -1,4 +1,4 @@
-import type { Product, Receipt } from '@paragoniks/shared'
+import type { Product, Receipt } from '@types'
 import type { PropsWithChildren } from 'react'
 import { createContext, useContext } from 'react'
 

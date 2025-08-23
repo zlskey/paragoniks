@@ -1,4 +1,4 @@
-import type { SimpleProduct } from '@paragoniks/shared'
+import type { BaseProduct } from '@types'
 import type { CreateReceiptFormState } from '@views/create-receipt/create-receipt-form'
 import { getPx } from '@app/styles'
 import { useDrawerFunctions } from '@components/drawer'
@@ -38,7 +38,7 @@ function ManualAddProductList() {
     drawerRef.current?.present()
   }
 
-  function handleOnCreateOrUpdateProduct(data: SimpleProduct) {
+  function handleOnCreateOrUpdateProduct(data: BaseProduct) {
     if (productFormEntityIndex === null) {
       formContext.setValue('products', [...products, data])
     }

@@ -1,17 +1,17 @@
 import type {
+  BaseProduct,
   ImageBase64,
   Product,
   ProductId,
   ReceiptId,
-  SimpleProduct,
   UserId,
-} from '@paragoniks/shared'
+} from '@types'
 
 export interface GetUserReceiptsBody {}
 
 export interface CreateReceiptBody {
   title: string
-  products: SimpleProduct[]
+  products: BaseProduct[]
   contributors: Record<string, number>
   image: ImageBase64 | null
   shouldGenerateProducts: boolean

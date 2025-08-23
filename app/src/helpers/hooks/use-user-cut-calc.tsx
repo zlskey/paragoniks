@@ -1,4 +1,4 @@
-import type { Product, UserId } from '@paragoniks/shared'
+import type { Product, UserId } from '@types'
 import { getLocaleCurrency } from '@helpers/utils'
 import { useMemo } from 'react'
 

@@ -1,68 +1,28 @@
-import type { UserId } from 'src/types/backend.types'
+import type { AvatarColor, Profile, User, UserMeta } from 'src/types'
 import { compare, genSalt, hash } from 'bcryptjs'
 import _ from 'lodash'
 import mongoose from 'mongoose'
 import constants from 'src/constants'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { userService } from 'src/services'
+import { Lang } from 'src/types'
 
-export type AvatarColor =
-  | 'red'
-  | 'blue'
-  | 'green'
-  | 'yellow'
-  | 'pink'
-  | 'purple'
-  | 'orange'
-  | 'default'
-
-export type IProfile = Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'>
-
-export enum Lang {
-  EN = 'en',
-  PL = 'pl',
-  AUTO = 'auto',
+export interface IUserModel extends User {
+  removePassword: () => Omit<IUserModel, 'password'>
+  validatePassword: (this: IUserModel, password: string) => Promise<void>
+  changePassword: (this: IUserModel, password: string) => Promise<void>
+  changeUsername: (this: IUserModel, username: string) => Promise<IUserModel>
+  toggleTheme: (this: IUserModel) => Promise<IUserModel>
+  changeAvatarColor: (this: IUserModel, color: AvatarColor) => Promise<IUserModel>
+  changeAvatarImage: (this: IUserModel, image: string) => Promise<IUserModel>
+  pickProfile: (this: IUserModel) => Profile
+  setLang: (this: IUserModel, lang: string) => Promise<IUserModel>
+  updateMeta: (this: IUserModel, meta: UserMeta) => Promise<IUserModel>
+  incrementScanCount: (this: IUserModel) => Promise<IUserModel>
+  incrementReceiptCount: (this: IUserModel) => Promise<IUserModel>
 }
 
-export interface UserMeta {
-  media_quality_warning_accepted: boolean
-  noOfScans: number
-  noOfReceipts: number
-}
-
-export interface IUser {
-  _id: UserId
-
-  username: string
-  password?: string
-
-  email?: string
-  googleId?: string
-
-  theme: 'light' | 'dark'
-
-  avatarImage: string
-  avatarColor: AvatarColor
-
-  lang: Lang
-
-  meta: UserMeta
-
-  removePassword: () => Omit<IUser, 'password'>
-  validatePassword: (this: IUser, password: string) => Promise<void>
-  changePassword: (this: IUser, password: string) => Promise<void>
-  changeUsername: (this: IUser, username: string) => Promise<IUser>
-  toggleTheme: (this: IUser) => Promise<IUser>
-  changeAvatarColor: (this: IUser, color: AvatarColor) => Promise<IUser>
-  changeAvatarImage: (this: IUser, image: string) => Promise<IUser>
-  pickProfile: (this: IUser) => IProfile
-  setLang: (this: IUser, lang: string) => Promise<IUser>
-  updateMeta: (this: IUser, meta: UserMeta) => Promise<IUser>
-  incrementScanCount: (this: IUser) => Promise<IUser>
-  incrementReceiptCount: (this: IUser) => Promise<IUser>
-}
-
-const userSchema = new mongoose.Schema<IUser>({
+const userSchema = new mongoose.Schema<IUserModel>({
   username: {
     type: String,
     required: true,
@@ -123,7 +83,7 @@ userSchema.pre('save', async function (next) {
 })
 
 class UserClass {
-  async validatePassword(this: IUser, password: string): Promise<void> {
+  async validatePassword(this: IUserModel, password: string): Promise<void> {
     const isValid = await compare(password, this.password)
 
     if (isValid)
@@ -133,21 +93,21 @@ class UserClass {
   }
 
   async changePassword(
-    this: IUser,
-    password: IUser['password'],
+    this: IUserModel,
+    password: IUserModel['password'],
   ): Promise<void> {
     const salt = await genSalt()
     const newPassword = (password = await hash(password, salt))
 
-    await User.findByIdAndUpdate(this._id, { password: newPassword })
+    await UserModel.findByIdAndUpdate(this._id, { password: newPassword })
   }
 
-  async changeUsername(this: IUser, username: string): Promise<IUser> {
+  async changeUsername(this: IUserModel, username: string): Promise<IUserModel> {
     if (this.username === username) {
       throw new ErrorObject(constants.username_duplicate) // @todo
     }
 
-    const isOccupied = await User.findOne({ username })
+    const isOccupied = await UserModel.findOne({ username })
 
     if (isOccupied) {
       throw new ErrorObject(constants.username_duplicate)
@@ -156,29 +116,29 @@ class UserClass {
     return userService.update(this._id, { username })
   }
 
-  removePassword(this: IUser): Omit<IUser, 'password'> {
+  removePassword(this: IUserModel): Omit<IUserModel, 'password'> {
     return _.omit(this, 'password')
   }
 
-  toggleTheme(this: IUser): Promise<IUser> {
+  toggleTheme(this: IUserModel): Promise<IUserModel> {
     const newTheme = this.theme === 'light' ? 'dark' : 'light'
 
     return userService.update(this._id, { theme: newTheme })
   }
 
-  changeAvatarColor(this: IUser, color: AvatarColor): Promise<IUser> {
+  changeAvatarColor(this: IUserModel, color: AvatarColor): Promise<IUserModel> {
     return userService.update(this._id, { avatarColor: color })
   }
 
-  changeAvatarImage(this: IUser, image: string): Promise<IUser> {
+  changeAvatarImage(this: IUserModel, image: string): Promise<IUserModel> {
     return userService.update(this._id, { avatarImage: image })
   }
 
-  pickProfile(this: IUser): IProfile {
+  pickProfile(this: IUserModel): Profile {
     return _.pick(this, ['_id', 'username', 'avatarImage', 'avatarColor'])
   }
 
-  setLang(this: IUser, lang: Lang): Promise<IUser> {
+  setLang(this: IUserModel, lang: Lang): Promise<IUserModel> {
     if (lang in Lang) {
       throw new ErrorObject('Unsupported language')
     }
@@ -186,18 +146,18 @@ class UserClass {
     return userService.update(this._id, { lang })
   }
 
-  updateMeta(this: IUser, meta: UserMeta) {
+  updateMeta(this: IUserModel, meta: UserMeta) {
     const currentMeta = this.meta ?? {}
     return userService.update(this._id, { meta: { ...currentMeta, ...meta } })
   }
 
-  incrementScanCount(this: IUser) {
+  incrementScanCount(this: IUserModel) {
     const currentMeta = this.meta
     const noOfScans = (currentMeta.noOfScans ?? 0) + 1
     return userService.update(this._id, { meta: { ...currentMeta, noOfScans } })
   }
 
-  incrementReceiptCount(this: IUser) {
+  incrementReceiptCount(this: IUserModel) {
     const currentMeta = this.meta
     const noOfReceipts = (currentMeta.noOfReceipts ?? 0) + 1
     return userService.update(this._id, { meta: { ...currentMeta, noOfReceipts } })
@@ -206,6 +166,6 @@ class UserClass {
 
 userSchema.loadClass(UserClass)
 
-const User = mongoose.model<IUser>('Users', userSchema)
+const UserModel = mongoose.model<IUserModel>('Users', userSchema)
 
-export default User
+export default UserModel

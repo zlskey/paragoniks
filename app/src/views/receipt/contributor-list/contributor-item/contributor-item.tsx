@@ -1,4 +1,4 @@
-import type { Profile } from '@paragoniks/shared'
+import type { Profile } from '@types'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'

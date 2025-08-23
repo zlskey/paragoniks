@@ -1,4 +1,4 @@
-import type { Product } from '@paragoniks/shared'
+import type { Product } from '@types'
 import type { TextInputProps } from 'react-native'
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
 import Typography from '@components/typography'

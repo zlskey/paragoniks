@@ -1,16 +1,17 @@
-export interface SimpleProduct {
+import { Division, DivisionType } from "./division.types"
+
+export interface Product {
+  _id: unknown
+  division: Division
+  divisionType: DivisionType
   name: string
   price: number
   count: number
   discount: number
-}
-
-export interface Product extends SimpleProduct {
-  _id: string
-  division: Record<string, number | null>
-  divisionType: string
   totalPrice: number
 }
+
+export type BaseProduct = Pick<Product, 'name' | 'price' | 'count' | 'discount'>
 
 export function isProduct(obj: any): obj is Product {
   return (
@@ -22,5 +23,3 @@ export function isProduct(obj: any): obj is Product {
     && 'divisionType' in obj
   )
 }
-
-export type ProductId = string

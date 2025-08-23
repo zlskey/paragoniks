@@ -1,4 +1,4 @@
-import type { Receipt } from '@paragoniks/shared'
+import type { Receipt } from '@types'
 import Button from '@components/button'
 import TextField from '@components/text-field'
 import Wrapper from '@components/wrapper'

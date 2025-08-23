@@ -1,9 +1,11 @@
-import type { User } from '@paragoniks/shared'
-import { AvatarColor } from '@paragoniks/shared'
+import type { User } from '@types'
+import { AvatarColorEnum, Lang } from '@types'
 
 export const userMockup: User = {
   _id: 'some_id',
   username: 'some_username',
-  avatarColor: AvatarColor.Default,
+  avatarColor: AvatarColorEnum.Default,
   avatarImage: '',
+  lang: Lang.PL,
+  theme: 'dark',
 }

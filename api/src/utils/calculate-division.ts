@@ -1,10 +1,10 @@
-import type { IProduct } from 'src/models/receipt.model'
+import type { Product } from 'src/types'
 
 function roundToTwoDecimals(num: number) {
   return Math.round((num + Number.EPSILON) * 100) / 100
 }
 
-function calculateDivision(product: IProduct) {
+function calculateDivision(product: Product) {
   const fullPrice = product.price * product.count - product.discount
   const { divisionType, division } = product
   const noOfContributors = Object.keys(division).filter(Boolean).length

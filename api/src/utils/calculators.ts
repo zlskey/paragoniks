@@ -1,20 +1,16 @@
-import type {
-  Division,
-  DivisionType,
-  IProduct,
-} from 'src/models/receipt.model'
+import type { Division, DivisionType, Product } from 'src/types'
 
 export function parseFloatWithTwoDecimals(number: number): number {
   return Number.parseFloat(number.toFixed(2))
 }
 
 export function getTotalPrice(
-  product: Pick<IProduct, 'price' | 'count' | 'discount'>,
+  product: Pick<Product, 'price' | 'count' | 'discount'>,
 ) {
   return product.price * product.count - Math.abs(product.discount)
 }
 
-export function getTotalContribution(products: IProduct[], userId: string) {
+export function getTotalContribution(products: Product[], userId: string) {
   return products.reduce((total, product) => {
     const userDivision = product.division[userId]
 
@@ -47,7 +43,7 @@ export function getTotalContribution(products: IProduct[], userId: string) {
 
 export function getCalculatedTotalsForReceipt(
   contributorsIds: string[],
-  products: IProduct[],
+  products: Product[],
 ) {
   const calculatedProducts = products.map((product) => {
     const totalPrice = getTotalPrice(product)

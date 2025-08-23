@@ -1,4 +1,4 @@
-import type { SimpleProduct, UserId } from '@paragoniks/shared'
+import type { BaseProduct, ImageBase64, UserId } from '@types'
 import { productSchema, receiptSchema } from '@helpers/validation-schemes/receipt'
 import * as yup from 'yup'
 
@@ -15,9 +15,9 @@ export const createReceiptFormSchema = receiptSchema
 
 export interface CreateReceiptFormState {
   title: string
-  products: SimpleProduct[]
+  products: BaseProduct[]
   contributors: Record<UserId, number>
-  image: string
+  image: ImageBase64
   shouldGenerateProducts: boolean
 }
 

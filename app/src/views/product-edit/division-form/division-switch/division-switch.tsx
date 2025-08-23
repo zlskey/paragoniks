@@ -1,10 +1,10 @@
-import type { DivisionType } from '@paragoniks/shared'
+import type { DivisionType } from '@types'
 import { useDrawerFunctions } from '@components/drawer'
 import SplitByChoiceDrawer from '@components/drawers/split-by-choice/split-by-choice'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import { EvilIcons } from '@expo/vector-icons'
-import { DivisionTranslationEnum } from '@paragoniks/shared'
+import { DivisionTranslationEnum } from '@types'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from 'react-native-paper'
 

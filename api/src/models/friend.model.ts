@@ -1,13 +1,9 @@
-import type { FriendId } from 'src/types/backend.types'
+import type { Friendship } from 'src/types'
 import mongoose from 'mongoose'
 
-export interface IFriendship {
-  friendId: FriendId
-  secondFriendId: FriendId
-  status: 'accepted' | 'pending'
-}
+export interface IFriendshipModel extends Friendship {}
 
-const friendshipSchema = new mongoose.Schema<IFriendship>({
+const friendshipSchema = new mongoose.Schema<IFriendshipModel>({
   friendId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -22,6 +18,6 @@ const friendshipSchema = new mongoose.Schema<IFriendship>({
   },
 })
 
-const Friendship = mongoose.model<IFriendship>('Friendships', friendshipSchema)
+const FriendshipModel = mongoose.model<IFriendshipModel>('Friendships', friendshipSchema)
 
-export default Friendship
+export default FriendshipModel

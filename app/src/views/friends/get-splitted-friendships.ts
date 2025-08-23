@@ -1,5 +1,5 @@
-import type { Friendship, Profile } from '@paragoniks/shared'
 import type { UseQueryResult } from '@tanstack/react-query'
+import type { Friendship, Profile } from '@types'
 
 export function getSplittedAndFilteredFriendships(profiles: UseQueryResult<Profile, Error>[], friendships: Friendship[], query: string) {
   return profiles.reduce(

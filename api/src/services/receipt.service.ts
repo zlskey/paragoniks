@@ -1,14 +1,9 @@
-import type {
-  IProduct,
-  IReceipt,
-  ISimpleReceipt,
-} from 'src/models/receipt.model'
-import type { ProductId, ReceiptId, UserId } from 'src/types/backend.types'
+import type { IReceiptModel } from 'src/models/receipt.model'
+import type { BaseProduct, Product, ProductId, Receipt, ReceiptId, UserId } from 'src/types'
 import mongoose from 'mongoose'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import Receipt, {
-  ScanningStatus,
-} from 'src/models/receipt.model'
+import ReceiptModel from 'src/models/receipt.model'
+import { ScanningStatus } from 'src/types'
 import {
   getCalculatedTotalsForReceipt,
   getEvenDivision,
@@ -16,7 +11,7 @@ import {
 import { compareIds } from 'src/utils/ids-util'
 
 export async function getAllReceipts(userId: UserId) {
-  const receipts = await Receipt.find({
+  const receipts = await ReceiptModel.find({
     $or: [
       { owner: userId },
       { [`contributors.${userId.toString()}`]: { $exists: true } },
@@ -28,7 +23,7 @@ export async function getAllReceipts(userId: UserId) {
 }
 
 export async function getReceipt(receiptId: ReceiptId) {
-  const receipt = await Receipt.findOne({ _id: receiptId })
+  const receipt = await ReceiptModel.findOne({ _id: receiptId })
 
   if (!receipt) {
     throw new ErrorObject('Paragon nie istnieje', 404)
@@ -41,9 +36,11 @@ export async function getReceipt(receiptId: ReceiptId) {
   return receipt
 }
 
-export async function createReceiptToScan(userId: UserId, receipt: Pick<ISimpleReceipt, 'contributors' | 'imagePath'>) {
+type CreateReceiptToScanBean = Pick<Receipt, 'contributors' | 'imagePath'>
+
+export async function createReceiptToScan(userId: UserId, receipt: CreateReceiptToScanBean) {
   const contributorsIds = Object.keys(receipt.contributors)
-  return await Receipt.create({
+  return await ReceiptModel.create({
     sum: 0,
     title: 'x',
     products: [],
@@ -54,7 +51,12 @@ export async function createReceiptToScan(userId: UserId, receipt: Pick<ISimpleR
   })
 }
 
-export async function fillScannedData(receiptId: ReceiptId, scannedData: Pick<ISimpleReceipt, 'products' | 'title'>) {
+interface FillScannedDataBean {
+  products: BaseProduct[]
+  title: string
+}
+
+export async function fillScannedData(receiptId: ReceiptId, scannedData: FillScannedDataBean) {
   const receipt = await getReceipt(receiptId)
 
   const products = scannedData.products.map(product => ({
@@ -63,7 +65,7 @@ export async function fillScannedData(receiptId: ReceiptId, scannedData: Pick<IS
     discount: Math.abs(product.discount ?? 0),
     divisionType: 'shares',
     division: receipt.contributors,
-  })) as IProduct[]
+  })) as Product[]
 
   const receiptUpdate = {
     scanning: { status: ScanningStatus.DONE },
@@ -71,23 +73,27 @@ export async function fillScannedData(receiptId: ReceiptId, scannedData: Pick<IS
     ...getCalculatedTotalsForReceipt(Object.keys(receipt.contributors), products),
   }
 
-  await Receipt.findByIdAndUpdate(receiptId, receiptUpdate)
+  await ReceiptModel.findByIdAndUpdate(receiptId, receiptUpdate)
 }
 
 export async function handleFailedScanning(receiptId: ReceiptId, message: string) {
-  await Receipt.findByIdAndUpdate(receiptId, {
+  await ReceiptModel.findByIdAndUpdate(receiptId, {
     scanning: { status: ScanningStatus.FAILED, errorMessage: message },
   })
 }
 
-export async function createReceipt(userId: UserId, receipt: Pick<ISimpleReceipt, 'products' | 'title' | 'imagePath' | 'contributors'>) {
+type CreateReceiptBean = Pick<Receipt, 'title' | 'imagePath' | 'contributors'> & {
+  products: BaseProduct[]
+}
+
+export async function createReceipt(userId: UserId, receipt: CreateReceiptBean) {
   const contributorsIds = Object.keys(receipt.contributors)
   const products = receipt.products.map(product => ({
     ...product,
     discount: Math.abs(product.discount ?? 0),
     divisionType: 'shares',
     division: receipt.contributors,
-  })) as IProduct[]
+  })) as Product[]
 
   const receiptObj = {
     owner: userId,
@@ -95,10 +101,10 @@ export async function createReceipt(userId: UserId, receipt: Pick<ISimpleReceipt
     ...getCalculatedTotalsForReceipt(contributorsIds, products),
   }
 
-  return await Receipt.create(receiptObj)
+  return await ReceiptModel.create(receiptObj)
 }
 
-export async function removeReceiptForUser(receipt: IReceipt, userId: UserId) {
+export async function removeReceiptForUser(receipt: IReceiptModel, userId: UserId) {
   const isOwner = compareIds(receipt.owner, userId)
 
   if (!isOwner) {
@@ -106,18 +112,18 @@ export async function removeReceiptForUser(receipt: IReceipt, userId: UserId) {
     return
   }
 
-  await Receipt.findByIdAndUpdate(receipt._id, { isRemoved: true })
+  await ReceiptModel.findByIdAndUpdate(receipt._id, { isRemoved: true })
 }
 
-export async function changeReceiptTitle(receipt: IReceipt, newTitle: string) {
-  return await Receipt.findByIdAndUpdate(
+export async function changeReceiptTitle(receipt: IReceiptModel, newTitle: string) {
+  return await ReceiptModel.findByIdAndUpdate(
     receipt._id,
     { title: newTitle },
     { new: true },
   )
 }
 
-export async function addContributor(receipt: IReceipt, userId: UserId, contributorId: UserId) {
+export async function addContributor(receipt: IReceiptModel, userId: UserId, contributorId: UserId) {
   const { contributors } = receipt
 
   if (!compareIds(receipt.owner, userId)) {
@@ -142,14 +148,14 @@ export async function addContributor(receipt: IReceipt, userId: UserId, contribu
     }
   })
 
-  return await Receipt.findByIdAndUpdate(
+  return await ReceiptModel.findByIdAndUpdate(
     receipt._id,
     { contributors, products: updatedProducts },
     { new: true },
   )
 }
 
-export async function removeContributor(receipt: IReceipt, contributorId: UserId) {
+export async function removeContributor(receipt: IReceiptModel, contributorId: UserId) {
   const contributors = receipt.contributors
   if (compareIds(receipt.owner, contributorId)) {
     throw new ErrorObject('Nie można usunąć właściciela', 400)
@@ -177,7 +183,7 @@ export async function removeContributor(receipt: IReceipt, contributorId: UserId
     }
   })
 
-  return await Receipt.findByIdAndUpdate(
+  return await ReceiptModel.findByIdAndUpdate(
     receipt._id,
     getCalculatedTotalsForReceipt(
       Object.keys(contributors),
@@ -187,7 +193,7 @@ export async function removeContributor(receipt: IReceipt, contributorId: UserId
   )
 }
 
-export async function updateProduct(receipt: IReceipt, productId: ProductId, product: Omit<IProduct, '_id'>) {
+export async function updateProduct(receipt: IReceiptModel, productId: ProductId, product: Omit<Product, '_id'>) {
   const updatedProducts = receipt.products.map((receiptProduct) => {
     if (compareIds(receiptProduct._id, productId)) {
       return {
@@ -199,7 +205,7 @@ export async function updateProduct(receipt: IReceipt, productId: ProductId, pro
     return receiptProduct
   })
 
-  return await Receipt.findByIdAndUpdate(
+  return await ReceiptModel.findByIdAndUpdate(
     receipt._id,
     getCalculatedTotalsForReceipt(
       Object.keys(receipt.contributors),
@@ -209,12 +215,12 @@ export async function updateProduct(receipt: IReceipt, productId: ProductId, pro
   )
 }
 
-export async function removeProduct(receipt: IReceipt, productId: ProductId) {
+export async function removeProduct(receipt: IReceiptModel, productId: ProductId) {
   const updatedProducts = receipt.products.filter(
     product => !compareIds(product._id, productId),
   )
 
-  return await Receipt.findByIdAndUpdate(
+  return await ReceiptModel.findByIdAndUpdate(
     receipt._id,
     { products: updatedProducts },
     { new: true },
@@ -222,7 +228,7 @@ export async function removeProduct(receipt: IReceipt, productId: ProductId) {
 }
 
 export async function removeUserFromAllReceipts(userToBeRemoved: UserId, ownerOfReceipts: UserId) {
-  const receipts = await Receipt.find({
+  const receipts = await ReceiptModel.find({
     [`contributors.${userToBeRemoved}`]: { $exists: true },
     owner: ownerOfReceipts,
   })

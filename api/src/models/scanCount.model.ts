@@ -1,19 +1,14 @@
-import type { UserId } from 'src/types/backend.types'
+import type { ScanCount } from 'src/types'
 import mongoose from 'mongoose'
 import config from 'src/config'
 
-export interface IScanCount {
-  _id: mongoose.Types.ObjectId
-  count: number
-  userId: UserId
-  createdAt: string
-  updatedAt: string
+export interface IScanCountModel extends ScanCount {
   getExpirationDate: () => Date
-  incrementCount: () => Promise<IScanCount>
+  incrementCount: () => Promise<ScanCount>
   isExpired: () => boolean
 }
 
-const scanCountSchema = new mongoose.Schema<IScanCount>(
+const scanCountSchema = new mongoose.Schema<IScanCountModel>(
   {
     count: {
       type: Number,
@@ -30,19 +25,19 @@ const scanCountSchema = new mongoose.Schema<IScanCount>(
 )
 
 class ScanCountClass {
-  getExpirationDate(this: IScanCount) {
+  getExpirationDate(this: IScanCountModel) {
     const createdAt = new Date(this.createdAt)
     const expirationDate = new Date(createdAt.getTime() + config.SCAN_COUNT_EXPIRATION_TIME)
     return expirationDate
   }
 
-  isExpired(this: IScanCount) {
+  isExpired(this: IScanCountModel) {
     const now = new Date()
     const expirationDate = this.getExpirationDate()
     return now > expirationDate
   }
 
-  async incrementCount(this: mongoose.Document & IScanCount) {
+  async incrementCount(this: mongoose.Document & IScanCountModel) {
     this.count++
     await this.save()
     return this
@@ -51,6 +46,6 @@ class ScanCountClass {
 
 scanCountSchema.loadClass(ScanCountClass)
 
-const ScanCount = mongoose.model<IScanCount>('ScanCounts', scanCountSchema)
+const ScanCountModel = mongoose.model<IScanCountModel>('ScanCounts', scanCountSchema)
 
-export default ScanCount
+export default ScanCountModel

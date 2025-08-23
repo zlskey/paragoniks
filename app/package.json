@@ -11,7 +11,8 @@
     "test": "jest --watchAll",
     "lint": "eslint",
     "lint:fix": "eslint --fix --ext .ts,.tsx",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:shared": "cd ../shared && pnpm i && pnpm build"
   },
   "jest": {
     "preset": "jest-expo"

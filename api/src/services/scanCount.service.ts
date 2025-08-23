@@ -1,4 +1,4 @@
-import type { UserId } from 'src/types/backend.types'
+import type { UserId } from 'src/types'
 import ScanCount from 'src/models/scanCount.model'
 
 export async function getOrCreateScanCount(userId: UserId) {

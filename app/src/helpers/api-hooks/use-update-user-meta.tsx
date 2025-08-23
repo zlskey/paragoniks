@@ -1,4 +1,4 @@
-import type { UserMeta } from '@paragoniks/shared'
+import type { UserMeta } from '@types'
 import { updateUserMeta } from '@api/endpoints/user/user.api'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'

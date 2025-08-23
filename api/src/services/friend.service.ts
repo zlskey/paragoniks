@@ -1,6 +1,5 @@
-import type { FriendId, UserId } from 'src/types/backend.types'
+import type { FriendId, UserId } from 'src/types'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-
 import Friendship from 'src/models/friend.model'
 import { compareIds } from 'src/utils/ids-util'
 import { receiptService, userService } from '.'

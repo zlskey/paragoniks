@@ -1,5 +1,5 @@
 import type { UseDrawerFunctionsRef } from '@components/drawer/drawer'
-import type { Profile } from '@paragoniks/shared'
+import type { Profile } from '@types'
 import { getPx } from '@app/styles'
 import Avatar from '@components/avatar'
 import Drawer from '@components/drawer/drawer'

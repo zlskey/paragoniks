@@ -4,6 +4,8 @@
 
 A modern, collaborative shopping list application that makes it simple to create, share, and manage shopping lists with friends and family. Split expenses, track purchases, and never forget what you need to buy again!
 
+Try it! [paragoniks.pl](https://paragoniks.pl)
+
 ## ✨ Features
 
 - 💰 **Split Expenses**: Automatically calculate and split costs between participants

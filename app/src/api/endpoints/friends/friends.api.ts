@@ -1,4 +1,4 @@
-import type { Friendship } from '@paragoniks/shared'
+import type { Friendship } from '@types'
 import type {
   GetAllFriendshipsBody,
   RemoveFriendBody,

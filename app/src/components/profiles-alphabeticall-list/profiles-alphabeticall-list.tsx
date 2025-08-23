@@ -1,4 +1,4 @@
-import type { User } from '@paragoniks/shared'
+import type { Profile } from '@types'
 import type { SectionListProps } from 'react-native'
 import { getPx } from '@app/styles'
 import Typography from '@components/typography'
@@ -25,14 +25,14 @@ export function SectionHeader({ title, backgroundColor }: SectionHeaderProps) {
   )
 }
 
-interface ProfilesAlphabeticallListProps<T extends User>
+interface ProfilesAlphabeticallListProps<T extends Profile>
   extends Omit<SectionListProps<T>, 'sections'> {
   profiles: T[]
   ProfileItem: React.ComponentType<{ profile: T }>
   sectionHeaderBackgroundColor?: string
 }
 
-function ProfilesAlphabeticallList<T extends User>({
+function ProfilesAlphabeticallList<T extends Profile>({
   profiles,
   ProfileItem,
   sectionHeaderBackgroundColor,

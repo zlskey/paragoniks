@@ -1,4 +1,4 @@
-import type { UserId } from '@paragoniks/shared'
+import type { UserId } from '@types'
 import { useQueries } from '@tanstack/react-query'
 import { getProfile } from 'src/api/endpoints/profiles/profiles.api'
 

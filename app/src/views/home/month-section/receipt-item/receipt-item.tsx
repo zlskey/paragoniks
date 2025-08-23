@@ -1,4 +1,4 @@
-import type { Receipt } from '@paragoniks/shared'
+import type { Receipt } from '@types'
 import Avatar from '@components/avatar'
 import AvatarGroup from '@components/avatar-group'
 import Flex from '@components/flex'

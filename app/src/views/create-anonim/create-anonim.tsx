@@ -8,18 +8,18 @@ import UsernameTextField from '@components/username-text-field'
 import Wrapper from '@components/wrapper'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
-import { AvatarColor } from '@paragoniks/shared'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { AvatarColorEnum } from '@types'
 import { router } from 'expo-router'
 import { FormProvider, useForm } from 'react-hook-form'
 import { StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const colors = Object.values(AvatarColor) as ValueOf<typeof AvatarColor>[]
+const colors = Object.values(AvatarColorEnum) as ValueOf<typeof AvatarColorEnum>[]
 
 const defaultValues = {
   username: '',
-  avatarColor: AvatarColor.Default,
+  avatarColor: AvatarColorEnum.Default,
 }
 
 function CreateAnonim() {

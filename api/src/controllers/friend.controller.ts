@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express'
-import type { UserId } from 'src/types/backend.types'
+import type { UserId } from 'src/types'
 import { friendService } from 'src/services'
 
 export const handleCreateFriendshipRequest: RequestHandler = async (

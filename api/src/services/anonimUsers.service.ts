@@ -1,28 +1,26 @@
-import type { IAnonim } from 'src/models/anonim.model'
-import type { AvatarColor } from 'src/models/user.model'
-
-import type { UserId } from 'src/types/backend.types'
+import type { IAnonimModel } from 'src/models/anonim.model'
+import type { AvatarColor, UserId } from 'src/types'
 import constants from 'src/constants'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import Anonim from 'src/models/anonim.model'
+import AnonimModel from 'src/models/anonim.model'
 import { receiptService } from '.'
 
-export async function create(ownerId: UserId, username: string, avatarColor: AvatarColor): Promise<IAnonim> {
+export async function create(ownerId: UserId, username: string, avatarColor: AvatarColor): Promise<IAnonimModel> {
   if (!username || !avatarColor) {
     throw new ErrorObject(constants.missing_args)
   }
 
-  const isOccupied = await Anonim.exists({ ownerId, username })
+  const isOccupied = await AnonimModel.exists({ ownerId, username })
 
   if (isOccupied) {
     throw new ErrorObject(constants.username_duplicate)
   }
 
-  return Anonim.create({ username, ownerId, avatarColor })
+  return AnonimModel.create({ username, ownerId, avatarColor })
 }
 
-export async function getByUsername(ownerId: UserId, username: IAnonim['username']): Promise<IAnonim> {
-  const anonim = await Anonim.findOne({ username, ownerId })
+export async function getByUsername(ownerId: UserId, username: IAnonimModel['username']): Promise<IAnonimModel> {
+  const anonim = await AnonimModel.findOne({ username, ownerId })
 
   if (!anonim) {
     throw new ErrorObject(constants.invalid_username, 401)
@@ -31,8 +29,8 @@ export async function getByUsername(ownerId: UserId, username: IAnonim['username
   return anonim
 }
 
-export async function getById(anonimId: UserId | string): Promise<IAnonim> {
-  const anonim = await Anonim.findById(anonimId)
+export async function getById(anonimId: UserId | string): Promise<IAnonimModel> {
+  const anonim = await AnonimModel.findById(anonimId)
 
   if (!anonim) {
     throw new ErrorObject(constants.invalid_username, 401)
@@ -44,15 +42,15 @@ export async function getById(anonimId: UserId | string): Promise<IAnonim> {
 export async function removeByUsername(ownerId: UserId, username: string): Promise<void> {
   const anonim = await getByUsername(ownerId, username)
   await receiptService.removeUserFromAllReceipts(anonim._id, ownerId)
-  await Anonim.findOneAndRemove({ ownerId, username })
+  await AnonimModel.findOneAndRemove({ ownerId, username })
 }
 
-export async function update(ownerId: UserId, username: string, payload: any): Promise<IAnonim> {
-  return await Anonim.findOneAndUpdate({ ownerId, username }, payload, {
+export async function update(ownerId: UserId, username: string, payload: any): Promise<IAnonimModel> {
+  return await AnonimModel.findOneAndUpdate({ ownerId, username }, payload, {
     new: true,
   })
 }
 
 export async function getAllUserAnonims(ownerId: UserId) {
-  return await Anonim.find({ ownerId })
+  return await AnonimModel.find({ ownerId })
 }

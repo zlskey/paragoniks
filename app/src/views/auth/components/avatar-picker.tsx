@@ -2,7 +2,7 @@ import type { HandleUploadPayload } from '@helpers/hooks/use-upload-image'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import useUploadImage from '@helpers/hooks/use-upload-image'
-import { AvatarColor } from '@paragoniks/shared'
+import { AvatarColorEnum } from '@types'
 import { useState } from 'react'
 import { Button } from 'react-native-paper'
 
@@ -36,7 +36,7 @@ function AvatarPicker({ username, onAvatarChange }: AvatarPickerProps) {
           size="lg"
           profile={{
             username: username || '',
-            avatarColor: AvatarColor.Default,
+            avatarColor: AvatarColorEnum.Default,
             avatarImage: avatar?.image ? `data:image/jpeg;base64,${avatar.image}` : '',
           }}
         />

@@ -1,4 +1,4 @@
-import type { Division, DivisionType } from '@paragoniks/shared'
+import type { Division, DivisionType } from '@types'
 import { getUniqueArray } from './array'
 
 export function isNull(value: any): value is null {

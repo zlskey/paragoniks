@@ -1,4 +1,4 @@
-import type { DivisionTranslationEnum, DivisionType } from '@paragoniks/shared'
+import type { DivisionTranslationEnum, DivisionType } from '@types'
 import * as yup from 'yup'
 
 function parseStrictFloat(str: string) {

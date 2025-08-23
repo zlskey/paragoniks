@@ -1,4 +1,4 @@
-import type { UserId } from '@paragoniks/shared'
+import type { UserId } from '@types'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'

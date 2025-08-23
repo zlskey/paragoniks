@@ -1,6 +1,6 @@
-import type { Division, DivisionType } from '@paragoniks/shared'
+import type { Division, DivisionType } from '@types'
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
-import { DivisionUnitEnum } from '@paragoniks/shared'
+import { DivisionUnitEnum } from '@types'
 import Color from 'color'
 import { useState } from 'react'
 import { StyleSheet, TextInput } from 'react-native'

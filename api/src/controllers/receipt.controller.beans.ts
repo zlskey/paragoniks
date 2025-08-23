@@ -1,8 +1,8 @@
-import type { ISimpleProduct } from 'src/models/receipt.model'
+import type { BaseProduct } from 'src/types'
 
 export interface HandleCreateReceiptBean {
   title: string
-  products: ISimpleProduct[]
+  products: BaseProduct[]
   contributors: Record<string, number>
   image: string | null
   shouldGenerateProducts: boolean

@@ -1,4 +1,4 @@
-import type { Friendship, Profile } from '@paragoniks/shared'
+import type { Friendship, Profile } from '@types'
 import Flex from '@components/flex'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'
 import Typography from '@components/typography'

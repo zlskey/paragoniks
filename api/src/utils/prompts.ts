@@ -1,4 +1,4 @@
-import type { ISimpleProduct } from 'src/models/receipt.model'
+import type { BaseProduct } from 'src/types'
 
 const ERROR_WARNING = `
   If you encounter an error, you should fill just the error field with the error message.
@@ -28,7 +28,7 @@ export function getScanImagePrompt() {
 `
 }
 
-export function getTitlePrompt(products: ISimpleProduct[]) {
+export function getTitlePrompt(products: BaseProduct[]) {
   return `
     Generate a descriptive receipt name from product list.
     Receipt name should have a max of 28 characters and keep the language in which products are written.

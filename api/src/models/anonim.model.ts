@@ -1,21 +1,17 @@
-import type { UserId } from 'src/types/backend.types'
+import type { Anonim, AvatarColor } from 'src/types'
 
-import type { AvatarColor, IUser } from './user.model'
 import mongoose from 'mongoose'
 import constants from 'src/constants'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { anonimUsersService } from 'src/services'
 
-export interface IAnonim
-  extends Pick<IUser, '_id' | 'username' | 'avatarImage' | 'avatarColor'> {
-  ownerId: UserId
-
-  changeUsername: (this: IAnonim, username: string) => Promise<IAnonim>
-  changeAvatarImage: (this: IAnonim, image: string) => Promise<IAnonim>
-  changeAvatarColor: (this: IAnonim, color: AvatarColor) => Promise<IAnonim>
+export interface IAnonimModel extends Anonim {
+  changeUsername: (this: IAnonimModel, username: string) => Promise<IAnonimModel>
+  changeAvatarImage: (this: IAnonimModel, image: string) => Promise<IAnonimModel>
+  changeAvatarColor: (this: IAnonimModel, color: AvatarColor) => Promise<IAnonimModel>
 }
 
-const anonimSchema = new mongoose.Schema<IAnonim>({
+const anonimSchema = new mongoose.Schema<IAnonimModel>({
   username: {
     type: String,
     required: true,
@@ -35,12 +31,12 @@ const anonimSchema = new mongoose.Schema<IAnonim>({
 })
 
 class AnonimClass {
-  async changeUsername(this: IAnonim, username: string): Promise<IAnonim> {
+  async changeUsername(this: IAnonimModel, username: string): Promise<IAnonimModel> {
     if (this.username === username) {
       throw new ErrorObject(constants.username_duplicate) // @todo???
     }
 
-    const isOccupied = await Anonim.findOne({ username, ownerId: this.ownerId })
+    const isOccupied = await AnonimModel.findOne({ username, ownerId: this.ownerId })
 
     if (isOccupied) {
       throw new ErrorObject(constants.username_duplicate)
@@ -50,14 +46,14 @@ class AnonimClass {
   }
 
   // todo
-  changeAvatarColor(this: IAnonim, color: AvatarColor): Promise<IAnonim> {
+  changeAvatarColor(this: IAnonimModel, color: AvatarColor): Promise<IAnonimModel> {
     return anonimUsersService.update(this.ownerId, this.username, {
       avatarColor: color,
     })
   }
 
   // todo
-  changeAvatarImage(this: IAnonim, image: string): Promise<IAnonim> {
+  changeAvatarImage(this: IAnonimModel, image: string): Promise<IAnonimModel> {
     return anonimUsersService.update(this.ownerId, this.username, {
       avatarImage: image,
     })
@@ -66,6 +62,6 @@ class AnonimClass {
 
 anonimSchema.loadClass(AnonimClass)
 
-const Anonim = mongoose.model<IAnonim>('Anonims', anonimSchema)
+const AnonimModel = mongoose.model<IAnonimModel>('Anonims', anonimSchema)
 
-export default Anonim
+export default AnonimModel

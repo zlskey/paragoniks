@@ -1,4 +1,4 @@
-import type { ImageBase64 } from '@paragoniks/shared'
+import type { ImageBase64 } from '@types'
 import type { CreateReceiptFormState } from '../create-receipt-form'
 import { getPx } from '@app/styles'
 import Flex from '@components/flex'

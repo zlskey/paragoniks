@@ -1,11 +1,11 @@
-import type { User } from '@paragoniks/shared'
+import type { Profile } from '@types'
 
-interface Section<T extends User> {
+interface Section<T extends Profile> {
   data: T[]
   title: string
 }
 
-export function getProfilesAlphabetically<T extends User>(profiles: T[]) {
+export function getProfilesAlphabetically<T extends Profile>(profiles: T[]) {
   return profiles
     .sort((a, b) => a.username.localeCompare(b.username))
     .reduce((acc, profile) => {

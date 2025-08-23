@@ -1,4 +1,4 @@
-import type { UserId } from '@paragoniks/shared'
+import type { UserId } from '@types'
 
 export interface GetAllFriendshipsBody {}
 

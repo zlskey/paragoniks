@@ -54,6 +54,9 @@ COPY api/pnpm* .
 # Copy shared package to match API's expected path
 COPY shared ../shared
 
+# Build shared
+RUN pnpm build:shared
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
@@ -72,10 +75,10 @@ COPY api/package*.json .
 COPY api/pnpm* .
 
 # Copy shared package to match API's expected path
-COPY shared ../shared
+COPY --from=builder /usr/src/shared/dist /usr/src/shared/dist
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --prod
 
 # Copy build directory from builder
 COPY --from=builder /usr/src/app/dist ./src

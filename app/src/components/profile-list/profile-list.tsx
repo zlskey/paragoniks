@@ -1,4 +1,4 @@
-import type { Profile } from '@paragoniks/shared'
+import type { Profile } from '@types'
 import type { FlatListProps } from 'react-native'
 import Typography from '@components/typography'
 import { FlatList } from 'react-native'

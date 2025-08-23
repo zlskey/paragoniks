@@ -1,4 +1,4 @@
-import type { DivisionType, Product } from '@paragoniks/shared'
+import type { DivisionType, Product } from '@types'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'

@@ -1,21 +1,22 @@
+import type { BaseProduct, Product } from '@types'
 import type { ReactElement } from 'react'
 import type { FlatListProps } from 'react-native'
 import { getPx } from '@app/styles'
 import Typography from '@components/typography'
-import { isProduct } from '@paragoniks/shared'
 import { useQueryClient } from '@tanstack/react-query'
+import { isProduct } from '@types'
 import { useReceiptContext } from '@views/receipt/receipt.context'
 import { useState } from 'react'
 import { FlatList } from 'react-native'
 import ProductItemConnected from '../product-item'
 
-interface ProductListInternalProps<T>
+interface ProductListInternalProps<T extends BaseProduct>
   extends Omit<FlatListProps<T>, 'data' | 'ListEmptyComponent' | 'renderItem' | 'keyExtractor'> {
-  products: (T)[]
+  products: T[]
   renderProduct: (product: T, index: number) => ReactElement
 }
 
-export function ProductListInternal<T>({
+export function ProductListInternal<T extends BaseProduct>({
   products,
   renderProduct,
   ...props
@@ -30,7 +31,7 @@ export function ProductListInternal<T>({
       data={products}
       keyExtractor={(product, index) =>
         isProduct(product)
-          ? product._id
+          ? (product as Product)._id
           : index.toString()}
       renderItem={({ item: product, index }) => renderProduct(product, index)}
       {...props}

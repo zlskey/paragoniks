@@ -13,7 +13,7 @@ on:
 jobs:
   code-quality-backend:
     runs-on: ubuntu-22.04
-    name: Code Quality - API (ESLint + TypeCheck)
+    name: Code Quality - Backend
     steps:
       - uses: actions/checkout@v4
       
@@ -42,6 +42,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-api-
       
+      - name: Build shared
+        run: pnpm build:shared
+        working-directory: ./api
+
       - name: Install backend dependencies  
         run: pnpm install --frozen-lockfile
         working-directory: ./api
@@ -54,7 +58,7 @@ jobs:
 
   code-quality-frontend:
     runs-on: ubuntu-22.04
-    name: Code Quality - App (ESLint + TypeCheck)
+    name: Code Quality - Frontend
     steps:
       - uses: actions/checkout@v4
       
@@ -83,6 +87,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-app-
       
+      - name: Build shared
+        run: pnpm build:shared
+        working-directory: ./app
+
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
         working-directory: ./app
@@ -165,6 +173,10 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - name: Build shared
+        run: pnpm build:shared
+        working-directory: ./app
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

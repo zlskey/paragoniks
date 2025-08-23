@@ -1,4 +1,4 @@
-import type { Product, Profile, SimpleProduct } from '@paragoniks/shared'
+import type { BaseProduct, Product, Profile } from '@types'
 import AvatarGroup from '@components/avatar-group'
 import Flex from '@components/flex'
 import Typography from '@components/typography'
@@ -19,7 +19,7 @@ import RemoveProductAction from './remove-product-action'
 
 interface ProductItemInternalProps {
   total: number | string
-  product: SimpleProduct
+  product: BaseProduct
   profiles?: Profile[]
   onPress?: () => void
   onLongPress?: () => void

@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express'
-import type { IUser } from 'src/models/user.model'
+import type { IUserModel } from 'src/models/user.model'
 import constants from 'src/constants'
 import { userService } from 'src/services'
 import { jwtUtils } from 'src/utils'
@@ -9,7 +9,7 @@ import { ErrorObject } from './error.middleware'
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser
+      user?: IUserModel
     }
   }
 }

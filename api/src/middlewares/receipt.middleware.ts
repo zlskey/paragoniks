@@ -1,13 +1,13 @@
 import type { RequestHandler } from 'express'
-import type { IReceipt } from 'src/models/receipt.model'
-import type { ReceiptId } from 'src/types/backend.types'
+import type { IReceiptModel } from 'src/models/receipt.model'
+import type { ReceiptId } from 'src/types'
 import Receipt from 'src/models/receipt.model'
 import { ErrorObject } from './error.middleware'
 
 declare global {
   namespace Express {
     interface Request {
-      receipt?: IReceipt
+      receipt?: IReceiptModel
     }
   }
 }

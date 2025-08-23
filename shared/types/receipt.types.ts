@@ -1,8 +1,4 @@
-export interface SimpleReceipt {
-  sum: number
-  title: string
-  products: any[]
-}
+import { Product } from "./product.types"
 
 export enum ScanningStatus {
   FAILED = 'failed',
@@ -10,18 +6,19 @@ export enum ScanningStatus {
   DONE = 'done',
 }
 
-export interface Receipt extends SimpleReceipt {
-  _id: string
-  owner: string
+export interface Receipt {
+  _id: unknown
+  owner: unknown
+  products: Product[]
   contributors: Record<string, number>
-  products: any[]
+  title: string
+  sum: number
   imagePath: string
   createdAt: string
   updatedAt: string
+  isRemoved?: boolean
   scanning?: {
     status: ScanningStatus
     errorMessage?: string
   }
 }
-
-export type ReceiptId = string

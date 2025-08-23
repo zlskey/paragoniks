@@ -1,4 +1,4 @@
-import type { ISimpleProduct } from 'src/models/receipt.model'
+import type { BaseProduct } from 'src/types'
 import _ from 'lodash'
 import { OpenAI } from 'openai'
 import { zodTextFormat } from 'openai/helpers/zod'
@@ -56,7 +56,7 @@ export async function extractReceiptDataFromText(imageBase64: string) {
   }
 
   return _.omit(responseObj, 'error') as {
-    products: ISimpleProduct[]
+    products: BaseProduct[]
     title: string
   }
 }
@@ -66,7 +66,7 @@ const titleFormat = z.object({
   error: z.string().nullable(),
 })
 
-export async function generateReceiptTitle(products: ISimpleProduct[]): Promise<string | null> {
+export async function generateReceiptTitle(products: BaseProduct[]): Promise<string | null> {
   const response = await openai.responses.create({
     model: 'gpt-4o-mini',
     input: [
