@@ -5,7 +5,7 @@ import type {
   ReceiptId,
   SimpleProduct,
   UserId,
-} from '@app/generic.types'
+} from '@paragoniks/shared'
 
 export interface GetUserReceiptsBody {}
 

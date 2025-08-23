@@ -1,4 +1,4 @@
-import type { User } from '@app/generic.types'
+import type { User } from '@paragoniks/shared'
 
 interface Section<T extends User> {
   data: T[]

@@ -1,4 +1,4 @@
-import type { Receipt } from 'src/app/generic.types'
+import type { Receipt } from '@paragoniks/shared'
 import type {
   AddContributorBody,
   ChangeReceiptTitleBody,

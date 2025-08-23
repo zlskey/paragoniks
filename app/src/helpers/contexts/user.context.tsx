@@ -1,4 +1,4 @@
-import type { User } from 'src/app/generic.types'
+import type { User } from '@paragoniks/shared'
 import { createContext, useContext } from 'react'
 import { userMockup } from 'src/mockups/user'
 

@@ -1,4 +1,4 @@
-import type { Anonim } from '@app/generic.types'
+import type { Anonim } from '@paragoniks/shared'
 import { removeAnonim } from '@api/endpoints/anonim/anonim.api'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'

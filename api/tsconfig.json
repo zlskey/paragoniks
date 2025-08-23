@@ -24,7 +24,9 @@
     "pretty": true,
     "moduleResolution": "node",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "@shared/*": ["../shared/types/*"],
+      "@backend/*": ["src/types/*"]
     },
     "resolveJsonModule": true,
     "strict": true,

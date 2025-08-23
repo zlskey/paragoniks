@@ -1,4 +1,4 @@
-import type { Product, UserId } from 'src/app/generic.types'
+import type { Product, UserId } from '@paragoniks/shared'
 import { getLocaleCurrency } from '@helpers/utils'
 import { useMemo } from 'react'
 

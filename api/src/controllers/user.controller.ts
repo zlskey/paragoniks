@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 
-import type { UserId } from 'src/types/generic.types'
+import type { UserId } from 'src/types/backend.types'
 import constants from 'src/constants'
 import { anonimUsersService, friendService, userService } from 'src/services'
 import { uploadAvatarImage } from 'src/utils/gcp/bucket'

@@ -1,4 +1,4 @@
-import type { DivisionType, Product } from 'src/app/generic.types'
+import type { DivisionType, Product } from '@paragoniks/shared'
 import type { PreciseEditFormValues } from 'src/views/product-edit/product-edit'
 import { getUniqueArray } from '@helpers/utils/array'
 import { getEvenDivision, getNewDivision } from '@helpers/utils/division'

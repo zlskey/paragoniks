@@ -1,8 +1,8 @@
 import type { HandleUploadPayload } from '@helpers/hooks/use-upload-image'
-import { AvatarColor } from '@app/generic.types'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import useUploadImage from '@helpers/hooks/use-upload-image'
+import { AvatarColor } from '@paragoniks/shared'
 import { useState } from 'react'
 import { Button } from 'react-native-paper'
 

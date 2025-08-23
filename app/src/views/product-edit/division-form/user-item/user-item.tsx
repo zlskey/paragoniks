@@ -1,4 +1,4 @@
-import type { Division, DivisionType, Profile } from 'src/app/generic.types'
+import type { Division, DivisionType, Profile } from '@paragoniks/shared'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'

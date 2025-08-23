@@ -1,4 +1,4 @@
-import type { Product, Profile, SimpleProduct } from '@app/generic.types'
+import type { Product, Profile, SimpleProduct } from '@paragoniks/shared'
 import AvatarGroup from '@components/avatar-group'
 import Flex from '@components/flex'
 import Typography from '@components/typography'

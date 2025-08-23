@@ -1,4 +1,4 @@
-import type { Receipt } from 'src/app/generic.types'
+import type { Receipt } from '@paragoniks/shared'
 
 export const receiptMockup: Receipt = {
   _id: 'a45hqa45ryha45etrfgay45rytga45ey',

@@ -1,4 +1,4 @@
-import type { Receipt, ReceiptId } from 'src/app/generic.types'
+import type { Receipt, ReceiptId } from '@paragoniks/shared'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeReceipt } from 'src/api/endpoints/receipt/receipt.api'
 

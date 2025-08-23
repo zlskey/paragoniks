@@ -1,4 +1,4 @@
-import type { UserId } from 'src/types/generic.types'
+import type { UserId } from 'src/types/backend.types'
 
 import type { AvatarColor, IUser } from './user.model'
 import mongoose from 'mongoose'

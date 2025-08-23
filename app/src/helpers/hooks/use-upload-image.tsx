@@ -1,4 +1,4 @@
-import type { ImageBase64 } from 'src/app/generic.types'
+import type { ImageBase64 } from '@paragoniks/shared'
 import * as ImagePicker from 'expo-image-picker'
 
 export interface HandleUploadPayload {

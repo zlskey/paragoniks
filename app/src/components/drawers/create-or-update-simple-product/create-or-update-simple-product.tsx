@@ -1,5 +1,5 @@
-import type { SimpleProduct } from '@app/generic.types'
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
+import type { SimpleProduct } from '@paragoniks/shared'
 import type {
   CreateOrUpdateSimpleProductFormState,
 } from './create-or-update-simple-product-form'

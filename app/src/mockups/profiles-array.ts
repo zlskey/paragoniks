@@ -1,5 +1,5 @@
-import type { Profile } from 'src/app/generic.types'
-import { AvatarColor } from 'src/app/generic.types'
+import type { Profile } from '@paragoniks/shared'
+import { AvatarColor } from '@paragoniks/shared'
 
 export const profilesMockup: Profile[] = [
   {

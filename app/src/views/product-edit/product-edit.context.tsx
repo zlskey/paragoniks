@@ -1,5 +1,5 @@
+import type { Product, Receipt } from '@paragoniks/shared'
 import type { PropsWithChildren } from 'react'
-import type { Product, Receipt } from 'src/app/generic.types'
 import { createContext, useContext } from 'react'
 
 interface PreciseProductEditContextValue {

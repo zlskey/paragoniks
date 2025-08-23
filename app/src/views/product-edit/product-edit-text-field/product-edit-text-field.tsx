@@ -1,6 +1,6 @@
+import type { Product } from '@paragoniks/shared'
 import type { TextInputProps } from 'react-native'
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
-import type { Product } from 'src/app/generic.types'
 import Typography from '@components/typography'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'

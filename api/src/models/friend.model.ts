@@ -1,4 +1,4 @@
-import type { FriendId } from 'src/types/generic.types'
+import type { FriendId } from 'src/types/backend.types'
 import mongoose from 'mongoose'
 
 export interface IFriendship {

@@ -1,4 +1,4 @@
-import type { Anonim } from '@app/generic.types'
+import type { Anonim } from '@paragoniks/shared'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import ProfilesAlphabeticallList from '@components/profiles-alphabeticall-list'

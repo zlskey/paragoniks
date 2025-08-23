@@ -128,7 +128,7 @@ jobs:
             --build-arg GIT_HASH=${{ env.git_hash }} \
             -t ${{ env.IMAGE }}:${{ env.git_hash }} \
             -t ${{ env.IMAGE }}:latest \
-            -f ./api/docker/Dockerfile ./api
+            -f ./api/docker/Dockerfile .
           
           docker push ${{ env.IMAGE }} --all-tags
 

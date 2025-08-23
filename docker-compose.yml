@@ -12,6 +12,7 @@ services:
       target: development
     volumes:
       - ./api:/usr/src/app
+      - ./shared:/usr/src/shared
     env_file:
       - ".env"
       - "./api/.env"

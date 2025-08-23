@@ -1,4 +1,4 @@
-import type { Friendship, UserId } from 'src/app/generic.types'
+import type { Friendship, UserId } from '@paragoniks/shared'
 import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
 import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'

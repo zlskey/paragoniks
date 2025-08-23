@@ -1,4 +1,4 @@
-import type { AvatarColor, ImageBase64, User, UserMeta } from 'src/app/generic.types'
+import type { AvatarColor, ImageBase64, User, UserMeta } from '@paragoniks/shared'
 
 export interface LoginUserBody {
   username: string

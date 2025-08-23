@@ -1,5 +1,5 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
-import type { DivisionType } from 'src/app/generic.types'
+import type { DivisionType } from '@paragoniks/shared'
 import { getPx } from '@app/styles'
 import Drawer from '@components/drawer/drawer'
 import Flex from '@components/flex'

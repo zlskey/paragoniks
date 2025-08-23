@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import type { IReceipt } from 'src/models/receipt.model'
-import type { ReceiptId } from 'src/types/generic.types'
+import type { ReceiptId } from 'src/types/backend.types'
 import Receipt from 'src/models/receipt.model'
 import { ErrorObject } from './error.middleware'
 

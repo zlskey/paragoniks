@@ -1,4 +1,4 @@
-import type { SimpleProduct } from 'src/app/generic.types'
+import type { SimpleProduct } from '@paragoniks/shared'
 
 export function getTotalPrice(
   product: Omit<SimpleProduct, 'totalPrice' | 'name'>,

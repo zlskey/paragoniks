@@ -1,4 +1,4 @@
-import type { Profile } from 'src/app/generic.types'
+import type { Profile } from '@paragoniks/shared'
 import type { GetProfileBody } from './profiles.api.types'
 import { getRsApi } from '../../rs.api'
 

@@ -1,4 +1,4 @@
-import type { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
+import type { ProductId, ReceiptId, UserId } from 'src/types/backend.types'
 
 import mongoose from 'mongoose'
 

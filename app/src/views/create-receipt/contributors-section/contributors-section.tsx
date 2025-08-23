@@ -1,5 +1,5 @@
-import type { Profile } from '@app/generic.types'
 import type { UseDrawerFunctionsRef } from '@components/drawer'
+import type { Profile } from '@paragoniks/shared'
 import type { CreateReceiptFormState } from '../create-receipt-form'
 import { getPx } from '@app/styles'
 import Avatar from '@components/avatar'

@@ -1,10 +1,10 @@
+import type { Profile } from '@paragoniks/shared'
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
-import type { Profile } from 'src/app/generic.types'
 import Typography from '@components/typography'
+import { AvatarColor } from '@paragoniks/shared'
 import { Image } from 'expo-image'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import { AvatarColor } from 'src/app/generic.types'
 import { getPx } from 'src/app/styles'
 
 function getContainerSize(size: 'sm' | 'md' | 'lg' | 'xs') {

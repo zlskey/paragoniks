@@ -1,4 +1,4 @@
-import type { SimpleProduct } from '@app/generic.types'
+import type { SimpleProduct } from '@paragoniks/shared'
 import type { CreateReceiptFormState } from '@views/create-receipt/create-receipt-form'
 import { getPx } from '@app/styles'
 import { useDrawerFunctions } from '@components/drawer'

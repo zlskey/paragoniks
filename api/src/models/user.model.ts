@@ -1,4 +1,4 @@
-import type { UserId } from 'src/types/generic.types'
+import type { UserId } from 'src/types/backend.types'
 import { compare, genSalt, hash } from 'bcryptjs'
 import _ from 'lodash'
 import mongoose from 'mongoose'

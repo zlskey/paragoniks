@@ -1,4 +1,4 @@
-import type { UserId } from 'src/types/generic.types'
+import type { UserId } from 'src/types/backend.types'
 import mongoose from 'mongoose'
 import config from 'src/config'
 

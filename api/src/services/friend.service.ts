@@ -1,4 +1,4 @@
-import type { FriendId, UserId } from 'src/types/generic.types'
+import type { FriendId, UserId } from 'src/types/backend.types'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 
 import Friendship from 'src/models/friend.model'

@@ -48,14 +48,17 @@ ENTRYPOINT ["/usr/src/app/docker/entrypoint.sh"]
 FROM prepare AS builder
 
 # Copy package.json and package-lock.json
-COPY package*.json .
-COPY pnpm* .
+COPY api/package*.json .
+COPY api/pnpm* .
+
+# Copy shared package to match API's expected path
+COPY shared ../shared
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
 # Copy source code
-COPY . .
+COPY api/ .
 
 # Build application
 RUN pnpm build
@@ -65,8 +68,11 @@ RUN pnpm build
 FROM prepare AS production
 
 # Copy package.json and pnpm-lock.yaml
-COPY package*.json .
-COPY pnpm* .
+COPY api/package*.json .
+COPY api/pnpm* .
+
+# Copy shared package to match API's expected path
+COPY shared ../shared
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile

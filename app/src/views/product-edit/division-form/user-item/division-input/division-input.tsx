@@ -1,10 +1,10 @@
+import type { Division, DivisionType } from '@paragoniks/shared'
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
-import type { Division, DivisionType } from 'src/app/generic.types'
+import { DivisionUnitEnum } from '@paragoniks/shared'
 import Color from 'color'
 import { useState } from 'react'
 import { StyleSheet, TextInput } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import { DivisionUnitEnum } from 'src/app/generic.types'
 import { getPx } from 'src/app/styles'
 
 function isNumber(value: number | null | undefined): value is number {

@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express'
-import type { ProductId, UserId } from 'src/types/generic.types'
+import type { ProductId, UserId } from 'src/types/backend.types'
 import type { HandleCreateReceiptBean } from './receipt.controller.beans'
 import config from 'src/config'
 import { ErrorObject } from 'src/middlewares/error.middleware'

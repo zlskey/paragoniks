@@ -1,4 +1,4 @@
-import type { Friendship, Profile } from '@app/generic.types'
+import type { Friendship, Profile } from '@paragoniks/shared'
 import Avatar from '@components/avatar'
 import Flex from '@components/flex'
 import Typography from '@components/typography'

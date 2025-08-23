@@ -1,4 +1,4 @@
-import type { User } from '@app/generic.types'
+import type { User } from '@paragoniks/shared'
 import type { SectionListProps } from 'react-native'
 import { getPx } from '@app/styles'
 import Typography from '@components/typography'

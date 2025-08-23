@@ -1,4 +1,4 @@
-import type { SimpleProduct, UserId } from '@app/generic.types'
+import type { SimpleProduct, UserId } from '@paragoniks/shared'
 import { productSchema, receiptSchema } from '@helpers/validation-schemes/receipt'
 import * as yup from 'yup'
 

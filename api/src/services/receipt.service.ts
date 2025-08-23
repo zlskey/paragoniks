@@ -3,7 +3,7 @@ import type {
   IReceipt,
   ISimpleReceipt,
 } from 'src/models/receipt.model'
-import type { ProductId, ReceiptId, UserId } from 'src/types/generic.types'
+import type { ProductId, ReceiptId, UserId } from 'src/types/backend.types'
 import mongoose from 'mongoose'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import Receipt, {

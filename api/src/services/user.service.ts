@@ -1,5 +1,5 @@
 import type { IProfile, IUser } from 'src/models/user.model'
-import type { UserId } from 'src/types/generic.types'
+import type { UserId } from 'src/types/backend.types'
 
 import constants from 'src/constants'
 import { ErrorObject } from 'src/middlewares/error.middleware'
