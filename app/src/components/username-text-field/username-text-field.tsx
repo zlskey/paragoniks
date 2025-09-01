@@ -2,7 +2,6 @@ import type { TextFieldProps } from '@components/text-field/text-field'
 import TextField from '@components/text-field'
 
 function UsernameTextField({
-  style,
   name,
   label,
   ...props
@@ -12,7 +11,7 @@ function UsernameTextField({
       autoCorrect={false}
       name={name ?? 'username'}
       label={label ?? 'Nazwa użytkownika'}
-      style={[{ textTransform: 'lowercase' }, style]}
+      formatValue={value => value.toLowerCase()}
       {...props}
     />
   )

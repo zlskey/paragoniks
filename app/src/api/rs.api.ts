@@ -1,12 +1,13 @@
 import { getFromStorage } from '@helpers/utils/storage'
 import axios from 'axios'
 import { Platform } from 'react-native'
+import config from 'src/config'
 
 async function getRsApi() {
   const token = await getFromStorage('token')
 
   const defaultOptions = {
-    baseURL: process.env.EXPO_PUBLIC_RS_API_URL,
+    baseURL: config.EXPO_PUBLIC_RS_API_URL,
     timeout: 3000,
   }
 

@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Platform } from 'react-native'
+import config from 'src/config'
 
 const isWeb = Platform.OS === 'web'
 
 export function isWebOnDesktop() {
-  if (process.env.NODE_ENV === 'development') {
+  if (!config.IS_PRODUCTION) {
     return false
   }
 

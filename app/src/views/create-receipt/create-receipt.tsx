@@ -19,8 +19,8 @@ import ReceiptImageSection from './receipt-image-section'
 import TitleSection from './title-section'
 
 function CreateReceipt() {
-  const { user } = useUserContext()
   const addNotification = useNotificationContext()
+  const { user } = useUserContext()
   const { data } = useScanCount()
 
   const formState = useForm<CreateReceiptFormState>({
@@ -37,6 +37,7 @@ function CreateReceipt() {
     onError: () => addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error'),
     onSuccess: async (_, body) => {
       await queryClient.invalidateQueries({ queryKey: ['receipt'] })
+      await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
       addNotification(
         body.shouldGenerateProducts
           ? 'Paragon przesłany do zeskanowania'

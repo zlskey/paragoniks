@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express'
+import config from 'src/config'
 import constants from 'src/constants'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-
 import { userService } from 'src/services'
 import { jwtUtils } from 'src/utils'
 import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
@@ -14,18 +14,11 @@ function parseUsernameFromEmail(email: string) {
   return email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
-const domain = process.env.MAIN_DOMAIN || 'localhost'
-const GOOGLE_ANDROID_CLIENT_ID = process.env.GOOGLE_ANDROID_CLIENT_ID
-const GOOGLE_IOS_CLIENT_ID = process.env.GOOGLE_IOS_CLIENT_ID
-const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID
-
-const maxAge = 1000 * 60 * 60 * 24 * 3
-
 const cookieOptions = {
-  maxAge,
+  maxAge: config.MAX_COOKIE_AGE,
   httpOnly: true,
   secure: true,
-  domain,
+  domain: config.MAIN_DOMAIN,
 }
 
 const emptyUserResponse = {
@@ -51,7 +44,7 @@ export const signup: RequestHandler = async (req, res) => {
   await validateAndThrow(userValidationSchema, username, password)
 
   const user = await userService.create(username, password, avatarImage)
-  const token = jwtUtils.createToken(user._id, maxAge)
+  const token = jwtUtils.createToken(user._id, config.MAX_COOKIE_AGE)
 
   res.cookie('jwt', token, cookieOptions).json({
     user: user.removePassword(),
@@ -66,7 +59,7 @@ export const login: RequestHandler = async (req, res) => {
 
   await user.validatePassword(password)
 
-  const token = jwtUtils.createToken(user._id, maxAge)
+  const token = jwtUtils.createToken(user._id, config.MAX_COOKIE_AGE)
 
   res.cookie('jwt', token, cookieOptions).json({
     user: user.removePassword(),
@@ -109,9 +102,9 @@ export const loginWithGoogle: RequestHandler = async (req, res) => {
   const { OAuth2Client } = await import('google-auth-library')
   const client = new OAuth2Client()
   const audiences = [
-    GOOGLE_ANDROID_CLIENT_ID,
-    GOOGLE_IOS_CLIENT_ID,
-    GOOGLE_WEB_CLIENT_ID,
+    config.GOOGLE_ANDROID_CLIENT_ID,
+    config.GOOGLE_IOS_CLIENT_ID,
+    config.GOOGLE_WEB_CLIENT_ID,
   ].filter(Boolean) as string[]
 
   const ticket = await client.verifyIdToken({ idToken, audience: audiences })
@@ -130,8 +123,6 @@ export const loginWithGoogle: RequestHandler = async (req, res) => {
     avatarImage: payload.picture ?? '',
   })
 
-  const token = jwtUtils.createToken(user._id, maxAge)
+  const token = jwtUtils.createToken(user._id, config.MAX_COOKIE_AGE)
   res.cookie('jwt', token, cookieOptions).json({ user: user.removePassword(), token })
 }
-
-//

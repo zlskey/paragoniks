@@ -152,15 +152,17 @@ class UserClass {
   }
 
   incrementScanCount(this: IUserModel) {
-    const currentMeta = this.meta
-    const noOfScans = (currentMeta.noOfScans ?? 0) + 1
-    return userService.update(this._id, { meta: { ...currentMeta, noOfScans } })
+    return userService.update(
+      this._id,
+      { 'meta.noOfScans': (this.meta.noOfScans ?? 0) + 1 },
+    )
   }
 
   incrementReceiptCount(this: IUserModel) {
-    const currentMeta = this.meta
-    const noOfReceipts = (currentMeta.noOfReceipts ?? 0) + 1
-    return userService.update(this._id, { meta: { ...currentMeta, noOfReceipts } })
+    return userService.update(
+      this._id,
+      { 'meta.noOfReceipts': (this.meta.noOfReceipts ?? 0) + 1 },
+    )
   }
 }
 

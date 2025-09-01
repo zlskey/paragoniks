@@ -11,10 +11,9 @@ import { useFormContext } from 'react-hook-form'
 import { useTheme } from 'react-native-paper'
 
 function TitleSection() {
-  const { colors } = useTheme()
   const formContext = useFormContext<CreateReceiptFormState>()
-
   const { user } = useUserContext()
+  const { colors } = useTheme()
 
   useEffect(() => {
     formContext.setValue('title', `Paragon #${user.meta?.noOfReceipts ?? 1}`)

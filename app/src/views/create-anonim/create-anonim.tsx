@@ -12,7 +12,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AvatarColorEnum } from '@types'
 import { router } from 'expo-router'
 import { FormProvider, useForm } from 'react-hook-form'
-import { StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const colors = Object.values(AvatarColorEnum) as ValueOf<typeof AvatarColorEnum>[]
@@ -60,7 +59,7 @@ function CreateAnonim() {
             />
 
             <Flex direction="column" alignContent="stretch">
-              <Typography styles={styles.label}>Kolor avatara</Typography>
+              <Typography>Kolor avatara</Typography>
 
               <Flex alignContent="center" justifyContent="space-evenly">
                 {colors.map(color => (
@@ -95,9 +94,5 @@ function CreateAnonim() {
     </Wrapper>
   )
 }
-
-const styles = StyleSheet.create({
-  label: {},
-})
 
 export default CreateAnonim

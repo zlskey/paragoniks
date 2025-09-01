@@ -14,6 +14,7 @@ export interface TextFieldProps extends TextInputProps {
   fullWidth?: boolean
   error?: FieldError
   labelAlwaysOnTop?: boolean
+  formatValue?: (value: string) => string
 }
 
 function getStyles(colors: MD3Colors) {
@@ -48,6 +49,7 @@ function getStyles(colors: MD3Colors) {
     },
   })
 }
+
 function TextField({
   name,
   label,
@@ -55,6 +57,7 @@ function TextField({
   style,
   error,
   labelAlwaysOnTop = false,
+  formatValue = (value: string) => value,
   ...props
 }: TextFieldProps) {
   const { colors } = useTheme()
@@ -101,8 +104,9 @@ function TextField({
               onFocus={() => setIsFocused(true)}
               value={value?.toString()}
               onChangeText={(text) => {
-                setIsFilled(text !== '')
-                onChange(text)
+                const formattedText = formatValue(text)
+                setIsFilled(formattedText !== '')
+                onChange(formattedText)
               }}
               onBlur={() => {
                 setIsFocused(false)

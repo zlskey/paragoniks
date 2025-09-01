@@ -1,4 +1,5 @@
 import type { ErrorRequestHandler, RequestHandler } from 'express'
+import config from 'src/config'
 
 export const notFound: RequestHandler = (req, res, next) => {
   const error = new ErrorObject(
@@ -23,7 +24,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     error: {
       code: err.code,
       message: err.message,
-      stack: process.env.NODE_ENV === 'production' ? '⛷️' : err.stack,
+      stack: config.IS_PRODUCTION ? '⛷️' : err.stack,
     },
   })
 }

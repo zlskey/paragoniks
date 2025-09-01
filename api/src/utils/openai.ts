@@ -2,13 +2,12 @@ import type { BaseProduct } from 'src/types'
 import _ from 'lodash'
 import { OpenAI } from 'openai'
 import { zodTextFormat } from 'openai/helpers/zod'
+import config from 'src/config'
 import { ErrorObject } from 'src/middlewares/error.middleware'
 import { z } from 'zod'
 import { getScanImagePrompt, getTitlePrompt } from './prompts'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+const openai = new OpenAI({ apiKey: config.OPENAI_API_KEY })
 
 const receiptFormat = z.object({
   title: z.string(),

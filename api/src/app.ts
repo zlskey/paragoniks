@@ -4,6 +4,7 @@ import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import config from 'src/config'
 import { errorMiddleware } from 'src/middlewares'
 import router from 'src/routers'
 import 'src/utils/system.utils'
@@ -23,7 +24,7 @@ app.use(
   cors({
     credentials: true,
     optionsSuccessStatus: 200,
-    origin: process.env.CORS_ORIGIN,
+    origin: config.CORS_ORIGIN,
   }),
 )
 
@@ -31,8 +32,6 @@ app.use(router)
 app.use(errorMiddleware.notFound)
 app.use(errorMiddleware.errorHandler)
 
-const PORT = Number.parseInt(process.env.PORT, 10) || 80
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })

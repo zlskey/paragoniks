@@ -6,12 +6,7 @@ import singleReceiptRouter from './single-receipt.router'
 
 const receiptRouter = Router()
 
-// const NODE_ENV = process.env.NODE_ENV
 
-// const limiter = rateLimit({
-//   windowMs: 6 * 60 * 60 * 1000, // 6 hours
-//   max: NODE_ENV === 'production' ? 10 : Infinity, // limit each IP to 10 requests per windowMs
-// })
 
 receiptRouter.get('/', wrapAsync(receiptController.handleGetUserReceipts))
 

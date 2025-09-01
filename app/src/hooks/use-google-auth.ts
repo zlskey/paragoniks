@@ -6,10 +6,7 @@ import * as WebBrowser from 'expo-web-browser'
 import { useEffect, useRef } from 'react'
 import { Platform } from 'react-native'
 import { loginWithGoogle } from 'src/api/endpoints/user/user.api'
-
-const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID
-const GOOGLE_ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID
-const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
+import config from 'src/config'
 
 export function useGoogleAuth() {
   const addNotification = useNotificationContext()
@@ -72,10 +69,10 @@ export function useGoogleAuth() {
       }
 
       const clientId = Platform.select({
-        ios: GOOGLE_IOS_CLIENT_ID as string,
-        android: GOOGLE_ANDROID_CLIENT_ID as string,
-        default: GOOGLE_WEB_CLIENT_ID as string,
-      }) as string
+        ios: config.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+        android: config.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+        default: config.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+      })
 
       const nonce = Math.random().toString(36).slice(2) + Date.now().toString(36)
       const request = new AuthSession.AuthRequest({

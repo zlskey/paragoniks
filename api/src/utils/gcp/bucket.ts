@@ -1,13 +1,10 @@
 import { Storage } from '@google-cloud/storage'
+import config from 'src/config'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-
-const BUCKET_NAME = process.env.BUCKET_NAME ?? 'paragoniks-bucket'
-const PROJECT_ID = process.env.PROJECT_ID ?? 'paragoniks'
-const isProdEnv = process.env.NODE_ENV === 'production'
 
 const storage = getStorage()
 
-const bucket = storage.bucket(BUCKET_NAME)
+const bucket = storage.bucket(config.BUCKET_NAME)
 
 enum DirectoryName {
   RECEIPTS = 'receipts',
@@ -19,11 +16,11 @@ function getFilePath(userId: string, directory: DirectoryName) {
 }
 
 function getImagePublicUrl(filePath: string) {
-  const serviceUrl = isProdEnv ? 'https://storage.googleapis.com' : 'http://localhost:4443'
-  if (!isProdEnv) {
-    return `${serviceUrl}/storage/v1/b/${BUCKET_NAME}/o/${filePath}?alt=media`
+  const serviceUrl = config.IS_PRODUCTION ? 'https://storage.googleapis.com' : 'http://localhost:4443'
+  if (!config.IS_PRODUCTION) {
+    return `${serviceUrl}/storage/v1/b/${config.BUCKET_NAME}/o/${filePath}?alt=media`
   }
-  return `${serviceUrl}/${BUCKET_NAME}/${filePath}`
+  return `${serviceUrl}/${config.BUCKET_NAME}/${filePath}`
 }
 
 export async function uploadImageToBucket(directory: DirectoryName, userId: string, buffer: Buffer) {
@@ -50,24 +47,24 @@ export async function uploadAvatarImage(userId: string, buffer: Buffer) {
 }
 
 function getStorage() {
-  if (isProdEnv) {
+  if (config.IS_PRODUCTION) {
     return new Storage({
-      projectId: PROJECT_ID,
+      projectId: config.PROJECT_ID,
       credentials: getCredentials(),
     })
   }
   return new Storage({
-    projectId: PROJECT_ID,
+    projectId: config.PROJECT_ID,
     apiEndpoint: 'http://paragoniks-bucket:4443',
   })
 }
 
 export function getCredentials() {
-  if (!isProdEnv) {
+  if (!config.IS_PRODUCTION) {
     return undefined
   }
 
-  const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY
+  const credentials = config.GOOGLE_SERVICE_ACCOUNT_KEY
   if (!credentials) {
     throw new Error('GOOGLE_SERVICE_ACCOUNT_KEY is not set')
   }
@@ -76,7 +73,7 @@ export function getCredentials() {
 }
 
 async function createBucketForDevEnvironment() {
-  if (isProdEnv) {
+  if (config.IS_PRODUCTION) {
     return null
   }
   const [exists] = await bucket.exists()
