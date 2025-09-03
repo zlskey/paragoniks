@@ -80,6 +80,22 @@ resource "google_secret_manager_secret" "google_ios_client_id" {
   }
 }
 
+resource "google_secret_manager_secret" "protonmail_user" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "protonmail_user"
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret" "protonmail_token" {
+  depends_on = [google_project_service.secrets]
+  secret_id = "protonmail_token"
+  replication {
+    auto {}
+  }
+}
+
 resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_mongo" {
   member = "serviceAccount:${google_service_account.cloudrun.email}"
   role = "roles/secretmanager.secretAccessor"
@@ -132,4 +148,16 @@ resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_
   member = "serviceAccount:${google_service_account.cloudrun.email}"
   role = "roles/secretmanager.secretAccessor"
   secret_id = google_secret_manager_secret.google_ios_client_id.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_protonmail_user" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.protonmail_user.id
+}
+
+resource "google_secret_manager_secret_iam_member" "cloudrun_service_account_to_protonmail_token" {
+  member = "serviceAccount:${google_service_account.cloudrun.email}"
+  role = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.protonmail_token.id
 }

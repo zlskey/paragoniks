@@ -6,8 +6,6 @@ import singleReceiptRouter from './single-receipt.router'
 
 const receiptRouter = Router()
 
-
-
 receiptRouter.get('/', wrapAsync(receiptController.handleGetUserReceipts))
 
 receiptRouter.post('/', wrapAsync(receiptController.handleCreateReceipt))

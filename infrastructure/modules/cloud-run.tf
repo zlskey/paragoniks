@@ -159,6 +159,26 @@ resource "google_cloud_run_service" "api" {
             }
           }
         }
+        
+        env {
+          name = "PROTONMAIL_USER"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.protonmail_user.secret_id
+              key  = "latest"
+            }
+          }
+        }
+        
+        env {
+          name = "PROTONMAIL_TOKEN"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.protonmail_token.secret_id
+              key  = "latest"
+            }
+          }
+        }
       }
     }
   }
