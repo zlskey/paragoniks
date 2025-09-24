@@ -7,6 +7,7 @@ export const usernameSchema = yup.object().shape({
     .string()
     .lowercase()
     .required('Username is required')
+    .matches(/^[a-z0-9_]+$/, 'Username can only contain lowercase letters, numbers and underscores')
     .min(3, 'Username must be at least 3 characters')
     .max(32, 'Username must be at most 32 characters'),
 })
@@ -23,11 +24,19 @@ export const passwordSchema = yup.object().shape({
     ),
 })
 
-export const userValidationSchema = usernameSchema.concat(passwordSchema)
+export const emailSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Invalid email')
+    .nullable()
+    .notRequired(),
+})
 
-export async function validateAndThrow(schema: yup.ObjectSchema<any>, username: string, password: string) {
+export const userValidationSchema = usernameSchema.concat(passwordSchema).concat(emailSchema)
+
+export async function validateAndThrow(schema: yup.ObjectSchema<any>, username: string, email: string, password: string) {
   try {
-    await schema.validate({ username, password })
+    await schema.validate({ username, email, password })
   }
   catch (error) {
     if (error instanceof yup.ValidationError) {

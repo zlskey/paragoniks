@@ -10,7 +10,7 @@ import { useAuthNavigation } from '../hooks'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
 function SignupPassword() {
-  const { username } = useLocalSearchParams() as AuthParams
+  const { username, email } = useLocalSearchParams() as AuthParams
   const { navigateToSignupProfile } = useAuthNavigation()
   const form = useForm<SignupPasswordFormData>({
     defaultValues: DEFAULT_FORM_VALUES.SIGNUP_PASSWORD,
@@ -23,11 +23,9 @@ function SignupPassword() {
 
   function onSubmit(data: SignupPasswordFormData) {
     if (username) {
-      navigateToSignupProfile(username, data.password)
+      navigateToSignupProfile(username, data.password, email)
     }
   }
-
-  console.log(form.formState.errors.password)
 
   return (
     <AuthWrapper title={AUTH_TITLES.SIGNUP}>

@@ -8,7 +8,11 @@ export default function () {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="code"
+        name="new-password"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="password-recovery-code"
         options={{ headerShown: false }}
       />
     </Stack>

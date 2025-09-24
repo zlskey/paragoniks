@@ -1,16 +1,32 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 const config = {
-  // Scan limits
+  // limits
   MAX_SCAN_COUNT: 5,
-  SCAN_COUNT_EXPIRATION_TIME: 1 * 24 * 60 * 60 * 1000, // 24 hours
+  SCAN_COUNT_EXPIRATION_TIME: 24 * 60 * 60 * 1000, // 24 hours
+  MAIL_CONFIRMATION_EXPIRATION_TIME: 3 * 60 * 60 * 1000, // 3 hours
+  PASSWORD_RECOVERY_EXPIRATION_TIME: 10 * 60 * 1000, // 10 minutes
+  PASSWORD_RECOVERY_RESEND_CODE_TIME: 30 * 1000, // 30 seconds
+
+  // Cookie configuration
+  MAX_COOKIE_AGE: 1000 * 60 * 60 * 24 * 3, // 3 days in milliseconds
+
+  // Mailing
+  SOCIALS_X_URL: '#',
+  SOCIALS_INSTAGRAM_URL: '#',
+  SOCIALS_TIKTOK_URL: '#',
+  SOCIALS_CONTACT_EMAIL: '#',
+
+  // App icon
+  APP_ICON_URL: 'https://paragoniks.pl/public/splash.png',
 
   // Server configuration
   PORT: Number.parseInt(process.env.PORT || '80', 10),
   NODE_ENV: process.env.NODE_ENV || 'development',
 
   IS_PRODUCTION: process.env.NODE_ENV === 'production',
-
-  // Cookie configuration
-  MAX_COOKIE_AGE: 1000 * 60 * 60 * 24 * 3, // 3 days in milliseconds
 
   // CORS
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
@@ -38,6 +54,10 @@ const config = {
   GOOGLE_ANDROID_CLIENT_ID: process.env.GOOGLE_ANDROID_CLIENT_ID || '',
   GOOGLE_IOS_CLIENT_ID: process.env.GOOGLE_IOS_CLIENT_ID || '',
   GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || '',
+
+  // ProtonMail
+  PROTONMAIL_USER: process.env.PROTONMAIL_USER || '',
+  PROTONMAIL_TOKEN: process.env.PROTONMAIL_TOKEN || '',
 } as const
 
 type Config = typeof config
@@ -58,6 +78,8 @@ const requiredInBothConfig: ConfigKeys[] = [
   'GOOGLE_ANDROID_CLIENT_ID',
   'GOOGLE_IOS_CLIENT_ID',
   'GOOGLE_WEB_CLIENT_ID',
+  'PROTONMAIL_USER',
+  'PROTONMAIL_TOKEN',
 ]
 
 const requiredInProduction: ConfigKeys[] = [

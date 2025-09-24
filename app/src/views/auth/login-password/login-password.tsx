@@ -9,20 +9,20 @@ import { useAuthNavigation, useLogin } from '../hooks'
 import { AUTH_LABELS, AUTH_MESSAGES, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
 function LoginPassword() {
-  const { username } = useLocalSearchParams() as AuthParams
+  const { usernameOrEmail } = useLocalSearchParams() as AuthParams
   const addNotification = useNotificationContext()
-  const form = useForm<LoginPasswordFormData>({ defaultValues: DEFAULT_FORM_VALUES.LOGIN_PASSWORD(username!) })
+  const form = useForm<LoginPasswordFormData>({ defaultValues: DEFAULT_FORM_VALUES.LOGIN_PASSWORD(usernameOrEmail!) })
   const { navigateToPasswordRecovery } = useAuthNavigation()
   const { mutate: login, isPending } = useLogin()
 
   function onSubmit(data: LoginPasswordFormData) {
-    if (!username) {
+    if (!usernameOrEmail) {
       addNotification(AUTH_MESSAGES.USERNAME_REQUIRED, 'error')
       return
     }
 
     login({
-      username,
+      usernameOrEmail,
       password: data.password,
     })
   }
@@ -33,11 +33,11 @@ function LoginPassword() {
         <AuthTextField
           labelAlwaysOnTop
           readOnly
-          name="username"
+          name="usernameOrEmail"
           label={AUTH_LABELS.USERNAME}
-          defaultValue={username}
+          defaultValue={usernameOrEmail}
+          value={usernameOrEmail}
           autoCorrect={false}
-          style={{ textTransform: 'lowercase' }}
           error={undefined}
         />
 
@@ -56,8 +56,6 @@ function LoginPassword() {
           onLeftButtonPress={navigateToPasswordRecovery}
           onRightButtonPress={form.handleSubmit(onSubmit)}
           rightButtonProps={{ disabled: isPending }}
-          // @todo - implement password recovery
-          leftButtonProps={{ style: { display: 'none' } }}
         />
       </FormProvider>
     </AuthWrapper>

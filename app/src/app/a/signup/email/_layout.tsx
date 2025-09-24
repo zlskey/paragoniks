@@ -1,11 +1,13 @@
 import { Stack } from 'expo-router'
 
-export default function () {
+export default function SignupEmailLayout() {
   return (
     <Stack>
       <Stack.Screen
         name="index"
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack>
   )

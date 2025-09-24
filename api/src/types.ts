@@ -8,6 +8,8 @@ export type ProductId = Types.ObjectId
 export type ReceiptId = Types.ObjectId
 export type FriendId = Types.ObjectId
 export type FriendshipId = Types.ObjectId
+export type PasswordRecoveryId = Types.ObjectId
+export type MailConfirmationId = Types.ObjectId
 
 // Override _id fields to be ObjectId instead of unknown
 export interface User extends SharedTypes.User {
@@ -45,4 +47,20 @@ export interface Receipt extends SharedTypes.Receipt {
 export interface ScanCount extends SharedTypes.ScanCount {
   _id: UserId
   userId: UserId
+}
+
+export interface PasswordRecovery {
+  _id: PasswordRecoveryId
+  accountId: UserId
+  code: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface MailConfirmation {
+  _id: MailConfirmationId
+  accountId: UserId
+  hash: string
+  createdAt: Date
+  updatedAt: Date
 }
