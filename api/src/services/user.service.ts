@@ -6,6 +6,7 @@ import UserModel from 'src/models/user.model'
 
 export async function create(
   username: string,
+  email: string | null,
   password: string,
   avatarImage: string,
 ): Promise<Omit<IUserModel, 'password'>> {
@@ -14,7 +15,12 @@ export async function create(
       throw new ErrorObject(constants.missing_args)
     }
 
-    const user = await UserModel.create({ username, password, avatarImage })
+    const user = await UserModel.create({
+      username,
+      password,
+      avatarImage,
+      meta: { emailToConfirm: email },
+    })
 
     return user.removePassword()
   }
@@ -45,14 +51,22 @@ export async function findOrCreateGoogleAccount(payload: Partial<IUserModel> & {
   return created.removePassword()
 }
 
-export async function checkIfEmailIsTaken(email: string): Promise<boolean> {
-  const user = await UserModel.exists({ email: { $eq: email } })
-  return !!user
+export async function checkIfEmailIsTaken(email: string, excludeGoogleAccount = false) {
+  return await UserModel.exists({
+    email: { $eq: email },
+    ...(excludeGoogleAccount && { googleId: { $exists: false } }),
+  })
 }
 
-export async function checkIfUsernameIsTaken(username: string): Promise<boolean> {
-  const user = await UserModel.exists({ username: { $eq: username } })
-  return !!user
+export async function checkIfUsernameIsTaken(username: string, excludeGoogleAccount = false) {
+  return await UserModel.exists({
+    username: { $eq: username },
+    ...(excludeGoogleAccount && { googleId: { $exists: false } }),
+  })
+}
+
+export async function getByUsernameOrEmail(usernameOrEmail: string) {
+  return await UserModel.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] })
 }
 
 export async function generateAvailableUsername(username: string, increment: number = 1): Promise<string> {
@@ -108,4 +122,15 @@ export async function getProfiles(usersIds: UserId[]): Promise<Profile[]> {
   const users = await UserModel.find({ _id: { $in: usersIds } })
 
   return users.map(user => user.pickProfile())
+}
+
+export async function setMailAsConfirmed(userId: UserId) {
+  const user = await getById(userId)
+  if (!user.meta.emailToConfirm) {
+    throw new ErrorObject('Email jest już potwierdzony')
+  }
+  await UserModel.findByIdAndUpdate(userId, {
+    email: user.meta.emailToConfirm,
+    meta: { emailToConfirm: null },
+  })
 }

@@ -2,34 +2,45 @@ import type { SignupFormData } from '../types'
 import AuthFooter from '@components/auth-flow/auth-footer'
 import AuthWrapper from '@components/auth-flow/auth-wrapper'
 import AuthTextField from '@components/auth-textfield'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import * as yup from 'yup'
 import { useAuthNavigation } from '../hooks'
 import useIsUsernameTaken from '../hooks/use-is-username-taken'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
+export const usernameSchema = yup.object().shape({
+  username: yup
+    .string()
+    .lowercase()
+    .required('Nazwa użytkownika jest wymagana')
+    .matches(/^[a-z0-9_]+$/, 'Nazwa użytkownika może zawierać tylko małe litery, cyfry i _')
+    .min(3, 'Nazwa użytkownika musi mieć co najmniej 3 znaki')
+    .max(32, 'Nazwa użytkownika może mieć maksymalnie 32 znaki'),
+})
+
 function Signup() {
-  const form = useForm<SignupFormData>({ defaultValues: DEFAULT_FORM_VALUES.SIGNUP })
+  const form = useForm<SignupFormData>({
+    defaultValues: DEFAULT_FORM_VALUES.SIGNUP,
+    resolver: yupResolver(usernameSchema),
+    mode: 'onChange',
+  })
   const username = form.watch('username')
 
-  const { navigateToSignupPassword } = useAuthNavigation()
+  const { navigateToSignupEmail } = useAuthNavigation()
 
   const { data: isUsernameTaken, isLoading } = useIsUsernameTaken(username)
 
   function onSubmit(data: SignupFormData) {
-    navigateToSignupPassword(data.username)
+    navigateToSignupEmail(data.username)
   }
 
   const shouldGoForwardButtonBeDisabled = isLoading || !!form.formState.errors.username || !username
 
   useEffect(() => {
-    if (isUsernameTaken === false) {
-      form.clearErrors('username')
-    }
-    if (isUsernameTaken === true) {
-      form.setError('username', { message: 'Podana nazwa użytkownika lub email, jest już zajęty' })
-    }
-  }, [isUsernameTaken, form])
+    console.log('form.formState.errors', form)
+  }, [form.formState.errors])
 
   return (
     <AuthWrapper title={AUTH_TITLES.SIGNUP}>
@@ -39,10 +50,21 @@ function Signup() {
           label={AUTH_LABELS.USERNAME}
           placeholder="Wprowadź nazwę użytkownika"
           autoCorrect={false}
-          style={{ textTransform: 'lowercase' }}
-          status={isUsernameTaken === undefined ? undefined : isUsernameTaken ? 'error' : 'valid'}
+          status={
+            form.formState.errors.username
+              ? 'error'
+              : isUsernameTaken === true
+                ? 'error'
+                : isUsernameTaken === false
+                  ? 'valid'
+                  : undefined
+          }
           isLoading={isLoading}
-          error={form.formState.errors.username}
+          error={
+            form.formState.errors.username
+            ?? (isUsernameTaken === true ? { message: 'Podana nazwa użytkownika lub email, jest już zajęty', type: 'custom' } : undefined)
+          }
+          formatValue={value => value.toLowerCase()}
         />
 
         <AuthFooter

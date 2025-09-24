@@ -15,6 +15,8 @@ export const AUTH_LABELS = {
   FORGOT_PASSWORD: 'Zapomniałeś hasła?',
   HAVE_ACCOUNT: 'Masz już konto?',
   USERNAME: 'Nazwa użytkownika',
+  USERNAME_OR_EMAIL: 'Nazwa użytkownika lub email',
+  EMAIL: 'Email',
   PASSWORD: 'Hasło',
   REPEAT_PASSWORD: 'Powtórz hasło',
   NEW_PASSWORD: 'Nowe hasło',
@@ -22,6 +24,7 @@ export const AUTH_LABELS = {
   VERIFICATION_CODE: 'Kod',
   SET_PASSWORD: 'Ustaw hasło',
   RESEND_CODE: 'Wyślij ponownie',
+  SKIP: 'Pomiń',
 } as const
 
 export const AUTH_TITLES = {
@@ -39,12 +42,13 @@ export const AUTH_TITLES = {
 } as const
 
 export const DEFAULT_FORM_VALUES = {
-  LOGIN: { username: '' },
-  LOGIN_PASSWORD: (username: string) => ({ password: '', username }),
+  LOGIN: { usernameOrEmail: '' },
+  LOGIN_PASSWORD: (usernameOrEmail: string) => ({ password: '', usernameOrEmail }),
   SIGNUP: { username: '' },
+  SIGNUP_EMAIL: { email: null },
   SIGNUP_PASSWORD: { password: '', repeatPassword: '' },
   SIGNUP_PROFILE: { avatar: '' },
-  PASSWORD_RECOVERY: { username: '' },
+  PASSWORD_RECOVERY: { usernameOrEmail: '' },
   PASSWORD_RECOVERY_CODE: { code: '' },
   NEW_PASSWORD: { password: '', repeatPassword: '' },
 } as const

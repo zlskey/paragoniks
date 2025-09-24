@@ -1,11 +1,15 @@
 import type { NewPasswordFormData } from '../types'
+import { updatePassword } from '@api/endpoints/user/user.api'
 import AuthFooter from '@components/auth-flow/auth-footer'
 import AuthWrapper from '@components/auth-flow/auth-wrapper'
 import AuthTextField from '@components/auth-textfield'
+import { SOMETHING_WENT_WRONG_MESSAGE } from '@helpers/constants'
+import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { userSchema } from '@helpers/utils/password-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useAuthNavigation } from '../hooks'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
 function NewPassword() {
@@ -13,14 +17,36 @@ function NewPassword() {
     defaultValues: DEFAULT_FORM_VALUES.NEW_PASSWORD,
     resolver: yupResolver(userSchema.pick(['password', 'repeatPassword'])),
   })
-  const { navigateToLoginFromPasswordReset } = useAuthNavigation()
+  const addNotification = useNotificationContext()
+
+  const queryClient = useQueryClient()
+
+  const { mutate: handleUpdatePassword, isPending } = useMutation({
+    mutationKey: ['user', 'password'],
+    mutationFn: updatePassword,
+    onSuccess: async () => {
+      addNotification('Hasło zostało zmienione', 'success')
+      await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
+    },
+    onError: (err: any) => {
+      if (err.response.data.error.message) {
+        form.setError('password', {
+          type: 'manual',
+          message: err.response.data.error.message,
+        })
+        return
+      }
+      addNotification(SOMETHING_WENT_WRONG_MESSAGE, 'error')
+    },
+  })
 
   function onSubmit(data: NewPasswordFormData) {
-    // TODO: Implement password update logic
-    console.log('New password:', data.password)
-    // After successful password update, redirect to login
-    navigateToLoginFromPasswordReset()
+    handleUpdatePassword(data)
   }
+
+  useEffect(() => {
+    console.log(form.formState.errors)
+  }, [form.formState.errors])
 
   return (
     <AuthWrapper
@@ -33,6 +59,7 @@ function NewPassword() {
           label={AUTH_LABELS.NEW_PASSWORD}
           secureTextEntry
           error={form.formState.errors.password}
+          status={form.formState.errors.password ? 'error' : 'valid'}
         />
 
         <AuthTextField
@@ -40,11 +67,13 @@ function NewPassword() {
           label={AUTH_LABELS.REPEAT_NEW_PASSWORD}
           secureTextEntry
           error={form.formState.errors.repeatPassword}
+          status={form.formState.errors.repeatPassword ? 'error' : 'valid'}
         />
 
         <AuthFooter
           rightButtonLabel={AUTH_LABELS.SET_PASSWORD}
           onRightButtonPress={form.handleSubmit(onSubmit)}
+          rightButtonProps={{ disabled: isPending }}
         />
       </FormProvider>
     </AuthWrapper>

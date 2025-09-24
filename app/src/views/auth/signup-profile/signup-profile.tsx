@@ -11,7 +11,7 @@ import { useSignup } from '../hooks'
 import { AUTH_LABELS, AUTH_MESSAGES, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
 function SignupProfile() {
-  const { username, password } = useLocalSearchParams() as AuthParams
+  const { username, password, email } = useLocalSearchParams() as AuthParams
   const addNotification = useNotificationContext()
   const form = useForm<SignupProfileFormData>({ defaultValues: DEFAULT_FORM_VALUES.SIGNUP_PROFILE })
   const [avatar, setAvatar] = useState<HandleUploadPayload | null>(null)
@@ -30,6 +30,7 @@ function SignupProfile() {
     signup({
       username,
       password,
+      email,
       avatarImage: avatar?.image ? `data:image/jpeg;base64,${avatar.image}` : '',
     })
   }

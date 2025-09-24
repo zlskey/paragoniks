@@ -3,6 +3,7 @@ export interface UserMeta {
   media_quality_warning_accepted?: boolean
   noOfScans?: number
   noOfReceipts?: number
+  emailToConfirm?: string | null
 }
 
 export type Theme = 'light' | 'dark'

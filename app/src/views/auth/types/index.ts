@@ -1,5 +1,5 @@
 export interface LoginFormData {
-  username: string
+  usernameOrEmail: string
 }
 
 export interface LoginPasswordFormData {
@@ -8,6 +8,10 @@ export interface LoginPasswordFormData {
 
 export interface SignupFormData {
   username: string
+}
+
+export interface SignupEmailFormData {
+  email?: string | null
 }
 
 export interface SignupPasswordFormData {
@@ -20,7 +24,7 @@ export interface SignupProfileFormData {
 }
 
 export interface PasswordRecoveryFormData {
-  username: string
+  usernameOrEmail: string
 }
 
 export interface PasswordRecoveryCodeFormData {
@@ -35,4 +39,7 @@ export interface NewPasswordFormData {
 export interface AuthParams {
   username?: string
   password?: string
+  email?: string
+  userId?: string
+  usernameOrEmail?: string
 }

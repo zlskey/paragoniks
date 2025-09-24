@@ -11,40 +11,46 @@ export function useAuthNavigation() {
   }, [])
 
   const navigateToPasswordRecovery = useCallback(() => {
-    router.replace('/a/password-recovery')
+    router.replace({ pathname: '/a/password-recovery' })
   }, [])
 
-  const navigateToLoginPassword = useCallback((username: string) => {
+  const navigateToLoginPassword = useCallback((usernameOrEmail: string) => {
     router.push({
       pathname: '/a/login/password',
-      params: { username },
+      params: { usernameOrEmail },
     })
   }, [])
 
-  const navigateToSignupPassword = useCallback((username: string) => {
+  const navigateToSignupPassword = useCallback((username: string, email?: string) => {
     router.push({
       pathname: '/a/signup/password',
+      params: { username, email },
+    })
+  }, [])
+
+  const navigateToSignupEmail = useCallback((username: string) => {
+    router.push({
+      pathname: '/a/signup/email',
       params: { username },
     })
   }, [])
 
-  const navigateToSignupProfile = useCallback((username: string, password: string) => {
+  const navigateToSignupProfile = useCallback((username: string, password: string, email: string | undefined) => {
     router.push({
       pathname: '/a/signup/profile',
-      params: { username, password },
+      params: { username, password, email },
     })
   }, [])
 
-  const navigateToPasswordRecoveryCode = useCallback(() => {
-    router.push('/a/password-recovery/code')
+  const navigateToPasswordRecoveryCode = useCallback((userId: string, usernameOrEmail: string) => {
+    router.push({
+      pathname: '/a/password-recovery/password-recovery-code',
+      params: { userId, usernameOrEmail },
+    })
   }, [])
 
   const navigateToNewPassword = useCallback(() => {
     router.replace('/a/password-recovery/new-password')
-  }, [])
-
-  const navigateToLoginFromPasswordReset = useCallback(() => {
-    router.replace('/a/login')
   }, [])
 
   return {
@@ -53,9 +59,9 @@ export function useAuthNavigation() {
     navigateToPasswordRecovery,
     navigateToLoginPassword,
     navigateToSignupPassword,
+    navigateToSignupEmail,
     navigateToSignupProfile,
     navigateToPasswordRecoveryCode,
     navigateToNewPassword,
-    navigateToLoginFromPasswordReset,
   }
 }

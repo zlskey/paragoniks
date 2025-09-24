@@ -20,6 +20,7 @@ export interface AuthTextFieldProps extends TextInputProps {
   status?: AuthTextFieldStatus
   isLoading?: boolean
   info?: string
+  formatValue?: (value: string) => string
 }
 
 function getStyles(colors: MD3Colors) {
@@ -110,6 +111,7 @@ function AuthTextField({
   isLoading = false,
   info,
   placeholder,
+  formatValue = (value: string) => value,
   ...props
 }: AuthTextFieldProps) {
   const { colors } = useTheme()
@@ -214,8 +216,8 @@ function AuthTextField({
               ref={ref}
               value={fieldValue?.toString() || ''}
               onChangeText={(text) => {
-                setValue(text)
-                onChange(text)
+                setValue(formatValue(text))
+                onChange(formatValue(text))
               }}
               onFocus={() => setIsFocused(true)}
               onBlur={() => {

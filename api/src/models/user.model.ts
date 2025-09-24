@@ -26,6 +26,8 @@ const userSchema = new mongoose.Schema<IUserModel>({
   username: {
     type: String,
     required: true,
+    lowercase: true,
+    index: true,
     unique: true,
   },
   password: {
@@ -35,12 +37,14 @@ const userSchema = new mongoose.Schema<IUserModel>({
     type: String,
     lowercase: true,
     index: true,
-    unique: false,
+    unique: true,
+    sparse: true,
   },
   googleId: {
     type: String,
     index: true,
-    unique: false,
+    unique: true,
+    sparse: true,
   },
   theme: {
     type: String,
@@ -71,6 +75,10 @@ const userSchema = new mongoose.Schema<IUserModel>({
       type: Number,
       default: 0,
     },
+    emailToConfirm: {
+      type: String,
+      default: null,
+    },
   },
 })
 
@@ -86,8 +94,9 @@ class UserClass {
   async validatePassword(this: IUserModel, password: string): Promise<void> {
     const isValid = await compare(password, this.password)
 
-    if (isValid)
+    if (isValid) {
       return
+    }
 
     throw new ErrorObject(constants.invalid_password, 401)
   }
@@ -98,6 +107,8 @@ class UserClass {
   ): Promise<void> {
     const salt = await genSalt()
     const newPassword = (password = await hash(password, salt))
+
+    console.log('newPassword', newPassword)
 
     await UserModel.findByIdAndUpdate(this._id, { password: newPassword })
   }

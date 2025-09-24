@@ -1,12 +1,5 @@
-import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import config from 'src/config'
-
-/**
- * init env files
- */
-
-dotenv.config()
 
 mongoose
   .connect(config.MONGODB_URL, {

@@ -15,6 +15,10 @@ export default function SignupLayout() {
         name="profile"
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="email"
+        options={{ headerShown: false }}
+      />
     </Stack>
   )
 }

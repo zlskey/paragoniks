@@ -1,8 +1,9 @@
 import type { RequestHandler } from 'express'
 import config from 'src/config'
 import constants from 'src/constants'
+import { sendPasswordRecoveryEmail, sendWelcomeEmail } from 'src/mailing'
 import { ErrorObject } from 'src/middlewares/error.middleware'
-import { userService } from 'src/services'
+import { mailConfirmationService, passwordRecoveryService, userService } from 'src/services'
 import { jwtUtils } from 'src/utils'
 import { getJwtFromHeader } from 'src/utils/get-jwt-from-header'
 import {
@@ -16,18 +17,18 @@ function parseUsernameFromEmail(email: string) {
 
 const cookieOptions = {
   maxAge: config.MAX_COOKIE_AGE,
+  domain: config.MAIN_DOMAIN,
   httpOnly: true,
   secure: true,
-  domain: config.MAIN_DOMAIN,
 }
 
 const emptyUserResponse = {
-  user: null,
   token: null,
+  user: null,
 }
 
 export const handleCheckIfUsernameIsTaken: RequestHandler = async (req, res) => {
-  const { username } = req.query
+  const { username } = req.body
 
   if (!username) {
     throw new ErrorObject(constants.missing_args)
@@ -38,12 +39,49 @@ export const handleCheckIfUsernameIsTaken: RequestHandler = async (req, res) => 
   res.status(200).json(isTaken)
 }
 
+export const handleCheckIfEmailIsTaken: RequestHandler = async (req, res) => {
+  const { email } = req.body
+
+  if (!email) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const isTaken = await userService.checkIfEmailIsTaken(email as string)
+
+  res.status(200).json(isTaken)
+}
+
+export const handleCheckIfUsernameOrEmailIsTaken: RequestHandler = async (req, res) => {
+  const { usernameOrEmail, excludeGoogleAccount } = req.body
+
+  if (!usernameOrEmail) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const isEmail = usernameOrEmail.includes('@')
+  const isTaken = isEmail
+    ? await userService.checkIfEmailIsTaken(usernameOrEmail as string, excludeGoogleAccount)
+    : await userService.checkIfUsernameIsTaken(usernameOrEmail as string, excludeGoogleAccount)
+
+  res.status(200).json(isTaken)
+}
+
 export const signup: RequestHandler = async (req, res) => {
-  const { username, password, avatarImage } = req.body
+  const { username, email, password, avatarImage } = req.body
 
-  await validateAndThrow(userValidationSchema, username, password)
+  await validateAndThrow(userValidationSchema, username, email, password)
 
-  const user = await userService.create(username, password, avatarImage)
+  const user = await userService.create(username, email, password, avatarImage)
+
+  if (email) {
+    const { hash } = await mailConfirmationService.create(user._id)
+    await sendWelcomeEmail(
+      email,
+      user.username,
+      `${config.CORS_ORIGIN}/a/confirm?h=${hash}&uid=${user._id}`,
+    )
+  }
+
   const token = jwtUtils.createToken(user._id, config.MAX_COOKIE_AGE)
 
   res.cookie('jwt', token, cookieOptions).json({
@@ -53,9 +91,9 @@ export const signup: RequestHandler = async (req, res) => {
 }
 
 export const login: RequestHandler = async (req, res) => {
-  const { username, password } = req.body
+  const { usernameOrEmail, password } = req.body
 
-  const user = await userService.getByUsername(username)
+  const user = await userService.getByUsernameOrEmail(usernameOrEmail)
 
   await user.validatePassword(password)
 
@@ -125,4 +163,78 @@ export const loginWithGoogle: RequestHandler = async (req, res) => {
 
   const token = jwtUtils.createToken(user._id, config.MAX_COOKIE_AGE)
   res.cookie('jwt', token, cookieOptions).json({ user: user.removePassword(), token })
+}
+
+export const handleSendPasswordRecoveryEmail: RequestHandler = async (req, res) => {
+  const { usernameOrEmail } = req.body
+
+  if (!usernameOrEmail) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const isEmail = usernameOrEmail.includes('@')
+  const { _id: accountId } = isEmail
+    ? await userService.checkIfEmailIsTaken(usernameOrEmail as string, true)
+    : await userService.checkIfUsernameIsTaken(usernameOrEmail as string, true)
+
+  const user = await userService.getById(accountId)
+
+  if (!user.email) {
+    throw new ErrorObject('Użytkownik istnieje, ale nie ma powiązanego adresu e-mail')
+  }
+
+  const canResendCode = await passwordRecoveryService.verifyIfCanResendCode(accountId)
+
+  if (!canResendCode) {
+    throw new ErrorObject('Nie można wysłać kodu do resetowania hasła, spróbuj ponownie za 30 sekund')
+  }
+
+  const { code } = await passwordRecoveryService.create(accountId)
+
+  await sendPasswordRecoveryEmail(user.email, user.username, code)
+
+  res.json({ userId: user._id })
+}
+
+export const handlePasswordRecoveryCode: RequestHandler = async (req, res) => {
+  const { code, userId } = req.body
+
+  if (!code) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const isCodeValid = await passwordRecoveryService.verifyAndDeleteIfValid(userId, code)
+
+  if (!isCodeValid) {
+    throw new ErrorObject('Kod do zresetowania hasła jest nieprawidłowy')
+  }
+
+  const user = await userService.getById(userId)
+
+  const token = jwtUtils.createToken(user._id, config.MAX_COOKIE_AGE)
+  res.cookie('jwt', token, cookieOptions).json({ user: user.removePassword(), token })
+}
+
+export const handleUpdatePassword: RequestHandler = async (req, res) => {
+  const { password } = req.body
+
+  const user = req.user
+
+  await user.changePassword(password)
+
+  res.json({ success: true })
+}
+
+export const handleConfirmEmail: RequestHandler = async (req, res) => {
+  const { hash, accountId } = req.body
+
+  if (!hash) {
+    throw new ErrorObject(constants.missing_args)
+  }
+
+  const mailConfirmation = await mailConfirmationService.verify(accountId, hash)
+
+  await userService.setMailAsConfirmed(mailConfirmation.accountId)
+
+  res.json({ success: true })
 }

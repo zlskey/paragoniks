@@ -7,67 +7,64 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useAuthNavigation } from '../hooks'
-import useIsUsernameTaken from '../hooks/use-is-username-taken'
+import useIsUsernameTakenOrEmailTaken from '../hooks/use-is-username-or-email-taken'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
-export const loginUsernameSchema = yup.object().shape({
-  username: yup
+export const usernameOrEmailSchema = yup.object().shape({
+  usernameOrEmail: yup
     .string()
-    .lowercase()
-    .required('Username is required')
-    .min(3, 'Username must be at least 3 characters')
-    .max(32, 'Username must be at most 32 characters'),
+    .required('Username or email is required')
+    .min(3, 'Username or email must be at least 3 characters')
+    .max(32, 'Username or email must be at most 32 characters'),
 })
 
 function Login() {
   const form = useForm<LoginFormData>({
     defaultValues: DEFAULT_FORM_VALUES.LOGIN,
-    resolver: yupResolver(loginUsernameSchema),
+    resolver: yupResolver(usernameOrEmailSchema),
   })
-  const username = form.watch('username')
+  const usernameOrEmail = form.watch('usernameOrEmail')
 
-  const { data: doesUserExist, isLoading } = useIsUsernameTaken(username)
+  const { data: isUsernameOrEmailRegistered, isLoading } = useIsUsernameTakenOrEmailTaken(usernameOrEmail, true)
   const { navigateToLoginPassword, navigateToPasswordRecovery } = useAuthNavigation()
 
   function onSubmit(data: LoginFormData) {
-    navigateToLoginPassword(data.username)
+    navigateToLoginPassword(data.usernameOrEmail)
   }
 
   useEffect(() => {
-    if (doesUserExist === true) {
-      form.clearErrors('username')
+    if (isUsernameOrEmailRegistered === true) {
+      form.clearErrors('usernameOrEmail')
     }
-    if (doesUserExist === false) {
+    if (isUsernameOrEmailRegistered === false) {
       form.setError(
-        'username',
+        'usernameOrEmail',
         {
           message: 'Podana nazwa użytkownika lub email, nie jest przypisany do żadnego konta',
         },
       )
     }
-  }, [doesUserExist, form])
+  }, [isUsernameOrEmailRegistered, form])
 
-  const shouldGoForwardButtonBeDisabled = isLoading || !!form.formState.errors.username || !username
+  const shouldGoForwardButtonBeDisabled = isLoading || !!form.formState.errors.usernameOrEmail || !usernameOrEmail
 
   return (
     <AuthWrapper title={AUTH_TITLES.LOGIN} subtitle={AUTH_TITLES.LOGIN_SUBTITLE}>
       <FormProvider {...form}>
         <AuthTextField
-          name="username"
-          label={AUTH_LABELS.USERNAME}
+          name="usernameOrEmail"
+          label={AUTH_LABELS.USERNAME_OR_EMAIL}
           autoCorrect={false}
-          style={{ textTransform: 'lowercase' }}
-          status={doesUserExist === undefined ? undefined : doesUserExist ? 'valid' : 'error'}
-          error={form.formState.errors.username}
+          status={isUsernameOrEmailRegistered === undefined ? undefined : isUsernameOrEmailRegistered ? 'valid' : 'error'}
+          error={form.formState.errors.usernameOrEmail}
           autoComplete="username"
           isLoading={isLoading}
+          formatValue={value => value.toLowerCase()}
         />
 
         <AuthFooter
           leftButtonLabel={AUTH_LABELS.FORGOT_PASSWORD}
           onLeftButtonPress={navigateToPasswordRecovery}
-          // @todo - implement password recovery
-          leftButtonProps={{ style: { display: 'none' } }}
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
           rightButtonProps={{ disabled: shouldGoForwardButtonBeDisabled }}

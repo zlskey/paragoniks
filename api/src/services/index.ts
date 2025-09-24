@@ -1,5 +1,7 @@
 export * as anonimUsersService from './anonimUsers.service'
 export * as friendService from './friend.service'
+export * as mailConfirmationService from './mailConfirmation.service'
+export * as passwordRecoveryService from './passwordRecovery.service'
 export * as receiptService from './receipt.service'
 export * as scanCountService from './scanCount.service'
 export * as userService from './user.service'

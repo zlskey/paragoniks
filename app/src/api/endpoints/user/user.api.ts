@@ -5,15 +5,22 @@ import type {
   ChangePasswordBody,
   ChangeUserLangBody,
   ChangeUsernameBody,
+  ConfirmEmailBody,
   GetUserFriendsOrAnonimsBody,
+  IsEmailTakenBody,
+  IsUsernameOrEmailTakenBody,
   IsUsernameTakenBody,
   LoginUserBody,
   LoginUserResponse,
   LoginWithGoogleBody,
   LogoutUserBody,
+  PasswordRecoveryCodeBody,
+  SendPasswordRecoveryEmailBody,
+  SendPasswordRecoveryEmailResponse,
   SignupUserBody,
   SignupUserResponse,
   ToggleThemeBody,
+  UpdatePasswordBody,
   UpdateUserMetaBody,
   WhoamiUserBody,
   WhoamiUserResponse,
@@ -61,10 +68,24 @@ export async function whoamiUser(body: WhoamiUserBody) {
 
 export async function isUsernameTaken(body: IsUsernameTakenBody) {
   const url = 'auth/is-username-taken'
-  const params = new URLSearchParams()
-  params.append('username', body.username)
   const rsApi = await getRsApi()
-  const response = await rsApi.get<boolean>(`${url}?${params.toString()}`)
+  const response = await rsApi.post<boolean>(url, body)
+
+  return response.data
+}
+
+export async function isEmailTaken(body: IsEmailTakenBody) {
+  const url = 'auth/is-email-taken'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post<boolean>(url, body)
+
+  return response.data
+}
+
+export async function isUsernameOrEmailTaken(body: IsUsernameOrEmailTakenBody) {
+  const url = 'auth/is-username-or-email-taken'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post<boolean>(url, body)
 
   return response.data
 }
@@ -128,6 +149,40 @@ export async function getUserFriendsOrAnonims(body: GetUserFriendsOrAnonimsBody)
   const url = 'user/friends'
   const rsApi = await getRsApi()
   const response = await rsApi.get<Profile[]>(url, body)
+
+  return response.data
+}
+
+export async function sendPasswordRecoveryEmail(body: SendPasswordRecoveryEmailBody) {
+  const url = 'auth/password-recovery/send-email'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post<SendPasswordRecoveryEmailResponse>(url, body, {
+    timeout: 100000,
+  })
+
+  return response.data
+}
+
+export async function passwordRecoveryCode(body: PasswordRecoveryCodeBody) {
+  const url = 'auth/password-recovery/verify-code'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post<LoginUserResponse>(url, body)
+
+  return response.data
+}
+
+export async function updatePassword(body: UpdatePasswordBody) {
+  const url = 'auth/password-recovery/update-password'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post(url, body)
+
+  return response.data
+}
+
+export async function confirmEmail(body: ConfirmEmailBody) {
+  const url = 'auth/confirm-email'
+  const rsApi = await getRsApi()
+  const response = await rsApi.post(url, body)
 
   return response.data
 }
