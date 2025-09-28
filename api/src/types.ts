@@ -16,6 +16,7 @@ export interface User extends SharedTypes.User {
   _id: UserId
   password?: string
   googleId?: string
+  pushToken?: string | null
 }
 
 export interface Anonim extends SharedTypes.Anonim {

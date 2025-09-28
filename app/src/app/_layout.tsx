@@ -149,7 +149,7 @@ function AppContent() {
 
   return (
     <>
-      <StatusBar style="light" backgroundColor={colors.background} />
+      <StatusBar style="light" />
       <GestureHandlerRootView style={{
         flex: 1,
         paddingTop: insets.top,

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Paragoniks",
     "slug": "paragoniks",
-    "version": "1.2.24",
+    "version": "1.2.25",
     "orientation": "portrait",
     "icon": "./src/assets/images/splash.png",
     "scheme": "paragoniks",
@@ -30,7 +30,7 @@
       },
       "package": "com.zlskey.paragoniks",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 32
+      "versionCode": 33
     },
     "web": {
       "bundler": "metro",
@@ -47,7 +47,15 @@
       ],
       "expo-font",
       "expo-asset",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/images/adaptive-icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

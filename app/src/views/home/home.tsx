@@ -1,4 +1,5 @@
 import Flex from '@components/flex'
+import { NotificationTest } from '@components/NotificationTest'
 import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
@@ -21,7 +22,7 @@ function Home() {
   return (
     <Wrapper>
       <SearchBar onSearch={setSearchQuery} query={searchQuery} />
-
+      <NotificationTest />
       <Flex mt={2} alignContent="stretch" direction="column" nativeFlex>
         <Flex justifyContent="space-between">
           <Typography variant="subtitle">Twoje paragony</Typography>

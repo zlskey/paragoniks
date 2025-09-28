@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { authMiddleware } from '../middlewares'
 import authRouter from './auth.router'
 import friendRouter from './friend.router'
+import notificationRouter from './notification.router'
 import receiptRouter from './receipt.router'
 import scanCountRouter from './scanCount.router'
 import statusRouter from './status.router'
@@ -19,5 +20,6 @@ router.use('/receipt', authMiddleware, receiptRouter)
 router.use('/friend', authMiddleware, friendRouter)
 router.use('/anonim', authMiddleware, userAnonimsRouter)
 router.use('/scanCount', authMiddleware, scanCountRouter)
+router.use('/notification', notificationRouter)
 
 export default router

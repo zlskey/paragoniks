@@ -80,6 +80,10 @@ const userSchema = new mongoose.Schema<IUserModel>({
       default: null,
     },
   },
+  pushToken: {
+    type: String,
+    default: null,
+  },
 })
 
 userSchema.pre('save', async function (next) {

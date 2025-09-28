@@ -1,2 +1,3 @@
-// Re-export from shared package
-export * from '@types'
+import * as GenericTypes from '@types'
+
+export default GenericTypes
