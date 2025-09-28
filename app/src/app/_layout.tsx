@@ -19,7 +19,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Platform, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { MD3DarkTheme, Provider as PaperProvider, useTheme } from 'react-native-paper'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
 import config from 'src/config'
 import { userMockup } from 'src/mockups/user'
@@ -141,12 +144,18 @@ function RootLayout() {
 }
 
 function AppContent() {
+  const insets = useSafeAreaInsets()
   const { colors } = useTheme()
 
   return (
-    <SafeAreaProvider>
+    <>
       <StatusBar style="light" backgroundColor={colors.background} />
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.background }}>
+      <GestureHandlerRootView style={{
+        flex: 1,
+        paddingTop: insets.top,
+        backgroundColor: colors.background,
+      }}
+      >
         <BottomSheetModalProvider>
           <QueryClientProvider client={queryClient}>
             <NotificationWrapper>
@@ -163,14 +172,16 @@ function AppContent() {
           </QueryClientProvider>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
-    </SafeAreaProvider>
+    </>
   )
 }
 
 export default function App() {
   return (
     <PaperProvider theme={darkTheme}>
-      <AppContent />
+      <SafeAreaProvider>
+        <AppContent />
+      </SafeAreaProvider>
     </PaperProvider>
   )
 }

@@ -14,9 +14,8 @@ function Wrapper({ children, style }: React.PropsWithChildren<WrapperProps>) {
     <View
       style={[{
         backgroundColor: colors.background,
-        padding: getPx(2),
-        paddingTop: getPx(1),
-        paddingBottom: getPx(4),
+        paddingInline: getPx(2),
+        paddingBlock: getPx(1),
         flexGrow: 1,
         flex: 1,
       }, style]}

@@ -63,8 +63,9 @@ function getStyles(colors: MD3Colors) {
     statusContainer: {
       width: getPx(3),
       height: getPx(3),
-      borderRadius: getPx(1.5),
+      borderRadius: getPx(333),
       justifyContent: 'center',
+      overflow: 'hidden',
       alignItems: 'center',
       marginLeft: getPx(1),
     },
