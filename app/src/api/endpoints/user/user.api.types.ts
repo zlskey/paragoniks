@@ -55,6 +55,10 @@ export interface ChangePasswordBody {
   newPassword: string
 }
 
+export interface ChangeEmailBody {
+  email: string
+}
+
 export interface ToggleThemeBody {}
 
 export interface ChangeAvatarColorBody {

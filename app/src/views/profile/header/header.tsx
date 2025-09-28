@@ -23,12 +23,22 @@ function Header() {
       <Flex direction="column">
         <Typography variant="title">{user.username}</Typography>
 
-        <Link href="/profile/change-username">
-          <Typography styles={{ color: colors.primary }}>
-            @
-            {user.username}
-          </Typography>
-        </Link>
+        <Flex spacing={0.5} alignContent="center">
+          <Link href="/profile/change-username">
+            <Typography styles={{ color: colors.primary }}>
+              @
+              {user.username}
+            </Typography>
+          </Link>
+
+          <Typography>•</Typography>
+
+          <Link href="/profile/change-email">
+            <Typography styles={{ color: colors.primary }}>
+              {user.email}
+            </Typography>
+          </Link>
+        </Flex>
       </Flex>
 
       <TouchableOpacity onPress={handleUploadProfilePicture}>

@@ -1,6 +1,6 @@
-import type * as SharedTypes from '@paragoniks/shared/dist/index.js'
+import type * as SharedTypes from '@paragoniks/shared/dist/index'
 
-export * from '@paragoniks/shared/dist/index.js'
+export * from '@paragoniks/shared/dist/index'
 
 export type UserId = string
 export type ProductId = string

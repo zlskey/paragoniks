@@ -48,7 +48,7 @@ export const handleCheckIfEmailIsTaken: RequestHandler = async (req, res) => {
 
   const isTaken = await userService.checkIfEmailIsTaken(email as string)
 
-  res.status(200).json(isTaken)
+  res.status(200).json(!!isTaken)
 }
 
 export const handleCheckIfUsernameOrEmailIsTaken: RequestHandler = async (req, res) => {
@@ -63,7 +63,7 @@ export const handleCheckIfUsernameOrEmailIsTaken: RequestHandler = async (req, r
     ? await userService.checkIfEmailIsTaken(usernameOrEmail as string, excludeGoogleAccount)
     : await userService.checkIfUsernameIsTaken(usernameOrEmail as string, excludeGoogleAccount)
 
-  res.status(200).json(isTaken)
+  res.status(200).json(!!isTaken)
 }
 
 export const signup: RequestHandler = async (req, res) => {
@@ -78,7 +78,7 @@ export const signup: RequestHandler = async (req, res) => {
     await sendWelcomeEmail(
       email,
       user.username,
-      `${config.CORS_ORIGIN}/a/confirm?h=${hash}&uid=${user._id}`,
+      `${config.CORS_ORIGIN}/confirm?h=${hash}&uid=${user._id}`,
     )
   }
 

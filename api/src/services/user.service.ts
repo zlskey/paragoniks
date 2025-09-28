@@ -134,3 +134,12 @@ export async function setMailAsConfirmed(userId: UserId) {
     meta: { emailToConfirm: null },
   })
 }
+
+export async function changeEmail(userId: UserId, email: string) {
+  const user = await getById(userId)
+  if (await checkIfEmailIsTaken(email)) {
+    throw new ErrorObject(constants.email_duplicate, 400)
+  }
+  await UserModel.findByIdAndUpdate(userId, { meta: { emailToConfirm: email } })
+  return user.removePassword()
+}

@@ -7,7 +7,7 @@ const userRouter = Router()
 userRouter.patch('/username', wrapAsync(userController.handleChangeUsername))
 
 userRouter.patch('/password', wrapAsync(userController.handleChangePassword))
-
+userRouter.patch('/email', wrapAsync(userController.handleChangeEmail))
 userRouter.patch('/theme', wrapAsync(userController.handleToggleTheme))
 
 userRouter.patch(

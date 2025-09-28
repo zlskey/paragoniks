@@ -1,18 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Platform } from 'react-native'
-import config from 'src/config'
 
 const isWeb = Platform.OS === 'web'
-
-export function isWebOnDesktop() {
-  if (!config.IS_PRODUCTION) {
-    return false
-  }
-
-  const isDesktopUserAgent = /Windows|Macintosh/.test(navigator.userAgent)
-
-  return isWeb && isDesktopUserAgent
-};
 
 export function saveToStorage(key: string, data: unknown) {
   if (isWeb) {

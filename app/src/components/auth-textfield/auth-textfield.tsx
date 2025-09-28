@@ -143,8 +143,9 @@ function AuthTextField({
       )
     }
 
-    if (!status)
-      return null
+    if (!status || (status === 'valid' && !value)) {
+      return <View style={styles.statusContainer} />
+    }
 
     const iconName = status === 'valid'
       ? 'check'

@@ -23,5 +23,12 @@ export default () => (
         header: () => <StackHeader title="Zmień hasło" />,
       }}
     />
+
+    <Stack.Screen
+      name="change-email"
+      options={{
+        header: () => <StackHeader title="Zmień email" />,
+      }}
+    />
   </Stack>
 )

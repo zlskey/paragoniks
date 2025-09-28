@@ -5,23 +5,23 @@ import NotificationWrapper from '@helpers/contexts/notification.context'
 import UserContextProvider, {
   useUserContext,
 } from '@helpers/contexts/user.context'
-import { isWebOnDesktop, saveToStorage } from '@helpers/utils/storage'
+import { saveToStorage } from '@helpers/utils/storage'
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query'
-import NoPcSupport from '@views/no-pc-support'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect, useMemo, useState } from 'react'
-import { Platform } from 'react-native'
+import { Platform, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { MD3DarkTheme, Provider as PaperProvider } from 'react-native-paper'
+import { MD3DarkTheme, Provider as PaperProvider, useTheme } from 'react-native-paper'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { whoamiUser } from 'src/api/endpoints/user/user.api'
+import config from 'src/config'
 import { userMockup } from 'src/mockups/user'
 import 'react-native-reanimated'
 
@@ -54,49 +54,47 @@ function RootLayoutNav() {
   const { loggedIn } = useUserContext()
 
   return (
-    <PaperProvider theme={darkTheme}>
-      <BottomSheetModalProvider>
-        <Stack>
-          <Stack.Screen name="index" redirect />
+    <BottomSheetModalProvider>
+      <Stack>
+        <Stack.Screen name="index" redirect />
 
-          <Stack.Screen
-            name="a"
-            redirect={loggedIn}
-            options={{ headerShown: false }}
-          />
+        <Stack.Screen
+          name="a"
+          redirect={loggedIn}
+          options={{ headerShown: false }}
+        />
 
-          <Stack.Screen
-            name="(tabs)"
-            redirect={!loggedIn}
-            options={{ headerShown: false }}
-          />
+        <Stack.Screen
+          name="(tabs)"
+          redirect={!loggedIn}
+          options={{ headerShown: false }}
+        />
 
-          <Stack.Screen
-            name="profile"
-            redirect={!loggedIn}
-            options={{ headerShown: false }}
-          />
+        <Stack.Screen
+          name="profile"
+          redirect={!loggedIn}
+          options={{ headerShown: false }}
+        />
 
-          <Stack.Screen
-            name="receipt/[id]"
-            redirect={!loggedIn}
-            options={{ headerShown: false }}
-          />
+        <Stack.Screen
+          name="receipt/[id]"
+          redirect={!loggedIn}
+          options={{ headerShown: false }}
+        />
 
-          <Stack.Screen
-            name="receipt/create"
-            redirect={!loggedIn}
-            options={{ headerShown: false }}
-          />
+        <Stack.Screen
+          name="receipt/create"
+          redirect={!loggedIn}
+          options={{ headerShown: false }}
+        />
 
-          <Stack.Screen
-            name="email-confirmation"
-            redirect={Platform.OS !== 'web'}
-            options={{ headerShown: false }}
-          />
-        </Stack>
-      </BottomSheetModalProvider>
-    </PaperProvider>
+        <Stack.Screen
+          name="confirm"
+          redirect={Platform.OS !== 'web'}
+          options={{ headerShown: false }}
+        />
+      </Stack>
+    </BottomSheetModalProvider>
   )
 }
 
@@ -131,10 +129,6 @@ function RootLayout() {
 
   const value = useMemo(() => ({ user, loggedIn }), [user, loggedIn])
 
-  if (isWebOnDesktop()) {
-    return <NoPcSupport />
-  }
-
   if (isPending || !loaded) {
     return <Wrapper />
   }
@@ -146,19 +140,37 @@ function RootLayout() {
   )
 }
 
-export default function App() {
+function AppContent() {
+  const { colors } = useTheme()
+
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" backgroundColor="#0F0F0F" />
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <StatusBar style="light" backgroundColor={colors.background} />
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.background }}>
         <BottomSheetModalProvider>
           <QueryClientProvider client={queryClient}>
             <NotificationWrapper>
-              <RootLayout />
+              <View style={{
+                maxWidth: config.MAX_CONTAINER_WIDTH,
+                marginHorizontal: 'auto',
+                width: '100%',
+                flex: 1,
+              }}
+              >
+                <RootLayout />
+              </View>
             </NotificationWrapper>
           </QueryClientProvider>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
+  )
+}
+
+export default function App() {
+  return (
+    <PaperProvider theme={darkTheme}>
+      <AppContent />
+    </PaperProvider>
   )
 }

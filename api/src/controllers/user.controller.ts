@@ -1,8 +1,10 @@
 import type { RequestHandler } from 'express'
 
 import type { UserId } from 'src/types'
+import config from 'src/config'
 import constants from 'src/constants'
-import { anonimUsersService, friendService, userService } from 'src/services'
+import { sendMailConfirmationEmail } from 'src/mailing/send-mail-confirmation-email'
+import { anonimUsersService, friendService, mailConfirmationService, userService } from 'src/services'
 import { uploadAvatarImage } from 'src/utils/gcp/bucket'
 import { getCompressedImageBufferFromBase64 } from 'src/utils/image.utils'
 
@@ -24,6 +26,17 @@ export const handleChangePassword: RequestHandler = async (req, res) => {
   await user.changePassword(newPassword)
 
   res.status(202).json('success')
+}
+
+export const handleChangeEmail: RequestHandler = async (req, res) => {
+  const { email } = req.body
+
+  const user = req.user
+
+  const { hash } = await mailConfirmationService.create(user._id)
+  await sendMailConfirmationEmail(email, user.username, `${config.CORS_ORIGIN}/confirm?h=${hash}&uid=${user._id}`)
+  const updatedUser = await userService.changeEmail(user._id, email)
+  res.status(201).json(updatedUser)
 }
 
 export const handleToggleTheme: RequestHandler = async (req, res) => {

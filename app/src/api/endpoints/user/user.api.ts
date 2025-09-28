@@ -2,6 +2,7 @@ import type { Profile, User } from '@types'
 import type {
   ChangeAvatarColorBody,
   ChangeAvatarImageBody,
+  ChangeEmailBody,
   ChangePasswordBody,
   ChangeUserLangBody,
   ChangeUsernameBody,
@@ -100,6 +101,14 @@ export async function changeUsername(body: ChangeUsernameBody) {
 
 export async function changePassword(body: ChangePasswordBody) {
   const url = 'user/password'
+  const rsApi = await getRsApi()
+  const response = await rsApi.patch<User>(url, body)
+
+  return response.data
+}
+
+export async function changeEmail(body: ChangeEmailBody) {
+  const url = 'user/email'
   const rsApi = await getRsApi()
   const response = await rsApi.patch<User>(url, body)
 

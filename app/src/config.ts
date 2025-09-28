@@ -14,6 +14,9 @@ const config = {
   // Localization
   LOCALE: 'pl-PL',
   LOCALE_CURRENCY: 'PLN',
+
+  // Max container width
+  MAX_CONTAINER_WIDTH: 700,
 }
 
 type Config = typeof config

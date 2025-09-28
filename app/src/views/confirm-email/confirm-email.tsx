@@ -11,12 +11,12 @@ import { useEffect } from 'react'
 import { Image } from 'react-native'
 import { ActivityIndicator, Button } from 'react-native-paper'
 
-interface EmailConfirmationContentProps {
+interface ConfirmEmailContentProps {
   isConfirmEmailPending: boolean
   confirmEmailError: AxiosError | null
 }
 
-function EmailConfirmationContent({ isConfirmEmailPending, confirmEmailError }: EmailConfirmationContentProps) {
+function ConfirmEmailContent({ isConfirmEmailPending, confirmEmailError }: ConfirmEmailContentProps) {
   const { loggedIn } = useUserContext()
 
   if (isConfirmEmailPending) {
@@ -58,7 +58,7 @@ function EmailConfirmationContent({ isConfirmEmailPending, confirmEmailError }: 
           Email został potwierdzony
         </Typography>
         <Typography variant="subtitle2" styles={{ textAlign: 'center' }}>
-          Twoje konto zostało utworzone. Możesz teraz się zalogować.
+          Możesz teraz się zalogować.
         </Typography>
       </Flex>
 
@@ -69,7 +69,7 @@ function EmailConfirmationContent({ isConfirmEmailPending, confirmEmailError }: 
   )
 }
 
-function EmailConfirmation() {
+function ConfirmEmail() {
   const { h: hash, uid: accountId } = useLocalSearchParams()
 
   const {
@@ -105,7 +105,7 @@ function EmailConfirmation() {
           alignContent="center"
           justifyContent="center"
         >
-          <EmailConfirmationContent
+          <ConfirmEmailContent
             confirmEmailError={confirmEmailError as AxiosError}
             isConfirmEmailPending={isConfirmEmailPending}
           />
@@ -115,4 +115,4 @@ function EmailConfirmation() {
   )
 }
 
-export default EmailConfirmation
+export default ConfirmEmail

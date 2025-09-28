@@ -1,3 +1,3 @@
-import changePassword from 'src/views/settings/change-password'
+import changePassword from '@views/settings/change-password'
 
 export default changePassword

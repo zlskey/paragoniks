@@ -27,7 +27,7 @@ export function useGoogleAuth() {
   })
 
   useEffect(() => {
-    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    const hash = typeof window !== 'undefined' && Platform.OS === 'web' ? window.location.hash : ''
 
     if (Platform.OS !== 'web' || handledWebRedirectRef.current || !hash) {
       return

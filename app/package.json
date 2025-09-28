@@ -12,7 +12,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "build:shared": "cd ../shared && pnpm i && pnpm build"
+    "build:shared": "cd ../shared && pnpm i && pnpm build",
+    "eas-build-pre-install": "pnpm build:shared"
   },
   "jest": {
     "preset": "jest-expo"
