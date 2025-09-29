@@ -1,5 +1,4 @@
 import type { NewPasswordFormData } from '../types'
-import { updatePassword } from '@api/endpoints/user/user.api'
 import AuthFooter from '@components/auth-flow/auth-footer'
 import AuthWrapper from '@components/auth-flow/auth-wrapper'
 import AuthTextField from '@components/auth-textfield'
@@ -8,8 +7,10 @@ import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { userSchema } from '@helpers/utils/password-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { router } from 'expo-router'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { passwordRecoveryService } from 'src/api'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
 function NewPassword() {
@@ -23,10 +24,11 @@ function NewPassword() {
 
   const { mutate: handleUpdatePassword, isPending } = useMutation({
     mutationKey: ['user', 'password'],
-    mutationFn: updatePassword,
+    mutationFn: passwordRecoveryService.updatePassword,
     onSuccess: async () => {
       addNotification('Hasło zostało zmienione', 'success')
       await queryClient.invalidateQueries({ queryKey: ['user', 'whoami'] })
+      router.replace('/home')
     },
     onError: (err: any) => {
       if (err.response.data.error.message) {

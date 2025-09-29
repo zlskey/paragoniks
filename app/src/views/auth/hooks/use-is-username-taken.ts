@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { isUsernameTaken } from 'src/api/endpoints/user/user.api'
+import { validationService } from 'src/api'
 
 function useIsUsernameTaken(username: string, debounceMs: number = 500) {
   const [debouncedUsername, setDebouncedUsername] = useState(username)
@@ -15,7 +15,7 @@ function useIsUsernameTaken(username: string, debounceMs: number = 500) {
 
   return useQuery({
     queryKey: ['auth', 'is-username-taken', debouncedUsername],
-    queryFn: () => isUsernameTaken({ username: debouncedUsername }),
+    queryFn: () => validationService.isUsernameTaken({ username: debouncedUsername }),
     enabled: debouncedUsername.length > 0,
     refetchOnWindowFocus: false,
   })

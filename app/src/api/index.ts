@@ -1,6 +1,8 @@
 export * as friendsService from './endpoints/friends/friends.api'
 export * as notificationsService from './endpoints/notifications/notifications.api'
+export * as passwordRecoveryService from './endpoints/password-recovery/password-recovery.api'
 export * as profilesService from './endpoints/profiles/profiles.api'
 export * as receiptService from './endpoints/receipt/receipt.api'
 export * as userService from './endpoints/user/user.api'
+export * as validationService from './endpoints/validation/validation.api'
 export { getRsApi } from './rs.api'

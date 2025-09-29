@@ -12,7 +12,7 @@ export const handleCheckIfUsernameIsTaken: RequestHandler = async (req, res) => 
 
   const isTaken = await validationService.checkIfUsernameIsTaken(username as string)
 
-  res.status(200).json(isTaken)
+  res.status(200).json(!!isTaken)
 }
 
 export const handleCheckIfEmailIsTaken: RequestHandler = async (req, res) => {

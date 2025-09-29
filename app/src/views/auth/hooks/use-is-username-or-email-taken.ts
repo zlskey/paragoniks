@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { isUsernameOrEmailTaken } from 'src/api/endpoints/user/user.api'
+import { validationService } from 'src/api'
 
 const FIVE_MINUTES = 5 * 60 * 1000
 
@@ -17,7 +17,7 @@ function useIsUsernameTakenOrEmailTaken(usernameOrEmail: string, excludeGoogleAc
 
   return useQuery({
     queryKey: ['auth', 'is-username-or-email-taken', debouncedUsernameOrEmail],
-    queryFn: () => isUsernameOrEmailTaken({ usernameOrEmail: debouncedUsernameOrEmail, excludeGoogleAccount }),
+    queryFn: () => validationService.isUsernameOrEmailTaken({ usernameOrEmail: debouncedUsernameOrEmail, excludeGoogleAccount }),
     enabled: debouncedUsernameOrEmail.length > 0,
     staleTime: FIVE_MINUTES,
     gcTime: FIVE_MINUTES,

@@ -1,5 +1,4 @@
 import type { PasswordRecoveryFormData } from '../types'
-import { sendPasswordRecoveryEmail } from '@api/endpoints/user/user.api'
 import AuthFooter from '@components/auth-flow/auth-footer'
 import AuthWrapper from '@components/auth-flow/auth-wrapper'
 import AuthTextField from '@components/auth-textfield'
@@ -7,6 +6,7 @@ import { useNotificationContext } from '@helpers/contexts/notification.context'
 import { useMutation } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { passwordRecoveryService } from 'src/api'
 import { useAuthNavigation } from '../hooks'
 import useIsUsernameTakenOrEmailTaken from '../hooks/use-is-username-or-email-taken'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
@@ -20,7 +20,7 @@ function PasswordRecovery() {
   const usernameOrEmail = form.watch('usernameOrEmail')
 
   const { mutate: handleSendPasswordRecoveryEmail, isPending: isSendPasswordRecoveryEmailPending } = useMutation({
-    mutationFn: sendPasswordRecoveryEmail,
+    mutationFn: passwordRecoveryService.sendPasswordRecoveryEmail,
     onSuccess: (data) => {
       navigateToPasswordRecoveryCode(data.userId, usernameOrEmail)
     },

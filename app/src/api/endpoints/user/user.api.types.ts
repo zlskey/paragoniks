@@ -10,21 +10,6 @@ export interface LoginUserResponse {
   token: string
 }
 
-export interface IsUsernameTakenBody {
-  username: string
-  excludeGoogleAccount?: boolean
-}
-
-export interface IsEmailTakenBody {
-  email: string
-  excludeGoogleAccount: boolean
-}
-
-export interface IsUsernameOrEmailTakenBody {
-  usernameOrEmail: string
-  excludeGoogleAccount: boolean
-}
-
 export interface SignupUserBody {
   username: string
   password: string
@@ -81,23 +66,6 @@ export interface GetUserFriendsOrAnonimsBody {}
 
 export interface LoginWithGoogleBody {
   idToken: string
-}
-
-export interface SendPasswordRecoveryEmailBody {
-  usernameOrEmail: string
-}
-
-export interface PasswordRecoveryCodeBody {
-  code: string
-  userId: string
-}
-
-export interface UpdatePasswordBody {
-  password: string
-}
-
-export interface SendPasswordRecoveryEmailResponse {
-  userId: string
 }
 
 export interface ConfirmEmailBody {

@@ -1,5 +1,4 @@
 import type { AuthParams, PasswordRecoveryCodeFormData } from '../types'
-import { passwordRecoveryCode, sendPasswordRecoveryEmail } from '@api/endpoints/user/user.api'
 import AuthFooter from '@components/auth-flow/auth-footer'
 import AuthWrapper from '@components/auth-flow/auth-wrapper'
 import AuthTextField from '@components/auth-textfield'
@@ -8,6 +7,7 @@ import { saveToStorage } from '@helpers/utils/storage'
 import { useMutation } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { FormProvider, useForm } from 'react-hook-form'
+import { passwordRecoveryService } from 'src/api'
 import { useAuthNavigation } from '../hooks'
 import { AUTH_LABELS, AUTH_TITLES, DEFAULT_FORM_VALUES } from '../utils'
 
@@ -19,7 +19,7 @@ function PasswordRecoveryCode() {
   const { navigateToNewPassword } = useAuthNavigation()
 
   const { mutate: handlePasswordRecoveryCode, isPending: isPasswordRecoveryCodePending } = useMutation({
-    mutationFn: passwordRecoveryCode,
+    mutationFn: passwordRecoveryService.passwordRecoveryCode,
     onSuccess: async (data) => {
       await saveToStorage('token', data.token)
       navigateToNewPassword()
@@ -30,7 +30,7 @@ function PasswordRecoveryCode() {
   })
 
   const { mutate: handleSendPasswordRecoveryEmail, isPending: isSendPasswordRecoveryEmailPending } = useMutation({
-    mutationFn: () => sendPasswordRecoveryEmail({ usernameOrEmail: usernameOrEmail as string }),
+    mutationFn: () => passwordRecoveryService.sendPasswordRecoveryEmail({ usernameOrEmail: usernameOrEmail as string }),
     onSuccess: () => {
       addNotification('Kod do resetowania hasła został wysłany ponownie', 'success')
     },

@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react'
+import Typography from '@components/typography'
 import { createContext, useContext, useState } from 'react'
-import { Snackbar } from 'react-native-paper'
+import { Snackbar, useTheme } from 'react-native-paper'
 
 interface Notification {
   message: string
@@ -15,6 +16,7 @@ type AddNotification = (
 const NotificationContext = createContext<AddNotification>(() => {})
 
 function NotificationWrapper({ children }: PropsWithChildren) {
+  const theme = useTheme()
   const [notifications, setNotifications] = useState<Notification[]>([])
 
   function addNotification(
@@ -28,7 +30,7 @@ function NotificationWrapper({ children }: PropsWithChildren) {
     setNotifications(prev => prev.slice(1))
   }
 
-  const getBackgroundColor = () => {
+  function getBackgroundColor() {
     switch (notifications[0]?.type) {
       case 'success':
         return '#2e7d32'
@@ -48,13 +50,16 @@ function NotificationWrapper({ children }: PropsWithChildren) {
         duration={3000}
         action={{
           label: 'Zamknij',
-          labelStyle: { color: '#fff' },
+          labelStyle: { color: theme.colors.onSurface },
           onPress: removeFirstNotification,
         }}
+        theme={theme}
         visible={!!notifications[0]}
         onDismiss={removeFirstNotification}
       >
-        {notifications[0]?.message}
+        <Typography variant="subtitle2" styles={{ color: theme.colors.onSurface }}>
+          {notifications[0]?.message}
+        </Typography>
       </Snackbar>
     </NotificationContext.Provider>
   )
