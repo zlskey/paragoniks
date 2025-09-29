@@ -7,7 +7,6 @@ const router = Router()
 // All notification routes require authentication
 router.use(authMiddleware)
 
-router.post('/register-token', notificationController.handleRegisterPushToken)
-router.post('/test', notificationController.handleSendTestNotification)
+router.post('/token', notificationController.handleRegisterPushToken)
 
 export default router

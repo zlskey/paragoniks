@@ -1,5 +1,5 @@
+import type { NotificationPermissionsStatus } from 'expo-notifications'
 import Constants from 'expo-constants'
-import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
@@ -23,6 +23,9 @@ export interface NotificationData {
 export class NotificationService {
   private static instance: NotificationService
   private pushToken: string | null = null
+  private permissionStatus: NotificationPermissionsStatus['status'] | null = null
+  private notificationReceivedListener: Notifications.EventSubscription | null = null
+  private notificationResponseReceivedListener: Notifications.EventSubscription | null = null
 
   static getInstance(): NotificationService {
     if (!NotificationService.instance) {
@@ -31,54 +34,52 @@ export class NotificationService {
     return NotificationService.instance
   }
 
-  /**
-   * Register for push notifications and get the Expo push token
-   */
-  async registerForPushNotifications(): Promise<string | null> {
-    if (!Device.isDevice) {
-      console.log('Must use physical device for Push Notifications')
+  async getExpoPermissionStatus() {
+    const { status } = await Notifications.getPermissionsAsync()
+    if (status === 'granted') {
+      this.permissionStatus = status
+      return status
+    }
+    const { status: newStatus } = await Notifications.requestPermissionsAsync()
+    this.permissionStatus = newStatus
+    return newStatus
+  }
+
+  async getExpoPushToken() {
+    if (this.permissionStatus === null) {
+      await this.getExpoPermissionStatus()
+    }
+
+    if (this.permissionStatus !== 'granted') {
       return null
     }
 
-    const { status: existingStatus } = await Notifications.getPermissionsAsync()
-    let finalStatus = existingStatus
+    const token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig?.extra?.eas?.projectId,
+    })
+    this.pushToken = token.data
 
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync()
-      finalStatus = status
-    }
-
-    if (finalStatus !== 'granted') {
-      console.log('Failed to get push token for push notification!')
-      return null
-    }
-
-    try {
-      const token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
-      })
-
-      this.pushToken = token.data
-      console.log('Expo push token:', this.pushToken)
-      return this.pushToken
-    }
-    catch (error) {
-      console.error('Error getting push token:', error)
-      return null
-    }
+    return token.data
   }
 
   /**
    * Get the current push token
    */
-  getPushToken(): string | null {
+  getPushToken() {
     return this.pushToken
+  }
+
+  /**
+   * Get the current permission status
+   */
+  getPermissionStatus() {
+    return this.permissionStatus
   }
 
   /**
    * Schedule a local notification
    */
-  async scheduleLocalNotification(notification: NotificationData): Promise<string> {
+  async sendInstantNotification(notification: NotificationData) {
     return await Notifications.scheduleNotificationAsync({
       content: {
         title: notification.title,
@@ -95,7 +96,7 @@ export class NotificationService {
   async scheduleDelayedNotification(
     notification: NotificationData,
     seconds: number,
-  ): Promise<string> {
+  ) {
     return await Notifications.scheduleNotificationAsync({
       content: {
         title: notification.title,
@@ -109,14 +110,14 @@ export class NotificationService {
   /**
    * Cancel a specific notification
    */
-  async cancelNotification(notificationId: string): Promise<void> {
+  async cancelNotification(notificationId: string) {
     await Notifications.cancelScheduledNotificationAsync(notificationId)
   }
 
   /**
    * Cancel all scheduled notifications
    */
-  async cancelAllNotifications(): Promise<void> {
+  async cancelAllNotifications() {
     await Notifications.cancelAllScheduledNotificationsAsync()
   }
 
@@ -125,20 +126,26 @@ export class NotificationService {
    */
   setupNotificationListeners() {
     // Handle notifications received while app is running
-    Notifications.addNotificationReceivedListener((notification) => {
+    this.notificationReceivedListener = Notifications.addNotificationReceivedListener((notification) => {
       console.log('Notification received:', notification)
     })
 
     // Handle notification taps
-    Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Notification tapped:', response)
-      // Handle navigation based on notification data
+    this.notificationResponseReceivedListener = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data
       if (data?.screen) {
         // Navigate to specific screen
         console.log('Navigate to:', data.screen)
       }
     })
+  }
+
+  /**
+   * Remove notification listeners
+   */
+  removeNotificationListeners() {
+    this.notificationReceivedListener?.remove()
+    this.notificationResponseReceivedListener?.remove()
   }
 
   /**

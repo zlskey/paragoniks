@@ -1,8 +1,8 @@
 import Flex from '@components/flex'
-import { NotificationTest } from '@components/NotificationTest'
 import SearchBar from '@components/search-bar'
 import Typography from '@components/typography'
 import Wrapper from '@components/wrapper'
+import { useNotifications } from '@hooks/use-notifications'
 import { useMemo, useState } from 'react'
 import CreateReceiptButton from './create-receipt-button'
 import MonthSectionsList from './month-section'
@@ -19,10 +19,11 @@ function Home() {
     )
   }, [data, searchQuery])
 
+  useNotifications()
+
   return (
     <Wrapper>
       <SearchBar onSearch={setSearchQuery} query={searchQuery} />
-      <NotificationTest />
       <Flex mt={2} alignContent="stretch" direction="column" nativeFlex>
         <Flex justifyContent="space-between">
           <Typography variant="subtitle">Twoje paragony</Typography>

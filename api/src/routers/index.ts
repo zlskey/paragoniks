@@ -22,7 +22,7 @@ router.use('/receipt', receiptRouter)
 router.use('/friend', friendRouter)
 router.use('/anonim', userAnonimsRouter)
 router.use('/scanCount', scanCountRouter)
-router.use('/notification', notificationRouter)
+router.use('/notifications', notificationRouter)
 router.use('/validation', validationRouter)
 
 export default router
