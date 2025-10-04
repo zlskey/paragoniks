@@ -4,7 +4,7 @@ import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import config from 'src/config'
-import { errorMiddleware } from 'src/middlewares'
+import { errorMiddleware, timeoutMiddleware } from 'src/middlewares'
 import router from 'src/routers'
 import 'src/utils/system.utils'
 
@@ -27,6 +27,7 @@ app.use(
   }),
 )
 
+app.use(timeoutMiddleware.addTimeout)
 app.use(router)
 app.use(errorMiddleware.notFound)
 app.use(errorMiddleware.errorHandler)

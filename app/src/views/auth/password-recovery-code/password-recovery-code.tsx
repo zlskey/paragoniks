@@ -63,10 +63,10 @@ function PasswordRecoveryCode() {
         <AuthFooter
           leftButtonLabel={AUTH_LABELS.RESEND_CODE}
           onLeftButtonPress={handleSendPasswordRecoveryEmail}
-          leftButtonProps={{ disabled: isPending }}
+          leftButtonProps={{ loading: isPending, disabled: isPending }}
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
-          rightButtonProps={{ disabled: isPending }}
+          rightButtonProps={{ loading: isPending, disabled: isPending }}
         />
       </FormProvider>
     </AuthWrapper>

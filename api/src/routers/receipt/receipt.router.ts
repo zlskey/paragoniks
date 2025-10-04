@@ -6,7 +6,7 @@ import singleReceiptRouter from './single-receipt.router'
 
 const receiptRouter = Router()
 
-receiptRouter.use(authMiddleware)
+receiptRouter.use(authMiddleware.authorizeCookie)
 
 receiptRouter.get('/', wrapAsync(receiptController.handleGetUserReceipts))
 

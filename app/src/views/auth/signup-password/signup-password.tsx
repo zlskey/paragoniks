@@ -27,6 +27,11 @@ function SignupPassword() {
     }
   }
 
+  const shouldGoForwardButtonBeDisabled = !!form.formState.errors.password
+    || !!form.formState.errors.repeatPassword
+    || !password.length
+    || !repeatPassword.length
+
   return (
     <AuthWrapper title={AUTH_TITLES.SIGNUP}>
       <FormProvider {...form}>
@@ -49,6 +54,7 @@ function SignupPassword() {
         <AuthFooter
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
+          rightButtonProps={{ disabled: shouldGoForwardButtonBeDisabled }}
         />
       </FormProvider>
     </AuthWrapper>

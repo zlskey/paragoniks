@@ -2,6 +2,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+const shouldTimeout = true
+
 const config = {
   // limits
   MAX_SCAN_COUNT: 5,
@@ -58,6 +60,8 @@ const config = {
   // ProtonMail
   PROTONMAIL_USER: process.env.PROTONMAIL_USER || '',
   PROTONMAIL_TOKEN: process.env.PROTONMAIL_TOKEN || '',
+
+  shouldTimeout: process.env.NODE_ENV === 'production' ? false : shouldTimeout,
 } as const
 
 type Config = typeof config

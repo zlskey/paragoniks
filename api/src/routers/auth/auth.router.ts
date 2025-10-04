@@ -17,7 +17,7 @@ router.post('/confirm-email', wrapAsync(authController.handleConfirmEmail))
 
 router.post('/login/google', wrapAsync(authController.loginWithGoogle))
 
-router.get('/logout', authMiddleware, wrapAsync(authController.logout))
+router.get('/logout', authMiddleware.authorizeCookie, wrapAsync(authController.logout))
 
 router.get('/whoami', wrapAsync(authController.whoami))
 

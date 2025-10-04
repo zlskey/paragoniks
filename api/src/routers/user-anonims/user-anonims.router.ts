@@ -5,7 +5,7 @@ import { wrapAsync } from 'src/utils'
 
 const userAnonimsRouter = Router()
 
-userAnonimsRouter.use(authMiddleware)
+userAnonimsRouter.use(authMiddleware.authorizeCookie)
 
 userAnonimsRouter.post('/', wrapAsync(userAnonimsController.createAnonim))
 userAnonimsRouter.delete('/', wrapAsync(userAnonimsController.removeAnonim))

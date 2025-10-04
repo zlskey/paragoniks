@@ -76,6 +76,7 @@ function SignupEmail() {
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
           rightButtonProps={{
+            loading: isLoading,
             disabled: !!form.formState.errors.email || !email || isLoading,
           }}
         />

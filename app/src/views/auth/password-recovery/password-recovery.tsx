@@ -74,7 +74,10 @@ function PasswordRecovery() {
         <AuthFooter
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
-          rightButtonProps={{ disabled: shouldGoForwardButtonBeDisabled }}
+          rightButtonProps={{
+            loading: isUsernameOrEmailRegisteredFetching || isSendPasswordRecoveryEmailPending,
+            disabled: shouldGoForwardButtonBeDisabled,
+          }}
         />
       </AuthWrapper>
     </FormProvider>

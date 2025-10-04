@@ -70,7 +70,7 @@ function Signup() {
         <AuthFooter
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
-          rightButtonProps={{ disabled: shouldGoForwardButtonBeDisabled }}
+          rightButtonProps={{ loading: isLoading, disabled: shouldGoForwardButtonBeDisabled }}
         />
       </FormProvider>
     </AuthWrapper>

@@ -46,7 +46,10 @@ function Login() {
     }
   }, [isUsernameOrEmailRegistered, form])
 
-  const shouldGoForwardButtonBeDisabled = isLoading || !!form.formState.errors.usernameOrEmail || !usernameOrEmail
+  const shouldGoForwardButtonBeDisabled = isLoading
+    || !!form.formState.errors.usernameOrEmail
+    || !usernameOrEmail
+    || isUsernameOrEmailRegistered !== true
 
   return (
     <AuthWrapper title={AUTH_TITLES.LOGIN} subtitle={AUTH_TITLES.LOGIN_SUBTITLE}>
@@ -67,7 +70,7 @@ function Login() {
           onLeftButtonPress={navigateToPasswordRecovery}
           rightButtonLabel={AUTH_LABELS.NEXT}
           onRightButtonPress={form.handleSubmit(onSubmit)}
-          rightButtonProps={{ disabled: shouldGoForwardButtonBeDisabled }}
+          rightButtonProps={{ loading: isLoading, disabled: shouldGoForwardButtonBeDisabled }}
         />
       </FormProvider>
     </AuthWrapper>

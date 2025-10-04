@@ -5,7 +5,7 @@ import { wrapAsync } from 'src/utils'
 
 const userRouter = Router()
 
-userRouter.use(authMiddleware)
+userRouter.use(authMiddleware.authorizeCookie)
 
 userRouter.patch('/username', wrapAsync(userController.handleChangeUsername))
 

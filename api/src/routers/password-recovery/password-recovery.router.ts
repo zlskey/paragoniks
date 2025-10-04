@@ -7,6 +7,6 @@ const router = Router()
 
 router.post('/send-email', wrapAsync(passwordRecoveryController.handleSendPasswordRecoveryEmail))
 router.post('/verify-code', wrapAsync(passwordRecoveryController.handlePasswordRecoveryCode))
-router.post('/update-password', authMiddleware, wrapAsync(passwordRecoveryController.handleUpdatePassword))
+router.post('/update-password', authMiddleware.authorizeCookie, wrapAsync(passwordRecoveryController.handleUpdatePassword))
 
 export default router

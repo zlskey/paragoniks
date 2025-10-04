@@ -55,7 +55,7 @@ function LoginPassword() {
           rightButtonLabel={AUTH_LABELS.SIGN_IN}
           onLeftButtonPress={navigateToPasswordRecovery}
           onRightButtonPress={form.handleSubmit(onSubmit)}
-          rightButtonProps={{ disabled: isPending }}
+          rightButtonProps={{ loading: isPending, disabled: isPending }}
         />
       </FormProvider>
     </AuthWrapper>

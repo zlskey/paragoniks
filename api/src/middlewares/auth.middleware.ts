@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-const authorizeCookie: RequestHandler = async (req, res, next) => {
+export const authorizeCookie: RequestHandler = async (req, res, next) => {
   try {
     const jwt = req.cookies.jwt || getJwtFromHeader(req.headers.authorization)
 
@@ -41,5 +41,3 @@ const authorizeCookie: RequestHandler = async (req, res, next) => {
     next(error)
   }
 }
-
-export default authorizeCookie

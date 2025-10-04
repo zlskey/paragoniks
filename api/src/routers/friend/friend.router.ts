@@ -5,7 +5,7 @@ import { wrapAsync } from 'src/utils'
 
 const friendRouter = Router()
 
-friendRouter.use(authMiddleware)
+friendRouter.use(authMiddleware.authorizeCookie)
 
 friendRouter.get('/', wrapAsync(friendController.defaultFriendController))
 
