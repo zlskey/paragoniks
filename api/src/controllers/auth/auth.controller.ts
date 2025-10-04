@@ -123,11 +123,11 @@ export const whoami: RequestHandler = async (req, res) => {
         token: jwt,
       }),
     )
-    .catch(() => res.clearCookie('jwt', cookieOptions).json(emptyUserResponse))
+    .catch(() => res.clearCookie('jwt').json(emptyUserResponse))
 }
 
 export const logout: RequestHandler = async (req, res) => {
-  res.clearCookie('jwt', cookieOptions).status(200).json(emptyUserResponse)
+  res.clearCookie('jwt').status(200).json(emptyUserResponse)
 }
 
 export const loginWithGoogle: RequestHandler = async (req, res) => {

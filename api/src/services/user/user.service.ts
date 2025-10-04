@@ -47,21 +47,27 @@ export async function findOrCreateGoogleAccount(payload: Partial<IUserModel> & {
 
   const availableUsername = await generateAvailableUsername(username)
 
-  const created = await UserModel.create({ username: availableUsername, email, googleId, avatarImage })
+  const created = await UserModel.create({
+    'username': availableUsername,
+    email,
+    googleId,
+    avatarImage,
+    'meta.provider': 'google',
+  })
   return created.removePassword()
 }
 
 export async function checkIfEmailIsTaken(email: string, excludeGoogleAccount = false) {
   return await UserModel.exists({
     email: { $eq: email },
-    ...(excludeGoogleAccount && { googleId: { $exists: false } }),
+    ...(excludeGoogleAccount && { provider: { $exists: false } }),
   })
 }
 
 export async function checkIfUsernameIsTaken(username: string, excludeGoogleAccount = false) {
   return await UserModel.exists({
     username: { $eq: username },
-    ...(excludeGoogleAccount && { googleId: { $exists: false } }),
+    ...(excludeGoogleAccount && { provider: { $exists: false } }),
   })
 }
 

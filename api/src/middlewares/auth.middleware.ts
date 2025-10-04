@@ -15,25 +15,31 @@ declare global {
 }
 
 const authorizeCookie: RequestHandler = async (req, res, next) => {
-  const jwt = req.cookies.jwt || getJwtFromHeader(req.headers.authorization)
+  try {
+    const jwt = req.cookies.jwt || getJwtFromHeader(req.headers.authorization)
 
-  const token = jwtUtils.validateToken(jwt)
+    const token = jwtUtils.validateToken(jwt)
 
-  if (!token) {
-    return next(new ErrorObject(constants.invalid_auth, 401))
-  }
-
-  if (typeof token !== 'string') {
-    const user = await userService.getById(token._id)
-
-    if (!user) {
-      return next(new ErrorObject(constants.invalid_auth, 401))
+    if (!token) {
+      throw new ErrorObject(constants.invalid_auth, 401)
     }
 
-    req.user = user
-  }
+    if (typeof token !== 'string') {
+      const user = await userService.getById(token._id)
 
-  next()
+      if (!user) {
+        throw new ErrorObject(constants.invalid_auth, 401)
+      }
+
+      req.user = user
+    }
+
+    next()
+  }
+  catch (error) {
+    console.error('Error in authorizeCookie middleware', error)
+    next(error)
+  }
 }
 
 export default authorizeCookie

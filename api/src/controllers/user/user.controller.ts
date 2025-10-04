@@ -4,6 +4,7 @@ import type { UserId } from 'src/types'
 import config from 'src/config'
 import constants from 'src/constants'
 import { sendMailConfirmationEmail } from 'src/mailing/send-mail-confirmation-email'
+import { ErrorObject } from 'src/middlewares/error.middleware'
 import { uploadAvatarImage } from 'src/utils/gcp/bucket'
 import { getCompressedImageBufferFromBase64 } from 'src/utils/image.utils'
 import { anonimUsersService, friendService, mailConfirmationService, userService } from '../../services'
@@ -22,6 +23,10 @@ export const handleChangePassword: RequestHandler = async (req, res) => {
 
   const user = req.user
 
+  if (user.meta?.provider) {
+    throw new ErrorObject('Nie można zmienić hasła')
+  }
+
   await user.validatePassword(currentPassword)
   await user.changePassword(newPassword)
 
@@ -33,10 +38,26 @@ export const handleChangeEmail: RequestHandler = async (req, res) => {
 
   const user = req.user
 
+  if (user.meta?.provider) {
+    throw new ErrorObject('Nie można zmienić adresu email')
+  }
+
   const { hash } = await mailConfirmationService.create(user._id)
   await sendMailConfirmationEmail(email, user.username, `${config.CORS_ORIGIN}/confirm?h=${hash}&uid=${user._id}`)
   const updatedUser = await userService.changeEmail(user._id, email)
   res.status(201).json(updatedUser)
+}
+
+export const handleResendEmailConfirmation: RequestHandler = async (req, res) => {
+  const user = req.user
+
+  const { hash } = await mailConfirmationService.create(user._id)
+  await sendMailConfirmationEmail(
+    user.meta?.emailToConfirm,
+    user.username,
+    `${config.CORS_ORIGIN}/confirm?h=${hash}&uid=${user._id}`,
+  )
+  res.status(201).json('success')
 }
 
 export const handleToggleTheme: RequestHandler = async (req, res) => {

@@ -84,6 +84,14 @@ export async function changeEmail(body: ChangeEmailBody) {
   return response.data
 }
 
+export async function resendEmailConfirmation() {
+  const url = 'user/email/resend'
+  const rsApi = await getRsApi()
+  const response = await rsApi.patch<User>(url)
+
+  return response.data
+}
+
 export async function toggleTheme(body: ToggleThemeBody) {
   const url = 'user/theme'
   const rsApi = await getRsApi()

@@ -18,7 +18,7 @@ function useIsEmailTaken(
   }, [email, debounceMs])
 
   return useQuery({
-    queryKey: ['auth', 'is-email-taken', debouncedEmail],
+    queryKey: ['auth', 'is-email-taken', debouncedEmail, excludeGoogleAccount],
     queryFn: () => validationService.isEmailTaken({ email: debouncedEmail, excludeGoogleAccount }),
     enabled: debouncedEmail.length > 0,
     refetchOnWindowFocus: false,

@@ -4,6 +4,7 @@ import AuthWrapper from '@components/auth-flow/auth-wrapper'
 import AuthTextField from '@components/auth-textfield'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useLocalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useAuthNavigation } from '../hooks'
@@ -30,7 +31,7 @@ function SignupEmail() {
 
   const email = form.watch('email')
 
-  const { data: isEmailTaken, isLoading } = useIsEmailTaken(email ?? '')
+  const { data: isEmailTaken, isLoading } = useIsEmailTaken(email ?? '', true)
 
   function onSubmit(data: SignupEmailFormData) {
     if (username) {
@@ -44,6 +45,15 @@ function SignupEmail() {
     }
   }
 
+  useEffect(() => {
+    if (isEmailTaken) {
+      form.setError('email', { type: 'manual', message: 'Podany email jest już zajęty' })
+    }
+    else if (form.formState.errors.email?.type === 'manual') {
+      form.clearErrors('email')
+    }
+  }, [isEmailTaken])
+
   return (
     <AuthWrapper title={AUTH_TITLES.SIGNUP}>
       <FormProvider {...form}>
@@ -56,10 +66,7 @@ function SignupEmail() {
           status={
             !email?.length ? undefined : form.formState.errors.email ? 'error' : 'valid'
           }
-          error={
-            form.formState.errors.email
-            ?? (isEmailTaken === true ? { message: 'Podany email jest już zajęty', type: 'custom' } : undefined)
-          }
+          error={form.formState.errors.email}
           autoComplete="email"
         />
 

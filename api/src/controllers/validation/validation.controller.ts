@@ -4,25 +4,31 @@ import { ErrorObject } from 'src/middlewares/error.middleware'
 import { validationService } from 'src/services'
 
 export const handleCheckIfUsernameIsTaken: RequestHandler = async (req, res) => {
-  const { username } = req.body
+  const { username, excludeGoogleAccount } = req.body
 
   if (!username) {
     throw new ErrorObject(constants.missing_args)
   }
 
-  const isTaken = await validationService.checkIfUsernameIsTaken(username as string)
+  const isTaken = await validationService.checkIfUsernameIsTaken(
+    username as string,
+    excludeGoogleAccount,
+  )
 
   res.status(200).json(!!isTaken)
 }
 
 export const handleCheckIfEmailIsTaken: RequestHandler = async (req, res) => {
-  const { email } = req.body
+  const { email, excludeGoogleAccount } = req.body
 
   if (!email) {
     throw new ErrorObject(constants.missing_args)
   }
 
-  const isTaken = await validationService.checkIfEmailIsTaken(email as string)
+  const isTaken = await validationService.checkIfEmailIsTaken(
+    email as string,
+    excludeGoogleAccount,
+  )
 
   res.status(200).json(!!isTaken)
 }

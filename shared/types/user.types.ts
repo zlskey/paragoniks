@@ -4,6 +4,7 @@ export interface UserMeta {
   noOfScans?: number
   noOfReceipts?: number
   emailToConfirm?: string | null
+  provider?: 'google' | 'apple'
 }
 
 export type Theme = 'light' | 'dark'

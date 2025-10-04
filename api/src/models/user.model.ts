@@ -79,6 +79,10 @@ const userSchema = new mongoose.Schema<IUserModel>({
       type: String,
       default: null,
     },
+    provider: {
+      type: String,
+      default: null,
+    },
   },
   pushToken: {
     type: String,
