@@ -61,6 +61,7 @@ const config = {
   PROTONMAIL_USER: process.env.PROTONMAIL_USER || '',
   PROTONMAIL_TOKEN: process.env.PROTONMAIL_TOKEN || '',
 
+  // Should timeout
   shouldTimeout: process.env.NODE_ENV === 'production' ? false : shouldTimeout,
 } as const
 
